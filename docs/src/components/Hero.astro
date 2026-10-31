@@ -1,0 +1,138 @@
+---
+// Replaces Starlight's Hero on the splash page: same copy and buttons, but the
+// right-hand column is a live <Stage> instead of an image.
+import { LinkButton } from "@astrojs/starlight/components";
+import { HeroStage } from "./HeroStage.tsx";
+
+const { data } = Astro.locals.starlightRoute.entry;
+const { title = data.title, tagline, actions = [] } = data.hero || {};
+---
+
+<div class="hero">
+	<div class="stack">
+		<div class="copy">
+			<p class="eyebrow">@sophistry/core</p>
+			<h1 id="_top" data-page-title set:html={title} />
+			{tagline && <div class="tagline" set:html={tagline} />}
+		</div>
+		{
+			actions.length > 0 && (
+				<div class="actions">
+					{actions.map(({ icon, link: href, text, variant }) => (
+						<LinkButton {href} {variant} icon={icon?.name}>
+							{text}
+						</LinkButton>
+					))}
+				</div>
+			)
+		}
+		<p class="install"><code>pnpm add @sophistry/core @sophistry/solidjs</code></p>
+	</div>
+	<div class="stage-frame">
+		<HeroStage client:only="solid2" />
+	</div>
+</div>
+
+<style>
+	.hero {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 2rem;
+		align-items: center;
+		padding-block: 1rem 0.5rem;
+		isolation: isolate;
+	}
+	.hero::before {
+		content: "";
+		position: absolute;
+		inset: -10% 0 0;
+		z-index: -1;
+		background:
+			radial-gradient(40% 50% at 78% 45%, var(--sophistry-glow), transparent 70%);
+		pointer-events: none;
+	}
+	.stack {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+		text-align: center;
+		align-items: center;
+	}
+	.copy {
+		display: flex;
+		flex-direction: column;
+		gap: 0.9rem;
+		align-items: center;
+	}
+	.eyebrow {
+		margin: 0;
+		font-family: var(--sl-font-mono);
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-accent-high);
+		letter-spacing: 0.02em;
+	}
+	h1 {
+		margin: 0;
+		font-size: clamp(2.4rem, 1.2rem + 4.2vw, 4rem);
+		line-height: 1.05;
+		font-weight: 750;
+		letter-spacing: -0.035em;
+		color: var(--sl-color-white);
+	}
+	h1 :global(em) {
+		font-style: normal;
+		background: linear-gradient(100deg, var(--sl-color-accent-high), var(--sl-color-accent));
+		-webkit-background-clip: text;
+		background-clip: text;
+		color: transparent;
+	}
+	.tagline {
+		max-width: 38ch;
+		font-size: clamp(1rem, 0.9rem + 0.5vw, 1.2rem);
+		color: var(--sl-color-gray-2);
+	}
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		justify-content: center;
+	}
+	.install {
+		margin: 0;
+	}
+	.install code {
+		padding: 0.4rem 0.8rem;
+		border: 1px solid var(--sophistry-frame);
+		border-radius: 999px;
+		background: var(--sophistry-surface);
+		font-size: var(--sl-text-sm);
+	}
+	.stage-frame {
+		border: 1px solid var(--sophistry-frame);
+		border-radius: 1rem;
+		background: var(--sophistry-surface);
+		padding: 0.5rem;
+		box-shadow:
+			0 0 0 1px var(--sophistry-glow),
+			0 30px 80px -30px var(--sophistry-glow);
+		overflow: hidden;
+	}
+	@media (min-width: 60rem) {
+		.hero {
+			grid-template-columns: minmax(0, 5fr) minmax(0, 6fr);
+			gap: 3rem;
+			padding-block: 2.5rem 1.5rem;
+		}
+		.stack {
+			text-align: start;
+			align-items: flex-start;
+		}
+		.copy {
+			align-items: flex-start;
+		}
+		.actions {
+			justify-content: flex-start;
+		}
+	}
+</style>

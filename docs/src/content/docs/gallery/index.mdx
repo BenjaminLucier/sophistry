@@ -1,0 +1,25 @@
+---
+title: Gallery
+description: "Live, copyable examples of sophistry: every one runs in the page, shows its full source and links to the API it uses."
+---
+
+import GalleryOverview from "../../../components/GalleryOverview.astro";
+
+Every example here is a real, typechecked module from `docs/src/examples/`, written with the Solid binding (`@sophistry/solidjs`) over the framework-free core, or with the core alone.
+What you see running is exactly the source beneath it, and each name in its
+**Uses** row links to the API reference. Examples on a page are ordered from
+the simplest to the most involved, so read from the top. The larger categories
+(animations, plotting and interaction) are split into pages by topic.
+
+**New to sophistry?** Do the [first scene tutorial](/start/first-scene/), then
+browse [Basic concepts](/gallery/basic/). Each category page links to the guides that explain
+what you are looking at. Looking for something specific?
+
+- Moving things: [Animations](/gallery/animation/) and [Interaction](/gallery/interaction/)
+- Graphs and data: [Plotting and charts](/gallery/plotting/), from [function graphs](/gallery/plotting/function-graphs/) to [chart transitions](/gallery/plotting/chart-transitions/)
+- Formulas and linear algebra: [Math and LaTeX](/gallery/maths/)
+- Depth: [3D](/gallery/three-d/)
+- Whole projects: [Advanced projects](/gallery/advanced/) and the [recipes](/recipes/scrub-slider/)
+- No framework at all: [Without a framework](/gallery/vanilla/), the same ideas with `createScene`
+
+<GalleryOverview />

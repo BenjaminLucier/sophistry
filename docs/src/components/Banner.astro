@@ -1,0 +1,78 @@
+---
+// Replaces Starlight's Banner: keeps per-page `banner` frontmatter working and
+// adds a small, dismissible pre-1.0 / Solid 2.0 RC notice to every page.
+const { banner } = Astro.locals.starlightRoute.entry.data;
+---
+
+<div class="rc-notice" id="rc-notice" data-pagefind-ignore>
+	<p>
+		<strong>Pre-1.0.</strong> sophistry is built on Solid 2.0, still a release
+		candidate; APIs may change. <a href="/project/stability/">Stability and versioning</a>
+	</p>
+	<button type="button" class="dismiss" aria-label="Dismiss notice">×</button>
+</div>
+<script is:inline>
+	(function () {
+		var el = document.getElementById("rc-notice");
+		try {
+			if (localStorage.getItem("sophistry-rc-dismissed") === "1") el.hidden = true;
+		} catch (e) {}
+		el.querySelector(".dismiss").addEventListener("click", function () {
+			el.hidden = true;
+			try {
+				localStorage.setItem("sophistry-rc-dismissed", "1");
+			} catch (e) {}
+		});
+	})();
+</script>
+{banner && <div class="sl-banner" data-pagefind-ignore set:html={banner.content} />}
+
+<style>
+	.rc-notice {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 0.75rem;
+		padding: 0.4rem 1rem;
+		background: var(--sl-color-accent-low);
+		color: var(--sl-color-white);
+		font-size: var(--sl-text-xs);
+		line-height: 1.3;
+		text-align: center;
+		border-bottom: 1px solid var(--sophistry-frame);
+	}
+	.rc-notice[hidden] {
+		display: none;
+	}
+	.rc-notice p {
+		margin: 0;
+	}
+	.rc-notice a {
+		color: var(--sl-color-accent-high);
+		font-weight: 600;
+		white-space: nowrap;
+	}
+	.dismiss {
+		appearance: none;
+		border: 0;
+		background: none;
+		color: inherit;
+		font-size: 1.1rem;
+		line-height: 1;
+		padding: 0.15rem 0.4rem;
+		cursor: pointer;
+		border-radius: 0.3rem;
+	}
+	.dismiss:hover {
+		background: color-mix(in srgb, currentColor 15%, transparent);
+	}
+	.sl-banner {
+		padding: var(--sl-nav-pad-y) var(--sl-nav-pad-x);
+		background-color: var(--sl-color-banner-bg, var(--sl-color-bg-accent));
+		color: var(--sl-color-banner-text, var(--sl-color-text-invert));
+		text-align: center;
+	}
+	.sl-banner :global(a) {
+		color: inherit;
+	}
+</style>

@@ -1,0 +1,194 @@
+---
+title: "Chart animation"
+description: "Reveal a chart, transition it between datasets by key, and move its domain, all as seekable functions of a track."
+---
+
+import Example from "../../../components/Example.astro";
+
+A chart is a function of its props, and props can be tracks, so there are three ways to animate one: **reveal** it, **transition** its data, or **move its domain**. Each is a pure function of a number, so it scrubs, seeks and plays backwards like any other [animation](/guides/animation/). A fourth, for live data, lets the marks tween on the clock when `data` is replaced ([below](#clock-driven-updates)).
+
+## Reveals
+
+Every chart takes `progress` (0 to 1). Pass a track and drive it with `draw()`:
+
+```tsx
+import { draw, track } from "@sophistry/core";
+import { Stage, usePlayer } from "@sophistry/solidjs";
+import { BarChart } from "@sophistry/solidjs/charts";
+import { onSettled } from "solid-js";
+
+export function Reveal() {
+  const progress = track(0);
+  const player = usePlayer();
+  onSettled(() => {
+    void player.play(draw(progress, { duration: 1.5 }));
+  });
+  return (
+    <Stage units={10}>
+      <BarChart data={[3, 7, 4, 9]} width={8} height={4} progress={progress} />
+    </Stage>
+  );
+}
+```
+
+A `<Chart>`'s `progress` draws the frame first (grid, axes, titles), then the layers, then the legend: the order a person draws a chart in. One track on the `<Chart>` is usually all you need; a layer's own `progress` is scaled into the frame's data half.
+
+Each kind of mark reveals the way that reads honestly:
+
+| Mark | Reveals by | `reveal` options |
+|---|---|---|
+| `LinePlot`, `Stairs`, `Ecdf`, `FillBetween` | a front sweeping along x at a constant rate | `"length"` cuts each line by arc length |
+| `Density`, `Regression` | a clip sweeping along x | `Density`: `"grow"` rises from the baseline |
+| `Bars`, `BarChart`, `Histogram`, `Stem` | growing out of the baseline (fading in when the axis has no zero) | `"stack"`, `"fade"` |
+| `StackPlot`, stacked `Bars` | every band growing together, so each frame is a true stack | `"x"`, `"length"` |
+| `Scatter`, `Strip`, `Beeswarm` | markers growing in place | |
+| `ErrorBar`, `RuleX`, `RuleY` | bars reaching out of their marker; rules drawn from their low end | |
+| `PieChart`, `RadarChart` | slices or polygons growing out from the centre | `"sweep"` wipes round from 12 o'clock |
+| `Imshow`, `Cells`, `Heatmap`, `Hist2D`, `HexBin` | cells fading in reading order, never by value | |
+| `Contour`, `ContourF` | lines cut along their length; filled bands fading in, lowest first | |
+| `BoxPlot`, `ViolinPlot` | boxes opening from the median, then whiskers, then outliers fading in; violins widening from the centre line | |
+| Hierarchies, `Tree`, `Sankey` | nodes staggered in from the root outwards (Sankey: column by column); tree links and Sankey ribbons cut along their length | |
+
+Batched items carry per-item geometry and opacity, but no per-item arc-length `progress`. So a mark that would trace an outline instead has its geometry cut (lines, contour lines, links, ribbons), grows (markers, bars, wedges), or fades in (filled contour bands, box-plot outliers). Every reveal ends on exactly the finished chart.
+
+- **One front.** `<Chart reveal="x">` sweeps one clip edge across the whole plot instead, so a band, its line and its markers enter together.
+- **Stagger.** `stagger` (0 to 0.95) is the fraction of the reveal spent bringing marks in one after another, in the encoded order (along x, by category, by value). The last mark always finishes at `progress = 1`. `staggerOrder="random"` uses a hash of each key instead: shuffled-looking, but the same on every frame.
+
+Keep `draw()` linear for curves, so the sweep keeps pace with x.
+
+<Example name="plotting/SweepReveal" />
+
+## Data transitions
+
+Pass a `derive` of a track as `data` and the chart redraws as it changes. When both datasets have the same items in the same order, blending the arrays is enough:
+
+```tsx
+const blend = track(0);
+const data = derive(blend, (t) => before.map((v, i) => v + (after[i] - v) * t));
+// <BarChart data={data} ... />, then player.play(valueTo(blend, 1))
+```
+
+<Example name="plotting/BarChartMorph" />
+
+When items come and go, give the chart the far end as `to` and drive `blend` from 0 to 1:
+
+```tsx
+const blend = track(0);
+<Chart clip>
+  <Scatter data={before} to={after} blend={blend} key="city" x="income" y="life" />
+</Chart>;
+// then: player.play(valueTo(blend, 1, { duration: 2.4, easing: "linear" }))
+```
+
+Items are matched by `key` (per-datum marks), by `series` (lines and areas), by category, slice, bin or node path (the rest). A matched item **updates**: it moves between its two values in data units, so every frame is a valid chart; lines morph on a shared x grid and stacks stay touching. An item only in `to` **enters** the way it reveals; an item only in `data` **exits** by its reveal run backwards. `staging="staged"` (the default) spends `blend` on exits, then updates, then entries, each eased on its own, so drive it linearly; `staging="together"` runs them at once, for stepping through keyframes (`data={frames[k]} to={frames[k + 1]} blend={time - k}`).
+
+On a batched mark the join is the batch's own: each key keeps its item from one end of the transition to the other, so a scatter of ten thousand points transitions as cheaply as one of ten.
+
+- **`enterStagger`** (0 to 0.95) brings entering items in one after another within the enter stage. Updates and exits never stagger: a staggered move is harder to follow.
+- **The frame follows.** Fitted axes, category names, the legend and the room it takes all blend on the same track, so `blend = 0` is exactly `data`'s chart and `blend = 1` exactly `to`'s. Under reduced motion, a run started with `usePlayer` (or `scene.play`) jumps to its end, so the chart lands on the far frame.
+- **Axes can change kind.** Bars with `to={[]}` leaving while points with `data={[]}` arrive cross-fade a category axis into a number line, and marks that stay slide between their two drawings.
+- **One clock per chart.** Drive all of a chart's layers from one `blend` track; layers on separate schedules belong in separate charts. Pin `<Chart color={{ domain }}>` when series come and go, so colours stay put.
+
+<Example name="plotting/KeyedScatter" />
+
+<Example name="plotting/LineMorph" />
+
+<Example name="plotting/StackMorph" />
+
+<Example name="plotting/KeyedPie" />
+
+<Example name="plotting/BarsToScatter" />
+
+Hierarchies (`Treemap`, `Sunburst`, `Tree`, ...) take the same `to` and `blend`, matched by name path; see the [catalogue](/reference/chart-catalogue/#hierarchies).
+
+### Clock-driven updates
+
+A `to`/`blend` transition is seekable, which suits a scripted scene. For data that simply changes (a live feed, a filter the user toggles), the per-datum marks (`Scatter`, `Bars`, `Histogram`, `Strip`, `Beeswarm`, `Stem`, `Rug`, `TickX`/`TickY`, `RuleX`/`RuleY`, `Rects`, `ErrorBar`, `Cells`, `Hist2D`, `Pcolormesh`) take `transition`: when `data` is replaced, kept items tween (or spring) to their new values on the scene's clock, new items grow in and departing ones shrink out, matched by `key`.
+
+```tsx
+<Scatter
+  data={points} // a track or derive the app replaces
+  key="id"
+  x="x"
+  y="y"
+  transition={{ duration: 0.6, easing: "inOut", stagger: 0.2 }}
+/>
+```
+
+`transition` takes `duration` and `easing`, or `spring` (an item retargeted mid-flight keeps its velocity), plus `delay` and `stagger`; `enter` and `exit` turn the grow-in and shrink-out off (`false`) or give them their own timing. Only data changes animate this way: a reveal, a `to`/`blend` transition or a range change stays exact. The first data a mark draws appears in place, for its reveal to bring in.
+
+## Domain transitions
+
+To move a scale smoothly, give `<Chart>` a range transition instead of a range. As a `derive` of a track, it binds without any framework work per frame:
+
+```tsx
+const zoom = track(0);
+const yRange = derive(zoom, (t) => ({ from: [0, 10] as [number, number], to: [0, 100] as [number, number], t }));
+<Chart clip yRange={yRange}>...</Chart>;
+```
+
+The axis, grid and every layer map through the range blended at `t`, so marks and ticks never disagree. The blend happens in the scale's own space (a log axis zooms geometrically), and ticks are matched by value: shared ticks slide, the rest fade. Pair it with `clip`, so what leaves the domain leaves the picture. When data changes too, rescale first if the domain grows and last if it shrinks; keyed transitions do this for you.
+
+<Example name="plotting/AxisRescale" />
+
+Streaming is the same transition driven by one time track: each whole step slides the window by one, and `t` is the fraction of the current step.
+
+```tsx
+const time = track(0);
+const xRange = derive(time, (t) => {
+  const step = Math.floor(t);
+  return { from: [step, step + 10] as [number, number], to: [step + 1, step + 11] as [number, number], t: t - step };
+});
+<Chart clip xRange={xRange}>
+  <LinePlot data={data} x="x" y="y" />
+</Chart>;
+```
+
+<Example name="plotting/StreamingSeries" />
+
+`<Axes>`, `<NumberPlane>` and `<NumberLine>` take the same `{ from, to, t }` ranges; `interpolateRange` and `transitionTicks` in `@sophistry/core/geometry` are the pure functions underneath.
+
+## Sorting and races
+
+A band axis's `slot` option places each category at a slot index you choose, fractional included, and every band mark follows. Drive it from [`createSlots`](/guides/layout/#items-that-change-slots) and a sort is one seekable `permute`:
+
+```tsx
+const slots = createSlots(names, { layout: (i) => ({ x: i, y: 0 }), lag: 0.08 });
+// Rebuild the axis option whenever a slot moves.
+const xAxis = derive(
+  names.flatMap((name) => slots.item(name)?.position ?? []),
+  () => ({ slot: (key: string | number) => slots.item(String(key))?.position.peek().x }),
+);
+<Chart xAxis={xAxis}>
+  <Bars data={fruit} category="name" value="sold" />
+</Chart>;
+// then: player.play(slots.plan().permute(sortedNames))
+```
+
+<Example name="plotting/SortedBars" />
+
+`rankRace(rows, { key, time, value, top })` makes a bar chart race: it interpolates each key's value over time, ranks by it, and slides each swap on its own short ease. `race.view(time)` gives the axis its categories and slots and the entries in view.
+
+```tsx
+const race = rankRace(rows, { key: "name", time: "year", value: "score", top: 5 });
+const view = derive(year, (time) => race.view(time));
+const yAxis = derive(view, (frame) => ({ categories: frame.categories, slot: frame.slot }));
+const entries = derive(view, (frame) => frame.entries);
+<Chart clip color={{ domain: race.keys }} yAxis={yAxis}>
+  <Bars data={entries} category="key" value="value" key="key" series="key" orientation="horizontal" />
+</Chart>;
+```
+
+<Example name="plotting/BarChartRace" />
+
+## Time as an encoding
+
+Give `Scatter` long-format rows with a `time` channel and a moment `at`: it draws one marker per key at that moment, interpolated between the moments either side, and `trail` draws the path each has taken. The axes fit every moment, so they hold still while time plays. Pass a track as `at` and play `valueTo` on it.
+
+<Example name="plotting/AnimatedScatterTrails" />
+
+## Next steps
+
+- [Charts](/guides/charts/): data, channels, the frame and marks.
+- [Timelines and playback](/guides/timelines/): seek and scrub these transitions.
+- [Chart transitions gallery](/gallery/plotting/chart-transitions/): every transition here, running live.

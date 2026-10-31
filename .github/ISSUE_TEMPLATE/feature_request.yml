@@ -1,0 +1,31 @@
+name: Feature request
+description: Propose a new component, animation or API.
+labels: [enhancement, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Check the [roadmap](https://github.com/BenjaminLucier/sophistry/blob/main/ROADMAP.md) and its non-goals first.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What are you trying to make?
+      description: Describe the scene, chart or interaction. The problem matters more than the proposed API.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed API
+      description: A sketch of how you would like to write it.
+      render: tsx
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Current workaround
+      description: How you do it today, and what is painful about that.
+  - type: input
+    id: manim
+    attributes:
+      label: Manim equivalent
+      description: If this mirrors something in Manim CE, link or name it.

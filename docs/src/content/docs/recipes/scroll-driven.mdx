@@ -1,0 +1,148 @@
+---
+title: "Scroll-driven animation"
+description: "Tie an animation's progress to page scroll with a seek-only timeline."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+Because animations are seekable, scroll position can be the clock: map scroll progress to `timeline.seek()` and the scene is a pure function of how far the reader has scrolled. Scrolling back rewinds it.
+
+## The result
+
+Scroll inside the box below. The stage is pinned (CSS `position: sticky`) while the content behind it moves.
+
+<Example name="interaction/ScrollDrivenStage" />
+
+## Build the timeline, never play it
+
+Create a timeline for the script and only ever call `seek`. A seek writes the state for that time straight away, so the clock never has to move; give the timeline the stage's clock anyway, so the two belong together if you later add a play button.
+
+```tsx
+import { createClock, draw, moveTo, sequence, timeline, track, trackPoint } from "@sophistry/core";
+import { onCleanup } from "solid-js";
+
+const clock = createClock();
+const drawn = track(0);
+const position = trackPoint(-3, 0);
+
+const tl = timeline(
+  sequence(
+    draw(drawn, { duration: 1 }),
+    moveTo(position, { x: 3, y: 0 }, { duration: 2 }),
+    moveTo(position, { x: 0, y: 0 }, { duration: 1 }),
+  ),
+  { clock },
+);
+onCleanup(() => tl.dispose());
+```
+
+The durations are now just proportions: what matters is how they divide the total, not how long they take in seconds. (`usePlayer().timeline(...)` works as well and disposes the timeline with the component.)
+
+## Map scroll to time
+
+Turn the scroll position into a 0..1 progress, then multiply by the duration.
+
+```tsx nocheck
+function onScroll(element: HTMLElement) {
+  const range = element.scrollHeight - element.clientHeight;
+  const progress = range > 0 ? element.scrollTop / range : 0;
+  tl.seek(progress * tl.duration);
+}
+
+<div style={{ height: "20rem", "overflow-y": "auto" }} tabindex={0} onScroll={(e) => onScroll(e.currentTarget)}>
+  <div style={{ height: "60rem" }}>
+    <div style={{ position: "sticky", top: "0" }}>
+      <Stage units={10} clock={clock}>
+        <Circle center={position} radius={1} progress={drawn} />
+      </Stage>
+    </div>
+  </div>
+</div>;
+```
+
+The structure is a scroll container, a tall spacer that provides the scroll distance, and a sticky child holding the stage. `seek` clamps to `0..duration`, so over-scroll bounce does no harm, and it is idempotent, so firing it on every scroll event is fine. The circle is bound to the tracks, so a seek only writes them: the scene recomputes what changed at the next frame's commit, however many scroll events arrived in between, and no Solid code runs.
+
+### Scrolling the whole page
+
+For a full-page article, listen to the window instead and measure the section the stage lives in:
+
+```tsx nocheck
+import { onSettled } from "solid-js";
+
+let section: HTMLElement | undefined;
+
+onSettled(() => {
+  const update = () => {
+    if (!section) return;
+    const rect = section.getBoundingClientRect();
+    const range = rect.height - window.innerHeight;
+    const progress = range > 0 ? Math.min(1, Math.max(0, -rect.top / range)) : 0;
+    tl.seek(progress * tl.duration);
+  };
+  window.addEventListener("scroll", update, { passive: true });
+  update();
+  return () => window.removeEventListener("scroll", update);
+});
+```
+
+Here `section` is a tall element (say `height: 400vh`) with the sticky stage inside. Progress is 0 when its top reaches the viewport top and 1 when its bottom reaches the viewport bottom. `onSettled` returns its cleanup, since Solid 2 forbids `onCleanup` inside it.
+
+If you only want to react when the stage enters the viewport, rather than tracking continuous progress, `IntersectionObserver` is the right tool: observe the section and start a `player.play(...)` when it first intersects.
+
+The same thing without a framework is the same few lines: build the scene with `createScene({ host, clock })`, the timeline with `scene.timeline(...)`, and call `tl.seek(...)` from the scroll listener.
+
+## A time track or a timeline?
+
+Both work; choose by what the scene needs.
+
+- **A timeline** is best for a scripted scene made of several animations. You get the sequencing, easing and restore-on-rewind for free, and the scroll mapping is a single `seek` call.
+- **A plain `t` track** is best when the scene is a *formula* of one parameter: `const t = track(0)`, set it from scroll, and bind every prop that depends on it to a `derive` of `t`. There is no script at all, and it composes naturally with `<MathTransform blend={t} />` or `<TransformMatchingShapes blend={t} />`.
+
+```tsx
+import { derive, track } from "@sophistry/core";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+const t = track(0);
+// in onScroll: t.set(progress);
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Circle
+      center={derive(t, (t) => ({ x: -3 + 6 * t, y: 0 }))}
+      radius={derive(t, (t) => 0.5 + t)}
+    />
+  </Stage>
+);
+```
+
+## Performance and `pauseWhenHidden`
+
+A stage scrolled out of view skips painting, and one with its own `clock` also suspends that clock (see [Clocks](/guides/timelines/#clocks)). Both are exactly what you want here. `seek` does not use the clock, so a hidden stage's tracks still receive the right values and it paints correctly the moment it scrolls back on screen.
+
+Keep the scroll handler cheap: it should only call `seek` (or set a track). Avoid layout reads beyond the one `scrollTop`/`getBoundingClientRect` per event. Several seeks within one frame cost one commit and at most one paint, because the scene only recomputes in the frame loop's commit phase.
+
+## Accessibility
+
+- **Reduced motion.** Respect `prefers-reduced-motion`: show the finished state without requiring scroll animation. `prefersReducedMotion` is the user's setting as a `Readable`, so you can also `watch` it.
+
+  ```tsx nocheck
+  import { prefersReducedMotion } from "@sophistry/core";
+
+  if (prefersReducedMotion.peek()) tl.seek(tl.duration);
+  ```
+
+  (Reduced motion never affects `seek` on its own: scrubbing counts as the user's own motion. Deciding what a scroll-driven page shows under it is up to you.)
+
+- **No scroll-only content.** Anything the scene teaches should also be in the surrounding text. The canvas is not read by screen readers, so give interactive or meaningful nodes a `label` and see [Accessibility](/guides/accessibility/).
+- **Keyboard.** A scroll container needs `tabindex="0"` to be keyboard-scrollable, as in the example above. Whole-page scrolling already works with the keyboard.
+
+<Aside type="tip">
+  A [scrub slider](/recipes/scrub-slider/) beside the stage is a good alternative to scroll for readers who prefer precise control.
+</Aside>
+
+## Next steps
+
+- [Timelines](/guides/timelines/): `seek`, and what offscreen stages do to pending plays.
+- [Accessibility](/guides/accessibility/): reduced motion and keyboard alternatives.
+- [Performance](/project/performance/): keeping scroll handlers and stages cheap.

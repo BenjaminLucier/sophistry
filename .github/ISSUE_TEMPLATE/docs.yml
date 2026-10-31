@@ -1,0 +1,22 @@
+name: Documentation issue
+description: Something in the docs is missing, wrong or unclear.
+labels: [documentation, triage]
+body:
+  - type: input
+    id: page
+    attributes:
+      label: Page or API symbol
+      description: URL on sophistry.dev, or the exported name.
+      placeholder: https://sophistry.dev/guides/getting-started/
+    validations:
+      required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong or missing?
+    validations:
+      required: true
+  - type: textarea
+    id: suggestion
+    attributes:
+      label: Suggested fix

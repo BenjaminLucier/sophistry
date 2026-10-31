@@ -1,0 +1,16 @@
+---
+title: Cameras, zoom and drill-down
+description: "Pan and zoom, camera flights, picture-in-picture views, chart zoom and brushing zoom, and hierarchy drill-down."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+The stage's `units` and `center` accept tracks, so a camera can be animated, dragged or zoomed, and `<PanZoom>` writes them from wheel, drag and pinch. Start with `PanZoomPlane` and `CameraFlight`; the chart examples zoom a plot's domain, and the drill-down examples zoom into a hierarchy.
+
+<CardGrid>
+  <LinkCard title="Cameras" href="/guides/cameras/" description="PanZoom, camera moves and many views of one scene." />
+  <LinkCard title="Charts: multiple views" href="/guides/charts/#multiple-views" description="Zoom, pan and brushes on charts." />
+</CardGrid>
+
+<Gallery category="interaction" page="cameras-and-zoom" />

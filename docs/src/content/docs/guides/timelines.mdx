@@ -1,0 +1,387 @@
+---
+title: "Timelines and playback"
+description: "Run, pause, scrub and abort animations: seekable Animation values, usePlayer and scene.play, timeline controllers, clocks and the frame loop."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+An animation is a value: a lazy, seekable description with a known duration (see [Core concepts](/start/concepts/#animations-are-seekable-descriptions)). Building one does nothing. A **runner** samples it against a clock:
+
+- `play(...animations)` runs animations once, forward, and returns a promise.
+- `timeline(animation)` returns a controller you can play, pause and **seek**.
+
+In a Solid component both come from `usePlayer()`; without a framework they are `scene.play` and `scene.timeline`. Either way the runner owns the clock and cancellation, which is why presets take only `{ duration, delay, easing }`. To build animations, see [Animation](/guides/animation/).
+
+## Animations are seekable values
+
+Every animation, from a single `fadeIn` to a nested `sequence`, is an object of the same shape:
+
+| Member | Meaning |
+| --- | --- |
+| `duration` | Length in seconds, known when the animation is built (`Infinity` for `forever`). |
+| `seek(t)` | Writes the state at local time `t` to every target. Any time, in any order. |
+| `begin()` | Called when a run enters the animation: relative animations capture their start here. |
+| `restore()` | Puts the targets back as they were before `begin`, for scrubbing back past the start. |
+| `abort()` | Called when a run is aborted mid-way (the grow presets snap back to rest). |
+
+Because the duration is known up front, composites place their children exactly ([Composing animations](/guides/animation/#composing-animations)), and because `seek` is a pure function of time, a runner can jump anywhere: forward by playing, backward by scrubbing, to the end under reduced motion. You rarely call these members yourself; a runner does. To write your own leaf, see [Custom animations](/guides/animation/#custom-animations).
+
+## play() and PlayResult
+
+`play` runs animations in parallel on one clock and resolves when the longest finishes, like Manim's `self.play(...)`. In a component, take it from `usePlayer()`:
+
+```tsx
+import { fadeIn, moveTo, track, trackPoint } from "@sophistry/core";
+import { Circle, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Intro() {
+  const opacity = track(0);
+  const center = trackPoint(-2, 0);
+  const player = usePlayer();
+
+  onSettled(() => {
+    void (async () => {
+      await player.play(fadeIn(opacity)); // first
+      await player.play(moveTo(center, { x: 2, y: 0 }, { duration: 2 })); // then
+    })();
+  });
+
+  return <Circle center={center} radius={1} opacity={opacity} />;
+}
+
+export const Scene = () => (
+  <Stage units={8}>
+    <Intro />
+  </Stage>
+);
+```
+
+Start scripts from `onSettled` or an event handler, not the component body. `onSettled` is Solid 2's post-mount hook.
+
+Without a framework, the scene is the runner:
+
+```ts
+import { circle, createScene, fadeIn, moveTo, track, trackPoint } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 8 });
+const opacity = track(0);
+const center = trackPoint(-2, 0);
+scene.add(circle.create({ center, radius: 1, opacity }));
+
+await scene.play(fadeIn(opacity));
+await scene.play(moveTo(center, { x: 2, y: 0 }, { duration: 2 }));
+```
+
+`scene.play` runs on the scene's clock, honours its reduced-motion setting, and is aborted when the scene is disposed. Core also exports a bare `play(...animations, { clock, signal })` for code with no scene at all (tests, a headless export); always give it a clock.
+
+Every `play` resolves with a `PlayResult`, either `"done"` or `"aborted"`, and **never rejects**: aborting is an ordinary outcome, so a script unwinds with an early return and a fire-and-forget `void player.play(...)` never causes an unhandled rejection.
+
+```tsx
+import { draw, fadeOut, track } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const drawn = track(0);
+const opacity = track(1);
+const player = usePlayer();
+
+async function script() {
+  if ((await player.play(draw(drawn, { duration: 1.5 }))) === "aborted") return;
+  await player.play(fadeOut(opacity));
+}
+```
+
+### Frame exactness
+
+Everything inside one `play` is frame-exact: a running timeline seeks the whole composite to its elapsed time on every clock step, so a `sequence` hands over from one step to the next mid-frame, with no time lost. Consecutive `await play(a); await play(b)` calls are not frame-exact: `b` starts on the frame after `a` finished, losing the leftover fraction of a frame. When steps must line up exactly, compose with `sequence` inside a single `play`:
+
+```tsx
+import { fadeIn, moveTo, sequence, track, trackPoint } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const opacity = track(0);
+const center = trackPoint(0, 0);
+const player = usePlayer();
+
+await player.play(sequence(fadeIn(opacity), moveTo(center, { x: 2, y: 0 })));
+```
+
+The `await` form still composes correctly, it just isn't sample-exact. A finished run has already written its end state when its promise resolves, so the next `play` captures exactly what the last one left, and nothing is painted in between that you did not write: see [The frame loop](#the-frame-loop).
+
+## usePlayer()
+
+Inside a component, call `usePlayer()` instead of importing `play`. It returns the enclosing `<Stage>`'s `play` and `timeline`, bound to its clock, its reduced-motion setting and the component's lifetime, so you never thread a clock by hand and every run it started is aborted when the component is disposed.
+
+| Member | Meaning |
+| --- | --- |
+| `play(...animations, context?)` | `scene.play` with this player's abort signal. |
+| `timeline(animation, context?)` | `scene.timeline`, likewise. |
+| `clock` | The clock the player runs on. |
+| `signal` | Aborts when the component is disposed (or `usePlayer({ signal })`'s signal aborts). |
+
+A trailing `PlayContext` (`{ clock, signal, reducedMotion, motion }`) overrides the scene's settings for that call; a signal given there adds to the player's, so the run aborts when either does.
+
+```tsx
+import { draw, fadeOut, track } from "@sophistry/core";
+import { Circle, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Inner() {
+  const { play } = usePlayer(); // bound to the enclosing <Stage>
+  const drawn = track(0);
+  const opacity = track(1);
+
+  onSettled(() => {
+    void (async () => {
+      if ((await play(draw(drawn, { duration: 1.5 }))) === "aborted") return;
+      await play(fadeOut(opacity));
+    })();
+  });
+
+  return <Circle radius={2} progress={drawn} opacity={opacity} />;
+}
+
+export const Scene = () => (
+  <Stage units={8}>
+    <Inner />
+  </Stage>
+);
+```
+
+If the component unmounts mid-script, the run aborts (grow presets snap back to rest) and the script exits at its next check.
+
+`usePlayer()` finds the `<Stage>` **above** the component. Called in a component that renders its own `<Stage>` (a common shape when the controls sit beside the canvas), there is no stage above it yet, so its runs fall back to the shared `defaultClock` and the default reduced-motion setting. When that matters, make a clock, give it to the stage, and pass it to the runs: `<Stage clock={clock}>` and `player.timeline(animation, { clock })`, as in the [scrub slider recipe](/recipes/scrub-slider/#the-timeline).
+
+## timeline() and scrubbing
+
+`timeline(animation)` returns a controller over one animation.
+
+| Member | Meaning |
+| --- | --- |
+| `duration` | Length in seconds (`Infinity` for `forever`). |
+| `time` | Current position, `0..duration`, as a `Readable`. |
+| `playing` | Whether it is advancing on its clock, as a `Readable`. |
+| `seek(t)` | Jump to `t` (clamped) and write that state to every target. Works playing or not, in both directions. `NaN` and `-Infinity` seek to 0; `Infinity` seeks to the end (on an endless timeline, to its rest state). |
+| `play()` | Start or resume from the current position; at the end it **replays** from 0 (see [What seeking does](#what-seeking-does)). Resolves `"done"` or `"aborted"`. |
+| `pause()` | Stop advancing without ending the run; `play()` resumes. |
+| `abort()` | End the run: active leaves get `abort()` and the pending promise resolves `"aborted"`. |
+| `dispose()` | Abort and retire the timeline: later `play()` calls resolve `"aborted"` at once, but `seek` still works. Aborting the context's `signal` does the same. |
+
+`time` and `playing` are `Readable`s like any track. Bind them straight to scene props (`<TracedPath time={tl.time} />`, or a `derive` of `tl.time` for a playhead), and read them in Solid with `useTrackValue(tl.time)` for a slider and a readout. Here is a three-step script with a play/pause button, a range slider and a readout:
+
+<Example name="animation/ScrubbableTimeline" />
+
+A few things the example shows:
+
+- The controls live outside the stage, so the timeline is built in the outer component with `usePlayer().timeline(...)`. On its own that runs on the shared `defaultClock` (there is no stage above the component); give the stage and the timeline one `createClock()` when the scene needs its own pause, speed and off-screen suspension, as the [scrub slider recipe](/recipes/scrub-slider/#the-timeline) does.
+- The slider calls `tl.pause()` before `tl.seek(...)`, so dragging does not fight playback.
+- The run starts in `onSettled`, and the player disposes the timeline when the component goes away. If you build a timeline with core's `timeline(...)` instead, dispose it yourself: return `() => tl.dispose()` from `onSettled` (Solid 2 forbids `onCleanup` inside it), or call `onCleanup` in the component body.
+
+For a fuller version with chapter markers, see [Recipe: a scrubbable timeline](/recipes/scrub-slider/). To drive a timeline from page scroll, see [Recipe: scroll-driven animation](/recipes/scroll-driven/).
+
+### What seeking does
+
+- **Scrubbing backwards restores.** Seeking to `T` puts every step in its state for `T`: finished steps at their end, the active one at its local time, later ones back at their start.
+- **Relative animations capture where they are entered.** `moveBy` or `valueTo(x, (v) => v + 5)` starts from what the previous step left, whether time arrived by playing or by a seek that jumped over it. Restoring keeps that capture, so scrubbing back and forth replays exactly the same motion.
+- **Replay matches the first run.** `play()` from the end restores every step and re-arms it, so `valueTo(p, (v) => v + 5)` goes 0 to 5 again rather than to 10. A user scrub, even `seek(0)`, never re-arms.
+- **Overlapping writes.** Sequential animations of one track give the same state however you seek. Two animations of one track running at once in a `parallel` depend on seek history; avoid them.
+- **Springs scrub too.** `springTo` is solved in closed form, so seeking into the middle of an overshoot lands exactly where playing would have. A `follow` is not an animation and is not in any timeline.
+
+### Repeating and scrubbing across cycles
+
+`repeat(animation, times, options)` and `forever(animation, options)` take a `start` option:
+
+| `start` | Each cycle starts from | Relative moves | Scrubbing back across cycles |
+| --- | --- | --- | --- |
+| `"continue"` (default) | where the previous cycle ended | accumulate | approximate for relative animations |
+| `"fixed"` | one capture taken when the repeat is first entered | repeat the same move | exact, in both directions |
+
+```tsx
+import { moveBy, repeat, trackPoint } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const player = usePlayer();
+const drifter = trackPoint(0, 0);
+const hopper = trackPoint(0, 0);
+const hop = { x: 1, y: 0 };
+
+const drifting = player.timeline(repeat(moveBy(drifter, hop, { easing: "linear" }), 3)); // 0 -> 1 -> 2 -> 3
+const hopping = player.timeline(repeat(moveBy(hopper, hop, { easing: "linear" }), 3, { start: "fixed" })); // 0 -> 1, 0 -> 1, 0 -> 1
+hopping.seek(2.5); // x = 0.5, however you got there
+```
+
+Use `"continue"` for seamless loops such as `forever(sequence(valueTo(a, 2), valueTo(a, 0)))`, and `"fixed"` when cycles should be identical and scrub exactly.
+
+<Aside type="caution">
+  An `Animation` value holds the state it captured, so do not run the same value in two timelines at once. Build it again (or share one timeline) for each concurrent run.
+</Aside>
+
+## Clocks
+
+Animations never read `performance.now()`. They advance by whatever their clock hands them, which is what makes pausing, slow motion and deterministic tests possible.
+
+```tsx
+import { createClock, fadeIn, track } from "@sophistry/core";
+import { Circle, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+const clock = createClock();
+clock.setSpeed(0.5); // half speed
+clock.pause(); // everything in flight holds
+clock.resume();
+clock.advance(0.25); // step by hand, even while paused
+
+function Fading() {
+  const opacity = track(0);
+  const player = usePlayer(); // runs on the stage's clock: `clock`
+  onSettled(() => void player.play(fadeIn(opacity)));
+  return <Circle radius={1} opacity={opacity} />;
+}
+
+export const Scene = () => (
+  <Stage units={8} clock={clock}>
+    <Fading />
+  </Stage>
+);
+```
+
+| Member | Meaning |
+| --- | --- |
+| `time`, `paused`, `speed` | `Readable`s: `peek()` them, bind them, or `useTrackValue` them for a playback UI. |
+| `pause()`, `resume()`, `toggle()` | Stop and restart time. |
+| `setSpeed(n)` | Speed multiplier; 1 is real time, negatives clamp to 0. |
+| `reducedMotion`, `setReducedMotion(mode)` | A `Readable<boolean>` and its mode (`"auto"`, `"reduce"`, `"no-preference"`); see [Reduced motion](#reduced-motion). |
+| `advance(dt)` | Advance by `dt` seconds by hand, ignoring speed, paused or not. |
+| `onTick(fn)` | Call `fn(dt, time)` every step; returns an unsubscribe. |
+
+`defaultClock` is the shared clock used when nothing else is given. Scenes that need independent pause and speed controls make their own with `createClock()` and give it to `<Stage clock>` (or `createScene({ clock })`); inside the stage, `useClock()` and `usePlayer()` pick it up. A clock with nothing subscribed (no run in flight, no `follow` moving) leaves the frame loop, so an idle page costs no frames.
+
+### The frame cap
+
+Each frame advances a clock by the real elapsed time times `speed`, capped at 1/15 s, so after a stall (a background tab, a debugger pause) playback resumes where it left off instead of jumping to the end. Below 15 fps the clock runs slower than wall time. `advance()` is not capped.
+
+### Offscreen stages
+
+A stage scrolled out of view skips painting and, if it has its own `clock`, suspends that clock (a clock shared by several stages runs while any is visible; `defaultClock` never suspends). Suspension doesn't touch `paused`. A `play` on a suspended clock stays pending until the stage is visible again; abort it if a script must not wait. `seek` needs no clock, so [scroll-driven](/recipes/scroll-driven/) scenes keep working. `pauseWhenHidden={false}` opts out.
+
+## The frame loop
+
+Every clock, scene and renderer on the page shares one `requestAnimationFrame` loop, which sleeps when nothing needs a frame. Each frame runs three phases, in order:
+
+1. **tick**: clocks advance; the runs on them seek their animations, which write tracks. A write only marks what is bound to the track as stale; nothing is computed yet.
+2. **commit**: every scene pulls its stale bindings and recomputes the nodes that changed, and only the stages of each node the change affects (a new `center` reruns the transform, not the geometry). `watch` callbacks run here.
+3. **paint**: renderers draw what the commit produced, and only if it changed.
+
+So a tick and the paint it causes land in the same frame, three writes to one track in a tick cost one recompute, and an animation that writes 60 times a second does no work beyond the props it touches.
+
+### When do readers see a write?
+
+- **Scripts see a write at once.** `radius.set(5); radius.peek()` is `5`, and a `derive` of it computes the new value when read. That is why a relative step captures what the previous step just wrote, and why `await play(a); await play(b)` composes: `a`'s end state is in its tracks when its promise resolves.
+- **Scene nodes see it at the next commit**, in the same frame as the tick that wrote it. A write from an event handler or after an `await` requests a frame, and lands in it.
+- **`watch(source, run)` runs in the commit phase**, at most once per frame, with the latest value. Use it for side effects of a track (updating a Solid signal, a DOM attribute, a log).
+- **Solid sees it through `useTrackValue`**, which only bumps a signal on change; the value is pulled when Solid reads it.
+- **Tests and offline rendering** that need the scene committed and painted call `stepFrame(now)`, which runs one frame synchronously (`{ tick: false }` to commit and paint without advancing any clock). There is no `flush()`.
+
+## Reduced motion
+
+Runs honour `prefers-reduced-motion` on their own. A clock's `reducedMotion` is a `Readable<boolean>`, and its mode is `"auto"` by default: it follows the user's setting live. When it is true:
+
+- `play()` and `timeline().play()` **jump straight to the end state** (the timeline is sought to its rest time and resolves `"done"` one macrotask later, so a `while (alive) await play(...)` loop cannot starve the page).
+- `forever` loops, and anything infinite, **do not run**: they stay at their start (their rest state). In `sequence(fadeIn(a), forever(pulse(b)))` the fade completes and the pulse holds at its start. Inside a `parallel` with finite siblings, an endless child is sampled at the group's rest time.
+- A change of the setting mid-run finishes the current run on its next clock step. A run on a paused or suspended clock takes no steps, so it stays pending until the clock steps or the run is aborted.
+- The jump lands on the **rest time**, which is the end for a finite timeline (the next `play()` replays from 0) but where the endless part begins for one with a `forever` tail. If the preference then turns off, `play()` resumes from that rest time, not from 0; `seek(0)` first if you want a full restart.
+- Explicit `seek()` is never affected: scrubbing is the user's own motion. Neither is `exportFrames`, which is offline rendering and does not settle a pending `play()`.
+- Instanced nodes and chart marks jump their transitions to the end too. A `follow` is not a run and keeps following; give it a stiff, well-damped spring if it must stay calm.
+- `wait()` is not motion and keeps real time, so a paced script still has its rhythm (each step simply lands instantly).
+- `<Stage reducedMotionTransition="fade">` (the default) cross-fades the canvas to the landed picture over 150 ms; `"cut"` shows it at once. It is paint-only: tracks, `time`, `seek()` and export never see it. A plain `play()` can pass `onReducedJump` to do its own.
+
+Choose the mode per clock, per stage or per run:
+
+```tsx
+import { createClock, fadeIn, track } from "@sophistry/core";
+import { Label, Stage, usePlayer, useScene, useTrackValue } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+const clock = createClock({ reducedMotion: "auto" }); // default; or "reduce" / "no-preference"
+clock.setReducedMotion("reduce"); // e.g. from an in-app "reduce motion" toggle
+
+function Script() {
+  const opacity = track(0);
+  const player = usePlayer();
+  onSettled(() => {
+    void (async () => {
+      await player.play(fadeIn(opacity)); // jumps to 1 while reduced
+      await player.play(fadeIn(opacity), { motion: "essential" }); // always animates
+      await player.play(fadeIn(opacity), { reducedMotion: "reduce" }); // forced for this run
+    })();
+  });
+  const reduced = useTrackValue(useScene().reducedMotion); // for Solid logic or DOM text
+  return <Label text={reduced() ? "Static" : "Animated"} opacity={opacity} />;
+}
+
+export const Scene = () => (
+  <Stage units={8} clock={clock} reducedMotion="auto">
+    <Script />
+  </Stage>
+);
+```
+
+`<Stage reducedMotion>` (or `createScene({ reducedMotion })`) governs runs started through the scene, which is every `usePlayer()` and `scene.play` run, and `scene.reducedMotion` is the resulting `Readable<boolean>` for your own logic. When it is omitted the stage defers to its clock. Bare `play()` calls follow the clock they run on. `prefersReducedMotion` is the user's raw setting as a `Readable`. On the server, and while the client hydrates, the `"auto"` setting reads as no preference (so markup matches), then switches to the user's setting. Mark motion that carries information the user needs with `{ motion: "essential" }`; WCAG allows essential motion, but keep it small. For the rest of the accessibility story, see [Accessibility](/guides/accessibility/).
+
+## Aborting and cleanup
+
+Pass an `AbortSignal` as the last argument to cancel a run:
+
+```tsx
+import { forever, pulse, track } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const scale = track(1);
+const player = usePlayer();
+const stop = new AbortController();
+
+const result = player.play(forever(pulse(scale)), { signal: stop.signal });
+// later:
+stop.abort();
+console.log(await result); // "aborted"
+```
+
+Aborting stops everything inside a run, however deeply nested, and resolves `"aborted"`; most animations stop where they stand, and the grow presets snap back to rest.
+
+Inside a component you rarely need to do this yourself: `usePlayer()` aborts its runs on dispose, and `usePlayer({ signal })` accepts an extra signal. Without a framework, `scene.dispose()` aborts the scene's runs. For a timeline, `tl.abort()` ends the run, `tl.pause()` merely stops it, and `tl.dispose()` retires it. A `follow` is stopped by calling the function it returned.
+
+## Testing animations
+
+Because time comes from the clock, tests need no timers. Create a clock, run a script on it and fast-forward with `advance`:
+
+```ts
+import { expect, test } from "vitest";
+import { createClock, moveTo, play, sequence, track, trackPoint, valueTo } from "@sophistry/core";
+
+test("the script ends where it should", async () => {
+  const clock = createClock();
+  const x = track(0);
+  const center = trackPoint(0, 0);
+
+  const done = play(
+    sequence(valueTo(x, 1, { duration: 1 }), moveTo(center, { x: 4, y: 0 }, { duration: 2 })),
+    { clock },
+  );
+
+  clock.advance(1);
+  expect(x.peek()).toBe(1);
+  clock.advance(10); // fast-forward the rest
+
+  expect(await done).toBe("done");
+  expect(center.peek().x).toBe(4);
+});
+```
+
+For scrub logic you do not even need to advance a clock: `timeline(animation, { clock }).seek(1.5)` writes the state at 1.5 s synchronously, so you can assert on tracks directly. To check what a scene would draw, build it headless (`createScene({ clock })` with no `host`) and call `scene.commit()` after the writes.
+
+## Next steps
+
+- [Animation](/guides/animation/) for the presets, composition and springs.
+- [Recipe: a scrubbable timeline](/recipes/scrub-slider/)
+- [Recipe: scroll-driven animation](/recipes/scroll-driven/)

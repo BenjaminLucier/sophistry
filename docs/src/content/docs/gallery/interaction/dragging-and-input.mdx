@@ -1,0 +1,17 @@
+---
+title: Dragging and input
+description: "Draggables and constraints, keyboard access, parameter sliders, derived geometry, drop targets and scroll-driven scenes."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+A `draggable` or `useMovablePoint` writes a track, constraints shape where it may go, and every prop bound to that track (directly or through `derive`) follows it. Every draggable is also a keyboard tab stop. Start with `DragConstraints`, then `KeyboardAccessible`.
+
+<CardGrid>
+  <LinkCard title="Interaction" href="/guides/interaction/" description="draggable, constraints, drop targets, parameters." />
+  <LinkCard title="Accessibility" href="/guides/accessibility/" description="Keyboard and screen-reader support." />
+  <LinkCard title="Step-through lesson" href="/recipes/step-through-lesson/" description="A gated lesson built on drop targets." />
+</CardGrid>
+
+<Gallery category="interaction" page="dragging-and-input" />

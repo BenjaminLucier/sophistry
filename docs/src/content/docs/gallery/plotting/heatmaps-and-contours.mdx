@@ -1,0 +1,16 @@
+---
+title: Heatmaps and contours
+description: "Annotated and clustered heatmaps, images with contours, colour norms and triangulated fields."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Values on a grid, or at scattered points, shown as colour and iso-lines. Start with `HeatmapAnnotated`; `ColorNorms` shows log and diverging norms with their colour bars. `Imshow` and the other grid marks paint as one image; see [Batched rendering](/project/performance/#batched-rendering).
+
+<CardGrid>
+  <LinkCard title="Theming and color" href="/guides/theming-and-color/" description="Colormaps, palettes and colour spaces." />
+  <LinkCard title="Chart catalogue" href="/reference/chart-catalogue/#heatmaps-and-contours" description="Every chart mark, grouped by kind." />
+</CardGrid>
+
+<Gallery category="plotting" page="heatmaps-and-contours" />

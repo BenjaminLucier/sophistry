@@ -1,0 +1,307 @@
+---
+title: Instancing and path batches
+description: "Thousands of similar items in one node: instances() with per-item channels, keyed transitions, springs and picking by item, and path batches for many distinct outlines."
+---
+
+import Example from "../../../components/Example.astro";
+
+A scene node is cheap, but it is still an object with its own props, stages, bindings and interaction record. When a picture is thousands of items of the same kind (the points of a scatter plot, particles, the cells of a grid) you rarely need any of that per item. Sophistry has two ways to draw many items as **one node**: `instances(definition, options)` for many copies of one shape, and a **path batch** for many distinct outlines.
+
+## When to use it
+
+Use plain nodes (one `<Circle>` per item) by default. They are the simplest model, and the core is built for thousands of them: in the browser benchmarks, updating 10,000 nodes that all move takes about 2.8 ms a frame, and moving one of them costs next to nothing. What does grow with the count is paint, about 26 ms for 10,000 separately painted shapes in the same benchmark, and memory.
+
+Reach for instancing when **all** of these hold:
+
+- There are many items, from about a thousand up to hundreds of thousands.
+- They are the same shape, differing only in values (position, size, colour, opacity, rotation).
+- No item needs individuality: its own children, its own handlers, its own animation script, its own tab stop, or a gradient fill.
+
+Keep plain nodes when items are few (a hundred-bar sort, a labelled diagram), when each one is a character in the explanation, or when items differ in kind. An instances node can still hand one item a real node when it needs one (see [Promote and demote](#promote-and-demote)), so you do not have to choose for the whole layer up front.
+
+| | Plain nodes | `instances()` | Path batch |
+| --- | --- | --- | --- |
+| Items | Any mix of definitions | Many of one shape definition | Many distinct outlines |
+| Per-item values | Every prop | The definition's `instanceable` props | Outline, fill, stroke, stroke width, opacity |
+| Moves and transitions | Your animations | Keyed enter/update/exit, tweens or springs, per item | Recompute the items |
+| Events | Per node | Per item (`event.item`, `event.key`) | Per item (`event.item`) |
+| Tab stops | One per interactive node | One for the layer, items walked with the arrow keys | One for the layer |
+| Typical use | Diagrams, explainers | Scatter markers, particles, dot grids | Pie wedges, ribbons, areas, many lines |
+
+## instances()
+
+`instances(definition, { data, key, channels, shared, transition })` returns one scene node that draws one item of `definition` per element of `data`.
+
+```ts
+import { circle, createScene, instances } from "@sophistry/core";
+
+interface Star {
+  id: number;
+  position: { x: number; y: number };
+  brightness: number;
+}
+
+declare const stars: Star[];
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 16 });
+
+const field = instances(circle, {
+  data: stars,
+  key: (star) => star.id,
+  channels: {
+    center: (star) => star.position,
+    opacity: (star) => star.brightness,
+  },
+  shared: { radius: 0.05, fill: "#f9e2af", stroke: "none" },
+});
+scene.add(field);
+```
+
+- **`data`** is the items: an array, or a `Readable` of one, which the node follows.
+- **`key`** identifies an item across data changes (default: the item itself). Keys must be unique.
+- **`channels`** are the per-item props: for each one, a function of the item (and its index).
+- **`shared`** holds the props every item has in common. Any prop of the definition works here, plain or bound to a `Readable`, including interaction handlers.
+- **`transition`** says how items move when the data changes (below). Without it every change is instant.
+
+The node is an ordinary scene node: add it to a container, set its props (`field.set("data", nextStars)`), dispose it. Its props are its options.
+
+<Example name="vanilla/Instancing" />
+
+### How it is stored and drawn
+
+Channel values live in a struct-of-arrays bank: one typed column per channel (a number is one column, a point two, a colour four, parsed once). The node publishes a single marks spec for the whole layer, and the renderer picks the cheapest way to draw it:
+
+- **Discs or boxes** when the definition declares an instance mark (`circle`, `dot`, `rect`, `square`): the renderer's fast path for many small marks.
+- **One shared outline placed per item** when no geometry prop varies between items. Per-item `x`, `y`, `rotation` and `scale` become per-item transforms.
+- **One outline per item** when a geometry prop (say a polygon's points) differs, cached per distinct value.
+
+Items land exactly where the equivalent single nodes would, under any group transform.
+
+### Only instanceable props can be channels
+
+A definition's descriptor marks which props may vary per item (`instanceable: true`), and the types enforce it. Every shape can vary `fill`, `stroke`, `strokeWidth`, `opacity`, `fillOpacity`, `x`, `y`, `rotation` and `scale`; each definition adds its own, such as `center` and `radius` for `circle`, `color` for `dot`, `width` and `height` for `rect`. Anything else is shared:
+
+```ts
+instances(circle, {
+  data: stars,
+  // @ts-expect-error `label` is not instanceable: one accessible name for the layer
+  channels: { label: (star) => String(star.id) },
+});
+```
+
+The same check runs when the node is made (a `TypeError` names the prop), so plain JavaScript is caught too. Gradient fills are rejected: a batched item has a solid paint. To make your own shapes instanceable, declare the keys in `defineShape` (see [Extending](/guides/extending/)).
+
+### In Solid
+
+`instances` is a function, not a component: call it in the component body and put the node in the stage. A Solid component returns its node, and so can you; the stage collects scene nodes among its children. Make `data` a track and write it on user input:
+
+```tsx
+import { circle, instances, track } from "@sophistry/core";
+import { Label, Stage } from "@sophistry/solidjs";
+
+const COLORS = ["#89b4fa", "#a6e3a1", "#f9e2af", "#f38ba8"];
+
+function layout(spiral: boolean) {
+  return Array.from({ length: 4000 }, (_, id) => {
+    if (!spiral) return { id, x: ((id % 80) - 39.5) * 0.18, y: (Math.floor(id / 80) - 24.5) * 0.18 };
+    const radius = 0.07 * Math.sqrt(id);
+    return { id, x: radius * Math.cos(id * 2.39996), y: radius * Math.sin(id * 2.39996) };
+  });
+}
+
+export function Sunflower() {
+  let spiral = true;
+  const points = track(layout(spiral));
+  const dots = instances(circle, {
+    data: points,
+    key: (item) => item.id,
+    channels: { center: (item) => item, fill: (item) => COLORS[item.id % 4] },
+    shared: { radius: 0.06, stroke: "none" },
+    transition: { duration: 1.2, stagger: 0.0002 },
+  });
+
+  return (
+    <>
+      <Stage units={16}>
+        {dots}
+        <Label text="4,000 dots, one node" y={-4.1} />
+      </Stage>
+      <button type="button" onClick={() => points.set(layout((spiral = !spiral)))}>
+        Re-lay
+      </button>
+    </>
+  );
+}
+```
+
+The React reconciler only takes components as children, so in React add the node to the scene from an effect in a component inside the `<Stage>`:
+
+```tsx nocheck
+import { circle, instances } from "@sophistry/core";
+import { useScene } from "@sophistry/react";
+import { useEffect, useMemo } from "react";
+
+function Dots({ data }: { data: readonly { id: number; x: number; y: number }[] }) {
+  const scene = useScene();
+  const node = useMemo(() => instances(circle, { data, key: (item) => item.id, channels: { center: (item) => item } }), []);
+  useEffect(() => {
+    scene.add(node);
+    return () => node.dispose();
+  }, [scene, node]);
+  useEffect(() => void node.set("data", data), [node, data]);
+  return null;
+}
+```
+
+## Keyed transitions
+
+A data change reconciles by key: new keys **enter**, kept keys **update**, gone keys **exit**. With a `transition`, changed channel values tween toward their new targets, entering items start from `enter.from`, and exiting items animate to `exit.to` before they are dropped.
+
+```ts
+const field = instances(circle, {
+  data: stars,
+  key: (star) => star.id,
+  channels: { center: (star) => star.position, opacity: (star) => star.brightness },
+  shared: { radius: 0.05, fill: "#f9e2af" },
+  transition: {
+    duration: 0.6,
+    stagger: 0.001,
+    enter: { from: { opacity: 0 } },
+    exit: { to: { opacity: 0 }, duration: 0.3 },
+  },
+});
+
+field.set("data", nextStars); // kept stars glide, new ones fade in, gone ones fade out
+```
+
+| Option | Meaning |
+| --- | --- |
+| `duration`, `easing` | The tween. Defaults 0.4 s and `"smooth"` once a transition is given. |
+| `spring` | A spring instead of a tween (below). |
+| `delay` | Seconds before the move starts. |
+| `stagger` | Extra delay per item, by position among the items moving in this change, or a function `(index, count) => seconds`. |
+| `enter: { from, ...timing }` | Values entering items start from (each constant or a function of the item). Omitted: they appear in place. |
+| `exit: { to, ...timing }` | Values exiting items move to before removal. Omitted: they vanish at once. |
+
+`enter` and `exit` timings default to the update timing. Props named in `enter.from` or `exit.to` become channels too, their resting value being the shared one, so `opacity` above fades even though no channel set it. The first data enters like any later data.
+
+Only items in flight are advanced each frame (an active set), and the node listens to the clock only while one is moving: an idle instances node costs nothing per frame. A frame where items moved rebuilds the arrays their channels feed, which is linear in the item count. The clock is the scene's, so transitions pause, slow and honour reduced motion with it: under reduced motion every move jumps to its end.
+
+### Spring transitions
+
+Give `spring` in place of `duration` and `easing`, and items move like weights on springs. The settle time becomes the duration, `delay` and `stagger` still apply, and an item retargeted mid-flight (new data arriving before the last change settled) keeps its velocity instead of restarting:
+
+```ts
+instances(dot, {
+  data: stars,
+  key: (star) => star.id,
+  channels: { center: (star) => star.position },
+  transition: { spring: { stiffness: 170, damping: 12 } },
+});
+```
+
+See [Animation: spring transitions](/guides/animation/#spring-transitions) for the spring options.
+
+### Animating one item
+
+`animateItem(key, to, timing?)` moves one item's channels to new values, with `timing` or the node's transition, and holds them there until the next data change:
+
+```ts
+field.animateItem(42, { radius: 0.2, fill: "#f38ba8" }, { duration: 0.3 });
+```
+
+Use it for emphasis (highlight the hovered point, pulse the one being discussed). To read where an item is mid-flight, `field.itemValue(key, "center")` returns its current value of a channel or shared prop.
+
+## Picking by item
+
+Hit testing resolves items. Put handlers in `shared`, or add them with `node.on(...)` or `onItem(...)`: every handler gets `event.item`, the item's current index, and `onItem` handlers also get `event.key`, its key (elsewhere, `keyAt(event.item)`):
+
+```ts
+const markers = instances(rect, {
+  data: stars,
+  key: (star) => star.id,
+  channels: { center: (star) => star.position },
+  shared: {
+    width: 0.2,
+    height: 0.2,
+    cursor: "pointer",
+    onTap: (event) => console.log("tapped item", event.item),
+  },
+});
+
+markers.onItem("enter", (event) => markers.animateItem(event.key!, { width: 0.4, height: 0.4 }));
+markers.onItem("leave", (event) => markers.animateItem(event.key!, { width: 0.2, height: 0.2 }));
+```
+
+Hover treats each item as its own target: moving from one item to the next leaves the first and enters the second, both on the same node. `keyAt(index)` and `indexOf(key)` convert between the two, and `count` is how many items are drawn now (exiting ones included). The index is the item's position in the data, with an item that is animating out kept right after the item that preceded it.
+
+For keyboard and screen-reader users, give the layer a `label` and an `itemLabel: (item) => string` in `shared`: the layer becomes one tab stop whose items the arrow keys walk. See [Accessibility: dense layers](/guides/accessibility/#dense-layers).
+
+## Promote and demote
+
+Sometimes one item stops being one of many: the point the narration is about, the one the user grabbed. `promote(key)` hides the item and returns a real node of the definition with the item's current values, placed next to the instances node (same parent, same space). It is an ordinary node: give it handlers, animate it with `player.play(...)`, drag it. `demote(key)` writes its instanceable values back into the bank, disposes the node and shows the item again.
+
+```ts
+const star = field.promote(42);
+star.update({ label: "Sirius", ...draggable(position) });
+// ...
+field.demote(42);
+```
+
+## Path batches
+
+`instances` repeats one shape. A **path batch** draws many *distinct* outlines as one node: pie wedges, the ribbons of a chord diagram, stacked areas, the lines of a multi-series chart. Each item is an outline (polylines or exact curves, open or closed) with optional paints of its own; the node's props supply the rest. Items paint in order, each filled (when closed) and then stroked as its own shape would be, and hover and taps resolve per item (`event.item` is the item's index).
+
+`pathBatch` is the ready-made definition, `<PathBatch>` in the bindings:
+
+```tsx
+import type { PathBatchItem, Point } from "@sophistry/core";
+import { PathBatch, Stage } from "@sophistry/solidjs";
+
+function wedge(from: number, to: number, fill: string): PathBatchItem {
+  const outline: Point[] = [{ x: 0, y: 0 }];
+  for (let step = 0; step <= 24; step++) {
+    const angle = from + ((to - from) * step) / 24;
+    outline.push({ x: 2 * Math.cos(angle), y: 2 * Math.sin(angle) });
+  }
+  return { closed: true, polylines: [outline], fill };
+}
+
+export function Wedges() {
+  const items = [wedge(0, 2, "#89b4fa"), wedge(2, 4, "#a6e3a1"), wedge(4, Math.PI * 2, "#f9e2af")];
+
+  return (
+    <Stage units={6}>
+      <PathBatch
+        items={items}
+        stroke="#1e1e2e"
+        strokeWidth={0.04}
+        label="wedges"
+        onTap={(event) => console.log("wedge", event.item)}
+      />
+    </Stage>
+  );
+}
+```
+
+In core: `scene.add(pathBatch.create({ items, stroke: "#1e1e2e" }))`.
+
+<Example name="vanilla/PathBatch" />
+
+An item (`PathBatchItem`) has `polylines` and/or `curvePaths`, `closed`, and optional `fill`, `stroke`, `strokeWidth` and `opacity` that override the batch's. The batch's own props (`fill`, `stroke`, `strokeWidth`, `dash`, `lineCap`, `lineJoin`, opacity, interaction props) are shared.
+
+Each outline is prepared once, about its own centre, and cached on the item object, so handing back the **same item objects** for outlines that did not change makes an update cost only the changed items. A pan or zoom of an enclosing group only re-places the items; nothing is re-tessellated.
+
+For a reusable component, `definePathBatch({ name, props, paths })` makes a definition whose `paths(props)` computes the items from its own props, rerun only when a geometry prop changes. That is how the chart library's wedges and ribbons are built; see [Extending](/guides/extending/).
+
+## Charts batch by default
+
+Every chart mark in `@sophistry/charts` draws through these two tools, with no switch to set: per-datum marks (`Scatter`, strip and swarm plots, bars, cells) are one instances node per layer, and outline marks (pie and polar wedges, areas, ribbons, sankey links, contours) are path batches. A chart's `transition` prop is an instances transition, so `transition={{ spring: { ... } }}` works on a chart too, and its handlers and tooltips receive `event.item`. See [Charts](/guides/charts/) and [Chart animation](/guides/chart-animation/).
+
+Because a batched item is one entry in a shared spec, chart reveals animate items by size and opacity rather than by tracing each outline, so a few chart reveals look different from what a plain `progress` animation on a single shape does.
+
+## Next steps
+
+- [Interaction](/guides/interaction/): node events and the event object.
+- [Accessibility](/guides/accessibility/#dense-layers): keyboard access to a batched layer.
+- [Performance](/project/performance/): what scales with node count, and the benchmark numbers.

@@ -1,0 +1,73 @@
+{
+	"name": "@sophistry/text",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"description": "LaTeX and font outlines as Sophistry geometry: KaTeX layout, opentype glyphs, morphs between formulas.",
+	"keywords": [
+		"latex",
+		"katex",
+		"math",
+		"text",
+		"fonts",
+		"animation",
+		"canvas"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/text"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./definitions": "./src/entries/definitions.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./definitions": {
+				"types": "./dist/entries/definitions.d.ts",
+				"default": "./dist/entries/definitions.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"katex": "^0.18.4",
+		"opentype.js": "^2.0.0"
+	},
+	"peerDependencies": {
+		"@sophistry/core": "workspace:^"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@sophistry/core": "workspace:*",
+		"@types/katex": "catalog:",
+		"happy-dom": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	}
+}

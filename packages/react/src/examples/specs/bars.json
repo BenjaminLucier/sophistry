@@ -1,0 +1,2137 @@
+[
+	[
+		{
+			"kind": "text",
+			"id": 1,
+			"zIndex": 0,
+			"text": "a",
+			"at": {
+				"x": -7.2,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 2,
+			"zIndex": 0,
+			"text": "b",
+			"at": {
+				"x": -5.6,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 3,
+			"zIndex": 0,
+			"text": "c",
+			"at": {
+				"x": -4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 4,
+			"zIndex": 0,
+			"text": "d",
+			"at": {
+				"x": -2.4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 5,
+			"zIndex": 0,
+			"text": "e",
+			"at": {
+				"x": -0.8,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0
+			},
+			"progress": 1
+		}
+	],
+	[
+		{
+			"kind": "shape",
+			"id": 6,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -8,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -5.33333333333,
+									"y": -4
+								},
+								"c2": {
+									"x": -2.66666666667,
+									"y": -4
+								},
+								"to": {
+									"x": 0,
+									"y": -4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -8,
+						"y": -4
+					},
+					{
+						"x": 0,
+						"y": -4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -8,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -5.33333333333,
+								"y": -4
+							},
+							"c2": {
+								"x": -2.66666666667,
+								"y": -4
+							},
+							"to": {
+								"x": 0,
+								"y": -4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 7,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -8,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -8,
+									"y": -2.66666666667
+								},
+								"c2": {
+									"x": -8,
+									"y": -1.33333333333
+								},
+								"to": {
+									"x": -8,
+									"y": 0
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -8,
+						"y": -4
+					},
+					{
+						"x": -8,
+						"y": 0
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -8,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -8,
+								"y": -2.66666666667
+							},
+							"c2": {
+								"x": -8,
+								"y": -1.33333333333
+							},
+							"to": {
+								"x": -8,
+								"y": 0
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 8,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -4
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -4
+								},
+								"to": {
+									"x": -8.1,
+									"y": -4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -4
+					},
+					{
+						"x": -8.1,
+						"y": -4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -4
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -4
+							},
+							"to": {
+								"x": -8.1,
+								"y": -4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 9,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -3.2
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -3.2
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -3.2
+								},
+								"to": {
+									"x": -8.1,
+									"y": -3.2
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -3.2
+					},
+					{
+						"x": -8.1,
+						"y": -3.2
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -3.2
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -3.2
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -3.2
+							},
+							"to": {
+								"x": -8.1,
+								"y": -3.2
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 10,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -2.4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -2.4
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -2.4
+								},
+								"to": {
+									"x": -8.1,
+									"y": -2.4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -2.4
+					},
+					{
+						"x": -8.1,
+						"y": -2.4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -2.4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -2.4
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -2.4
+							},
+							"to": {
+								"x": -8.1,
+								"y": -2.4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 11,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -1.6
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -1.6
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -1.6
+								},
+								"to": {
+									"x": -8.1,
+									"y": -1.6
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -1.6
+					},
+					{
+						"x": -8.1,
+						"y": -1.6
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -1.6
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -1.6
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -1.6
+							},
+							"to": {
+								"x": -8.1,
+								"y": -1.6
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 12,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -0.8
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -0.8
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -0.8
+								},
+								"to": {
+									"x": -8.1,
+									"y": -0.8
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -0.8
+					},
+					{
+						"x": -8.1,
+						"y": -0.8
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -0.8
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -0.8
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -0.8
+							},
+							"to": {
+								"x": -8.1,
+								"y": -0.8
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 13,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -6.12323399574e-18
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -2.04107799858e-18
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": 2.04107799858e-18
+								},
+								"to": {
+									"x": -8.1,
+									"y": 6.12323399574e-18
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -6.12323399574e-18
+					},
+					{
+						"x": -8.1,
+						"y": 6.12323399574e-18
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -6.12323399574e-18
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -2.04107799858e-18
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": 2.04107799858e-18
+							},
+							"to": {
+								"x": -8.1,
+								"y": 6.12323399574e-18
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "text",
+			"id": 14,
+			"zIndex": 0,
+			"text": "0",
+			"at": {
+				"x": -8.2634375,
+				"y": -4
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 15,
+			"zIndex": 0,
+			"text": "2",
+			"at": {
+				"x": -8.2634375,
+				"y": -3.2
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 16,
+			"zIndex": 0,
+			"text": "4",
+			"at": {
+				"x": -8.2634375,
+				"y": -2.4
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 17,
+			"zIndex": 0,
+			"text": "6",
+			"at": {
+				"x": -8.2634375,
+				"y": -1.6
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 18,
+			"zIndex": 0,
+			"text": "8",
+			"at": {
+				"x": -8.2634375,
+				"y": -0.8
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 19,
+			"zIndex": 0,
+			"text": "10",
+			"at": {
+				"x": -8.2634375,
+				"y": 0
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.4
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 1,
+			"zIndex": 0,
+			"text": "a",
+			"at": {
+				"x": -7.2,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.8
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 2,
+			"zIndex": 0,
+			"text": "b",
+			"at": {
+				"x": -5.6,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.8
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 3,
+			"zIndex": 0,
+			"text": "c",
+			"at": {
+				"x": -4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.8
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 4,
+			"zIndex": 0,
+			"text": "d",
+			"at": {
+				"x": -2.4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.8
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 5,
+			"zIndex": 0,
+			"text": "e",
+			"at": {
+				"x": -0.8,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 0.8
+			},
+			"progress": 1
+		}
+	],
+	[
+		{
+			"kind": "marks",
+			"id": 20,
+			"zIndex": -0.5,
+			"shape": {
+				"kind": "rect"
+			},
+			"count": 5,
+			"centers": [-7.2, -3.4, -5.6, -2.6, -4, -3.2, -2.4, -2.2, -0.8, -2.8],
+			"extents": [0.48, 0.6, 0.48, 1.4, 0.48, 0.8, 0.48, 1.8, 0.48, 1.2],
+			"fills": ["#89b4fa", "#fab387", "#a6e3a1", "#cba6f7", "#f9e2af"],
+			"alphas": null,
+			"style": {
+				"stroke": "#89b4fa",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 0.75,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"bounds": {
+				"minX": -7.68,
+				"minY": -4,
+				"maxX": -0.32,
+				"maxY": -0.4
+			},
+			"transforms": null,
+			"strokes": ["#89b4fa", "#fab387", "#a6e3a1", "#cba6f7", "#f9e2af"],
+			"strokeWidths": null,
+			"dashes": null
+		},
+		{
+			"kind": "shape",
+			"id": 6,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -8,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -5.33333333333,
+									"y": -4
+								},
+								"c2": {
+									"x": -2.66666666667,
+									"y": -4
+								},
+								"to": {
+									"x": 0,
+									"y": -4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -8,
+						"y": -4
+					},
+					{
+						"x": 0,
+						"y": -4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -8,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -5.33333333333,
+								"y": -4
+							},
+							"c2": {
+								"x": -2.66666666667,
+								"y": -4
+							},
+							"to": {
+								"x": 0,
+								"y": -4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 7,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -8,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -8,
+									"y": -2.66666666667
+								},
+								"c2": {
+									"x": -8,
+									"y": -1.33333333333
+								},
+								"to": {
+									"x": -8,
+									"y": 0
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -8,
+						"y": -4
+					},
+					{
+						"x": -8,
+						"y": 0
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -8,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -8,
+								"y": -2.66666666667
+							},
+							"c2": {
+								"x": -8,
+								"y": -1.33333333333
+							},
+							"to": {
+								"x": -8,
+								"y": 0
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 8,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -4
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -4
+								},
+								"to": {
+									"x": -8.1,
+									"y": -4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -4
+					},
+					{
+						"x": -8.1,
+						"y": -4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -4
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -4
+							},
+							"to": {
+								"x": -8.1,
+								"y": -4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 9,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -3.2
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -3.2
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -3.2
+								},
+								"to": {
+									"x": -8.1,
+									"y": -3.2
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -3.2
+					},
+					{
+						"x": -8.1,
+						"y": -3.2
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -3.2
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -3.2
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -3.2
+							},
+							"to": {
+								"x": -8.1,
+								"y": -3.2
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 10,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -2.4
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -2.4
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -2.4
+								},
+								"to": {
+									"x": -8.1,
+									"y": -2.4
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -2.4
+					},
+					{
+						"x": -8.1,
+						"y": -2.4
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -2.4
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -2.4
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -2.4
+							},
+							"to": {
+								"x": -8.1,
+								"y": -2.4
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 11,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -1.6
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -1.6
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -1.6
+								},
+								"to": {
+									"x": -8.1,
+									"y": -1.6
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -1.6
+					},
+					{
+						"x": -8.1,
+						"y": -1.6
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -1.6
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -1.6
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -1.6
+							},
+							"to": {
+								"x": -8.1,
+								"y": -1.6
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 12,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -0.8
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -0.8
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": -0.8
+								},
+								"to": {
+									"x": -8.1,
+									"y": -0.8
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -0.8
+					},
+					{
+						"x": -8.1,
+						"y": -0.8
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -0.8
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -0.8
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": -0.8
+							},
+							"to": {
+								"x": -8.1,
+								"y": -0.8
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "shape",
+			"id": 13,
+			"zIndex": 0,
+			"closed": false,
+			"fillFrom": 0,
+			"local": {
+				"curvePaths": [
+					{
+						"start": {
+							"x": -7.9,
+							"y": -6.12323399574e-18
+						},
+						"segments": [
+							{
+								"c1": {
+									"x": -7.96666666667,
+									"y": -2.04107799858e-18
+								},
+								"c2": {
+									"x": -8.03333333333,
+									"y": 2.04107799858e-18
+								},
+								"to": {
+									"x": -8.1,
+									"y": 6.12323399574e-18
+								}
+							}
+						],
+						"closed": false
+					}
+				],
+				"transform": {
+					"a": 1,
+					"b": 0,
+					"c": 0,
+					"d": 1,
+					"e": 0,
+					"f": 0
+				}
+			},
+			"style": {
+				"stroke": "#cdd6f4",
+				"strokeWidth": 0.045,
+				"fill": null,
+				"along": null,
+				"opacity": 1,
+				"fillOpacity": 1,
+				"lineCap": "round",
+				"lineJoin": "round",
+				"dash": null,
+				"dashOffset": 0
+			},
+			"progress": 1,
+			"polylines": [
+				[
+					{
+						"x": -7.9,
+						"y": -6.12323399574e-18
+					},
+					{
+						"x": -8.1,
+						"y": 6.12323399574e-18
+					}
+				]
+			],
+			"curvePaths": [
+				{
+					"start": {
+						"x": -7.9,
+						"y": -6.12323399574e-18
+					},
+					"segments": [
+						{
+							"c1": {
+								"x": -7.96666666667,
+								"y": -2.04107799858e-18
+							},
+							"c2": {
+								"x": -8.03333333333,
+								"y": 2.04107799858e-18
+							},
+							"to": {
+								"x": -8.1,
+								"y": 6.12323399574e-18
+							}
+						}
+					],
+					"closed": false
+				}
+			]
+		},
+		{
+			"kind": "text",
+			"id": 14,
+			"zIndex": 0,
+			"text": "0",
+			"at": {
+				"x": -8.2634375,
+				"y": -4
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 15,
+			"zIndex": 0,
+			"text": "2",
+			"at": {
+				"x": -8.2634375,
+				"y": -3.2
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 16,
+			"zIndex": 0,
+			"text": "4",
+			"at": {
+				"x": -8.2634375,
+				"y": -2.4
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 17,
+			"zIndex": 0,
+			"text": "6",
+			"at": {
+				"x": -8.2634375,
+				"y": -1.6
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 18,
+			"zIndex": 0,
+			"text": "8",
+			"at": {
+				"x": -8.2634375,
+				"y": -0.8
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 19,
+			"zIndex": 0,
+			"text": "10",
+			"at": {
+				"x": -8.2634375,
+				"y": 0
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#cdd6f4",
+				"fontSize": 0.3,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 1,
+			"zIndex": 0,
+			"text": "a",
+			"at": {
+				"x": -7.2,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 2,
+			"zIndex": 0,
+			"text": "b",
+			"at": {
+				"x": -5.6,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 3,
+			"zIndex": 0,
+			"text": "c",
+			"at": {
+				"x": -4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 4,
+			"zIndex": 0,
+			"text": "d",
+			"at": {
+				"x": -2.4,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		},
+		{
+			"kind": "text",
+			"id": 5,
+			"zIndex": 0,
+			"text": "e",
+			"at": {
+				"x": -0.8,
+				"y": -4.2902
+			},
+			"rotation": 0,
+			"style": {
+				"fill": "#a6adc8",
+				"fontSize": 0.28,
+				"fontFamily": "ui-sans-serif, system-ui, -apple-system, \"Segoe UI\", sans-serif",
+				"fontWeight": 500,
+				"italic": false,
+				"letterSpacing": 0,
+				"align": "center",
+				"baseline": "middle",
+				"opacity": 1
+			},
+			"progress": 1
+		}
+	]
+]

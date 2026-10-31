@@ -1,0 +1,20 @@
+---
+title: Plotting and charts
+description: "Axes, function graphs, calculus visuals and data-driven charts."
+---
+
+import SubGalleryIndex from "../../../components/SubGalleryIndex.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Two families live here. The hand-built plots (`Axes`, `FunctionGraph`, `PolarPlane`, `AreaUnderGraph`, `SecantSlopeGroup`) place geometry in a coordinate system you control. The data-driven charts from `@sophistry/charts` (components `BarChart`, `Histogram`, `Scatter`, `PieChart`, ... in `@sophistry/solidjs/charts`) take a `data` array plus channels that name which field feeds each quantity, and a `<Chart>` around them fits its axes to their data. Every chart batches its marks into a few nodes, so large datasets stay fast.
+
+The examples are split by kind of chart below. Start with [Function graphs and calculus](/gallery/plotting/function-graphs/) for axes and graphs, and [Bars, pies and part-to-whole](/gallery/plotting/bars-and-parts/) for charts. Both reveal with the same `draw()` animation as any shape.
+
+<CardGrid>
+  <LinkCard title="Coordinate systems" href="/guides/coordinate-systems/" description="Axes, planes, graphs and scales." />
+  <LinkCard title="Charts" href="/guides/charts/" description="Data, channels and the chart frame." />
+  <LinkCard title="Chart animation" href="/guides/chart-animation/" description="Reveals, data transitions, sorting and races." />
+  <LinkCard title="Algorithm visualizer" href="/recipes/algorithm-visualizer/" description="Animate a graph algorithm step by step." />
+</CardGrid>
+
+<SubGalleryIndex category="plotting" />

@@ -1,0 +1,16 @@
+---
+title: Scatter and distributions
+description: "Scatter plots with error bars and fits, strip and swarm plots, box and violin plots, densities and parallel coordinates."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Marks that show individual observations or summarise how they spread. Start with `ScatterWithErrorBars`, then `StripAndSwarm` and `BoxAndViolin`. The point-heavy marks here (`Scatter`, `Strip`, `Beeswarm`, `Rug`) always paint as one batched layer, with hover still resolved per point; see [Batched rendering](/project/performance/#batched-rendering).
+
+<CardGrid>
+  <LinkCard title="Charts" href="/guides/charts/" description="Marks, transforms and tooltips." />
+  <LinkCard title="Chart catalogue" href="/reference/chart-catalogue/#distributions" description="Every chart mark, grouped by kind." />
+</CardGrid>
+
+<Gallery category="plotting" page="scatter-and-distributions" />

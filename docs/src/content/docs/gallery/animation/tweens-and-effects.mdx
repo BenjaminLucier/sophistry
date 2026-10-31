@@ -1,0 +1,16 @@
+---
+title: Tweens and effects
+description: "Entrances, easing and rate functions, writing, emphasis, morphs, motion along paths and animated numbers."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+The animation presets one at a time: each takes `{ duration, delay, easing }` and returns a seekable animation. Read `FadeAndGrow` first, then `EasingComparison`; the rest are grouped by kind of effect.
+
+<CardGrid>
+  <LinkCard title="Animation" href="/guides/animation/" description="Presets, options, easing and composition." />
+  <LinkCard title="Coming from Manim" href="/manim/migration/" description="Map Manim animations to sophistry ones." />
+</CardGrid>
+
+<Gallery category="animation" page="tweens-and-effects" />

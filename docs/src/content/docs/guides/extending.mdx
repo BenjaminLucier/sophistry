@@ -1,0 +1,569 @@
+---
+title: "Extending sophistry"
+description: "Write your own shapes, composites, animations and charts as definitions, and swap in your own functions for the built-in named ones."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+sophistry has no registries. Everything extensible is a **value** you pass where you use it: a custom easing is a function handed to `play`, a custom layout is a function handed to `networkGraph`, and a custom shape is a definition you write in a dozen lines. Nothing is mutated at module level, so two libraries can never collide over a name.
+
+The built-ins are made exactly the way your own are. `circle`, `axes`, every chart and every 3D solid is a **definition**: plain data (a name and a props descriptor) plus `create`. Core never learns about a framework, and the Solid and React components are each one line, `wrap(definition)`. So a definition you write works in a vanilla scene, in Solid and in React, with no extra code per framework.
+
+This guide covers writing a shape, a non-shape primitive, a composite, an animation and a chart, and replacing the built-in named options with your own.
+
+## Definitions
+
+A definition describes one kind of node:
+
+- **`name`**: PascalCase, the display name and the component name codegen gives it (`"Circle"` becomes `<Circle>`).
+- **`props`**: the descriptor, one entry per prop. Each entry says what a write to that prop costs, and the same data drives updates, instancing, the generated binding types and the API docs.
+- **`create(props)`**: makes a node. A prop may be a plain value or a `Readable` (a `track`, a `derive`), which binds: the node pulls it at commit.
+
+```ts
+import { circle, createScene, track } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8 });
+const radius = track(1);
+const node = scene.add(circle.create({ radius, fill: "tomato" }));
+
+radius.set(2); // the node reruns its outline at the next commit
+node.set("center", { x: 1, y: 0 }); // a move: only the matrix changes
+```
+
+Definitions are frozen and introspectable: `circle.descriptor.radius` is `{ invalidates: Invalidate.GEOMETRY, instanceable: true }`.
+
+### Prop descriptors
+
+| Field | Meaning |
+| --- | --- |
+| `invalidates` | The stage bits a write marks dirty (`Invalidate.GEOMETRY`, `STYLE`, `TRANSFORM`, `SPEC`, `SPACE`, `INTERACTION`, `UPDATE`), or `Invalidate.NONE`. Required. |
+| `default` | What `node.get(key)` reports while the prop is unset. Descriptive: the stages apply the same default themselves. Bindings and the docs read it. |
+| `instanceable` | Whether `instances()` may drive the prop per item as a typed-array channel. Only cheap numeric or colour props qualify. |
+| `kind` | `"value"` (default), `"event"` for a handler such as `onTap` (passed to the interaction layer), or `"children"` for nodes placed inside. |
+
+A primitive's **stages** are its cached pipeline: outline, then matrix, then style, then the draw spec. A write ORs its bits into the node's dirty mask, and the commit reruns only those stages, keeping each result's identity when its inputs did not change (the renderer's path and arc-length caches key on it). Naming the cheapest correct stage is the whole performance story of a primitive; see [Architecture](/project/architecture/).
+
+## A custom shape
+
+Most primitives are shapes, and a shape needs no class. Hand `defineShape` a props interface, a descriptor and a `geometry` function, and the shared shape pipeline does the rest: theme defaults, the transform props, the enclosing space, gradients, the `progress` reveal, interaction and bounds. `circle` itself is written this way:
+
+```ts
+import { defineShape, type ShapeProps, shapeProps, Invalidate } from "@sophistry/core";
+import { arcCurvePath, type Point } from "@sophistry/core/geometry";
+
+export interface RingProps extends ShapeProps {
+  /** Centre. Defaults to the origin. */
+  center?: Point;
+  /** Radius in scene units. */
+  radius: number;
+}
+
+export const ring = defineShape<RingProps>({
+  name: "Ring",
+  props: {
+    ...shapeProps,
+    // Read by `offset` alone: a move is a new matrix, never a new outline.
+    center: { invalidates: Invalidate.TRANSFORM },
+    radius: { default: 1, invalidates: Invalidate.GEOMETRY },
+  },
+  // The outline about the origin, in the shape's own units.
+  geometry: (props) => ({
+    closed: true,
+    curvePaths: [{ ...arcCurvePath(0, 0, props.radius, 0, Math.PI * 2), closed: true }],
+  }),
+  offset: (props) => props.center,
+});
+```
+
+The rules that keep a shape fast:
+
+1. **Every prop has a descriptor entry, and its `invalidates` names the cheapest stage that is right.** An outline input is `Invalidate.GEOMETRY`; a position read by `offset` is `Invalidate.TRANSFORM`; paints are `Invalidate.STYLE`. `...shapeProps` already has entries for every shared prop (`stroke`, `fill`, `opacity`, `dash`, gradients, `progress`, `zIndex`, `visible`, `x`/`y`/`rotation`/`scale`/`place` and the [interaction](/guides/interaction/) props).
+2. **Build the outline about the origin and hand the position over as `offset`.** Moving the shape then changes a matrix, and the outline arrays keep their identity.
+3. **`geometry` is a pure function of the props it reads.** It only runs when a `GEOMETRY` prop was written, and unset props are absent, so apply their defaults inside it.
+4. **Real maths lives in `@sophistry/core/geometry`** (`arcCurvePath`, `circlePolyline`, `rectPolyline`, `regularPolygon`, ...). A shape is a descriptor plus a few lines calling them.
+
+Because your props extend `ShapeProps`, the shape gets the whole shared surface for free. Name your own props the way the built-ins do; see [Naming conventions](/start/concepts/#naming-conventions).
+
+Here is the same idea from plain TypeScript, a new shape defined, created and animated with no framework at all:
+
+<Example name="vanilla/CustomShape" />
+
+### The `ShapeGeometry` type
+
+| Field | Meaning |
+| --- | --- |
+| `polylines` | Drawable points: a `Point[][]`, one array per subpath. |
+| `closed` | Whether each polyline closes back to its start (and so can be filled). |
+| `fillFrom` | Index of the first polyline that takes part in the fill. An arrow is a shaft plus a head; only the head has area. |
+| `curvePaths` | Native cubic-curve geometry, parallel to `polylines`, for shapes that want curves drawn and revealed natively. Give this *instead of* `polylines` and the polyline is derived for you (for bounds and hit testing). `circle` works this way. |
+
+Supply `polylines` or `curvePaths`; a shape with neither is a bug.
+
+### More shape options
+
+- **`styleProps(props, theme)`** derives the paints from other props or the theme (an arrow fills a closed tip with its stroke colour, a dot paints its one `color`). Give every prop it reads `Invalidate.STYLE`.
+- **`instanceMark(props)`** tells `instances()` the item *is* a disc or an axis-aligned box (`{ kind: "circle", radius }` or `{ kind: "rect", halfWidth, halfHeight }`), so thousands of them draw on the renderer's fastest path. Give it only when the outline is exactly that shape. Without it, instanced items draw as their outlines.
+- **Instanceable props** are declared twice, on purpose: in the descriptor (`instanceable: true`) and as the second type argument, so `instances()` only accepts them as channels at compile time. `ShapeInstanceable` covers the shared ones:
+
+```ts
+import { defineShape, type ShapeInstanceable, type ShapeProps, shapeProps, Invalidate } from "@sophistry/core";
+import { circlePolyline, type Point } from "@sophistry/core/geometry";
+
+interface DiscProps extends ShapeProps {
+  center?: Point;
+  radius: number;
+}
+
+export const disc = defineShape<DiscProps, ShapeInstanceable | "center" | "radius">({
+  name: "Disc",
+  props: {
+    ...shapeProps,
+    center: { invalidates: Invalidate.TRANSFORM, instanceable: true },
+    radius: { default: 1, invalidates: Invalidate.GEOMETRY, instanceable: true },
+  },
+  geometry: (props) => ({ closed: true, polylines: [circlePolyline(0, 0, props.radius)] }),
+  offset: (props) => props.center,
+  instanceMark: (props) => ({ kind: "circle", radius: props.radius }),
+});
+```
+
+`progress` and `dashOffset` are never instanceable: an arc-length reveal needs a node of its own.
+
+### Async geometry
+
+`geometry` may return a `Promise` (a font that is still loading, a worker's result). Until it resolves the shape is simply absent from the frame: its siblings paint immediately and the shape appears the moment the promise settles, with a newer request superseding an older one. A rejection is rethrown from the scene's next commit rather than swallowed. This is how LaTeX outlines land; see [Math and LaTeX](/guides/math-and-latex/).
+
+### The node is the handle
+
+Every node has `bounds()`, `localBounds()`, `center()`, `pointAt(t)`, `width()` and `height()`, so a custom shape works with [`nextTo`, `arrange` and `surroundingRectangle`](/guides/layout/) with no extra code. There is no separate handle object to build.
+
+## A custom shape end to end
+
+Here is a `Spiral`: geometry from a few lines of maths, and everything else inherited. It reveals with `draw()`, takes a `dash`, rotates with the shared `rotation` prop and paints in tree order, all without the definition knowing about any of those. One line, `wrap(spiral)`, makes it a Solid component.
+
+<Example name="advanced/CustomSpiralShape" />
+
+## Primitives that are not shapes
+
+Three more helpers cover the other kinds of drawable node, each with its own shared props:
+
+- **`defineMarks({ name, props, marks(props) })`**: one node for thousands of small items of one outline (a dense point cloud, a grid of cells). `marks` returns typed arrays in your own units, mapped through the enclosing space in one pass. Handlers still resolve per item: `event.item` is the index under the pointer.
+- **`defineImage({ name, props, image(props) })`**: a raster, RGBA pixels plus the frame they land in.
+- **`defineText({ name, props, text(props) })`**: a single run of text with the shared `textProps`, measured and laid out like `label`.
+
+```ts
+import { defineMarks, defineText, type MarksProps, marksProps, Invalidate, type TextProps, textProps } from "@sophistry/core";
+
+interface DustProps extends MarksProps {
+  points: readonly { x: number; y: number }[];
+}
+
+export const dust = defineMarks<DustProps>({
+  name: "Dust",
+  props: { ...marksProps, points: { default: [], invalidates: Invalidate.GEOMETRY } },
+  marks: (props) => ({
+    shape: { kind: "circle" },
+    count: props.points.length,
+    centers: Float64Array.from(props.points.flatMap((point) => [point.x, point.y])),
+    extents: new Float64Array(props.points.length).fill(0.05),
+    fills: "tomato",
+  }),
+});
+
+interface CounterProps extends TextProps {
+  value: number;
+}
+
+export const counter = defineText<CounterProps>({
+  name: "Counter",
+  props: { ...textProps, value: { default: 0, invalidates: Invalidate.GEOMETRY } },
+  text: (props) => String(Math.round(props.value)),
+});
+```
+
+All of these are culled, picked and painted by the shared renderer like any other node. For many items that each need a *shape*, rather than a mark, use `instances(definition, { data, key, channels })` on a shape definition, or a path batch for many distinct outlines; see [Instancing](/guides/instancing/).
+
+The general case is **`definePrimitive({ name, props, node, container? })`**: subclass `BaseNode` (or `BaseContainer`), implement `run(dirty)` to rerun the stages whose bits are set and `publish(spec)` the result (keeping identity when nothing changed), and pass a `node` constructor. The helpers above are thin wrappers over it, and you rarely need it directly.
+
+## A custom composite
+
+A subtree built from other nodes is a **composite**, not a primitive. `defineComposite` takes a descriptor plus two functions:
+
+- **`setup(ctx)`** runs once, the first time the node commits (so it already sees its parent's context), and returns the initial children.
+- **`update(changed, ctx)`** runs in later commits with the set of props (and context keys) that changed. It may return a new children array, reconciled by identity, or nothing to keep the current one.
+
+A composite does not transform: its children live in its own space (put a `group` inside for a transform). Between `setup` and `update`, children can follow the composite's props with no `update` at all, by binding to `ctx.prop(key)`:
+
+```ts
+import { type CompositeContext, circle, defineComposite, label, type SceneNode, Invalidate } from "@sophistry/core";
+import type { Point } from "@sophistry/core/geometry";
+
+interface PinsProps {
+  points: readonly Point[];
+  /** Reveal of every pin, 0 to 1. */
+  progress?: number;
+  caption?: string;
+}
+
+/** What one Pins node keeps between `setup` and `update`. */
+interface PinsState {
+  caption: ReturnType<typeof label.create>;
+  captionAt: (points: readonly Point[]) => Point;
+}
+const states = new WeakMap<SceneNode, PinsState>();
+
+function pinsChildren(ctx: CompositeContext<PinsProps>) {
+  let state = states.get(ctx.node);
+  if (!state) {
+    state = {
+      caption: label.create({ text: "" }),
+      // A last-input cache: the same points array (by identity) skips the loop.
+      captionAt: ctx.memo((points: readonly Point[]) => ({
+        x: points.reduce((sum, point) => sum + point.x, 0) / Math.max(1, points.length),
+        y: Math.min(0, ...points.map((point) => point.y)) - 0.6,
+      })),
+    };
+    states.set(ctx.node, state);
+  }
+  const at = state.captionAt(ctx.props.points);
+  state.caption.update({ text: ctx.props.caption ?? "", x: at.x, y: at.y });
+
+  const pins = ctx.list("pins", ctx.props.points, {
+    key: (_point, index) => index,
+    // Bound to the composite's own prop: a write reaches the pins with no `update`.
+    create: (point) => circle.create({ center: point, radius: 0.15, progress: ctx.prop("progress") }),
+    update: (node, point) => node.set("center", point),
+  });
+  return [...pins, state.caption];
+}
+
+export const pins = defineComposite<PinsProps>({
+  name: "Pins",
+  props: {
+    points: { default: [], invalidates: Invalidate.UPDATE },
+    progress: { default: 1, invalidates: Invalidate.NONE },
+    caption: { invalidates: Invalidate.UPDATE },
+  },
+  setup: pinsChildren,
+  update: (_changed, ctx) => pinsChildren(ctx),
+});
+```
+
+Per-node state lives in a `WeakMap` keyed by `ctx.node`, the pattern the built-in composites use: the definition is shared by every node, the state is not.
+
+What `ctx` holds:
+
+| Member | Does |
+| --- | --- |
+| `props` | The current props, bound ones already pulled. Read inside `setup` and `update`. |
+| `prop(key)` | A `Readable` view of one prop, for binding children to it. |
+| `memo(fn)` | `fn` with a last-input cache: the same arguments (by identity) return the same result. Create it in `setup`, call it in `update`. |
+| `list(slot, items, { key, create, update })` | Keyed reconciliation of one list of children: keeps each key's node (calling `update` on it), creates nodes for new keys, disposes the ones that went away. One `slot` name per list. |
+| `children` | The nodes passed in the composite's `children` prop; place them in what you return. |
+| `theme`, `clock` | The active theme (reading it reruns `update` when it changes) and the clock in scope. |
+| `provide(key, value)` / `context(key)` | Context for the subtree, and the nearest provided value (`update` reruns when it changes). |
+| `space(watch?)` | The space the composite lives in (`matrix`, `opacity`, `clip`, `penScale`). `update` reruns with `"space"` in `changed` when a watched field changes; see [Reading the space](#reading-the-space). |
+| `onDispose(cleanup)` | Runs when the composite is disposed. |
+| `invalidate(reason)` | Asks for `update` to run again, for state kept outside props and context. |
+
+Give a prop that only children bind to `invalidates: Invalidate.NONE`, so writing it never reruns `update`.
+
+### Children
+
+A prop of kind `"children"` lets users put nodes inside the composite, the way a `<Chart>` takes its `<Scatter>` layers. The nodes arrive as `ctx.children`, and the composite decides where they go:
+
+```ts
+import { defineComposite, derive, rect, type SceneNode, Invalidate } from "@sophistry/core";
+
+interface CardProps {
+  width?: number;
+  height?: number;
+  children?: readonly SceneNode[];
+}
+
+export const card = defineComposite<CardProps>({
+  name: "Card",
+  props: {
+    // Only the frame binds to these: no `update` on a resize.
+    width: { default: 4, invalidates: Invalidate.NONE },
+    height: { default: 3, invalidates: Invalidate.NONE },
+    children: { kind: "children", invalidates: Invalidate.UPDATE },
+  },
+  setup: (ctx) => {
+    const frame = rect.create({
+      width: derive(ctx.prop("width"), (width) => width ?? 4),
+      height: derive(ctx.prop("height"), (height) => height ?? 3),
+    });
+    return [frame, ...ctx.children];
+  },
+  update: (changed, ctx) =>
+    changed.has("children") ? [...ctx.node.children.slice(0, 1), ...ctx.children] : undefined,
+});
+```
+
+In the bindings, JSX children become that prop: `<Card><Circle radius={1} /></Card>`.
+
+### Context keys
+
+Context flows down the parent chain. `createContextKey(name, default?)` makes a key; a container calls `provide(key, value)` (or `ctx.provide` in a composite) and any descendant reads the nearest value with `node.context(key)` (or `ctx.context(key)`, which also reruns its `update` when the value changes). The scene root provides `themeContext`, `clockContext`, `reducedMotionContext` and `frameContext` (the visible box, as a `Readable<Bounds>`); coordinate systems provide `coordsContext`.
+
+```ts
+import { type CompositeContext, createContextKey, defineComposite, dot, Invalidate } from "@sophistry/core";
+
+export const unitScale = createContextKey<number>("unitScale", 1);
+
+interface ScaledDotProps {
+  x: number;
+}
+
+/** One dot, kept across updates (`list` with a single fixed key). */
+function scaledDotChildren(ctx: CompositeContext<ScaledDotProps>) {
+  const x = ctx.props.x * ctx.context(unitScale);
+  return ctx.list("dot", [x], {
+    key: () => "dot",
+    create: (value) => dot.create({ center: { x: value, y: 0 } }),
+    update: (node, value) => node.set("center", { x: value, y: 0 }),
+  });
+}
+
+export const scaledDot = defineComposite<ScaledDotProps>({
+  name: "ScaledDot",
+  props: { x: { default: 0, invalidates: Invalidate.UPDATE } },
+  setup: scaledDotChildren,
+  // Reruns when `x` changes, and when the provided `unitScale` does.
+  update: (_changed, ctx) => scaledDotChildren(ctx),
+});
+
+// Somewhere above it: someGroup.provide(unitScale, 2);
+```
+
+A value that changes often should be a `Readable` provided once, which descendants bind to, rather than re-provided every frame: re-providing walks the subtree.
+
+### Reading the space
+
+A composite does not transform, but it lives in a space an ancestor's group sets: a matrix, a clip, an opacity and sometimes a pen scale. `ctx.space(watch?)` returns it (current for this commit) and, like `ctx.context`, is a tracked read: `update` reruns with `"space"` in its `changed` set whenever a field you asked about changes. Use it for anything sized or cut by the space, such as text measured in pixels (a label that must fit its disc at any zoom) or a long line thinned to the columns a clip leaves visible.
+
+```ts
+import { defineComposite, dot, Invalidate, SpaceChange } from "@sophistry/core";
+import { scaleFactorOf } from "@sophistry/core/geometry";
+
+export const pixelDot = defineComposite<{ pixels: number }>({
+  name: "PixelDot",
+  props: { pixels: { default: 8, invalidates: Invalidate.UPDATE } },
+  // A dot a fixed number of pixels across, whatever its ancestors' scale.
+  setup: (ctx) => [dot.create({ radius: ctx.props.pixels / 2 / scaleFactorOf(ctx.space(SpaceChange.MATRIX).matrix) })],
+  update: (_changed, ctx) => {
+    const [disc] = ctx.node.children as ReturnType<typeof dot.create>[];
+    disc.set("radius", ctx.props.pixels / 2 / scaleFactorOf(ctx.space(SpaceChange.MATRIX).matrix));
+    return undefined;
+  },
+});
+```
+
+`watch` is a set of `SpaceChange` bits (`MATRIX`, `OPACITY`, `CLIP`, `PEN_SCALE`, `Y_UP`), OR-ed across calls and every field by default. Ask only for what you use: a matrix that changes on every frame of a pan or zoom reruns a composite that watches it every frame. A composite that never calls `space` costs one integer test per space change and is never rerun by one. Read it conditionally when only some configurations need it (the network graph reads it only once a vertex has a label), since a read, once made, is kept.
+
+## From definition to component
+
+A definition is already usable from plain TypeScript (`scene.add(spiral.create({...}))`). To use it as a component, wrap it in the binding you use:
+
+```tsx nocheck
+// `./ring` is the module defined at the top of this page.
+import { Stage, wrap } from "@sophistry/solidjs";
+import { ring } from "./ring";
+
+const Ring = wrap(ring);
+
+export const Figure = () => (
+  <Stage units={8}>
+    <Ring radius={2} stroke="tomato" />
+  </Stage>
+);
+```
+
+```tsx nocheck
+// React: the same one line, from the React binding.
+import { Stage, wrap } from "@sophistry/react";
+import { ring } from "./ring";
+
+const Ring = wrap(ring);
+
+export const Figure = () => (
+  <Stage units={8}>
+    <Ring radius={2} stroke="tomato" />
+  </Stage>
+);
+```
+
+The component's props are typed from the descriptor (each plain or a `Readable`), its `ref` receives the node, and a `"children"` prop takes JSX children. That one line is all the built-in components are, too: for definitions that ship in a package, codegen writes the `wrap` lines for you from the package's `./definitions` export. See [Bindings and codegen](/guides/bindings/).
+
+## Custom easings, interpolators and layouts
+
+The library keeps reusing one idiom for "swap in your own": a pure function does the work, a `Name | Function` union is what every such prop accepts, and a string is looked up in a frozen map of built-ins.
+
+| Built-ins | Names | Your own | Pass it to |
+| --- | --- | --- | --- |
+| `easings` | `"backOut"`, `"sinInOut"`, ... (`EasingName`) | `(t: number) => number` | `easing:` on any animation |
+| `interpolators` | `"point"`, `"color"`, `"matrix"`, ... | `(a: T, b: T) => (t) => T` | `interpolate:` on `driveTrack` |
+| `graphLayouts` | `"tree"`, `"spring"`, `"shell"`, ... | `GraphLayout`: `(graph, options) => Map<id, Point>` | `layout` on `networkGraph` |
+| axis scales | `"linear"`, `"log"` | `Scale`: `{ toUnit, fromUnit }` | `scale` in `axis` / `xAxis` / `yAxis`, or `numberLine` |
+| tick formatters | `"plain"`, `"si"`, `"scientific"`, `"percent"`, `"piMultiple"` | `(value, decimalPlaces?) => string` | `tickFormat` on axes and `numberLine`; `tickFormatters` in `/geometry` |
+| drag constraints | `"free"`, `"axisX"`, `"axisY"` | `DragConstraint`: `(proposed, ctx) => Point` | `constrain:` on `draggable` |
+| shape correspondence | `"resample"` | `Correspondence<Polyline>` | `correspondence` option of `morphPolylines` (`/geometry`) |
+| colormaps | `"viridis"`, `"coolwarm"`, ... | `(t: number) => string` | the `ramp` prop of `imshow`, `vectorField`, ... |
+| palettes | `"catppuccin"` | `Palette` from `definePalette` | `palette` on `<Stage>` or `createScene` |
+
+A string looks the name up; anything else passes through untouched, so `easing: "backOut"` and `easing: (t) => t * t` take the same path. An unknown name throws and lists the built-ins.
+
+```tsx
+import { draw, track } from "@sophistry/core";
+import type { GraphLayout } from "@sophistry/core/geometry";
+import { NetworkGraph, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+// A custom easing is any (t) => t.
+const bounce = (t: number) => Math.abs(Math.sin(6.28 * t) * (1 - t));
+
+// A custom layout is any (graph, options) => Map<id, Point>.
+const alongASine: GraphLayout = (graph) =>
+  new Map(graph.vertices.map((id, i) => [id, { x: i - 2, y: Math.sin(i) }]));
+
+export function Custom() {
+  const drawn = track(0);
+  const player = usePlayer();
+  onSettled(() => void player.play(draw(drawn, { easing: bounce })));
+  return (
+    <Stage units={10}>
+      <NetworkGraph
+        vertices={[0, 1, 2, 3, 4]}
+        edges={[[0, 1], [1, 2], [2, 3], [3, 4]]}
+        layout={alongASine}
+        progress={drawn}
+      />
+    </Stage>
+  );
+}
+```
+
+For a scale and tick format on an axis:
+
+```tsx
+import type { Scale } from "@sophistry/core/geometry";
+import { Axes, Stage } from "@sophistry/solidjs";
+
+// Maps a [0, 100] range onto 0..1 along a square-root curve.
+const sqrtScale: Scale = {
+  toUnit: (v) => Math.sqrt(v / 100),
+  fromUnit: (u) => 100 * u * u,
+};
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes
+      xRange={[0, 100, 25]}
+      yRange={[0, 1, 0.5]}
+      width={8}
+      height={4}
+      xAxis={{ scale: sqrtScale, tickFormat: (v) => `${v}%` }}
+    />
+  </Stage>
+);
+```
+
+Built-in names are typed unions, so the compiler checks them.
+
+## Custom animations
+
+Animations are seekable descriptions: `{ duration, begin?, seek, restore?, abort? }`. A runner (`scene.play`, `scene.timeline`, or `usePlayer()` in a component) samples one at absolute times, so your leaf automatically works inside `sequence`, `parallel`, `lagged` and `repeat`, and can be scrubbed backwards.
+
+Most custom animations are `driveTrack` or `driveProgress` calls (see [Custom animations](/guides/animation/#custom-animations)). For full control, `animation({ duration, begin, seek, restore, abort })` builds a raw leaf.
+
+### The rules of a leaf
+
+`seek(t)` must be a **pure function** of `t` plus whatever `begin()` captured. It writes the state for local time `t` (clamped to `[0, duration]`), and writing the same state for the same `t` in any order is what lets a timeline scrub in both directions.
+
+- **`begin()`** runs the first time the animation is entered and sees the world as of its own start time. Capture start values here with **`peek()`**. It runs again only on a new `repeat` cycle or a timeline replay.
+- **`restore()`** (optional) writes the start state and keeps what `begin` captured; composites call it when a scrub rewinds before your start. Without it they fall back to `seek(0)` and re-arm with `begin()`.
+- **`abort()`** (optional) is cleanup when a run is aborted while your animation is active, for example snapping back to rest. Presets that simply stop where they stand leave it out.
+- **`duration`** may be `Infinity`; negative or `NaN` becomes 0. Optional **`restAt`** is where a reduced-motion run jumps (default: `duration`, or `0` when infinite).
+
+<Aside type="note">
+Presets take only `{ duration, delay, easing }`. The clock and abort signal belong to the runner (`scene.play(anim, { signal })`, or `usePlayer()` inside a component, which binds the stage's clock and the component's lifetime for you). Don't thread them into a custom leaf.
+</Aside>
+
+Here a counter ticks in whole numbers, composed with a built-in `valueTo` in a `parallel`, then reversed in a `sequence`. The custom leaf needs no special treatment from either:
+
+<Example name="animation/CustomAnimationLeaf" />
+
+See [Animation](/guides/animation/) and [Timelines](/guides/timelines/) for the runners.
+
+## Custom charts
+
+Data-driven charts read **channels**. A channel (`Channel<T, V>`) is either a key of the datum (`"units"`) or a function `(d, i) => value`. `resolveChannel` (from `@sophistry/charts`) turns either into a plain function, with an optional fallback for when the prop is omitted and a prop `name` for the error message. A chart is a composite whose `update` rebuilds its keyed lists:
+
+```ts
+import { type CompositeContext, defineComposite, dot, line, Invalidate } from "@sophistry/core";
+import { type Channel, resolveChannel } from "@sophistry/charts";
+
+interface LollipopProps<T> {
+  data: readonly T[];
+  value: Channel<T, number>;
+  spacing?: number;
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: a definition is typed once for every datum type.
+type AnyLollipop = LollipopProps<any>;
+
+function lollipops(ctx: CompositeContext<AnyLollipop>) {
+  const { data, spacing = 1 } = ctx.props;
+  const read = resolveChannel(ctx.props.value, undefined, "value");
+  const accent = ctx.theme.palette.accent;
+  const xOf = (index: number) => (index - (data.length - 1) / 2) * spacing;
+  const stems = ctx.list("stems", data, {
+    key: (_datum, index) => index,
+    create: () => line.create({ from: { x: 0, y: 0 }, to: { x: 0, y: 0 } }),
+    update: (node, datum, index) =>
+      node.update({ from: { x: xOf(index), y: 0 }, to: { x: xOf(index), y: Number(read(datum, index)) } }),
+  });
+  const heads = ctx.list("heads", data, {
+    key: (_datum, index) => index,
+    create: () => dot.create({ radius: 0.15 }),
+    update: (node, datum, index) =>
+      node.update({ center: { x: xOf(index), y: Number(read(datum, index)) }, color: accent }),
+  });
+  return [...stems, ...heads];
+}
+
+export const lollipop = defineComposite<AnyLollipop>({
+  name: "Lollipop",
+  props: {
+    data: { default: [], invalidates: Invalidate.UPDATE },
+    value: { invalidates: Invalidate.UPDATE },
+    spacing: { default: 1, invalidates: Invalidate.UPDATE },
+  },
+  setup: lollipops,
+  // Reading `ctx.theme` above makes a palette change rerun this too.
+  update: (_changed, ctx) => lollipops(ctx),
+});
+```
+
+A channel that is neither a function nor a string key throws a `TypeError` naming the prop, so a mis-wired chart fails with a sentence instead of a blank canvas. The built-in charts batch their items through instancing and path batches; for scales, ticks and the layout maths they use, see [Charts](/guides/charts/) and the `/geometry` entry.
+
+## Custom coordinate systems
+
+A `CoordinateSystem` is `coordsToPoint`, `pointToCoords`, `xRange`, `yRange`, `area` and `crossing`. `createCartesianCoords(options)` builds one. `axes`, `numberPlane` and `numberLine` provide theirs to their subtree through `coordsContext`, which is how a `functionGraph` inside them plots in data units; a composite of your own can `ctx.provide(coordsContext, system)` to give its children a new mapping, and children read it with `ctx.context(coordsContext)`. From outside the tree, `coordsOf(node)` reads the system a node publishes. See [Coordinate systems](/guides/coordinate-systems/).
+
+## `@sophistry/core/internal`
+
+Everything above is on the public entries. `@sophistry/core/internal` is the layer beneath: the renderer, the `bake*` family and spec helpers, the interaction registry and pointer plumbing, and `sceneInternals(scene)`. The feature packages (`text`, `charts`, `3d`) and the bindings use it, and only it, beside the public entries.
+
+<Aside type="caution" title="Unstable">
+Nothing in `/internal` is covered by semver. These are the seams between the scene graph and the renderer, and they change whenever the renderer does. Reach for it only to build a feature package, a custom renderer, a binding or tooling. A scene author, including anyone writing a custom shape or composite, should never need it, and the gallery examples never import it.
+</Aside>
+
+## Next steps
+
+- [Bindings and codegen](/guides/bindings/): how definitions become Solid and React components.
+- [Shapes and styling](/guides/shapes-and-styling/): the shared props your shape inherits.
+- [Layout](/guides/layout/): bounds and placement for custom shapes.
+- [Architecture](/project/architecture/): the stages and commit a primitive takes part in.

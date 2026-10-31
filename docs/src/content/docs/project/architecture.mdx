@@ -1,0 +1,381 @@
+---
+title: "Architecture"
+description: "How the sophistry packages are organised internally, for contributors: packages, layers, the reactive model, the scene graph, the frame loop and renderer, and the invariants to keep."
+---
+
+This page is for people changing the library, not using it. It explains how the
+packages are split, how a prop write travels from a track to pixels, and the
+invariants that keep the renderer fast and the code honest. For user-facing
+behaviour see the [guides](/guides/shapes-and-styling/); for exact signatures see
+the [API reference](/api/sophistry/core/readme/).
+
+## Goals
+
+sophistry is an imperative, maths- and primitive-based, composable animation
+library:
+
+- **A retained scene graph** in plain TypeScript. Nodes live until they are
+  disposed; a write marks the exact node and stage it affects, and the frame loop
+  pulls and recomputes only that.
+- **Maths first.** Arcs, bounds, scales, morphs, layout and hit testing are pure
+  functions in `geometry/` and friends. A primitive is a descriptor plus a few
+  lines calling them.
+- **Composable.** Charts, coordinate systems, LaTeX and 3D are built from the same
+  primitives, with the same props, events, tracks and animations.
+- **Framework-free core, generated bindings.** `@sophistry/core` has no
+  dependency on any UI framework; the Solid and React components are generated
+  from the core's definitions.
+
+It is **not a virtual DOM**. Nothing re-renders, and no tree is diffed. The only
+reconciliation is keyed list reconciliation (a container's children, an
+`instances()` node's data), the same work Solid's `<For>` does.
+
+## Packages
+
+| Package | Contents |
+|---|---|
+| `@sophistry/core` | Geometry, colour, themes, tracks, tweens and springs, animations, the scene graph, shapes, labels, coordinate systems, network graphs, interaction, the Canvas2D renderer, frame export. Subpaths `/geometry`, `/color`, `/themes` (pure helpers) and `/internal` (renderer and plumbing for extension packages; unstable). |
+| `@sophistry/text` | LaTeX as geometry: `mathTex`, `mathTransform`, `createLatex`, fonts and outlines. Carries KaTeX and opentype.js (loaded lazily). |
+| `@sophistry/charts` | Data channels, chart maths and every chart definition, batched by default. `/charts/3d` holds the 3D charts, so `/charts` never needs `@sophistry/3d`. |
+| `@sophistry/3d` | `camera3D`, meshes, projection, depth sort, 3D primitives, `orbitControls3D`. |
+| `@sophistry/solidjs` | `wrap()`, `<Stage>`, `<MultiStage>`, `<Camera>`, hooks, and one generated component per definition; subpaths `/text`, `/charts`, `/charts/3d`, `/3d`. |
+| `@sophistry/react` | The same for React, on a custom reconciler; same subpaths. |
+| `@sophistry/codegen` (private) | Generates the binding entry files from each package's definitions. |
+
+Feature packages import only public and `/internal` entries of the core, never a
+deep path. Heavy dependencies stay behind their own package: a bundle that never
+renders a formula never carries a typesetter, and one without 3D never carries
+`wgpu-matrix`'s 3D half.
+
+The core touches the DOM only for the canvas, pointer and keyboard events, the
+accessibility mirror, `matchMedia` (colour mode, reduced motion),
+`ResizeObserver` / `IntersectionObserver`, and text measurement. A headless scene
+(`createScene({ headless: true })`) touches none of it.
+
+## Layering inside `packages/core/src`
+
+Arrows point one way: lower layers never import higher ones. Read the table
+transitively ("and below").
+
+```
+color/, geometry3d/   ->  nothing                 (d3-color/d3-interpolate, wgpu-matrix)
+geometry/             ->  geometry3d/
+reactive/             ->  nothing                 (track, derive, watch)
+themes/               ->  geometry/, color/, reactive/   (colour mode is a track)
+tween/                ->  reactive/, geometry/, color/   (clocks, frame loop, easing, interpolators, springs)
+anim/                 ->  tween/, reactive/, geometry/, themes/   (the animation verbs)
+spec/                 ->  geometry/, color/, themes/     (DrawSpec types, bake, gradient, clip, layout, metrics)
+interact/             ->  spec/, geometry/, reactive/, tween/   (pure: hit, pick-items, constrain, drop, item order)
+render/               ->  spec/, interact/, geometry/, themes/, tween/   (renderer, pointer driver, a11y, cameras)
+scene/                ->  everything above        (node, primitive, composite, scene, group, instances)
+shapes/               ->  scene/ and below
+labels/               ->  shapes/ and below
+coords/, network/     ->  labels/, shapes/ and below
+export/               ->  anim/, tween/, render/
+entries/, index.ts    ->  anything
+```
+
+`geometry/layering.test.ts` checks this over every source file, with no
+exceptions. What follows from it, and what review should enforce:
+
+- `anim/` never touches a canvas or a node. It only writes `Animatable`s
+  (`{ peek(), set(value) }`): tracks, or adapters such as `propTarget`.
+- `render/` never imports `scene/`. It is handed scene-unit specs and paints them.
+- `themes/` is data. It has no idea a canvas exists.
+- `scene/` never paints. Text measurement (`spec/metrics.ts`) keeps an offscreen
+  context for `measureText` alone, because a label that cannot report its box
+  cannot take part in layout.
+- **3D is not a second renderer.** `@sophistry/3d` projects world geometry
+  into ordinary shape specs, so `render/` never learns 3D exists.
+
+## The reactive model
+
+`reactive/` is a few hundred lines: `track`, `derive`, `watch`.
+
+```ts
+interface Readable<T> {
+  peek(): T;                                   // current value, never subscribes
+  subscribe(onStale: () => void): () => void;  // told "may have changed"; must only mark
+}
+interface Track<T> extends Readable<T> { set(value: T): void }
+```
+
+- **Push-stale, pull-value.** `set` notifies subscribers synchronously, but only
+  so they can mark themselves stale. Values are computed lazily on `peek()`, at
+  most once per change (version counters), so a diamond never glitches and three
+  writes in one frame cost one recompute.
+- `derive(source, compute)` and `derive([a, b], (a, b) => ...)` subscribe to their
+  sources only while they have subscribers themselves, so a derived value nobody
+  reads costs nothing and leaks nothing.
+- `watch(source, run)` is the one side effect: coalesced, it runs in the frame's
+  commit phase.
+- **No global graph, no owners, no `flush`.** Disposal is explicit:
+  `unsubscribe()`, `node.dispose()`. A binding framework adds its own lifetime on
+  top (Solid's `onCleanup`, React's unmount) and calls `dispose`.
+
+A `Readable` passed as a prop **binds**: the node subscribes, the subscription
+marks the node's stage dirty, and the commit pulls the value. That is the whole
+path from an animation to a node; no framework code runs per frame.
+
+## Definitions are data
+
+Every node kind is a **definition**: a lowercase, frozen value (`circle`,
+`axes`, `barChart`) with a name, a props descriptor and `create(props)`. For each
+prop the descriptor records its default, the stage bits a write invalidates,
+whether it is `instanceable` (may be a per-item channel), and its kind (`value`,
+`event` or `children`).
+
+```ts
+export const circle = defineShape<CircleProps>({
+  name: "Circle",
+  props: {
+    ...shapeProps,
+    center: { invalidates: Invalidate.TRANSFORM, instanceable: true },
+    radius: { invalidates: Invalidate.GEOMETRY, instanceable: true },
+  },
+  geometry: (props) => ({
+    closed: true,
+    curvePaths: [{ ...arcCurvePath(0, 0, props.radius, 0, Math.PI * 2), closed: true }],
+  }),
+  offset: (props) => props.center,
+});
+```
+
+The one descriptor drives updates (which stage a write reruns), instancing
+(which props may be channels, type-enforced), the TypeScript prop types, the
+reference docs, and binding codegen. The header of `scene/primitive.ts` is the
+how-to for writing one; `definePrimitive`, `defineShape`, `defineMarks`,
+`defineImage`, `defineText`, `definePathBatch` and `defineComposite` are the
+entry points.
+
+## Stages and dirty bits
+
+A primitive's work is a cached pipeline of **stages**: outline, transform, style,
+spec (`Invalidate.GEOMETRY`, `TRANSFORM`, `STYLE`, `SPEC`, plus `INTERACTION`, and
+`SPACE` / `UPDATE` for containers). A prop write ORs its stage bits into the
+node's dirty mask and puts the node on the scene's dirty list; the commit reruns
+only those stages, each behind a last-input cache.
+
+These are the memo boundaries, and they decide what an edit costs:
+
+- moving a circle (`center`, `x`, `rotation`) is `TRANSFORM`: a new matrix, the
+  outline arrays keep their identity;
+- `radius` is `GEOMETRY`: the outline is rebuilt;
+- `fill` is `STYLE`; `progress`, `zIndex` and `visible` are `SPEC`, the cheapest.
+
+A stage whose inputs did not change returns the **same object**, so the spec
+keeps its identity and the renderer's caches stay warm.
+
+## Context through the parent chain
+
+Containers hand their children a **space** (matrix, opacity, clip, pen scale,
+frame) and **context values** (`themeContext`, `clockContext`,
+`reducedMotionContext`, `frameContext`, coordinate systems, chart scales) through
+the parent chain, with `createContextKey` for new ones. A `group` recomputes its
+space in its `SPACE` stage, keeps the same space object while nothing changed,
+and tells children only the fields that did, so a field nobody below reads reruns
+nothing. Composites read context with `ctx.context(key)`; a change reruns their
+`update` only if they read that key.
+
+## Ordering
+
+Paint order is **tree order**, with `zIndex` sorting first and ties painting in
+tree order. Tab order and `<Camera>` layering follow the same tree. There are no
+DOM anchors and no `MutationObserver`: the order is the scene graph's own.
+
+### Registries and paint order
+
+The commit engine (`scene/graph.ts`) recomputes the depth-first order only when
+the tree's structure changed. Otherwise it patches changed specs into a copy of
+the last frame and splices visibility and `zIndex` changes in by binary search.
+The interaction registry (focus list, hit records) and the camera list key on the
+same order: a camera given an `anchor` node paints in its anchor's tree position,
+which is how the bindings' `<Camera>` paints in JSX order.
+
+## Events
+
+Pointer and keyboard interaction are events on nodes (`click`, `pointerdown`,
+`drag`, `hover`, ...). In descriptors they are `onX` props of kind `event`, so
+bindings pass them through like any other prop, and `node.on("click", handler)`
+works the same without one. Picking is geometry over the specs the renderer
+already has (`interact/hit.ts` walks the renderer's own z-sorted snapshot
+backwards), so there is one ordering, not two that can drift. All DOM event
+handling lives in `render/pointer.ts` and its parts; `interact/` is pure. The
+accessibility mirror reuses the interaction registry as its focus list.
+
+## Composites
+
+A composite (`defineComposite`) owns a subtree built from other nodes: an axis, a
+labelled dot, a chart. `setup(ctx)` builds the children once, at the node's first
+commit; `update(changed, ctx)` runs in later commits with the props and context
+keys that changed, and may return a new children array, reconciled by identity.
+`ctx.memo` keeps last-input caches and `ctx.list(slot, items, { key, create,
+update })` keyed child lists. Children bound to the composite's own props
+(`child.set("progress", ctx.prop("progress"))`) follow them with no `update` at
+all. A `children` prop lets users put nodes inside (a `chart` around a
+`scatter`). A composite does not transform; put a `group` inside for that.
+
+## Instancing and path batches
+
+`instances(definition, { data, key, channels, shared, transition })` is one node
+for N items of one shape. Only `instanceable` props may be channels. Values live
+in a struct-of-arrays **bank** (typed columns: one float per number, two per
+point, four per colour, parsed once), reconciled by key into enter, update and
+exit. Per-item tweens and springs advance only the items in flight (the active
+set), so an idle bank costs nothing per frame and one moving item among 100,000
+costs one item. The node publishes one `MarksSpec`; shapes with a fast mark
+(circle, rect, square, dot) become splats the renderer rasterises directly.
+Picking resolves per item (`event.item`, `event.key`); `promote(key)` gives an
+item back its own node when it needs individuality.
+
+A **path batch** (`pathBatch`, `definePathBatch`) is many distinct outlines in one
+node: pie wedges, ribbons, areas, the lines of a multi-series chart. Its
+`TRANSFORM` stage only places items, so panning the enclosing group
+re-tessellates nothing. **Charts batch by default**: every per-datum chart mark
+is an `instances()` node or a path batch.
+
+## The frame loop and the renderer
+
+One `requestAnimationFrame` loop (`tween/frame-loop.ts`) serves every clock,
+scene and renderer on the page, asleep when nothing needs a frame. Each frame runs
+three phases:
+
+1. **tick**: clocks advance; animations sampled on them write tracks, which only
+   mark their subscribers stale;
+2. **commit**: each scene drains its dirty list (pull stale bindings, rerun the
+   pending stages), patches its frame, and hands it to the renderer; `watch`
+   callbacks run here;
+3. **paint**: dirty renderers draw.
+
+A tick and the paint it causes land in the same frame. There is no `flush`;
+`stepFrame(now)` drives a frame synchronously for tests and export. A scene
+scrolled out of view neither paints nor ticks its own clock (`pauseWhenHidden`,
+on by default); clocks cap each step at 1/15 s.
+
+**The spec boundary.** Scenes emit `DrawSpec`s (`ShapeSpec`, `TextSpec`,
+`MarksSpec`, `ImageSpec`) in **scene units**: the local transform and every
+enclosing group are applied, the camera is not. The renderer
+(`render/canvas-renderer.ts`) owns no frame loop and subscribes to nothing; the
+scene pushes state in through setters (`setFrame`, `setTheme`, `setCameras`,
+`setSize`, ...) and the renderer paints under one view matrix per camera. So a
+pan, zoom, resize or DPR change never re-transforms a vertex or rebuilds a spec.
+The spec is the boundary between scene logic and painting: the same scene
+always emits the same specs, whatever draws them.
+
+**Local geometry.** By default a shape spec carries its outline in the shape's own
+units plus the matrix that places it, and the renderer draws it under that
+matrix. A shape that moves changes only the matrix; its outline arrays keep their
+identity, so the cached `Path2D`, curves and arc-length tables are reused.
+Primitives build their outline about the origin and hand their position over as
+`offset`. Scene-unit polylines for hit testing and bounds are lazy getters that
+most frames never read. Only a similarity matrix is carried this way; under a
+skew or non-uniform scale the shape is baked.
+
+**Cameras** are one canvas with N viewport rectangles, not a canvas per camera:
+one snapshot painted N times inside a single frame makes panes simultaneous by
+construction (`scene/cameras.ts`, `render/camera.ts`). `splitScreen`,
+`pictureInPicture` and `quadView` are layouts over `scene.addCamera`.
+
+## Bindings and codegen
+
+Each source package exports `./definitions`, a frozen record of its definitions
+keyed by export name. `pnpm --filter @sophistry/codegen generate` writes
+`packages/{solidjs,react}/src/generated/*.gen.ts`, one line per definition:
+
+```ts
+export const Circle = wrap(circle);
+export type CircleProps = ComponentProps<typeof circle>;
+```
+
+`check` fails on stale files, and name collisions fail loudly. The hand-written
+part of a binding is small: `wrap`, `<Stage>`, `<Camera>` and the hooks
+(`useScene`, `useClock`, `useTrack`, `useTrackValue`, `usePlayer`,
+`useMovablePoint`).
+
+- **Solid**: the component body runs once, makes one node and returns it as the
+  handle. One render effect per prop present at creation forwards plain values
+  with `node.set`; Readables bind in core; children are collected with
+  `children()` and passed to `setChildren`; `onCleanup` disposes.
+- **React**: components are host elements of a `react-reconciler` host config;
+  `commitUpdate` sets the changed keys only. A Track write causes zero React
+  renders.
+
+## Invariants
+
+Preserve these when changing anything upstream of the canvas:
+
+- **Identity-keyed caches.** `RevealCache` and the `Path2D` cache key on the
+  *array identity* of a spec's `polylines` / `curvePaths`, and the renderer's box
+  cache on geometry identity. A stage must return the same arrays while its inputs
+  are unchanged. A stray `.map()` or spread does not error; it silently
+  re-measures every node every frame. The invariant is documented at the top of
+  `render/canvas-renderer.ts`.
+- **Memo and stage boundaries.** A prop's `invalidates` names the cheapest correct
+  stage, and each stage sits behind a last-input cache. Widening a prop from
+  `TRANSFORM` to `GEOMETRY` turns every move into a re-tessellation.
+- **Culling.** Each paint maps the viewport back into scene units and skips every
+  spec whose box misses it, so zooming into a corner paints only that corner.
+- **Layer cache** (`render/layer-cache.ts`). When the first changed index of the
+  z-sorted frame has held at or after `d` for two frames, the specs before `d` are
+  painted once into an offscreen layer; later frames blit it and paint only the
+  tail. When only the camera moves over an expensive scene, the last sharp frame
+  is drawn under the change of view and repainted sharp once the camera rests.
+- **Batched specs.** Dense data is one node: `MarksSpec` for many items of one
+  outline (splatted when tiny and unstroked), path batches for many outlines,
+  `ImageSpec` for rasters (one `drawImage`). Picking stays per item through a
+  uniform grid built on first pick (`interact/pick-items.ts`), keyed on array
+  identity.
+- **DOM surface.** The core touches the DOM only for the canvas, events, the
+  accessibility mirror, `matchMedia`, the observers and text measurement. No
+  module-level side effects (`sideEffects: false`).
+
+`render/canvas-renderer.test.ts` pins the exact Canvas2D call sequence each spec
+kind produces. Change it deliberately.
+
+## Extension points
+
+Eight sets of built-ins share one idiom: a pure function does the work, a
+`Name | Function` union is what every prop accepts, and a named lookup resolves
+strings. They are built on `createResolver` (`geometry/resolver.ts`), a lookup
+over a *frozen* map.
+
+| Built-ins | Resolver | Custom value |
+|---|---|---|
+| Easing curves | `resolveEasing` (`tween/easing.ts`) | `(t: number) => number` |
+| Interpolators | `resolveInterpolator` (`tween/interpolators.ts`) | `(a, b) => (t) => T` |
+| Graph layouts | `resolveGraphLayout` (`geometry/graph-layout.ts`) | `(graph, options) => Map<id, Point>` |
+| Axis scales | `resolveScale` (`geometry/scale/scales.ts`) | `Scale` |
+| Tick formatters | `resolveTickFormatter` (`geometry/scale/tick-format.ts`) | `(value, decimalPlaces?) => string` |
+| Drag constraints | `resolveConstraint` (`interact/constrain.ts`) | `DragConstraint` |
+| Shape correspondence | `resolveCorrespondence` (`geometry/morph.ts`) | `Correspondence<Polyline>` |
+| Colormaps | `resolveColormap` (`themes/colormap.ts`) | `(t: number) => string` |
+
+A string looks up, anything else passes through untouched, so a built-in never
+gets a shortcut a custom function does not. An unknown name throws and lists
+every built-in. There is no `register*` and nothing is mutated at module level.
+
+## Testing
+
+- Unit tests sit beside the code (`*.test.ts`); run one area with
+  `pnpm --filter @sophistry/core exec vitest run src/anim`.
+  `geometry/layering.test.ts` guards the dependency direction above.
+- happy-dom has no 2D context, so renderer tests stub `getContext` with a recorder.
+- Scene tests run on headless scenes with a manual clock and `stepFrame`.
+- Every `@example` block in the JSDoc of every package is a self-contained module,
+  typechecked by `pnpm --filter @sophistry/codegen check:examples`.
+- Every docs gallery example is typechecked and mounted under happy-dom by the
+  docs test suite.
+
+## Not implemented
+
+A WebGPU backend would replace `render/` and keep everything upstream; scene-unit
+specs plus a matrix are already what such a backend wants, but nothing assumes
+one exists. Alternative drawing styles (hand-drawn, chalk) would need a geometry
+pass between `scene/` and `render/`, not just a palette. See the
+[roadmap](/project/roadmap/).
+
+## Next steps
+
+- [Performance](/project/performance/): the cost model these invariants protect.
+- [Extending](/guides/extending/): the public custom-definition API.
+- [Stability](/project/stability/): which entry points are covered by semver.

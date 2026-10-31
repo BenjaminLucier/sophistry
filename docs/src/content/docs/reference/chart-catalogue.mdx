@@ -1,0 +1,259 @@
+---
+title: "Chart catalogue"
+description: "Every chart in @sophistry/charts: what it needs, its notable options, and a live example per family."
+---
+
+import Example from "../../../components/Example.astro";
+
+Every chart in `@sophistry/charts`: 73 2D definitions, plus the eight 3D charts of `@sophistry/charts/3d` ([below](#3d-charts)). The table uses the component names from `@sophistry/solidjs/charts` (and `@sophistry/react/charts`); the definition behind each is the same name in lower camel case (`Chart` is `chart`, `Hist2D` is `hist2d`), except `Regression`, whose definition is `regressionPlot`.
+
+"Needs" lists the props with no default (beyond `data`); every chart also takes `progress`, `zIndex` and `visible`, and most take `opacity`. The [Charts guide](/guides/charts/) explains the model and [Chart animation](/guides/chart-animation/) the transitions; each definition's full props are in the [API reference](/api/sophistry/charts/readme/).
+
+| Component | Needs | Notable options |
+|---|---|---|
+| `Chart` | `width`, `height` | `xRange`, `yRange`, `xAxis` / `yAxis` (`scale`, `categories`, `slot`, `zero`, `nice`, `position`, `zeroLine`, `numberHalo`, tick options), `y2Range` / `y2Axis` / `y2Label` (with `SecondaryY`; `y2Axis.alignTicks`), `x2Range` / `x2Axis` / `x2Label` (with `SecondaryX`), `autosize` (`"fit"`, `"contain"`, `"pad"`), `grid`, `title`, `subtitle`, `xLabel`, `yLabel`, `color` (`domain`, `range`, `label`), `legend`, `legendTitle`, `sizeLegend`, `colorbar`, `colorbarLabel`, `clip`, `reveal`, `tooltip` |
+| `Facet` | `data`, `width`, `height`, `panel` (a function of the panel returning nodes) | `row`, `column`, `rows` / `columns` (order), `wrap`, `scales` (`"shared"`, `"independent"`, per axis), `gap`, `widths` / `heights` (ratios), `space` (`"free"`), `to`, `panelTitle`, `marginTitles`, `rowTitle`, `xLabel`, `yLabel`, `title`, `color`, `legend` (`"right"`, `"top"`), `sizeLegend`, `colorbar`, `autosize`, `stagger`, plus the panels' `xRange`, `yRange`, `axis` / `xAxis` / `yAxis`, `grid`, `clip`, `reveal` |
+| `ChartLink` | | `x` (default on), `y`, `xRange`, `yRange`, `color` |
+| `RangeBrush` | `from`, `to` (tracks), or `x`/`y` pairs (a box) | `axis`, `bounds`, `minSpan`, `snap` (band axes), `wheel`, `wheelSpeed`, `handles`, `disabled`, `color`, `fillOpacity`, `label` (inside a `Chart`) |
+| `ChartZoom` | `x` and/or `y` (track pairs) | `bounds`, `minSpan`, `wheel` (`"zoom"`, `"pan"`, `false`), `pan`, `dragMode` (`"pan"`, `"box"`), `onDragModeChange`, `toolbar`, `boxZoom`, `snap` (band axes), `zoomSpeed`, `step`, `zoomStep`, `disabled`, `label` (inside a `Chart`) |
+| `SecondaryY` / `SecondaryX` | | (inside a `Chart`; see `y2Range`, `y2Axis`, `y2Label` / `x2Range`, `x2Axis`, `x2Label`) |
+| `PairPlot` | `data`, `variables`, `width`, `height` | `variableLabels`, `series`, `key`, `diag` (`"density"`, `"histogram"`, `false`), `binCount`, `corner`, `radius`, `offDiagonal` (a function of the panel returning nodes), `gap`, `widths`, `heights`, `space`, `axis`, `grid`, `color`, `legend` (`"top"`), `title`, `autosize`, `stagger` |
+| `JointPlot` | `data`, `x`, `y`, `width`, `height` | `series`, `key`, `marginal` (`"density"`, `"histogram"`), `binCount`, `commonNorm`, `ratio`, `space`, `radius`, `xRange`, `yRange`, `xAxis`, `yAxis`, `xLabel`, `yLabel`, `color`, `legend` (`"top"`), `autosize`, children (more layers on the scatter) |
+| `Legend` | `entries`, `at` | `direction`, `title`, `fontSize`, `maxWidth`, `progress` |
+| `Colorbar` | `domain`, `at` | `ramp`, `orientation`, `length`, `thickness`, `label`, `scale`, `base`, `midpoint`, `ticks`, `tickFormat`, `progress` |
+| `SizeLegend` | `scale`, `at` | `values`, `format`, `direction`, `title`, `fontSize`, `maxWidth`, `progress` |
+| `Breadcrumbs` | `path` | `root`, `x`, `y`, `align`, `fontSize`, `separator`, `maxWidth`, `ellipsis`, `back`, `color`, `linkColor`, `onSelect` (the trail a drill-down hierarchy draws with `breadcrumbs`, on its own) |
+| `TooltipOverlay` | `state` | `area`, `active`, `pointer`, `view` (the panel a chart draws its tooltips on; a chart makes its own, so this is for custom frames) |
+| `Bars` | `value`\* | `category`, `series`, `key`, `layout` (`"overlay"`, `"stack"`, `"dodge"`), `offset`, `order`, `orientation`, `base`, `subband`, `reveal` (`"grow"`, `"stack"`, `"fade"`), `labels`, `stagger`, `staggerOrder`, `to` / `blend` / `staging`, `enterStagger`, `tooltip`, `color`, `colors` (inside a `Chart`), `transition` |
+| `RuleX` / `RuleY` | `x`\* / `y`\* | `y1`, `y2` / `x1`, `x2`, `color`, `dash`, `transition` |
+| `TickX` / `TickY` | `x`\* / `y`\* | `y` / `x` (row or column), `length`, `transition` |
+| `Rug` | `value`\* | `series`, `key`, `axis` (`"x"` or `"y"`), `length`, `color`, `stagger`, `transition` |
+| `Density` | `x`\* | `series`, `commonNorm`, `orientation`, `bandwidth`, `samples`, `domain`, `row`, `rowHeight`, `rowScale`, `color`, `fillOpacity`, `reveal` (`"x"`, `"grow"`) |
+| `Strip` | `value`\* | `category`, `series`, `dodge`, `key`, `orientation`, `width`, `jitterKey`, `seed`, `radius`, `color`, `stagger`, `staggerOrder`, `enterStagger`, `tooltip`, `transition` |
+| `Beeswarm` | `value`\* | `category`, `series`, `dodge`, `key`, `orientation`, `radius`, `gap`, `side`, `color`, `stagger`, `staggerOrder`, `enterStagger`, `tooltip`, `transition` |
+| `Regression` | `x`\*\*\*, `y`\* | `series`, `method` (`"linear"`, `"poly"`, `"loess"`), `degree`, `bandwidth`, `robust`, `level`, `samples`, `color`, `bandOpacity` |
+| `Rects` | | `x1`, `x2`, `y1`, `y2`, `color`, `fillOpacity`, `transition` |
+| `Cells` | `x`, `y` | `value`, `ramp`, `rampMin`, `rampMax`, `rampScale`, `rampMidpoint`, `labels`, `inset`, `transition` |
+| `Dendrogram` | `tree`, `categories` | `axis`, `side`, `size`, `gap`, `color`, `strokeWidth`, `stagger` (inside a `Chart`) |
+| `Labels` | `x`\*\*\*, `y`\*, `text`\* | `direction`, `gap`, `fontSize`, `color` |
+| `Links` | `x1`, `y1`, `x2`, `y2` | `arrow`, `color` |
+| `Vectors` | `x`, `y`, `u`, `v` | `scale`, `color` |
+| `Candlestick` | `x`, `open`, `high`, `low`, `close` | `ohlc`, `upColor`, `downColor`, `bodyWidth` (inside a `Chart`) |
+| `Heatmap` | `x`, `y`, `value`, `width`, `height` | `columns`, `rows`, `ramp`, `rampMin`, `rampMax`, `rampScale`, `rampMidpoint`, `labels`, `title`, `cluster` (`true`, `"rows"`, `"columns"`), `linkage`, `metric`, `dendrogram`, `dendrogramSize` |
+| `Waterfall` | `value`\*, `width`, `height` | `label`, `total`, `labels`, `connectors`, `upColor`, `downColor`, `totalColor` |
+| `Funnel` | `value`\*, `width`, `height` | `label`, `show`, `connectors`, `padding` |
+| `Treemap` | `data` (root), `value`, `width`, `height` | `children`, `label`, `tile`, `padding`, `paddingTop`, `sort`, `focus`, `drill`, `onFocusChange`, `breadcrumbs`, `to` + `blend`, `enterStagger` |
+| `Icicle` | `data` (root), `value`, `width`, `height` | `children`, `label`, `orientation`, `root`, `focus`, `drill`, `onFocusChange`, `breadcrumbs`, `to` + `blend`, `enterStagger` |
+| `Sunburst` | `data` (root), `value`, `radius` | `children`, `label`, `center`, `root`, `focus`, `drill`, `onFocusChange`, `breadcrumbs`, `to` + `blend`, `enterStagger` |
+| `CirclePack` | `data` (root), `value`, `radius` | `children`, `label`, `center`, `padding`, `focus`, `drill`, `onFocusChange`, `breadcrumbs`, `to` + `blend`, `enterStagger` |
+| `Tree` | `data` (root), `width`, `height` | `children`, `label`, `layout` (`"tidy"`, `"cluster"`), `link` (`"curve"`, `"elbow"`), `orientation` (`"horizontal"`, `"vertical"`, `"radial"`), `distance`, `nodeRadius`, `value`, `focus`, `drill`, `onFocusChange`, `breadcrumbs`, `to` + `blend`, `enterStagger` |
+| `Sankey` | `source`, `target`, `value`, `width`, `height` | `nodes`, `nodeId`, `nodeLabel`, `align`, `nodeWidth`, `nodePadding`, `linkColor` |
+| `Chord` | `source`, `target`, `value` | `nodes`, `nodeId`, `nodeLabel`, `center`, `radius`, `thickness`, `padAngle`, `directed`, `arrows`, `arrowSize`, `ribbonColor`, `ribbonOpacity` |
+| `ParallelCoordinates` | `axes`, `width`, `height` | `color`, `colors`, `opacity` |
+| `Gauge` | `value`, `radius` | `min`, `max`, `bands`, `needle`, `unit`, `label`, `startAngle`, `endAngle` |
+| `Bullet` | `value`\*, `width`, `height` | `target`, `ranges`, `label`, `min` / `max`, `sharedScale`, `rangeColors`, `barSize`, `ticks` |
+| `Waffle` | `value`\* | `label`, `rows`, `columns`, `legend`, `legendPosition` |
+| `Mosaic` | `x`, `y`, `width`, `height` | `value` (default: count), `columns` / `rows` (order), `padding`, `colors` / `color`, `labels`, `columnLabels`, `shares`, `stagger`, `tooltip` |
+| `RadialBarChart` | `value`\*, `radius` | `label`, `series`, `maxValue`, `sweep`, `innerRadius` |
+| `BarChart` | `value`\*, `width`, `height` | `label`, `color`, `colors`, `yRange`, `center`, `barWidth`, `yAxis` |
+| `BoxPlot` | `values`\*\*, `width`, `height` | `label`, `series`, `legend`, `yRange`, `boxWidth`, `whiskerScale`, `stagger` |
+| `ViolinPlot` | `values`\*\*, `width`, `height` | `label`, `series`, `legend`, `bandwidth`, `samples`, `scale`, `median`, `stagger` |
+| `PieChart` | `value`\* | `label`, `key`, `ariaLabel`, `center`, `radius`, `innerRadius` (doughnut), `startAngle`, `clockwise`, `labels`, `reveal` (`"grow"`, `"sweep"`) |
+| `PolarAreaChart` | `value`\* | `label`, `key`, `series`, `ariaLabel`, `center`, `radius`, `maxValue`, `stagger` |
+| `RadarChart` | `axisValues`\*\* | `series`, `key`, `axisLabels`, `maxValue`, `gridRings`, `fillOpacity`, `labelGap`, `reveal` (`"grow"`, `"sweep"`), `stagger`, `staggerOrder`, `enterStagger` |
+| `LinePlot` | `x`\*\*\*, `y`\* | `series`, `curve`, `reveal`, `to` / `blend` / `staging`, `enterStagger`, shape props (`stroke`, `dash`, ...) |
+| `Scatter` | `x`\*\*\*, `y`\* | `series`, `key`, `radius`, `size` / `sizeRange` / `sizeMaxValue`, `symbol`, `color`, `stagger`, `staggerOrder`, `to` / `blend` / `staging`, `enterStagger`, `time` / `at` / `trail` / `timeFade`, `transition` |
+| `Stem` | `x`\*\*\*, `y`\* | `series`, `key`, `baseline`, `markerRadius`, `color`, `stagger`, `staggerOrder`, `enterStagger`, `transition` |
+| `ErrorBar` | `x`\*\*\*, `y`\* | `yError`, `xError`, `series`, `key`, `capSize`, `markerRadius`, `stagger`, `staggerOrder`, `enterStagger`, `transition` |
+| `FillBetween` | `x`\*\*\*, `y1`\* | `y2` (default: baseline), `series`, `curve`, `reveal` |
+| `StackPlot` | `x`\*\*\*, `y` (one channel per band, or one with a `series`) | `series`, `colors`, `baseline`, `offset` (`"zero"`, `"normalize"`, `"center"`, `"wiggle"`), `order`, `curve`, `reveal`, `to` / `blend` / `staging`, `enterStagger` |
+| `Stairs` | `value`\* | `edges` (length `n + 1`), `series`, `reveal` |
+| `Ecdf` | `value`\* | `series`, `pad`, `reveal` |
+| `Histogram` | `value`\* | `binCount`, `range` (step = bin width), `color`, `fillOpacity`, `stagger`, `to` / `blend` / `staging` (`toBinCount`, `toRange`), `enterStagger`, `transition` |
+| `Hist2D` | `x`, `y` | `xBins`, `yBins`, `xRange`, `yRange`, `ramp`, `rampScale`, `stagger`, `transition` |
+| `HexBin` | `x`, `y`, `radius` | `ramp`, `rampScale`, `stagger` |
+| `Imshow` | `values` | `xRange`, `yRange`, `rowOrigin`, `ramp`, `rampMin`, `rampMax`, `rampScale`, `rampMidpoint`, `stagger` |
+| `Pcolormesh` | `xs`, `ys`, `values` | `ramp`, `rampMin`, `rampMax`, `rampScale`, `rampMidpoint`, `stagger`, `transition` |
+| `Contour` | `xs`, `ys`, `values` | `levels` (list or count), `ramp`, `rampScale`, `rampMidpoint`, `stagger` |
+| `ContourF` | `xs`, `ys`, `values` | `levels`, `ramp`, `rampScale`, `rampMidpoint`, `stagger` |
+| `Tripcolor` | `x`, `y`, `value` | `triangles`, `ramp`, `rampMin`, `rampMax`, `rampScale`, `rampMidpoint`, `stroke` (mesh) |
+| `TriContour` / `TriContourF` | `x`, `y`, `value` | `triangles`, `levels`, `ramp`, `rampScale`, `rampMidpoint` |
+| `EventPlot` | `events`\*\* | `color`, `colors`, `lineOffset`, `lineLength`, `stagger` |
+| `Barbs` | `function` | `length`, `barbSpacing`, `barbLength` |
+
+\* optional when `data` is `number[]`. \*\* optional when `data` is `number[][]`. \*\*\* optional when `data` is `number[]` (defaults to the index). `Barbs` samples a function field rather than taking `data`.
+
+Every mark with a `key` or `series` also takes `to`, `blend` and `staging` ([data transitions](/guides/chart-animation/#data-transitions)), whether or not its row lists them. `transition` is the [clock-driven update](/guides/chart-animation/#clock-driven-updates) of the per-datum marks.
+
+Every chart is batched: per-datum marks draw as one instances node, marks with distinct outlines (lines, areas, wedges, ribbons, bands) as one path batch, and `Imshow` on linear axes as one image. There is no `rendering` option. See [Batched by default](/guides/charts/#batched-by-default).
+
+## Bars
+
+`BarChart` is the preset; `<Bars>` inside a `<Chart>` does the rest. `orientation="horizontal"` lays bars along a category y axis, `base` makes them float, and `layout="stack"` or `"dodge"` arranges them by `series`. Under a stack, negative values stack down from zero (diverging bars) and `offset="normalize"` makes 100% bars. `labels` writes each value past its bar, or inside it with `labels={{ position: "inside" }}`, hiding any that don't fit; `total: true` adds stack totals. `barChartHandle(node)` (and `barsHandle(node)` for `<Bars>`) gives `barBounds(i)` for annotating a bar.
+
+<Example name="plotting/BarChartReveal" />
+
+<Example name="plotting/GroupedAndStackedBars" />
+
+<Example name="plotting/DivergingBars" />
+
+<Example name="plotting/StackedBarLabels" />
+
+## Distributions
+
+`Density` draws a kernel density estimate; with `series`, one curve per category, and with `row`, each on its own ridgeline row. `commonNorm` scales curves by their share of the data. `orientation="horizontal"` turns it on its side, as `<JointPlot>`'s marginals do. `Rug` puts a tick at every raw value.
+
+<Example name="plotting/DensityAndRug" />
+
+<Example name="plotting/Ridgeline" />
+
+`Strip` spreads dots across a band by seeded jitter, so scrubbing never reshuffles them; `Beeswarm` packs them without overlap. `dodge` gives each series its own sub-band.
+
+<Example name="plotting/StripAndSwarm" />
+
+<Example name="plotting/KeyedBeeswarm" />
+
+`Regression` fits a line, polynomial or LOESS smooth (`robust` resists outliers) and shades its confidence band (`level`, 0.95 by default).
+
+<Example name="plotting/RegressionBand" />
+
+## Lines, scatter and error bars
+
+`ErrorBar` takes `yError` and `xError` as one magnitude or a `[low, high]` pair. `Scatter`'s `radius` is in scene units; `size` maps a value through a square-root scale so each marker's area tracks it. `LinePlot`, `FillBetween` and `StackPlot` take `curve`: `"linear"`, `"monotone"` (smooth, never overshoots: the safe choice for data), `"natural"`, `"catmull-rom"`, or the `"step"` variants.
+
+<Example name="plotting/ScatterWithErrorBars" />
+
+<Example name="plotting/LineCurves" />
+
+## Histograms
+
+`Histogram` buckets raw values by `binCount`, or by a `range` whose step is the bin width (`[0, 10, 2]` is five bins). To re-bin across a transition, give the far end `toBinCount` or `toRange`.
+
+<Example name="plotting/HistogramBins" />
+
+## Box and violin plots
+
+Both take one datum per group holding its raw sample in `values`. `BoxPlot` draws quartiles, whiskers at 1.5 IQR and outliers; `ViolinPlot` draws a kernel density with a median mark. With `series` and `label`, groups sharing a name stand side by side.
+
+<Example name="plotting/BoxAndViolin" />
+
+<Example name="plotting/GroupedBoxes" />
+
+## Pie, polar area and radar
+
+All three sit at `center` with `radius`. `innerRadius` makes a doughnut; `ariaLabel` names each slice for assistive technology. `RadarChart` draws one polygon per datum against shared axes; set `maxValue` to keep the scale fixed while data changes. A radar's transition joins its axes by name, so an axis can fold in or out.
+
+<Example name="plotting/PieAndRadar" />
+
+<Example name="plotting/RadarAxes" />
+
+## Heatmaps and contours
+
+`Imshow` paints a matrix; `Pcolormesh` the same on a non-uniform grid; `Contour` draws iso-lines and `ContourF` filled bands; `Hist2D` and `HexBin` bin scattered points. `Tripcolor`, `TriContour` and `TriContourF` do the same for scattered points by triangulating them. Covering layers paint under the axes, whose numbers get a halo to stay readable.
+
+<Example name="plotting/HeatmapContours" />
+
+<Example name="plotting/TriangulatedField" />
+
+`Heatmap` is the categorical kind: a `<Chart>` with `<Cells>`, each cell's value written in a color that reads on it. `cluster` orders rows and columns by similarity and draws their dendrograms.
+
+<Example name="plotting/HeatmapAnnotated" />
+
+<Example name="plotting/ClusteredHeatmap" />
+
+`rampScale` (`"log"`, `"symlog"`, `"sqrt"`) and `rampMidpoint` change how values map to colors, and `<Chart colorbar>` follows.
+
+<Example name="plotting/ColorNorms" />
+
+## Waterfalls, funnels and candlesticks
+
+`Waterfall` floats each change from the running total and stands `total` bars on zero. `Funnel` stacks a process's stages top-down with the loss between them shaded. `Candlestick` is a layer for price data: wicks low to high, bodies open to close.
+
+<Example name="plotting/WaterfallSteps" />
+
+<Example name="plotting/FunnelStages" />
+
+<Example name="plotting/CandlestickPrices" />
+
+## Hierarchies
+
+`Treemap`, `Icicle`, `Sunburst` and `CirclePack` take one root object as `data`, walk it through `children`, and size each leaf by `value`. `Tree` draws the same data as nodes and links (`layout="cluster"` for a dendrogram, `orientation="radial"` round a centre).
+
+<Example name="plotting/Treemap" />
+
+<Example name="plotting/Sunburst" />
+
+<Example name="plotting/TreeDendrogram" />
+
+<Example name="plotting/RadialTree" />
+
+**Drill-down.** `focus` (a path of names, or `{ from, to, t }` to animate it) zooms a node to fill the view. `drill` makes nodes tappable, `breadcrumbs` draws the path, and `onFocusChange` with `createDrillDown()` lets you own the focus as a seekable track. The node in focus and its children are tab stops; Escape zooms out.
+
+<Example name="plotting/SunburstDrillDown" />
+
+<Example name="interaction/TreemapDrillDown" />
+
+<Example name="interaction/ZoomableCirclePack" />
+
+**Transitions.** Trees transition with `to` and `blend`, matched by name path. Keep the order stable for clean frames: `sort={false}`, and on a treemap `tile="resquarify"`, which lays `to` out in `data`'s rows.
+
+<Example name="plotting/TreemapTransition" />
+
+<Example name="plotting/TreeTransition" />
+
+## Flows
+
+`Sankey` takes links (`source`, `target`, `value`) and works out the nodes. `Chord` lays the same records round a circle; `directed` gives every flow its own ribbon and `arrows` arrowheads. `ParallelCoordinates` draws each datum as a line across one axis per measure.
+
+<Example name="plotting/Sankey" />
+
+<Example name="plotting/ChordDiagram" />
+
+<Example name="plotting/ParallelCoordinates" />
+
+## Gauges, bullets, waffles, mosaics and radial bars
+
+`Gauge` shows one value on an arc with threshold `bands`. `Bullet` is a bar over qualitative `ranges` with a `target` line. `Waffle` shows shares as unit cells that always add up. `Mosaic` draws a two-way table where every tile's area is its value. `RadialBarChart` draws one ring per datum.
+
+<Example name="plotting/Gauge" />
+
+<Example name="plotting/BulletChart" />
+
+<Example name="plotting/Waffle" />
+
+<Example name="plotting/MosaicShares" />
+
+## Stacked areas
+
+`StackPlot` takes wide rows with one `y` channel per band (`series` names them), or long rows with one `y` and a `series` channel. `offset="wiggle"` with `order="insideOut"` makes a streamgraph.
+
+<Example name="plotting/StackedAreas" />
+
+<Example name="plotting/Streamgraph" />
+
+## 3D charts
+
+The 3D charts live in their own entry, `@sophistry/charts/3d` (components in `@sophistry/solidjs/charts/3d`), so the 2D charts never need `@sophistry/3d`. They follow the same data-and-channels conventions, render under a `camera3D` (`<Camera3D>` from `@sophistry/solidjs/3d`), and take the props of the primitive they draw (`shaded`, `stroke`, `opacity`, handlers, ...). In them `z` is a data channel; `zIndex` is still the paint order.
+
+| Component | Needs | Notable options |
+|---|---|---|
+| `BarChart3D` | `x`, `y`, `z`, `height` | `width`, `depth` (default 1), `color`, `colors` |
+| `Scatter3D` | `x`, `y`, `z` | `radius`, `color` |
+| `Stem3D` | `x`, `y`, `z` | `baseline`, `markerRadius`, `color` |
+| `Quiver3D` | `x`, `y`, `z`, `u`, `v`, `w` | `scale`, `color` |
+| `SurfaceGrid3D` | `xs`, `ys`, `zs` (grids) | the mesh's paint props |
+| `TriSurface3D` | `x`, `y`, `z` | the mesh's paint props |
+| `Voxels3D` | `values` (a 3D grid of booleans) | the mesh's paint props |
+| `Wireframe3D` | `xs`, `ys`, `zs` (grids) | the line props |
+
+Charts of many marks (`BarChart3D`, `Quiver3D`, `Scatter3D`, `Stem3D`, `Wireframe3D`) draw one 3D primitive per datum or segment; surfaces (`SurfaceGrid3D`, `TriSurface3D`, `Voxels3D`) are one mesh each. A camera move only re-projects them. See [3D](/guides/3d/#3d-charts).
+
+<Example name="three-d/BarChart3D" />
+
+<Example name="three-d/SurfacePlot3D" />
+
+## Next steps
+
+- [Charts](/guides/charts/): the model behind every chart here.
+- [Chart animation](/guides/chart-animation/): reveals and data transitions.
+- [Plotting gallery](/gallery/plotting/): more examples, grouped by kind of chart.

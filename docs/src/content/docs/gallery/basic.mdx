@@ -1,0 +1,20 @@
+---
+title: Basic concepts
+description: "Stages, shapes, layout, color and your first tweens: the examples to read first."
+---
+
+import Gallery from "../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Start here. These examples cover the pieces every scene is made of: a `<Stage>`, shapes styled by the active theme, layout helpers that place nodes by their measured bounds, a coordinate plane, and a first `draw()` and `moveTo()` driving tracks passed as props. Components come from `@sophistry/solidjs`; tracks, animations and layout helpers from `@sophistry/core`. Each is short enough to read in one sitting, and every one runs live and shows its full source.
+
+The first three (`ShapesGallery`, `FirstSceneShapes`, `UnitCircle`) are the best starting points. `FirstScene*` examples are the steps of the [first scene tutorial](/start/first-scene/), so you can compare each step with its result.
+
+<CardGrid>
+  <LinkCard title="Shapes and styling" href="/guides/shapes-and-styling/" description="Strokes, fills, gradients and the shape catalogue." />
+  <LinkCard title="Layout" href="/guides/layout/" description="arrange, nextTo and placement by bounds." />
+  <LinkCard title="Theming and color" href="/guides/theming-and-color/" description="Palettes, light and dark mode, color spaces." />
+  <LinkCard title="Core concepts" href="/start/concepts/" description="Scene units, nodes, tracks and the frame loop." />
+</CardGrid>
+
+<Gallery category="basic" />

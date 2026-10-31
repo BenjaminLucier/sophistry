@@ -1,0 +1,43 @@
+{
+	"name": "sophistry",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"description": "Sophistry — a controllable Manim-for-the-web animation and visualization toolkit for SolidJS.",
+	"packageManager": "pnpm@12.10.1",
+	"engines": {
+		"node": ">=24"
+	},
+	"scripts": {
+		"typecheck": "pnpm -r typecheck",
+		"test": "pnpm -r --workspace-concurrency=1 test",
+		"codegen:check": "pnpm --filter @sophistry/codegen check",
+		"lint": "biome check",
+		"test:e2e": "PUBLIC_SOPHISTRY_CAPTURE=1 pnpm --filter @sophistry/docs build && playwright test",
+		"test:e2e:engine": "playwright test engine",
+		"test:e2e:visual": "node scripts/e2e-visual.mjs",
+		"test:e2e:update": "node scripts/e2e-visual.mjs --update",
+		"format": "biome check --write",
+		"changeset": "changeset",
+		"version": "changeset version",
+		"release": "pnpm --filter @sophistry/core --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build && changeset publish",
+		"smoke:consumer": "node scripts/consumer-smoke.mjs",
+		"check:playwright": "node scripts/check-playwright-image.mjs"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@changesets/changelog-github": "^1.0.1",
+		"@changesets/cli": "^3.0.3",
+		"@playwright/test": "1.64.1",
+		"typescript": "catalog:"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	},
+	"license": "MIT"
+}

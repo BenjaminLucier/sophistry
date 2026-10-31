@@ -1,0 +1,397 @@
+---
+title: "Animation"
+description: "Tracks as animation targets, preset options, easing, composition, springs, animating your own state, and custom animations."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+An **animation** is a seekable description of how to change values over time. The verbs (`valueTo`, `moveTo`, `draw`, `fadeIn`, ...) take the thing to drive as their first argument plus an options object, and never touch the canvas: they only write values. What they write to is an **animatable**, any object with `peek()` and `set(value)`. A [track](/start/concepts/#tracks-signals-are-the-single-source-of-truth) is one, and so are the [adapters](#animating-signals-and-stores) over state you keep elsewhere. To run, pause and scrub animations, see [Timelines and playback](/guides/timelines/).
+
+## Tracks are the targets
+
+Give a track to a scene node as a prop and to an animation as its target. The node binds to the track, the animation writes it, and each frame the scene pulls the new value and recomputes only what that prop affects. No component re-renders and no framework code runs per frame: animating a prop costs the same whether the scene is written in Solid, React or plain TypeScript.
+
+```tsx
+import { derive, draw, moveTo, sequence, track, trackPoint } from "@sophistry/core";
+import { Circle, Line, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Orbit() {
+  const drawn = track(0);
+  const center = trackPoint(-2, 0);
+  const player = usePlayer();
+
+  onSettled(() => {
+    void player.play(sequence(draw(drawn), moveTo(center, { x: 2, y: 0 })));
+  });
+
+  return (
+    <>
+      {/* The tracks themselves are the props: they bind in core. */}
+      <Circle center={center} radius={1} progress={drawn} />
+      {/* A computed prop: derive from the track, still no Solid work per frame. */}
+      <Line from={{ x: 0, y: 0 }} to={derive(center, (c) => ({ x: c.x, y: c.y + 1 }))} />
+    </>
+  );
+}
+
+export const Scene = () => (
+  <Stage units={8}>
+    <Orbit />
+  </Stage>
+);
+```
+
+Pass the track, not its value: `radius={radius}` binds, `radius={radius.peek()}` reads once and never updates. Keep Solid signals for state the user changes (a slider, a toggle), and read a track in Solid only to show it in the DOM, with `useTrackValue(track)`.
+
+Runs start through a **player**. In Solid, `usePlayer()` returns `play` and `timeline` bound to the enclosing `<Stage>`: its clock, its reduced-motion setting, and its lifetime, so every run it started aborts when the component is disposed. Start animations from `onSettled` or an event handler, never the component body. Without a framework, the scene is the player: `createScene` returns a `Scene` with `scene.play(...)` and `scene.timeline(...)`.
+
+```ts
+import { circle, createScene, draw, moveTo, sequence, track, trackPoint } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 8 });
+const drawn = track(0);
+const center = trackPoint(-2, 0);
+
+scene.add(circle.create({ center, radius: 1, progress: drawn }));
+await scene.play(sequence(draw(drawn), moveTo(center, { x: 2, y: 0 })));
+```
+
+<Example name="vanilla/FirstScene" />
+
+## Options every preset accepts
+
+Every preset takes the same three options and nothing else:
+
+```tsx
+import { fadeIn, track } from "@sophistry/core";
+
+const opacity = track(0);
+
+fadeIn(opacity, {
+  duration: 1.5, // seconds of timeline time (default 1)
+  delay: 0.5, // seconds of leading hold; total length is delay + duration
+  easing: "backOut", // a name, or a function (t) => number
+});
+```
+
+`delay` is part of the animation's length, so a delayed child still lands exactly where a [`sequence`](#composing-animations) expects it. Presets pick their own defaults where it makes sense (`fadeIn` eases with `"out"`, the emphasis presets choose their own durations). A few take an extra option of their own, such as `pathArc` on `moveTo` or `colorSpace` on `colorTo`.
+
+The clock and the abort signal are not options. They belong to whoever runs the animation (`usePlayer()`, `scene.play`, a `timeline`), so one abort stops everything inside a run.
+
+## Presets
+
+Presets are ready-made animations for the common cases. The [Animation presets](/guides/animation-presets/) page lists them all, in these families:
+
+| Family | Presets |
+| --- | --- |
+| [Creation](/guides/animation-presets/#creation) | `draw`, `erase`, `write`, `unwrite`, `drawBorderThenFill` |
+| [Fades and growing](/guides/animation-presets/#fades-and-growing) | `fadeIn`, `fadeOut`, `fadeTo`, `fadeInFrom`, `growFromCenter`, `growFromPoint`, `shrinkToCenter`, ... |
+| [Movement and values](/guides/animation-presets/#movement-and-values) | `moveTo`, `moveBy`, `moveAlong`, `rotateTo`, `scaleTo`, `colorTo`, `valueTo` |
+| [Bending shapes](/guides/animation-presets/#bending-shapes) | `homotopy`, `applyFunction`, `applyComplexFunction`, `phaseFlow` |
+| [Emphasis](/guides/animation-presets/#emphasis) and [indication](/guides/animation-presets/#indication) | `indicate`, `pulse`, `flash`, `wiggle`, `circumscribe`, `focusOn`, `blink`, `showPassingFlash`, `applyWave` |
+| [Transforms](/guides/animation-presets/#transforms) | `morph`, `morphPath`, `morphCurve`, `morphWith`, `<TransformMatchingShapes>` |
+| [Springs](#springs) | `springTo`, and the live follower `follow` |
+| [Animated numbers](/guides/animation-presets/#animated-numbers) | `Integer`, `DecimalNumber` and `Variable`, driven by `valueTo` |
+
+<Example name="animation/FadeAndGrow" />
+
+## Easing
+
+`easing` is either the name of a built-in curve or any function from progress `0..1` to eased progress.
+
+| Family | Names |
+| --- | --- |
+| Basic | `linear`, `in`, `out`, `inOut`, `smooth` (the default, a cubic in-out) |
+| Quad, sine, exp, circ | `quadInOut`, `sinIn`, `sinOut`, `sinInOut`, `expIn`, `expOut`, `expInOut`, `circInOut` |
+| Overshoot | `backIn`, `backOut`, `backInOut`, `elasticOut`, `bounceOut` |
+| Manim | `thereAndBack`, `rushInto`, `rushFrom`, `slowInto`, `doubleSmooth`, `lingering`, `runningStart`, `exponentialDecay` |
+
+```tsx
+import { easings, fadeIn, springEasing, thereAndBackWithPause, track, valueTo } from "@sophistry/core";
+
+const x = track(0);
+const opacity = track(0);
+
+valueTo(x, 4, { easing: "bounceOut" });
+valueTo(x, 4, { easing: (t) => t * t }); // any function works
+valueTo(x, 4, { easing: easings.backOut }); // the table is exported too
+valueTo(x, 4, { duration: 0.6, easing: springEasing({ damping: 8 }) }); // a spring's shape
+fadeIn(opacity, { easing: thereAndBackWithPause(0.3) }); // rises, holds, falls
+```
+
+`thereAndBack` runs a curve forward then backward, so a value ends where it started. That is how `pulse` and `indicate` work. Easing applies inside each leaf animation, not to a composite as a whole: a `sequence` of three eased tweens eases each one. `springEasing` stretches a spring's curve over the duration you give; to keep the spring's own timing, use [`springTo`](#springs).
+
+An unknown easing name throws, so a typo fails loudly. There is no registry; if you want a named curve of your own, keep it in a variable.
+
+<Example name="animation/EasingComparison" />
+
+The rest of Manim's rate functions take parameters, so they are functions that return a curve:
+
+| Function | Manim | What it does |
+| --- | --- | --- |
+| `squish(curve, start, end)` | `squish_rate_func` | Runs `curve` only between `start` and `end` (fractions of the duration) and holds before and after. |
+| `runningStart(pull)` | `running_start` | Backs up by `pull` (−0.5 by default) before running to the end. |
+| `notQuiteThere(curve, proportion)` | `not_quite_there` | Stops `proportion` (0.7 by default) of the way. |
+| `exponentialDecay(timeConstant)` | `exponential_decay` | Leaves fast and settles. |
+
+```tsx
+import { squish, track, valueTo } from "@sophistry/core";
+
+const x = track(0);
+// Over three seconds, moves only during the middle one.
+valueTo(x, 4, { duration: 3, easing: squish("smooth", 1 / 3, 2 / 3) });
+```
+
+`squish` is the one to reach for when one leaf of a longer composite should move only during part of its time. The same windowing as plain arithmetic is `progressIn(t, start, end)`, for driving a prop from a slice of a progress value: `derive(t, (t) => progressIn(t, 0.2, 0.6))`. `exponentialDecay` differs from Manim's in one way: it is rescaled to end at exactly 1, so the animation finishes at its target instead of a hair short. Manim's `wiggle` rate function is the `wiggle` preset.
+
+<Example name="animation/RateFunctions" />
+
+## Composing animations
+
+An animation knows its own length, so composites can place children exactly.
+
+| Composite | Behaviour | Length |
+| --- | --- | --- |
+| `sequence(a, b, c)` | One after another. | Sum of the parts. |
+| `parallel(a, b, c)` | All at once. | The longest. |
+| `lagged([a, b, c], { lag })` | Parallel, each starting `lag` seconds after the previous (default 0.15). | `max(offset + length)` |
+| `lagged([...], { lagRatio })` | Each starts when the previous is this fraction through. `0` is a `parallel`, `1` a `sequence`. Wins over `lag` if both are given. | |
+| `hold(seconds)` | A spacer that writes nothing. | `seconds` |
+| `changeSpeed(anim, speed)` | Plays `anim` faster or slower: a factor, or speeds at places through it (`{ 0.4: 1, 0.5: 0.2, 0.6: 1 }`). | Whatever the profile takes. |
+| `repeat(anim, times, { start })` | Runs `times` in a row (default 2). | `times * length` |
+| `forever(anim, { start })` | Loops without end, for ambient motion. | `Infinity` |
+
+```tsx
+import { fadeIn, fadeOut, hold, lagged, parallel, sequence, track, valueTo } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const dots = [track(0), track(0), track(0)];
+const x = track(0);
+const player = usePlayer();
+
+await player.play(
+  sequence(
+    lagged(dots.map((opacity) => fadeIn(opacity)), { lag: 0.2 }),
+    hold(0.5),
+    parallel(valueTo(x, 3), ...dots.map((opacity) => fadeOut(opacity))),
+  ),
+);
+```
+
+<Example name="animation/Sequencing" />
+
+`changeSpeed` is Manim's `ChangeSpeed`: a number scales the whole animation; a record gives speeds at places through it (keys 0 to 1), changing linearly between them. The animation ends where it would have, on a different schedule.
+
+A few details worth knowing:
+
+- Composition inside one `play` is [frame-exact](/guides/timelines/#frame-exactness).
+- Each relative animation (`moveBy`, `rotateBy`, `valueTo(x, (v) => v + 1)`) captures its start when it is entered, so in a `sequence` it picks up where the previous step left off. Animations of one track in a `parallel` all capture the same start, and if two write the same track the later one in the list wins.
+- `repeat` and `forever` re-enter the animation every cycle, so by default each cycle captures its start from where the last one ended. A loop of `sequence(valueTo(a, 2), valueTo(a, 0))` is seamless, and a repeated relative `moveBy` accumulates. Pass `{ start: "fixed" }` to capture once and restart every cycle from that state instead; see [Repeating](/guides/timelines/#repeating-and-scrubbing-across-cycles).
+
+<Aside type="tip">
+  `forever` has infinite duration, so its run only ends by abort. In a component, `usePlayer()` aborts it when the component is disposed; elsewhere pass an `AbortController` signal as the run's last argument. See [Aborting](/guides/timelines/#aborting-and-cleanup).
+</Aside>
+
+## Springs
+
+A tween moves along a curve for a duration you choose. A spring moves the way a weight on a spring would: you choose how stiff it is and how much friction it has, and the motion (and how long it takes) follows. Under-damped springs overshoot and settle; that overshoot is what makes them feel physical.
+
+| Option | Meaning | Default |
+| --- | --- | --- |
+| `stiffness` | How hard it pulls toward the target. Higher is faster. | `100` |
+| `damping` | Friction. Below critical damping, `2 * sqrt(stiffness * mass)`, it overshoots. | `10` |
+| `mass` | Inertia. Heavier is slower and swings further. | `1` |
+| `velocity` | Start velocity, in fractions of the distance per second (`springTo` only). | `0` |
+| `restDelta` | How close to rest counts as settled. | `0.001` |
+
+The core has two spring verbs, for two different jobs.
+
+**`springTo(target, to, options)`** is an ordinary, seekable animation. Its duration is the spring's **settle time**, which depends only on the options, so it is known when the animation is built: a `springTo` sequences, lags and scrubs like any tween, and lands exactly on `to` at the end. It is solved in closed form rather than integrated, so seeking to any time is exact and frame rate never changes the path. `to` can be a function of the starting value, and `delay` and `interpolate` work as for `driveTrack`. A spring's progress overshoots `0..1`; the interpolators extrapolate, and colour channels are clamped.
+
+**`follow(target, source, spring, { clock })`** is a live follower, not an animation. It makes `target` chase a readable `source`, on a clock, for as long as you let it. When the source moves mid-flight the spring is re-solved from the follower's **current position and velocity**, so the motion bends instead of restarting. Numbers, points and number arrays spring per component; anything else (a colour, a polyline) springs through its interpolator. A settled follower writes the exact source value and leaves the clock, so an idle follower costs no frames. `follow` returns a function that stops it. Because it is not an `Animation`, it does not go in a `sequence` or a timeline and cannot be scrubbed; use it for UI-like motion (a marker trailing the pointer, a label chasing a moving point), and `springTo` for anything scripted.
+
+```tsx
+import { derive, follow, springTo, track, trackPoint } from "@sophistry/core";
+import { Circle, Stage, useClock, usePlayer, useScene } from "@sophistry/solidjs";
+import { onCleanup, onSettled } from "solid-js";
+
+function Springs() {
+  const radius = track(0.4);
+  const marker = trackPoint(0, 0);
+  const player = usePlayer();
+  const scene = useScene();
+
+  // Seekable: the duration is the settle time, and it overshoots.
+  onSettled(() => void player.play(springTo(radius, 1.5, { stiffness: 170, damping: 8 })));
+
+  // Live: the marker chases the pointer on the stage's clock.
+  const pointer = derive(scene.pointer, (p) => p?.scene ?? { x: 0, y: 0 });
+  onCleanup(follow(marker, pointer, { stiffness: 200, damping: 20 }, { clock: useClock() }));
+
+  return (
+    <>
+      <Circle radius={radius} />
+      <Circle center={marker} radius={0.15} fill="tomato" />
+    </>
+  );
+}
+
+export const Scene = () => (
+  <Stage units={8}>
+    <Springs />
+  </Stage>
+);
+```
+
+`follow` takes its clock explicitly; give it the stage's (`useClock()` in a component, `scene.clock` without a framework) so it pauses, slows and suspends with the scene. Without one it runs on the shared `defaultClock`.
+
+The same two springs without a framework: a dot sprung from place to place with `springTo` (a seekable `sequence`), and a ring that follows it live, keeping its velocity each time the dot sets off somewhere new.
+
+```ts
+import { circle, createScene, follow, sequence, springTo, trackPoint } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 10 });
+const leader = trackPoint(-3, 0);
+const follower = trackPoint(-3, 0);
+
+scene.add(circle.create({ center: follower, radius: 0.35, stroke: "#a6e3a1" }));
+scene.add(circle.create({ center: leader, radius: 0.3, fill: "#f38ba8" }));
+
+const stop = follow(follower, leader, { stiffness: 60, damping: 8 }, { clock: scene.clock });
+
+const bouncy = { stiffness: 180, damping: 9 };
+await scene.play(
+  sequence(
+    springTo(leader, { x: 3, y: 1.5 }, bouncy),
+    springTo(leader, { x: 0, y: -1.5 }, bouncy),
+    springTo(leader, { x: -3, y: 0 }, { stiffness: 120, damping: 20 }),
+  ),
+);
+// later: stop(); scene.dispose();
+```
+
+<Example name="vanilla/Springs" />
+
+### Spring transitions
+
+Instanced nodes and chart marks move their items to new data with a **transition**, and a transition can be a spring instead of a tween: give `spring` in place of `duration` and `easing`. The settle time becomes the duration, `delay` and `stagger` still apply, and an item retargeted mid-flight (new data arriving before the last change settled) keeps its velocity, as with `follow`.
+
+```ts
+import { circle, createScene, instances } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 10 });
+const points = [
+  { id: "a", x: -2, y: 0 },
+  { id: "b", x: 0, y: 1 },
+  { id: "c", x: 2, y: -1 },
+];
+
+const dots = scene.add(
+  instances(circle, {
+    data: points,
+    key: (point) => point.id,
+    channels: { center: (point) => ({ x: point.x, y: point.y }) },
+    shared: { radius: 0.3 },
+    transition: { spring: { stiffness: 140, damping: 12 }, stagger: 0.05 },
+  }),
+);
+
+dots.set("data", points.map((point) => ({ ...point, y: -point.y })));
+```
+
+In Solid, and for enter/exit states and per-item animation, see [Instancing](/guides/instancing/#spring-transitions). Chart marks such as `<Bars>` and `<Scatter>` take the same `transition={{ spring: { ... } }}`; see [Chart animation](/guides/chart-animation/).
+
+## Animating signals and stores
+
+Every preset, `springTo`, `follow` and `driveTrack` accept an `Animatable<T>`: any object with `peek()` (read the current value) and `set(value)`. A `track` is one. For values that live somewhere else, the core has three adapters, none of which needs a framework:
+
+| Helper | Wraps |
+| --- | --- |
+| `lensTarget(get, set)` | any getter/setter pair: a model with setters, an audio node, a store with its own API |
+| `propTarget(object, key)` | a property of a plain object |
+| `storeTarget(root, path)` | one value inside a plain object tree, by key path (`["points", 1, "x"]`) |
+
+```ts
+import { createScene, lensTarget, moveTo, propTarget, storeTarget, valueTo } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")! });
+
+// Any getter/setter pair.
+const audio = new Audio("/tick.mp3");
+const volume = lensTarget(
+  () => audio.volume,
+  (value) => {
+    audio.volume = value;
+  },
+);
+await scene.play(valueTo(volume, 0, { duration: 2 }));
+
+// A property of a plain object.
+const camera = { zoom: 1 };
+await scene.play(valueTo(propTarget(camera, "zoom"), 3));
+
+// A value inside a nested object, addressed by path.
+const model = { points: [{ x: -2, y: 0 }, { x: 2, y: 0 }] };
+await scene.play(moveTo(storeTarget<{ x: number; y: number }>(model, ["points", 1]), { x: 2, y: 3 }));
+```
+
+Things to know:
+
+- **`propTarget` and `storeTarget` are plain assignments.** Nothing is notified; use them for objects you repaint yourself or feed to another library. A scene node only follows a value it is bound to, which means a track or another `Readable`.
+- **The getter must return what the setter last wrote.** Animations read back their own writes (a relative step in a `sequence` captures what the previous step left), so a `lensTarget` over something that applies writes later needs to remember the last value itself.
+- **Seeking and restore are unchanged.** Scrubbing back writes start values through the same target, whatever it wraps.
+
+Solid signals are not animation targets. A Solid signal applies its writes at Solid's next flush, so it cannot read back an animation's write on the same frame, and every write would run Solid code. Animate a track instead, bind it to the scene, and bring it into Solid only where Solid needs it: `useTrackValue(track)` for DOM text, or `watch(track, (value) => setSomething(value))` for a side effect, which runs once per frame in the commit phase however many times the track was written.
+
+## Custom animations
+
+When no preset fits, build your own from three layers, from most to least convenient.
+
+**`driveTrack(target, to, options)`** tweens any track (or any [target](#animating-signals-and-stores)) to a value, from wherever it is when the animation starts. It is the workhorse behind nearly every preset. `to` can be a function of the starting value, and you can pass `from` for an explicit start (which is also held for the whole `delay`) and `interpolate` for a custom blend.
+
+```tsx
+import { driveTrack, track } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const count = track(0);
+const player = usePlayer();
+await player.play(driveTrack(count, (current) => current + 10, { duration: 2 }));
+```
+
+**`driveProgress(onUpdate, options)`** calls your function with eased progress (and the raw, uneased progress as a second argument), for animating anything that is not a single track. Capture start values in `begin` with `peek()`. Because seeking calls `onUpdate` for any time in either direction, it must be a pure function of its arguments plus what `begin` captured.
+
+```tsx
+import { driveProgress, track } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const angle = track(0);
+const player = usePlayer();
+let start = 0;
+
+await player.play(
+  driveProgress((t) => angle.set(start + t * Math.PI), {
+    duration: 2,
+    begin: () => {
+      start = angle.peek();
+    },
+  }),
+);
+```
+
+**`animation({ duration, begin, seek, restore, abort })`** is the raw leaf, for when you need to control restore and abort behaviour yourself. See [Extending sophistry](/guides/extending/).
+
+<Example name="animation/CustomAnimationLeaf" />
+
+### Interpolation
+
+All the tween verbs share one interpolator table, so a number, a point, a colour, a matrix, a polyline and a curve path each blend sensibly. `driveTrack` defaults to `auto`, which sniffs the value's shape (a number, an `{x, y}` point, a CSS colour string) and falls back to a structural interpolator. Pass `interpolate: (a, b) => (t) => value` to override it. The clock, easing and abort handling come along for free, whatever you animate. Interpolators must tolerate progress outside `0..1`, because springs and overshooting easings such as `backOut` produce it.
+
+## Next steps
+
+- [Timelines and playback](/guides/timelines/): run, pause, scrub and abort what you have built.
+- [Animation presets](/guides/animation-presets/): the full catalogue.
+- [Recipe: a scrubbable timeline](/recipes/scrub-slider/)
+- [Interaction](/guides/interaction/): make the tracks respond to the pointer instead of a script.
+- [Math and LaTeX](/guides/math-and-latex/): formulas that draw on and morph with `MathTransform`.

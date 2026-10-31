@@ -1,0 +1,225 @@
+---
+title: "An algorithm visualizer"
+description: "Record a sorting run as one timeline, then play, step and scrub it, and light up a graph traversal."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+The trick to a good algorithm visualizer is to **run the algorithm first and animate the recording**. Execute the sort in plain code against a slots model, turn every compare and swap into an animation, glue them with `sequence`, and hand the result to a timeline (`player.timeline(...)` from `usePlayer()`, or `scene.timeline(...)`). You get play, pause, step and a scrubber that works backwards, and the algorithm itself stays ordinary code.
+
+## Goal
+
+A bubble sort you can drive. Play it, pause it, step through one comparison at a time, or drag the slider to any moment in the run (including backwards).
+
+<Example name="advanced/ScrubbableSort" />
+
+The rest of this page builds it up in pieces. The gallery's simpler [Sorting visualizer](/gallery/advanced/#SortingVisualizer) plays the same model with an `await` loop, which is fine to watch but cannot be scrubbed.
+
+## Items with identity
+
+Each bar needs an identity that survives moving. `createSlots` owns exactly that, *which key sits in which slot*, and nothing else: how a bar looks, and how it travels, stay yours. Its keys here are the bar values.
+
+```tsx
+import { arcMotion, createSlots, derive, rowSlots } from "@sophistry/core";
+import { Rect, Stage } from "@sophistry/solidjs";
+
+const VALUES = [5, 2, 7, 3, 8, 1, 6, 4];
+
+export function Bars() {
+  const slots = createSlots(VALUES, {
+    layout: rowSlots({ spacing: 1.25 }), // slot index -> point
+    motion: arcMotion({ bend: 0.3 }), // how a bar travels between slots
+    duration: 0.4,
+  });
+
+  return (
+    <Stage units={12}>
+      {slots.items.peek().map((item) => (
+        <Rect
+          center={derive(item.position, (position) => ({ x: position.x, y: -1.5 + item.key / 4 }))}
+          width={1}
+          height={item.key / 2}
+          scale={item.scale}
+        />
+      ))}
+    </Stage>
+  );
+}
+```
+
+`slots.items` lists the bars in a *stable* order, so each bar is created once and keeps its node for the life of the scene; the sort happens by moving each item's `position` track, never by reshuffling what is rendered. Each bar binds to its tracks, so a swap animates with no Solid work at all. For the current slot order (labels, "sorted so far" highlights) read `slots.order` or `slots.slotOf(key)`; `slots.order` and each item's `slot` are `Readable`s, so a label can bind to a `derive` of them. Every item also carries `opacity` and `scale` tracks, which the enter and exit effects use and which you can drive yourself (the compare flash below uses `scale`). If keys come and go (`insert`, `remove`), follow `slots.items` with `useTrackValue` and a `<For>`.
+
+## Recording steps
+
+A swap is `plan.swapAt(i, i + 1)`. It returns an ordinary animation, so everything you already know composes: `sequence`, `parallel`, `timeline`. Run the algorithm against a *plan*, a cursor over the order the animations will have produced by that point, and push an animation for each thing that happens. Nothing plays yet.
+
+```tsx nocheck
+import { colorTo, indicate, parallel, sequence } from "@sophistry/core";
+import type { Animation } from "@sophistry/core";
+
+const plan = slots.plan(); // starts from the order on screen right now
+const steps: Animation[] = [];
+const scaleOf = (key: number) => slots.item(key)!.scale;
+
+for (let end = VALUES.length - 1; end > 0; end--) {
+  for (let i = 0; i < end; i++) {
+    // plan.order is the algorithm's working copy: always up to date.
+    const a = plan.order[i];
+    const b = plan.order[i + 1];
+
+    // Compare: both bars swell and flash the theme's highlight color.
+    const parts: Animation[] = [
+      parallel(
+        indicate(scaleOf(a), { color: fills.get(a), duration: 0.4 }),
+        indicate(scaleOf(b), { color: fills.get(b), duration: 0.4 }),
+      ),
+    ];
+
+    // Swap: the model slides both bars into each other's slots.
+    if (a > b) parts.push(plan.swapAt(i, i + 1));
+    steps.push(sequence(...parts));
+  }
+  // The largest remaining bar has bubbled into place.
+  steps.push(colorTo(fills.get(plan.order[end]), palette.positive, { duration: 0.25 }));
+}
+```
+
+Each operation reads the plan to learn which slots it is moving between, then advances the plan. That is why you **create operations in the order they will play**; the tenth swap already knows where the ninth left every bar, with no value captured at play time. It also makes the animations exact when scrubbed: the order flips in a zero-length step at the end of each swap and is restored when time runs backwards, so `slots.order` at any moment is a function of that moment, and `timeline.seek` lands on the same state whether you scrub or replay. Calling `tl.play()` again after the end restores every step to its start before it runs, so the replay begins from the original order, not from the sorted one.
+
+- **`parallel(...)`** runs animations together; **`sequence(...)`** runs them one after another with exact timing. Compose inside one run rather than `await`ing step after step.
+- **`indicate(scale, { color })`** swells a bar and flashes it, returning both tracks to where they started, so a compare leaves no trace.
+- **Motion is yours.** `arcMotion` makes the pair pass over and under each other. Pass your own `(key, from, to, ctx) => Animation` for anything else, per model or per operation. It receives both endpoints and must use them rather than reading the track.
+
+<Aside>
+Build one plan per script. For an `await` loop instead of a recording, call `slots.plan()` fresh before each play: it starts from the order the previous play left. An animation value holds state, so do not run one in two timelines at once.
+</Aside>
+
+The operations are `swap`/`swapAt`, `move(key, toIndex)`, `permute(order)` (the general case), `rotate(by)`, `insert(key, index)` and `remove(key)`. They all take `{ motion, duration, easing, lag, commit }`.
+
+## Controls
+
+Wrap the whole script in a timeline. `usePlayer()` gives you one bound to the stage's clock and aborted when the component unmounts. It owns playback state and exposes it as `Readable`s:
+
+```tsx nocheck
+import { sequence } from "@sophistry/core";
+import { usePlayer, useTrackValue } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+const player = usePlayer();
+const tl = player.timeline(sequence(...steps));
+const time = useTrackValue(tl.time); // for the DOM controls only
+const playing = useTrackValue(tl.playing);
+
+onSettled(() => {
+  void tl.play();
+});
+```
+
+`tl.time` and `tl.playing` are `Readable`s, `tl.duration` is the total length, and `tl.seek(t)` jumps anywhere (seeking backwards restores the start values, so bars slide back). Because the timeline runs on the stage's clock, the stage's own clock controls apply too. The controls are just DOM, reading the two accessors:
+
+```tsx nocheck
+<button type="button" onClick={() => (playing() ? tl.pause() : void tl.play())}>
+  {playing() ? "Pause" : "Play"}
+</button>
+
+<input
+  type="range"
+  aria-label="Timeline position"
+  min={0}
+  max={tl.duration}
+  step="any"
+  value={time()}
+  onInput={(e) => {
+    tl.pause();
+    tl.seek(Number(e.currentTarget.value));
+  }}
+/>
+```
+
+**Stepping.** Record where each step ends while you build the script, then seek to the next or previous boundary:
+
+```tsx nocheck
+const ends: number[] = [];
+let t = 0;
+for (const step of steps) {
+  t += step.duration;
+  ends.push(t);
+}
+
+const stepForward = () => {
+  tl.pause();
+  tl.seek(ends.find((end) => end > tl.time.peek() + 1e-6) ?? tl.duration);
+};
+const stepBack = () => {
+  tl.pause();
+  tl.seek([0, ...ends].filter((end) => end < tl.time.peek() - 1e-6).pop() ?? 0);
+};
+```
+
+The same `ends` array gives you a step counter for free: `derive(tl.time, (time) => ends.filter((end) => end <= time).length)`, bound to an `Integer`'s `value` or read with `useTrackValue` for the DOM. Speed control is the clock's: `player.clock.setSpeed(2)` doubles it. For a fuller scrubber with chapter markers, see [a scrubbable timeline](/recipes/scrub-slider/) and [Timelines and playback](/guides/timelines/).
+
+## Variations
+
+- **Other sorts.** Only the loop that fills `steps` changes. Insertion sort pushes the same compare and `swapAt` animations; merge sort can `permute` to a new order per merge, or use a layout with two rows.
+- **Show the pointer.** Add a `Rect` or `Arrow` whose position is bound to a `trackPoint`, and `moveTo` it alongside each compare.
+- **Queues, heaps, stacks.** `insert` and `remove` bring items in and out (a fade and scale by default, or your own `enter`/`exit`), and the others close or open the gap. A BFS queue is `insert` on discovery and `remove(plan.order[0])` on visit; a ring buffer is `circleSlots` plus `rotate`; a heap sift is a `swapAt` per level, with the layout mapping index to a tree position.
+- **Counters.** Count compares and swaps while recording, and show them with `Integer` / `DecimalNumber`, whose `value` is a `derive` of `tl.time` and `ends` like the step counter above.
+- **Interactive input.** Rebuild the bars and script when the user edits the array. Keep the recording in a function of the input, and call `tl.dispose()` before replacing the timeline.
+
+## Graph traversals
+
+The same approach works for graphs. A `<NetworkGraph>` draws vertices and edges from plain data, and its per-vertex and per-edge style are ordinary props, so **highlighting a traversal is a `derive` over a step track**. Compute the visit order once, drive a single `step` track from 0 to the number of vertices, and derive which vertices and edges are lit:
+
+```tsx
+import { derive, track } from "@sophistry/core";
+import { edgeKey } from "@sophistry/core/geometry";
+import { NetworkGraph, Stage, useScene } from "@sophistry/solidjs";
+
+function Traversal(props: { order: string[]; via: Map<string, [string, string]> }) {
+  const theme = useScene().theme;
+  const step = track(0); // drive with valueTo(step, props.order.length)
+  const visited = derive(step, (step) => props.order.slice(0, Math.round(step)));
+
+  const vertexConfigs = derive([visited, theme], (visited, theme) =>
+    Object.fromEntries(visited.map((vertex) => [vertex, { color: theme.palette.highlight }])),
+  );
+  const edgeConfigs = derive([visited, theme], (visited, theme) =>
+    Object.fromEntries(
+      visited.flatMap((vertex) => {
+        const edge = props.via.get(vertex);
+        return edge ? [[edgeKey(...edge), { stroke: theme.palette.highlight }]] : [];
+      }),
+    ),
+  );
+
+  return (
+    <NetworkGraph
+      vertices={["a", "b", "c"]}
+      edges={[["a", "b"], ["a", "c"]]}
+      layout="tree"
+      layoutOptions={{ root: "a" }}
+      vertexConfigs={vertexConfigs}
+      edgeConfigs={edgeConfigs}
+    />
+  );
+}
+
+export const Scene = () => (
+  <Stage units={12}>
+    <Traversal order={["a", "b", "c"]} via={new Map([["b", ["a", "b"]], ["c", ["a", "c"]]])} />
+  </Stage>
+);
+```
+
+Here `via` maps each vertex to the edge it was discovered through. To light a whole path (the shortest route found, say), `pathEdges(walk)` from `@sophistry/core/geometry` turns a vertex walk like `["a", "c", "f"]` into the pairs `[["a", "c"], ["c", "f"]]`, ready to key into `edgeConfigs` with `edgeKey`.
+
+<Example name="advanced/GraphTraversal" />
+
+Because `step` is just a track, you can put the whole traversal in the same timeline as the sort above and scrub it the same way. See [Fields and graphs](/guides/fields-and-graphs/#network-graphs) for layouts and styling.
+
+## Next steps
+
+- [Recipe: a scrubbable timeline](/recipes/scrub-slider/): the controls in detail.
+- [Timelines](/guides/timelines/): `seek`, restore and replay semantics.
+- [Advanced gallery](/gallery/advanced/): more algorithm and simulation examples.

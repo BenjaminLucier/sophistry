@@ -1,0 +1,103 @@
+{
+	"name": "@sophistry/solidjs",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"description": "SolidJS bindings for Sophistry: Stage, scene components and hooks.",
+	"keywords": [
+		"solidjs",
+		"solid",
+		"animation",
+		"canvas",
+		"visualization"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/solidjs"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./text": "./src/entries/text.ts",
+		"./charts": "./src/entries/charts.ts",
+		"./charts/3d": "./src/entries/charts3d.ts",
+		"./3d": "./src/entries/3d.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./text": {
+				"types": "./dist/entries/text.d.ts",
+				"default": "./dist/entries/text.js"
+			},
+			"./charts": {
+				"types": "./dist/entries/charts.d.ts",
+				"default": "./dist/entries/charts.js"
+			},
+			"./charts/3d": {
+				"types": "./dist/entries/charts3d.d.ts",
+				"default": "./dist/entries/charts3d.js"
+			},
+			"./3d": {
+				"types": "./dist/entries/3d.d.ts",
+				"default": "./dist/entries/3d.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"peerDependencies": {
+		"@solidjs/web": "catalog:",
+		"@sophistry/charts": "workspace:^",
+		"@sophistry/core": "workspace:^",
+		"@sophistry/text": "workspace:^",
+		"solid-js": "catalog:",
+		"@sophistry/3d": "workspace:^"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@solidjs/vite-plugin": "catalog:",
+		"@solidjs/web": "catalog:",
+		"@sophistry/3d": "workspace:*",
+		"@sophistry/charts": "workspace:*",
+		"@sophistry/core": "workspace:*",
+		"@sophistry/text": "workspace:*",
+		"happy-dom": "catalog:",
+		"solid-js": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	},
+	"peerDependenciesMeta": {
+		"@sophistry/charts": {
+			"optional": true
+		},
+		"@sophistry/text": {
+			"optional": true
+		},
+		"@sophistry/3d": {
+			"optional": true
+		}
+	}
+}

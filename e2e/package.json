@@ -1,0 +1,24 @@
+{
+	"name": "@sophistry/e2e",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"description": "Real-browser fixtures for the Playwright suite. Not published.",
+	"scripts": {
+		"fixtures": "vite --config fixtures/vite.config.ts",
+		"typecheck": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@solidjs/web": "catalog:",
+		"@sophistry/core": "workspace:*",
+		"@sophistry/solidjs": "workspace:*",
+		"@sophistry/text": "workspace:*",
+		"solid-js": "catalog:"
+	},
+	"devDependencies": {
+		"@solidjs/vite-plugin": "catalog:",
+		"vite": "catalog:",
+		"@playwright/test": "1.64.1",
+		"typescript": "catalog:"
+	}
+}

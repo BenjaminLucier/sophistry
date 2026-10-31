@@ -1,0 +1,208 @@
+---
+title: "3D"
+description: "camera3D, 3D primitives, surfaces and charts, and orbit controls, projected into the 2D pipeline."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+`@sophistry/3d` projects world-space geometry through a `camera3D` into the same 2D pipeline everything else uses. It is software-rendered Canvas2D, not WebGL: every 3D shape is turned into ordinary 2D shapes in scene units, so progress reveals, themes, dragging, hover and the keyboard mirror all work on 3D objects, and 2D labels can share the same `<Stage>`. The renderer never learns 3D exists. The trade-off is that there is no depth buffer, which shapes the limits described [below](#limits-and-performance).
+
+The definitions (`camera3D`, `cube3D`, `sphere3D`, ...) live in `@sophistry/3d`; the components (`<Camera3D>`, `<Cube3D>`, ...) in `@sophistry/solidjs/3d` and `@sophistry/react/3d`. The 3D charts are a subpath of the charts package, `@sophistry/charts/3d` (components in `@sophistry/solidjs/charts/3d`), so a 2D-only app never pulls in the 3D package.
+
+## A first 3D scene
+
+Put a `<Camera3D>` inside a `<Stage>`, and the 3D shapes inside the camera. The world is right-handed with **+y up**, and for the default camera +x points right and +z toward you.
+
+```tsx
+import { Label, Stage } from "@sophistry/solidjs";
+import { Axes3D, Camera3D, Sphere3D, Vector3D } from "@sophistry/solidjs/3d";
+
+export const scene = (
+  <Stage units={10}>
+    <Camera3D eye={{ x: 6, y: 4, z: 8 }} target={{ x: 0, y: 0, z: 0 }}>
+      <Axes3D length={4} />
+      <Sphere3D center={{ x: 1, y: 0, z: 0 }} radius={0.6} />
+      <Vector3D to={{ x: 0, y: 2, z: 0 }} stroke="#e5484d" />
+    </Camera3D>
+    <Label text="a 2D label over the 3D scene" y={-4.5} />
+  </Stage>
+);
+```
+
+A few conventions hold across every 3D component:
+
+- Coordinates are world units. Solids (`Cube3D`, `Prism3D`, `Sphere3D`, `Cylinder3D`, `Cone3D`, `Torus3D`, the platonic solids) take `center`, the middle of the solid, never a corner. Point markers (`Dot3D`) take `center` too, and segments take `from` / `to`.
+- `size` is a full edge length, `radius` a half-extent, and `width` / `height` / `depth` are full extents along x / y / z. `height` is the extent along the shape's `axis` (default `"y"`, up).
+- Style and interaction props are the 2D ones (`opacity`, `progress`, `visible`, `zIndex`, `hover`, `onTap`, `drag`, ...), and `ref` receives the node, as everywhere. The 2D placement props (`x`, `y`, `rotation`, `scale`, `place`) are not: a 3D shape is placed by its world-space props.
+- Colour follows the 2D rule. Meshes (solids and surfaces) take `fill`, shaded per face; lines (`Line3D`, `Curve3D`, `Vector3D`, `Grid3D`) take `stroke`; the `Dot3D` marker and the 3D charts take `color`.
+
+The same scene from plain TypeScript is `scene.add(camera3D.create({ eye, children: [axes3D.create({ length: 4 }), sphere3D.create({ radius: 0.6 })] }))`: the camera is a container whose `children` prop holds the 3D shapes.
+
+```tsx
+<Cube3D center={{ x: 0, y: 0.5, z: 0 }} size={1} fill="#58c4dd" />
+<Line3D from={{ x: 0, y: 0, z: 0 }} to={{ x: 2, y: 0, z: 0 }} stroke="#e5484d" />
+<Dot3D center={{ x: 2, y: 0, z: 0 }} color="#e5484d" />
+```
+
+## Cameras and orbit controls
+
+`<Camera3D>` takes `eye` (camera position), `target` (what it looks at), `up`, `fov` (vertical field of view in **degrees**, default 50), `origin` (where the target lands on the stage, in scene units) and `viewHeight`.
+
+Every prop accepts a `Readable`, so an orbit is an ordinary animation. There is no separate 3D animation vocabulary: bind `eye` to a `derive` of an angle track, exactly as you would move a `<Dot>`:
+
+```tsx
+import { derive, rotateBy, track } from "@sophistry/core";
+import { Stage, usePlayer } from "@sophistry/solidjs";
+import { Axes3D, Camera3D, Cube3D } from "@sophistry/solidjs/3d";
+import { onSettled } from "solid-js";
+
+export function Turntable() {
+  const angle = track(0);
+  const player = usePlayer();
+  onSettled(() => {
+    void player.play(rotateBy(angle, 2 * Math.PI, { duration: 8, easing: "linear" }));
+  });
+
+  return (
+    <Stage units={10}>
+      <Camera3D eye={derive(angle, (angle) => ({ x: 9 * Math.cos(angle), y: 4, z: 9 * Math.sin(angle) }))}>
+        <Axes3D length={3} />
+        <Cube3D center={{ x: 0, y: 0.5, z: 0 }} size={1} />
+      </Camera3D>
+    </Stage>
+  );
+}
+```
+
+<Example name="three-d/CameraMotion" />
+
+### Projection and depth sort
+
+A `camera3D` owns one projection (a view matrix plus a perspective divide) and provides it to its subtree as context. Each 3D primitive projects its world geometry into ordinary scene-unit shapes (one hidden child shape per face or segment, each with its own depth-derived `zIndex`), and the camera runs **one depth sort per commit** over everything under it, after every primitive that re-projected in that commit. Moving the camera re-projects; nothing else in the scene is touched.
+
+### viewHeight
+
+`viewHeight` sets how large the projection is in scene units: larger makes the scene larger. It defaults to the frame's height when the camera first commits, and does not follow later changes to `units`; pass it if you need that. A 2D `<Camera>` or `PanZoom` then zooms 3D content like any other shape.
+
+### Drag to orbit
+
+`orbitControls3D(scene, { eye })` writes the same `eye` track a script would: drag to orbit, wheel to dolly. It takes `eye` as a track (or any animatable), so the camera and the controls share one source of truth. In Solid, `useOrbitControls3D({ eye })` attaches it to the enclosing stage's scene for the component's lifetime; it attaches to the scene, not to a camera, so call it in a component rendered inside the `<Stage>`:
+
+```tsx
+import { type Track, track } from "@sophistry/core";
+import { Stage } from "@sophistry/solidjs";
+import { Axes3D, Camera3D, Sphere3D, useOrbitControls3D } from "@sophistry/solidjs/3d";
+
+type Eye = Track<{ x: number; y: number; z: number }>;
+
+function Orbited(props: { eye: Eye }) {
+  useOrbitControls3D({ eye: props.eye });
+  return (
+    <Camera3D eye={props.eye}>
+      <Axes3D length={3} />
+      <Sphere3D radius={1} />
+    </Camera3D>
+  );
+}
+
+export function Orbitable() {
+  const eye = track({ x: 6, y: 4, z: 8 });
+  return (
+    <Stage units={10}>
+      <Orbited eye={eye} />
+    </Stage>
+  );
+}
+```
+
+Options: `target` (the orbit centre; keep it equal to the camera's `target`), `rotateSpeed` (degrees per pixel, default 0.4), `zoomSpeed`, `minRadius` and `maxRadius` (dolly limits), `maxElevation` (degrees from the equator, default 89 so azimuth stays well defined), `rotate` / `zoom` toggles, and `wheelPriority` when it shares the wheel with a `panZoom`. The returned controller has `update(options)`, `reset()` and `dispose()`. Dragging empty space orbits. A shape whose `drag` handler accepts the gesture takes it instead; a shape with only `hover` leaves it to the orbit controls.
+
+<Example name="three-d/OrbitScene" />
+
+## Primitives
+
+| Component | What it is | Key props |
+|---|---|---|
+| `Sphere3D` | disc sized by depth, with a radial-gradient highlight standing in for a light | `center`, `radius`, `shaded`, `light` |
+| `Dot3D` | a small flat marker | `center`, `radius`, `color` |
+| `Cube3D`, `Prism3D` | box (`Cube3D` is equal extents) | `center`, `size` / `width`, `height`, `depth` |
+| `Cylinder3D`, `Cone3D` | round solids | `center`, `radius`, `height`, `axis`, `resolution` |
+| `Torus3D` | tube around a circle | `center`, `majorRadius`, `minorRadius`, `axis`, `resolution` |
+| `Tetrahedron3D`, `Octahedron3D`, `Icosahedron3D`, `Dodecahedron3D` | the platonic solids, in Manim's orientation | `center`, `edgeLength` |
+| `Polyhedron3D` | any solid from vertices and faces | `vertices`, `faces` (index lists, either winding), `center`, `scale` |
+| `ConvexHull3D` | the convex solid around some points | `points` |
+| `Line3D`, `Vector3D` | segment, and segment with an arrowhead | `from`, `to`, `worldWidth`, `tipLength` |
+| `Curve3D` | polyline sampled from `function(t)`, `t` in `[0, 1]` | `function`, `samples`, `worldWidth` |
+| `Axes3D` | three arrows plus labels | `length`, `origin`, `axisColors`, `labels` (show the axis names), `ticks` |
+| `Grid3D` | ruled coordinate plane | `plane` (`"xz"` ground by default), `extent`, `step`, `offset` |
+| `SurfacePlot3D` | surface sampled from `function(u, v)` | `function`, `resolution` |
+| `MeshFaces` | any list of faces you build yourself | `faces` |
+
+Solids are analytical stand-ins for meshes (a box is six quads, a cylinder is side quads plus two caps), flat-shaded against one light. Polyhedra need no winding care: the platonic solids' faces are found from their vertices, and `Polyhedron3D` turns each face you list to face away from the solid's centre, which is right for any convex solid. `stroke` outlines every face, which is how to show a polyhedron's edges (Manim draws them as a separate graph). `ConvexHull3D` is exact but brute force, so keep it to tens of points; `convexHullFaces`, `orientFaces` and `PLATONIC_SOLIDS` expose the geometry, and `defineMesh3D` / `defineShape3D` are how the primitives themselves are written (see [Extending](/guides/extending/)). `Axes3D`'s `ticks` prop (`true` or `{ step, size, numbers }`) adds tick marks and numbers, the thing that turns three arrows into a system you can read a coordinate off of.
+
+`SurfacePlot3D` samples a function of two parameters. `SurfaceGrid3D` and `Wireframe3D` (3D charts, below) take the grids themselves, `numpy.meshgrid` style, indexed `xs[row][col]`, and `Voxels3D` fills a grid of unit cubes from `values[i][j][k]`, culling the faces hidden between neighbours. Faces are one-sided: with `xs` increasing along columns and `zs` along rows, the top (+y) side is visible, and reversing a grid direction flips it.
+
+<Example name="three-d/PlatonicSolids" />
+
+<Example name="three-d/HelixCurve" />
+
+<Example name="three-d/SurfacePlot3D" />
+
+<Example name="three-d/SurfaceGridWireframe" />
+
+## 3D charts
+
+`BarChart3D`, `Scatter3D`, `Stem3D`, `Quiver3D`, `TriSurface3D`, `SurfaceGrid3D`, `Wireframe3D` and `Voxels3D` come from `@sophistry/charts/3d` (components in `@sophistry/solidjs/charts/3d`). They take `data` plus channels, as the [2D charts](/guides/charts/) do, with `x`, `y` and `z` as world coordinates (y up), and go inside a `<Camera3D>`. The full list is in the [chart catalogue](/reference/chart-catalogue/#3d-charts).
+
+```tsx
+import { Stage } from "@sophistry/solidjs";
+import { Axes3D, Camera3D } from "@sophistry/solidjs/3d";
+import { Scatter3D } from "@sophistry/solidjs/charts/3d";
+
+const points = Array.from({ length: 40 }, (_, i) => ({
+  x: Math.cos(i / 4) * (1 + i / 40),
+  y: i / 20,
+  z: Math.sin(i / 4) * (1 + i / 40),
+}));
+
+export const scene = (
+  <Stage units={10}>
+    <Camera3D>
+      <Axes3D length={3} />
+      <Scatter3D data={points} x="x" y="y" z="z" radius={0.08} />
+    </Camera3D>
+  </Stage>
+);
+```
+
+<Example name="three-d/BarChart3D" />
+
+<Example name="three-d/StemPlot3D" />
+
+## Interaction in 3D
+
+Because a 3D shape ends up as an ordinary shape node, the whole interaction layer works on it: `hover`, `onTap`, `drag`, `focusable` and the keyboard and screen-reader mirror (see [Interaction](/guides/interaction/) and [Accessibility](/guides/accessibility/)). Each projected face keeps its own interaction record, and on a solid tapping any visible face reads as tapping the solid. `ref` gives the solid's node, whose `bounds()` is the union of its projected faces. Dragging a 3D point is up to you: a drag gives you a 2D movement, so decide which world plane it moves in and write that into your track.
+
+## Limits and performance
+
+<Aside type="caution">
+This is a 2D painter's algorithm, not a GPU renderer. Know where it stops before you design a scene around it.
+</Aside>
+
+- **Depth-sorted, not depth-tested.** There is no depth buffer: every piece under one `<Camera3D>` is sorted back to front, once per commit, so separate solids interleave correctly and a concave surface hides its own folds. Faces that pass through each other, or overlap in a cycle, can paint wrong, and a line through a solid draws wholly in front of or behind it.
+- **`zIndex` opts out of the sort.** A 3D shape with an explicit `zIndex` paints all its pieces at that `zIndex`; `zIndex={1}` puts it above the whole 3D scene.
+- **Flat shading only.** One light (`light`, plus the `Sphere3D` radial-gradient highlight): no shadows, no reflections, no textures.
+- **Primitives only.** There is no mesh import; every shape is hand-written geometry or a sampled function.
+- **Clipping.** Lines and curves are clipped to the near plane (a `Vector3D` with one end behind the eye is trimmed, not dropped), but a solid's face with a corner behind the eye is dropped whole. Keep the camera outside your solids.
+- **Cost is per face, per frame.** Everything under the camera is projected and sorted on the CPU whenever the camera moves (every frame of an orbit); a primitive whose own props change re-projects alone, and the sort runs once. A `SurfacePlot3D` at `resolution` 40 is 1600 quads; at 120 it is over 14,000. Keep resolutions as low as reads smooth, build a `SurfaceGrid3D` once rather than per frame, and prefer `Wireframe3D` (lines) for large grids. `Voxels3D` already skips faces hidden between neighboring cubes.
+- **Camera motion is cheap, geometry changes are not.** Animating `eye` re-projects, but scene-unit content moved by the stage camera or `PanZoom` is just a matrix at paint time.
+
+If you need per-pixel occlusion (intersecting meshes), lighting or large point clouds, reach for a WebGL library; sophistry is aimed at explanatory diagrams where the objects are few and legible.
+
+## Next steps
+
+- [Cameras](/guides/cameras/): the 2D cameras that 3D scenes sit inside.
+- [Charts](/guides/charts/): the data-driven chart components, including 3D ones.
+- [Interaction](/guides/interaction/): `hover`, `onTap` and `drag` on 3D shapes.
+- [3D gallery](/gallery/three-d/): live, copyable examples.

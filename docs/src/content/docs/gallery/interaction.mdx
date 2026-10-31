@@ -1,0 +1,21 @@
+---
+title: Interaction
+description: "Dragging, constraints, drop targets, keyboard access, pan and zoom, and cameras."
+---
+
+import SubGalleryIndex from "../../../components/SubGalleryIndex.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Interaction in sophistry writes to the same tracks that animations drive. A `draggable` (or `useMovablePoint`) updates a track, constraints (`onCircle`, `snapToGrid`, `toBounds`) shape where it may go, and every prop bound to that track, directly or through `derive`, follows it. Nodes also take event props (`onClick`, `onDrag`, ...). Every draggable is also a keyboard-focusable tab stop, so these scenes work without a pointer.
+
+Start with [Dragging and input](/gallery/interaction/dragging-and-input/) (`DragConstraints`, then `KeyboardAccessible`). [Cameras, zoom and drill-down](/gallery/interaction/cameras-and-zoom/) moves the view instead of the scene.
+
+<CardGrid>
+  <LinkCard title="Interaction" href="/guides/interaction/" description="draggable, constraints, drop targets, parameters." />
+  <LinkCard title="Accessibility" href="/guides/accessibility/" description="Keyboard and screen-reader support." />
+  <LinkCard title="Cameras" href="/guides/cameras/" description="PanZoom, MultiStage and picture-in-picture." />
+  <LinkCard title="Step-through lesson" href="/recipes/step-through-lesson/" description="A gated lesson built on drop targets." />
+  <LinkCard title="Scroll-driven scenes" href="/recipes/scroll-driven/" description="Tie a timeline to scroll position." />
+</CardGrid>
+
+<SubGalleryIndex category="interaction" />

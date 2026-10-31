@@ -1,0 +1,16 @@
+---
+title: Chart transitions
+description: "Charts that morph between datasets, keyed updates, rescaling axes, sorting with slots, bar chart races and streaming series."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Charts redraw from their data, so animating the data animates the chart: a new `data` value (a track, or a plain prop) reconciles items by key, and with a transition, tweens what changed. Start with `BarChartMorph`, then the `Keyed*` examples, which join two datasets by key so items enter, leave and move. `SortedBars` and `BarChartRace` animate order; `StreamingSeries` slides the domain.
+
+<CardGrid>
+  <LinkCard title="Chart animation" href="/guides/chart-animation/" description="Reveals, data and domain transitions, sorting and races." />
+  <LinkCard title="Timelines" href="/guides/timelines/" description="Seeking and scrubbing any of these." />
+</CardGrid>
+
+<Gallery category="plotting" page="chart-transitions" />

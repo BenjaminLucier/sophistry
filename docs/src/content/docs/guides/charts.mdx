@@ -1,0 +1,404 @@
+---
+title: "Charts"
+description: "Data plus channels, a frame that fits itself, marks over shared scales: bar, line, scatter, heatmap and more, batched by default."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+`@sophistry/charts` turns data into geometry. A chart takes `data` plus **channels** that say where each quantity lives in a datum, and it draws through the same scene graph as everything else, so it reveals with `draw()`, follows light and dark mode, and animates when its data changes. The chart definitions (`chart`, `barChart`, `scatter`, ...) live in `@sophistry/charts`; their Solid components (`<Chart>`, `<BarChart>`, `<Scatter>`, ...) are in `@sophistry/solidjs/charts`, and the React ones in `@sophistry/react/charts`.
+
+```tsx
+import { Stage } from "@sophistry/solidjs";
+import { BarChart } from "@sophistry/solidjs/charts";
+
+const sales = [
+  { quarter: "Q1", units: 120 },
+  { quarter: "Q2", units: 180 },
+  { quarter: "Q3", units: 90 },
+  { quarter: "Q4", units: 210 },
+];
+
+export const Scene = () => (
+  <Stage units={10}>
+    <BarChart data={sales} value="units" label="quarter" width={8} height={4} />
+  </Stage>
+);
+```
+
+Without a framework, the same chart is a definition's `create`:
+
+```ts
+import { barChart } from "@sophistry/charts";
+import { createScene } from "@sophistry/core";
+
+const sales = [
+  { quarter: "Q1", units: 120 },
+  { quarter: "Q2", units: 180 },
+];
+
+const scene = createScene({ host: document.getElementById("figure")!, units: 10 });
+scene.add(barChart.create({ data: sales, value: "units", label: "quarter", width: 8, height: 4 }));
+```
+
+This page covers the model: channels, the frame, marks, series, scales and multiple views. [Chart animation](/guides/chart-animation/) covers reveals and data transitions, and the [chart catalogue](/reference/chart-catalogue/) lists every chart with what it needs.
+
+## Batched by default
+
+A chart is one node with a small subtree, not a node per datum. Each mark draws its data the cheapest way that keeps it exact:
+
+- **Per-datum marks** (`Scatter`, `Bars`, `Strip`, `Rug`, `Stem`, `Cells`, treemap tiles, ...) are one [instances](/start/concepts/#instancing-and-path-batches) node: one item per datum, keyed by the datum's `key`.
+- **Marks with distinct outlines** (lines, areas, wedges, ribbons, contours, violins) are one **path batch**: one item per line, slice or band, each with its own fill or stroke.
+- **Rasters** (`Imshow` on linear axes) are one image.
+- Text (value labels, slice names, axis numbers) stays ordinary label nodes.
+
+There is nothing to configure: no `rendering` prop and no threshold. Ten bars and a hundred thousand points take the same path, and a pan or zoom only re-projects. Hover, tooltips and accessible names still resolve per item. See [Performance](/project/performance/#batched-rendering) for the numbers.
+
+## Data and channels
+
+A channel is either a **key** of the datum or a **function** `(d, i) => value`. Both work the same on every chart:
+
+```tsx
+type Sale = (typeof sales)[number];
+
+<BarChart data={sales} value="units" label="quarter" width={6} height={4} />
+<BarChart
+  data={sales}
+  value={(d: Sale) => d.units / 1000}
+  label={(d: Sale, i: number) => `${i + 1}: ${d.quarter}`}
+  width={6}
+  height={4}
+/>
+```
+
+The rules are the same everywhere:
+
+- **`number[]` needs no channels.** The main numeric channel defaults to the datum (and `x` to its index), so `<BarChart data={[3, 1, 4]} width={6} height={4} />` works. For any other data the channel is required, and nothing is guessed from property names.
+- **Singular names are channels, plural names are arrays.** `x`, `y`, `value`, `label`, `color` take a channel; `xs`/`ys` (grid coordinates), `values` (a grid's matrix), `edges` and `colors` are plain arrays.
+- **Colour is a constant or a function, never a key**, because a bare string is already a colour. To colour *by* a field, name it in `series` ([below](#series-and-legends)).
+- **Ranges are `[min, max, step?]`.** The step is the tick spacing on an axis and the bin width on `Histogram`.
+- **Data and channels are props.** Pass a track or a `derive` as `data` (or as any other prop) and the chart follows it; that is how data animates.
+
+A chart definition is one value, not a generic function, so its props cannot follow the type of `data`: a key channel is any string, and a channel function receives the datum untyped. Annotate the parameter (`(d: Sale) => d.units`) for checked reads. The `Channel<T, V>` type and the `resolveChannel` and `numberValues` helpers are exported for typed code of your own.
+
+<Aside>
+Bad data degrades gracefully: non-finite values are dropped, empty input draws nothing, and a zero-width range gets a small fallback span. Structural mistakes (a `Stairs` with the wrong number of `edges`) throw.
+</Aside>
+
+## The chart frame
+
+`<Chart>` is the plotting frame. Put layers inside it and it fits its axes to their data: each layer reports its extent, the frame takes the union, rounds each axis out to nice ticks, and keeps zero in view only when a layer measures from it (bars, areas, histograms, stems).
+
+```tsx
+import { Stage } from "@sophistry/solidjs";
+import { Chart, ErrorBar, LinePlot, Scatter } from "@sophistry/solidjs/charts";
+
+const runs = [
+  { t: 1, y: 2.1, err: 0.5 },
+  { t: 2, y: 3.4, err: 0.8 },
+  { t: 3, y: 3.9, err: 0.4 },
+];
+
+export const Scene = () => (
+  <Stage units={12}>
+    <Chart width={9} height={5} grid title="Runs" xLabel="t" yLabel="y">
+      <LinePlot data={runs} x="t" y="y" />
+      <ErrorBar data={runs} x="t" y="y" yError="err" />
+      <Scatter data={runs} x="t" y="y" radius={0.1} />
+    </Chart>
+  </Stage>
+);
+```
+
+Anything you give explicitly wins: `xRange`/`yRange` fix a range, `xAxis={{ zero: false }}` drops the zero rule, `nice: false` keeps the data's own ends. `<Chart>` also takes `grid`, `title`, `subtitle`, `xLabel`/`yLabel` and `clip`, which paints the layers only inside the plotting area (turn it on when a range is shorter than the data, or animates). It publishes a coordinate system like `<Axes>`, so `FunctionGraph` and the graph annotations work inside it.
+
+<Example name="plotting/ChartAutoFit" />
+
+Charts come in three kinds:
+
+- **Layers** (`LinePlot`, `Scatter`, `Bars`, `Histogram`, `Imshow`, and the [marks](#marks)) go inside a `<Chart>`. Most also work in a plain `<Axes>` when you would rather set the ranges yourself.
+- **Presets** (`BarChart`, `BoxPlot`, `ViolinPlot`, `Heatmap`) are a `<Chart>` and a layer pre-assembled, placed by `width`, `height` and `center`.
+- **Radial and space-filling charts** (`PieChart`, `RadarChart`, `Sunburst`, `Treemap`, `Sankey`, ...) have no axes; they take a `center` and `radius`, or a `width × height` box.
+
+Layers that grow from a baseline stand where the axes cross, so a chart on a `[120, 160]` range sits on its lower edge, not on a zero that is not there.
+
+**Room for guides.** A legend, a colour bar or a right-hand axis is laid out *inside* `width`: the plot narrows to make room (`autosize="fit"`, the default). `autosize="pad"` lets them hang outside, for lining plots up; `autosize="contain"` fits everything the frame draws, titles and numbers included, inside `width × height`.
+
+### The chart handle
+
+The node is the handle. `ref` receives the chart node, and `chartHandle(node)` from `@sophistry/charts` reads what the frame worked out: `coords` (its coordinate system), `xBand` / `yBand` (the band scales of categorical axes), `color(key)` (a category's colour) and `colorDomain()` (the categories in legend order). It brings the node up to date first, so it is current whenever you call it.
+
+```tsx
+import { chartHandle } from "@sophistry/charts";
+import type { SceneNode } from "@sophistry/core";
+import { Stage } from "@sophistry/solidjs";
+import { Chart, LinePlot } from "@sophistry/solidjs/charts";
+import { onSettled } from "solid-js";
+
+const temps = [
+  { month: 1, city: "Oslo", c: -4 },
+  { month: 7, city: "Oslo", c: 17 },
+];
+
+export function Annotated() {
+  let frame: SceneNode | undefined;
+  onSettled(() => {
+    const handle = frame && chartHandle(frame);
+    if (!handle) return;
+    const peak = handle.coords.coordsToPoint(3, 3.9); // scene units, for a label or arrow
+    const oslo = handle.color("Oslo"); // the colour the legend shows for Oslo
+  });
+
+  return (
+    <Stage units={12}>
+      <Chart width={8} height={4} ref={(node) => (frame = node)}>
+        <LinePlot data={temps} x="month" y="c" series="city" />
+      </Chart>
+    </Stage>
+  );
+}
+```
+
+`barChartHandle(node)` and `barsHandle(node)` add `barBounds(i)` for annotating a bar. The frame's coordinate system is immutable, as every [coordinate system](/guides/coordinate-systems/#the-coordinate-system) is: call `chartHandle` again after the data or ranges change.
+
+## Marks
+
+Inside a `<Chart>`, a chart is a stack of marks over shared scales. Every mark takes `data` plus channels, and `progress`, `stagger`, `tooltip`, `zIndex` and `visible`.
+
+| Mark | Draws |
+|---|---|
+| `Bars` | bars on a band axis; `orientation`, `base` (floating), `layout` (stack, dodge), `labels` |
+| `LinePlot`, `Stairs` | a line or step function through the data |
+| `FillBetween`, `StackPlot` | filled areas, bands, stacked areas |
+| `Scatter` | a marker per datum, `symbol` and `size` by value |
+| `RuleX`, `RuleY` | reference lines across the plot, or segments with `y1`/`y2` |
+| `TickX`, `TickY`, `Rug` | short ticks: strip plots, the raw sample under a density |
+| `Density` | a kernel density curve; with `row`, one ridge of a ridgeline |
+| `Strip`, `Beeswarm` | a dot per value across its category's band |
+| `Regression` | a linear, polynomial or LOESS fit with its confidence band |
+| `Rects`, `Cells` | rectangles from `x1`/`x2`/`y1`/`y2`; a categorical heatmap cell |
+| `Labels` | text at data positions |
+| `Links`, `Vectors` | segments or arrows between points |
+
+They compose freely. Here a shaded span, a target rule, a line, markers with tooltips and a label:
+
+<Example name="plotting/AnnotatedSeries" />
+
+On a band axis, a position channel can name a category instead of a number, so a `RuleY` can mark a row and a `Labels` can sit on a bar.
+
+### Tooltips
+
+Give a mark `tooltip` and hovering an item shows what it is: one row per channel the mark binds, written the way the axis writes it (dates as dates, series with a swatch). Customise it with a template (`tooltip="{series}: {y}"`), a function `(d, i) => text`, or `{ format, content }`:
+
+```tsx
+<Scatter data={cities} x="gdp" y="life" series="continent" tooltip={{ format: { x: (v) => `$${v}k` } }} />
+<Bars data={sales} category="quarter" value="units" tooltip="{category}: {value}" />
+```
+
+`tooltip` on the `<Chart>` sets it for every layer (a layer's own wins). `tooltip={{ mode: "x" }}` replaces them with one shared tooltip for every line and point at the x nearest the pointer, under a crosshair.
+
+A tap toggles the tooltip on touch, the tooltip text becomes the item's accessible name, and Enter or Space opens it on a focused item. A mark without `tooltip` registers no interaction at all.
+
+### Transforms
+
+A transform is a plain function from rows to rows, applied before a mark reads them. The rows it returns use the same field names (`x`, `y`, `z` for the series, `datum` for the input), so a mark reads them with ordinary channels:
+
+```tsx
+import { group, stack } from "@sophistry/charts";
+import { Stage } from "@sophistry/solidjs";
+import { Bars, Chart } from "@sophistry/solidjs/charts";
+
+const sales = [
+  { quarter: "Q1", region: "north", units: 3 },
+  { quarter: "Q1", region: "north", units: 2 },
+  { quarter: "Q1", region: "south", units: 5 },
+  { quarter: "Q2", region: "south", units: 4 },
+];
+
+// Sum units per (quarter, region), then stack the regions in each quarter.
+const totals = group(sales, { by: ["quarter", "region"], y: "units", reduce: "sum" });
+const stacked = stack(totals, { x: "x", y: "y", z: "z" });
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Chart width={8} height={4}>
+      <Bars data={stacked} category="x" base="y1" value="y2" reveal="stack" />
+    </Chart>
+  </Stage>
+);
+```
+
+| Transform | Returns | Use |
+|---|---|---|
+| `stack(data, { x, y, z, offset, order })` | `y1`/`y2` per row | stacked, 100% (`offset: "normalize"`), streamgraph (`"wiggle"`) |
+| `dodge(data, { x, y, z, padding })` | a `subband` per row | grouped bars |
+| `group(data, { by, y, reduce })` | one row per group | counts, sums, means |
+| `bin(data, { x, y, reduce, binCount, range })` | one row per bin | histograms of a sum or mean |
+| `summarize(data, { x, y, interval })` | mean, `low`, `high` per x | confidence bands of replicates |
+| `rolling`, `normalize` | one number per row | moving averages, indexed growth |
+| `jitter(data, { key, width, seed })` | one offset per row | jitter that never reshuffles when scrubbed |
+
+`<Bars series="region" layout="stack">` (or `"dodge"`) runs the transform for you.
+
+## Series and legends
+
+`series` is the channel for "one of several groups". On `LinePlot` it draws one line per category; on `Scatter` or `Bars` it colours each mark. Inside a `<Chart>` the colour comes from the frame's **one categorical scale**, shared by every layer, so a category is the same colour in the line, the markers and the legend:
+
+```tsx
+import { okabeIto } from "@sophistry/charts";
+import { Stage } from "@sophistry/solidjs";
+import { Chart, LinePlot, Scatter } from "@sophistry/solidjs/charts";
+
+const temps = [
+  { month: 1, city: "Oslo", c: -4 },
+  { month: 7, city: "Oslo", c: 17 },
+  { month: 1, city: "Rome", c: 8 },
+  { month: 7, city: "Rome", c: 25 },
+];
+
+export const Scene = () => (
+  <Stage units={12}>
+    <Chart width={8} height={4} color={{ range: okabeIto }} legendTitle="City">
+      <LinePlot data={temps} x="month" y="c" series="city" />
+      <Scatter data={temps} x="month" y="c" series="city" />
+    </Chart>
+  </Stage>
+);
+```
+
+- **The scale.** Categories take colours in the order they are first seen. `<Chart color={{ domain, range, label }}>` pins the order (do it when data is filtered, so colours do not shift), sets the colours and names the categories. `chartHandle(node).color(key)` gives a category's colour for annotations.
+- **The legend is generated** whenever a layer reports a series: one entry per category, its swatch matching the mark (a line, a marker, a square). `legend="top"` moves it above, `legend={false}` hides it. Outside a frame, `<Legend entries at>` draws one by hand.
+- **Explicit colours win.** `color`, `colors`, `fill` or `stroke` on a mark override the scale, and that mark adds nothing to the legend.
+- **Identity.** Per-datum marks keep each item by `key` (default: its place in its series); curves keep one item per category. These are what [data transitions](/guides/chart-animation/#data-transitions) match on.
+
+Two more guides arrive with the legend:
+
+- **A colour bar** for layers that colour by value (`Imshow`, `Cells`, `HexBin`, `ContourF`, ...): `<Chart colorbar colorbarLabel="°C">`, or `<Colorbar>` anywhere.
+- **A size key** for layers that size by value (`Scatter`'s `size`): reference circles at round values. A chart's sized layers share one size scale, so bubbles compare across layers; `scales={{ size: "independent" }}` opts out. `sizeLegend` tunes or hides the key.
+
+<Example name="plotting/SeriesLegend" />
+
+## Scales
+
+An axis's `scale` decides how values map along it, on `<Chart>`, `<Axes>` and `<NumberLine>` alike:
+
+| `scale` | For |
+|---|---|
+| `"linear"` (default) | most data |
+| `"log"` | positive data spanning orders of magnitude |
+| `"sqrt"` | sizes whose area should track the value |
+| `"symlog"` | orders of magnitude on both sides of zero |
+| `"utc"`, `"time"` | dates, ticked in calendar units |
+| `"band"` (`<Chart>` only) | categories, one slot each |
+
+```tsx
+<Chart width={8} height={4} yAxis={{ scale: "log", reverse: true, tickFormat: ",.0f" }}>...</Chart>
+```
+
+Per-axis options (in `axis`, `xAxis` or `yAxis`):
+
+- `reverse` flips the axis; `clamp` pins outliers to its ends; `margin` pads a fitted range by a fraction of the span.
+- `tickFormat` takes a name (`"si"`, `"percent"`), a function, or a [d3-format](https://d3js.org/d3-format) / [d3-time-format](https://d3js.org/d3-time-format) string.
+- `position` moves the axis line: `"zero"` (the default for a continuous axis), `"edge"` (the default for a band axis, so category names never land on the marks), `"top"`/`"right"`, or a value. It never moves the baseline bars grow from; when the two part, a `zeroLine` marks zero.
+- `categories` names a band axis's categories in order (otherwise first seen); `padding` sets the gap between bands; `categoryLabel` writes each name. Categories on a y axis read top-down.
+
+A band axis is chosen for you when a layer reports categories. Underneath it stays numeric: category `i` owns `[i, i + 1]`, so `coordsToPoint(i + 0.5, v)` is the middle of its band.
+
+<Example name="plotting/HorizontalBars" />
+
+### Dates and time zones
+
+Position channels take `Date`s (and [Temporal](https://tc39.es/proposal-temporal/docs/) values) directly. An axis given dates becomes `"utc"` unless you name its scale, so the chart reads the same on every machine; `"time"` uses the viewer's zone, and `timeZone: "America/New_York"` puts the ticks on that zone's clock, through daylight-saving changes. Strings are never parsed as dates: convert them first.
+
+```tsx
+<Chart width={8} height={4} xAxis={{ timeZone: "America/New_York" }}>
+  <LinePlot data={trades} x="at" y="price" />
+</Chart>
+```
+
+<Example name="plotting/TimeSeries" />
+
+## Multiple views
+
+Several frames can share scales, colours and a legend.
+
+- **Small multiples.** `<Facet data row column panel>` splits the rows and draws one chart per category with your `panel` function. Scales are shared by default (`scales="independent"`, or per axis, or `{ x: "column" }` / `{ y: "row" }`). `widths`, `heights` and `space="free"` size the panels.
+- **Linked charts.** `<ChartLink>` shares x (and optionally y) and one colour scale between the charts inside it. `<RangeBrush from to>` draws a draggable selection that writes two tracks; any chart reading them follows. With `x` and `y` pairs it is a box brush.
+- **Zoom and pan.** `<ChartZoom x={[from, to]}>` makes a plot zoomable: the wheel zooms, a drag pans, Shift-drag box-zooms, `0` resets. `toolbar` adds pan/box/reset buttons. On a band axis it settles on whole categories.
+- **Second axes.** Layers inside `<SecondaryY>` map through a second y scale on the right (`y2Range`, `y2Axis`, `y2Label`); `y2Axis={{ alignTicks: true }}` lines its ticks up with the primary grid. `<SecondaryX>` is the same along the top.
+- **Pair and joint plots.** `<PairPlot variables>` plots every pair of variables with densities on the diagonal (`offDiagonal` replaces the scatters); `<JointPlot x y>` is a scatter with marginal densities.
+
+`panel` (and `PairPlot`'s `offDiagonal`) is a plain function prop: it is called once per panel and returns **nodes**, so build them with the definitions' `create` from `@sophistry/charts`. That is the same in Solid, React and plain TypeScript.
+
+```tsx
+import { scatter } from "@sophistry/charts";
+import { Stage } from "@sophistry/solidjs";
+import { Facet } from "@sophistry/solidjs/charts";
+
+const trials = [
+  { site: "north", season: "dry", dose: 1, yield: 3.1 },
+  { site: "north", season: "wet", dose: 2, yield: 4.6 },
+  { site: "south", season: "dry", dose: 1, yield: 2.4 },
+  { site: "south", season: "wet", dose: 3, yield: 5.2 },
+];
+
+export const Grid = () => (
+  <Stage units={12}>
+    <Facet
+      data={trials}
+      row="site"
+      column="season"
+      width={9}
+      height={5}
+      xLabel="dose"
+      yLabel="t/ha"
+      panel={(panel) => [scatter.create({ data: panel.data, x: "dose", y: "yield" })]}
+    />
+  </Stage>
+);
+```
+
+Brushes and zooms hold no state of their own: they write tracks. So animating the tracks moves them, a brush on an overview follows a zoom, and scrubbing replays it.
+
+<Example name="plotting/FacetGrid" />
+
+<Example name="plotting/LinkedBrush" />
+
+<Example name="interaction/ChartZoomPan" />
+
+<Example name="plotting/DualAxis" />
+
+<Example name="plotting/PairPlotMatrix" />
+
+## Colour
+
+Series colours come from the theme (`palette.series`), so charts follow light and dark mode. Override them per mark with `color` or `colors`, or per chart with `<Chart color={{ range }}>`; `okabeIto`, `tableau10` and `observable10` are ready-made categorical schemes.
+
+Layers that colour by value take a `ramp`: a colormap name (`"viridis"`), a list of colour stops, or a function `(t) => color`. `rampMin`/`rampMax` fix its range, `rampScale` maps through `"log"`, `"symlog"` or `"sqrt"`, and `rampMidpoint` makes it diverging around a value. Colormaps and ramps are covered in [Theming and colour](/guides/theming-and-color/#colormaps-and-ramps).
+
+```tsx
+<Imshow values={grid} ramp="viridis" />
+<Cells data={changes} x="month" y="region" value="delta" ramp="rdbu" rampMidpoint={0} />
+```
+
+Layers that cover the plot (`Imshow`, `Cells`, `ContourF`, ...) paint under the axes, and the axis numbers get a halo in the background colour so they stay readable over the image. Filled marks that stand on an axis (`Bars`, `Histogram`, `FillBetween`, `StackPlot`, `Density`) also paint under it, so the axis line stays crisp along their edge.
+
+## Accessibility
+
+Charts are drawn on a canvas, so information reaches assistive technology through accessible names:
+
+- A mark with `tooltip` is one tab stop: the arrow keys walk its items in the order they stand on screen, and each is announced by its tooltip text ([Dense layers](/guides/accessibility/#dense-layers)).
+- `PieChart` and `PolarAreaChart` take `ariaLabel`: each slice is announced as `"<ariaLabel>: <slice label>"`.
+- `<ChartZoom>`, `<RangeBrush>` and drill-down hierarchies are keyboard-driven (arrows, `+`/`-`, Enter, Escape), each advertising its keys with `aria-keyshortcuts`.
+
+See the [accessibility guide](/guides/accessibility/) for the rest.
+
+## Building your own
+
+Every chart is a thin composite over a pure function exported from the same package (`histogramBins`, `boxplotStats`, `pieSlices`, `contourLines`, ...): arrays in, arrays out, no scene. To make a custom layer fit a `<Chart>`, call `chartLayer(ctx)` once in its composite's `setup`; `layer.report({ x: { values }, y: { values, zero } })` reports its extent, `layer.coords()` maps through the fitted axes, and `layer.progress(own)` scales its reveal into the frame's. `createBatchedMark(definition, options)` draws one item per datum through a single instances node, as the built-in marks do. `resolveChannel` and `numberValues` read channels the way the built-ins do. See [Extending](/guides/extending/).
+
+## Next steps
+
+- [Chart animation](/guides/chart-animation/): reveals, keyed transitions, moving domains.
+- [Chart catalogue](/reference/chart-catalogue/): every chart, what it needs, examples.
+- [Plotting gallery](/gallery/plotting/): live, copyable examples.

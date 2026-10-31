@@ -1,0 +1,16 @@
+---
+title: Without a framework
+description: "The same scenes from plain TypeScript: createScene, definitions, tracks and play, with no UI framework."
+---
+
+import Gallery from "../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+The core is plain TypeScript. Every component in the Solid and React bindings is generated from a *definition* in the core or a feature package (`Circle` wraps `circle`), so anything the other galleries build with JSX can be built with `createScene`, `definition.create(props)` and `scene.add(...)` instead. These examples are the framework-free versions of the scenes the guides start with: a first scene, tracks and `derive`, springs, events and dragging, instancing, path batches and a custom shape. Start with `FirstScene`. Each file default-exports a `mount(host, clock)` function that builds its scene in `host` and returns the cleanup; in your own page, call `createScene({ host })` and drop the `clock`, which the site passes so each example runs on its own clock.
+
+<CardGrid>
+  <LinkCard title="Core concepts" href="/start/concepts/" description="Scenes, definitions, tracks and the frame loop." />
+  <LinkCard title="Installation" href="/start/installation/" description="Core alone, or core plus a binding." />
+</CardGrid>
+
+<Gallery category="vanilla" />

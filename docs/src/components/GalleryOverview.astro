@@ -1,0 +1,50 @@
+---
+import { CATEGORIES, examplesIn, subGalleries } from "../lib/examples";
+import ExampleCards from "./ExampleCards.astro";
+---
+
+{
+	CATEGORIES.map((category) => {
+		const pages = subGalleries(category.dir);
+		const examples = examplesIn(category.dir);
+		return (
+			<section>
+				<h2 id={category.dir}>
+					<a href={`/gallery/${category.dir}/`}>{category.title}</a>
+				</h2>
+				<p>{category.blurb}</p>
+				{pages.length > 0 ? (
+					pages.map((page) => (
+						<>
+							<h3 id={`${category.dir}-${page.slug}`}>
+								<a href={`/gallery/${category.dir}/${page.slug}/`}>
+									{page.title}
+								</a>
+							</h3>
+							<ExampleCards examples={examplesIn(category.dir, page.slug)} />
+						</>
+					))
+				) : examples.length === 0 ? (
+					<p>
+						<em>Coming soon.</em>
+					</p>
+				) : (
+					<ExampleCards examples={examples} />
+				)}
+			</section>
+		);
+	})
+}
+
+<style>
+	h2 a,
+	h3 a {
+		color: inherit;
+		text-decoration: none;
+	}
+	h2 a:hover,
+	h3 a:hover {
+		color: var(--sl-color-accent-high);
+		text-decoration: underline;
+	}
+</style>

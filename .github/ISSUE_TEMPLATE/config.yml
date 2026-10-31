@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Question or idea (Discussions)
+    url: https://github.com/BenjaminLucier/sophistry/discussions
+    about: Ask how to do something, show what you built, or float an idea before filing a feature request.
+  - name: Report a security vulnerability
+    url: https://github.com/BenjaminLucier/sophistry/security/advisories/new
+    about: Please report vulnerabilities privately, not in a public issue.

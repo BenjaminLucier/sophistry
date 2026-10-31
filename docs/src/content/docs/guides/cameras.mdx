@@ -1,0 +1,258 @@
+---
+title: "Cameras"
+description: "Multiple views of one scene: addCamera, MultiStage and Camera, split screen, picture-in-picture, quad view, pan and zoom."
+---
+
+import Example from "../../../components/Example.astro";
+
+A scene is drawn once, in scene units; a camera decides which part of it lands where on the canvas. A plain `<Stage>` looks through one implicit camera, and `scene.addCamera(...)` (or `<Camera>` in a `<MultiStage>`) adds any number more. Their framing props take `Readable`s, so animating or gesturing a camera uses the same tracks as everything else.
+
+## The scene's own framing
+
+Even a scene with no cameras is framed by three options of `createScene` (and the same props of `<Stage>`):
+
+- `units`: how many scene units span the canvas width. Fewer units means more zoomed in.
+- `center`: the scene point at the middle of the canvas.
+- `yUp`: whether `y` increases upward (default `true`).
+
+`units` and `center` accept a `Readable`, which binds. Pass a track and you have a camera you can move:
+
+```tsx
+import { track, trackPoint } from "@sophistry/core";
+import { NumberPlane, Stage } from "@sophistry/solidjs";
+
+export function Framed() {
+  const units = track(16);
+  const center = trackPoint(0, 0);
+
+  return (
+    <Stage units={units} center={center}>
+      <NumberPlane xRange={[-8, 8]} yRange={[-5, 5]} width={14} height={8.75} />
+    </Stage>
+  );
+}
+```
+
+In plain TypeScript it is `createScene({ host, units, center })`, and `scene.setView({ units, center, yUp })` changes or rebinds the framing later (a plain value unbinds).
+
+Nothing is rebuilt when the framing changes. The scene produces its specs once, in scene units; the framing is a view matrix applied at paint time. Zooming, panning or resizing the canvas repaints the same specs through a new matrix. `scene.frame` is the visible box in scene units, a `Readable` that the layout helpers (`toEdge`, `toCorner`) and `inFrame` read.
+
+## Animating the camera
+
+Because `units` and `center` are tracks, the animation presets drive them like any other value: `valueTo` for the zoom, `moveTo` for the position. Put them in a `parallel` to fly and zoom together.
+
+```tsx
+import { moveTo, parallel, track, trackPoint, valueTo } from "@sophistry/core";
+import { NumberPlane, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+export function Flyby() {
+  const units = track(24);
+  const center = trackPoint(0, 0);
+  const player = usePlayer();
+
+  onSettled(() => {
+    void player.play(
+      parallel(
+        moveTo(center, { x: 5, y: 2 }, { duration: 1.5 }),
+        valueTo(units, 6, { duration: 1.5 }),
+      ),
+    );
+  });
+
+  return (
+    <Stage units={units} center={center}>
+      <NumberPlane xRange={[-12, 12]} yRange={[-8, 8]} width={24} height={16} />
+    </Stage>
+  );
+}
+```
+
+<Example name="interaction/CameraFlight" />
+
+The same tracks can be written by gestures between animations, which is exactly how `<PanZoom>` works (below). Nothing owns the framing. A spring works too: `follow(center, target, { stiffness, damping }, { clock: scene.clock })` keeps a camera trailing a moving point, its velocity preserved when the point changes course (see [Springs](/guides/animation/#springs)).
+
+## One scene, many cameras
+
+`scene.addCamera(options)` adds a view painted into a rectangle of the canvas. Each camera paints the one finished scene, so a second camera costs a second paint pass, not a second scene.
+
+```ts
+import { circle, createScene, square, trackPoint } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 14 });
+scene.add(circle.create({ center: { x: -3, y: 0 }, radius: 1 }));
+scene.add(square.create({ center: { x: 3, y: 0 }, size: 1.5 }));
+
+const focus = trackPoint(3, 0);
+scene.addCamera({ units: 14, center: { x: -3, y: 0 }, viewport: { x: 0, y: 0, width: 0.5, height: 1 } });
+const closeUp = scene.addCamera({
+  units: 4,
+  center: focus, // a Readable binds: the camera follows the point
+  viewport: { x: 0.5, y: 0, width: 0.5, height: 1 },
+  border: "#cba6f7",
+});
+
+closeUp.update({ units: 3 }); // change options later
+closeUp.dispose(); // with no cameras left, the scene paints its own single view
+```
+
+In the bindings, a `<MultiStage>` takes the same props as `<Stage>`, plus any number of `<Camera>` children. `<Camera>` is `scene.addCamera` for the component's lifetime, and every prop is live:
+
+```tsx
+import { Camera, Circle, MultiStage, Square } from "@sophistry/solidjs";
+
+export function Compare() {
+  return (
+    <MultiStage units={14}>
+      <Camera units={14} center={{ x: -3, y: 0 }} viewport={{ x: 0, y: 0, width: 0.5, height: 1 }} />
+      <Camera
+        units={4}
+        center={{ x: 3, y: 0 }}
+        viewport={{ x: 0.5, y: 0, width: 0.5, height: 1 }}
+        border="#cba6f7"
+      />
+
+      {/* scene children are added once and painted by every camera */}
+      <Circle center={{ x: -3, y: 0 }} radius={1} />
+      <Square center={{ x: 3, y: 0 }} size={1.5} />
+    </MultiStage>
+  );
+}
+```
+
+- `viewport` is in fractions of the canvas (`0..1`, origin top-left), so a layout that is right at 800 by 450 is right on a retina display and through a resize.
+- `units` is measured across the viewport's width.
+- A camera that omits `units`, `center` or `yUp` inherits the scene's, so `addCamera({ viewport })` (or `<Camera viewport={...} />`) alone is a plain window onto the scene as framed.
+- `border` and `borderWidth` (CSS pixels, not scaled by zoom) draw a frame; `background` fills the pane first (the scene's background by default, which is what makes an inset opaque; `null` leaves it see-through).
+- `addCamera` cameras paint in creation order, later over earlier. `<Camera>` components paint in JSX order: each returns an empty anchor node placed where it sits in the tree, and the camera paints in its anchor's order.
+
+`units` and `center` take `Readable`s, so `center={orbit}` follows a moving object with no per-frame code. With no `<Camera>` children a `<MultiStage>` is a plain `<Stage>` (it is the same component; the name says what the scene is for).
+
+## Layouts
+
+Three layouts come ready-made so you do not place viewports by hand. In core they are functions that add the cameras to a scene and return a handle:
+
+```ts
+import { createScene, pictureInPicture, quadView, splitScreen, trackPoint } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 10 });
+const target = trackPoint(2, 0);
+
+const split = splitScreen(scene, {
+  panes: [{ units: 10 }, { units: 3, center: { x: 2, y: 0 } }],
+  split: "horizontal",
+  ratio: 0.5,
+});
+split.update({ ratio: 0.6 }); // rearrange
+split.dispose(); // remove both cameras
+
+const pip = pictureInPicture(scene, {
+  main: {},
+  inset: { units: 3, center: target, border: "#cba6f7" },
+  corner: "top-left",
+  size: 0.3,
+});
+pip.cameras[1].update({ units: 4 }); // a pane is changed through its camera
+
+quadView(scene, { panes: [{ units: 10 }, { units: 6 }, { units: 3 }, { units: 1.5 }] });
+```
+
+The bindings have them as components that render their cameras in place:
+
+```tsx
+import { trackPoint } from "@sophistry/core";
+import { Circle, Dot, MultiStage, PictureInPicture, QuadView, SplitScreen } from "@sophistry/solidjs";
+
+export function Layouts() {
+  const target = trackPoint(2, 0);
+
+  return (
+    <>
+      <MultiStage units={10}>
+        <Circle radius={2} />
+        <SplitScreen panes={[{ units: 10 }, { units: 3, center: { x: 2, y: 0 } }]} split="horizontal" ratio={0.5} />
+      </MultiStage>
+
+      <MultiStage units={10}>
+        <Dot center={target} />
+        <PictureInPicture main={{}} inset={{ units: 3, center: target, border: "#cba6f7" }} corner="top-left" size={0.3} />
+      </MultiStage>
+
+      <MultiStage units={10}>
+        <Circle radius={2} />
+        <QuadView panes={[{ units: 10 }, { units: 6 }, { units: 3 }, { units: 1.5 }]} />
+      </MultiStage>
+    </>
+  );
+}
+```
+
+- **Split screen**: two panes. `split="horizontal"` puts them side by side, `"vertical"` stacks them; `ratio` is the first pane's share.
+- **Picture-in-picture**: a full-canvas `main` and an `inset` pinned to a `corner` (`"top-left"`, `"top-right"` (the default), `"bottom-left"`, `"bottom-right"`), with `size` and `margin` as fractions. Give the inset a smaller `units` and a `center` bound to a moving point's track and it becomes a moving magnifier.
+- **Quad view**: four equal panes in reading order.
+
+Each pane takes the camera options except `viewport`. The components' props are reactive; the core handles' `update` changes the arrangement, and each pane is changed through its camera (`layout.cameras`). If you need the raw rectangles, `splitViewports`, `pictureInPictureViewports` and `quadViewports` compute them.
+
+<Example name="interaction/PictureInPictureViews" />
+
+Pointer input follows the panes too. A gesture belongs to the topmost camera it starts in and stays locked to it until it ends, so you can drag the dot in the main view while the inset follows it.
+
+## Pan and zoom
+
+`panZoom(scene, options)` makes a view navigable. It writes the same `units` and `center` tracks the scene (or a camera) reads, and owns nothing, so an animation and a gesture can drive the same view in turn. The bindings have it as `<PanZoom>` (and the hook `usePanZoom`), placed inside the stage:
+
+```tsx
+import { track, trackPoint } from "@sophistry/core";
+import { NumberPlane, PanZoom, Stage } from "@sophistry/solidjs";
+
+export function Navigable() {
+  const units = track(14);
+  const center = trackPoint(0, 0);
+
+  return (
+    <Stage units={units} center={center}>
+      <PanZoom
+        units={units}
+        center={center}
+        minUnits={4}
+        maxUnits={40}
+        bounds={{ minX: -10, maxX: 10, minY: -6, maxY: 6 }}
+      />
+      <NumberPlane xRange={[-10, 10]} yRange={[-6, 6]} width={20} height={12} />
+    </Stage>
+  );
+}
+```
+
+In core, `units` and `center` may be omitted: `panZoom(scene)` then makes tracks starting at the current framing and binds them to the scene. It returns a controller with `units`, `center`, `reset()` (back to where the view was when it started) and `dispose()`; `<PanZoom ref={(controller) => ...}>` hands it over for a reset button.
+
+- **Wheel** zooms, pinned to the cursor: the scene point under the pointer stays put. **Drag** on empty space pans. **Pinch** zooms about the midpoint of your fingers.
+- A drag that starts on a draggable shape moves the shape; one that starts on empty space moves the camera. They compose with no extra wiring.
+- The wheel goes first to a node under the cursor with an `onWheel` handler (a zoomable chart, say), and only then to the scene. Of several scene-level listeners (two `panZoom`s, or one and an `orbitControls3D`) exactly one moves, chosen by `wheelPriority` (higher first), then subscription order. A listener with nothing to do passes the wheel on.
+- `minUnits` and `maxUnits` limit the zoom. `bounds` is a box that the view's centre is kept inside.
+- `pan={false}` or `zoom={false}` turn either half off. `zoomSpeed` scales the wheel.
+- `wheel="pan"` makes a plain two-finger scroll pan (the document convention) while Ctrl+wheel and pinch still zoom. The default, `"zoom"`, is the graphing-tool convention.
+- `camera={index}` scopes it to one camera (its index in paint order), so each pane is navigated independently. With `camera`, pass the `units` and `center` tracks that camera binds.
+
+<Example name="interaction/PanZoomPlane" />
+
+`panZoomHandlers(options)` is the gesture maths alone, with no scene around it, if you need to wire the behaviour to your own pointer source.
+
+On a touch device a one-finger pan would normally be eaten by page scrolling. `panZoom` sets `touch-action: none` on the canvas while it is attached, so the pan works; a canvas with nothing to drag stays scrollable.
+
+## What cameras do and do not change
+
+- **Layout is scene-wide.** `scene.frame`, and therefore `toEdge`, `toCorner` and `inFrame`, follow the scene's own `units`/`center`, not any camera's. A caption sent to the top edge goes to the top of the scene, and each camera either shows it or does not.
+- **Zoom scales strokes.** Stroke widths, dashes and font sizes are scene units, so a camera at twice the magnification draws lines twice as thick and text twice as large, like a magnifying glass. Camera borders are the exception: they are CSS pixels.
+- **One snapshot, painted N times.** All panes are drawn from the same frame of the same scene on one canvas, so they are always simultaneous and a fast-moving object never disagrees with itself between panes. Overlap (picture-in-picture needs it) is ordinary painting.
+- **One pointer.** `scene.pointer` answers once per canvas: the scene point under the pointer through the camera it is over, with `camera` saying which.
+
+## 3D cameras
+
+A 3D scene has its own camera model: `camera3D` (`<Camera3D>`) projects a world-space subtree into the 2D scene, and `orbitControls3D` (`useOrbitControls3D` in Solid) lets the user orbit it. These live in `@sophistry/3d` and are separate from the 2D cameras on this page; a `<Camera3D>` can be seen through any number of 2D cameras like any other node. See the [3D guide](/guides/3d/).
+
+## Next steps
+
+- [Interaction](/guides/interaction/): draggable handles, node events and how gestures pick a camera.
+- [3D](/guides/3d/): `camera3D` and `orbitControls3D`.
+- [Performance](/project/performance/): why moving a camera is cheap.

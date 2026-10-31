@@ -1,0 +1,23 @@
+{
+	"extends": "./tsconfig.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"declaration": true,
+		"emitDeclarationOnly": true,
+		"declarationMap": true,
+		"incremental": false,
+		"rootDir": "src",
+		"outDir": "dist"
+	},
+	"include": ["src"],
+	"exclude": [
+		"src/**/*.test.ts",
+		"src/**/*.test.tsx",
+		"src/**/*.bench.ts",
+		"src/**/test-*.ts",
+		"src/**/test/**",
+		"src/**/test-support.ts",
+		"src/**/test-helpers.ts",
+		"src/examples/**"
+	]
+}

@@ -1,0 +1,20 @@
+---
+title: Animations
+description: "Sequencing, morphing, emphasis, easing and scrubbable timelines."
+---
+
+import SubGalleryIndex from "../../../components/SubGalleryIndex.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Animations in sophistry are values you compose: presets such as `fadeIn`, `draw` and `morph` write tracks and take `{ duration, delay, easing }`, `sequence`, `parallel` and `lagged` combine them, and a player's `play` or `timeline` runs the result on the stage's clock (`usePlayer()` in a component, `scene.play` without one). Springs (`springTo`, `follow`) sit alongside the tweens. Because every animation is seekable, the same script can be played, paused or scrubbed.
+
+[Tweens and effects](/gallery/animation/tweens-and-effects/) shows the presets one at a time; start there with `FadeAndGrow`. [Sequencing and timelines](/gallery/animation/sequencing-and-timelines/) combines them and drives them from a slider.
+
+<CardGrid>
+  <LinkCard title="Animation" href="/guides/animation/" description="Presets, options and composition." />
+  <LinkCard title="Timelines" href="/guides/timelines/" description="Seek, scrub, pause and chapters." />
+  <LinkCard title="Scrub slider recipe" href="/recipes/scrub-slider/" description="Wire a range input to a timeline." />
+  <LinkCard title="Coming from Manim" href="/manim/migration/" description="Map Manim animations to sophistry ones." />
+</CardGrid>
+
+<SubGalleryIndex category="animation" />

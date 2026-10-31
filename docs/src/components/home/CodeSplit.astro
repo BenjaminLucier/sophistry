@@ -1,0 +1,49 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import ScrubDemo from "./ScrubDemo.tsx";
+import source from "./ScrubDemo.tsx?raw";
+
+// The code on the left is this very file, so it cannot drift from the demo.
+const body = source.replace(/^export default /m, "export ");
+---
+
+<div class="code-split">
+	<div class="code-pane">
+		<Code code={body} lang="tsx" title="Scene.tsx" />
+	</div>
+	<div class="live-pane">
+		<ScrubDemo client:only="solid2" />
+		<p class="caption">
+			Live: it plays, then scrub it, backwards too. Seeking restores start values.
+		</p>
+	</div>
+</div>
+
+<style>
+	.code-split {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		gap: 1.25rem;
+		align-items: start;
+		margin-block: 1.5rem;
+	}
+	@media (min-width: 62rem) {
+		.code-split {
+			grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		}
+	}
+	.code-pane :global(.expressive-code) {
+		margin-top: 0;
+	}
+	.live-pane {
+		border: 1px solid var(--sophistry-frame);
+		border-radius: var(--sophistry-radius);
+		background: var(--sophistry-surface);
+		padding: 0.75rem;
+	}
+	.caption {
+		margin: 0.5rem 0.25rem 0;
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-3);
+	}
+</style>

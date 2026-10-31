@@ -1,0 +1,94 @@
+---
+title: "Performance"
+description: "The cost model behind a sophistry scene: what is computed once, what is paid every frame, measured numbers, and how to keep scenes smooth."
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Example from "../../../components/Example.astro";
+
+sophistry paints every node of a scene on a single Canvas2D, so its performance has one simple shape: **work that depends on the scene's *content* happens when the content changes, only for the nodes and stages that changed, and work that depends on the *view* is one matrix multiply**. This page explains that model, shows the measured numbers, says what still grows with the number of nodes, and gives practical guidance.
+
+## Where the time goes
+
+A frame runs three phases in the page's one shared `requestAnimationFrame` loop: **tick** (clocks advance, animations write tracks), **commit** (each scene recomputes what is stale) and **paint** (each dirty canvas draws). *Update* in the tables below is tick plus commit; *paint* is issuing the Canvas2D commands.
+
+- **A write costs a mark, not a recompute.** Tracks are push-stale, pull-value: `track.set(v)` only tells its subscribers they may be stale. The value is pulled once, in the commit, however many times it was written in the tick, and a `derive` nobody reads is never computed. Nothing re-renders: there is no virtual DOM and no framework code on the per-frame path when you pass a track as a prop.
+- **A recompute costs one stage, not a node.** Each node keeps a cached pipeline of stages (outline, transform, style, spec), and a prop write dirties only the stages it affects. Moving a shape is a new matrix: its outline keeps its identity, so nothing is re-tessellated. Changing `progress`, `zIndex` or `visible` reruns only the final assembly. A frame in which nothing changed costs nothing and never reaches the canvas.
+- **Collection is incremental.** The commit patches only the specs that changed into the previous frame, and re-sorts only when the tree's structure changes; visibility and `zIndex` changes are spliced in by binary search.
+- **Specs are in scene units.** The camera is not baked in, so panning, zooming, resizing or a device-pixel-ratio change is one view matrix at paint time and re-transforms no vertex. See [Cameras](/guides/cameras/).
+- **Paths are cached by identity.** Fully revealed strokes and fills are built once as `Path2D` objects; arc-length tables for `progress` reveals are cached per node. Both key on array *identity*, which the stage caches preserve.
+- **What is off screen is not painted.** Each pass maps the viewport back into scene units and skips every node whose box misses it.
+- **What did not change is not repainted.** When the nodes that change sit late in paint order (a dragged point over a still chart), everything before them is painted once into an offscreen layer and reused while it holds still. When only the camera moves over an expensive scene, the last frame is drawn under the change of view, then repainted sharp once the camera rests.
+- **Offscreen scenes sleep.** A scene scrolled out of view skips painting and suspends its own clock (`pauseWhenHidden`, on by default). A page with twenty stages pays for the ones you can see.
+- **Many similar items are one node.** `instances()` keeps N items' values in typed arrays and advances only the items in flight; a path batch draws many outlines as one node. Charts use both by default. See [Batched rendering](#batched-rendering).
+
+## Measured numbers
+
+<Aside type="caution" title="Read these as ratios, not as benchmarks">
+Measured in October 2026 in **headless Chromium on a loaded development machine**, production builds, 1280x800 canvas, DPR 1, 5 s samples. Absolute numbers are noisy and will differ on your hardware. Compare runs made on the same machine; the ratios between scenarios are the meaningful part.
+</Aside>
+
+| Scenario | Core |
+|---|---|
+| all-moving 10k, update p50 | **2.8 ms** |
+| all-moving 10k, paint p50 | **25.7 ms** |
+| churn 5,000, update max | **4.1 ms** |
+| reorder 10k, update max | **2.3 ms** |
+| mount 10k | **70 ms** |
+
+What they show:
+
+- **Update scales with what changed.** Ten thousand separate nodes all moving cost 2.8 ms a frame, under 0.3 µs each, because a move is a matrix and the per-node work is one stage behind a cache. One node moving among ten thousand costs nothing measurable.
+- **Structural change is cheap.** Creating and destroying 5,000 nodes in a frame (`churn`) or reshuffling 10,000 (`reorder`) stays within a few milliseconds: children reconcile by identity and the frame is spliced, not rebuilt.
+- **Paint is the larger half.** With update this small, a frame of 10,000 moving shapes is dominated by issuing their Canvas2D commands. That is why many similar items should be one batched node, which paints far faster than N paths.
+
+## What still scales with node count
+
+Two things.
+
+- **Updating nodes that change.** Each changed node reruns its dirty stages: a fraction of a microsecond for a move, more for a rebuilt outline.
+- **Painting what is on screen.** A canvas keeps no retained picture, so a frame in which nodes changed redraws every visible node that is not in a reused layer.
+
+That gives a rule of thumb: **thousands of individual nodes** stay smooth on ordinary hardware. Past that, or for data, use one batched node.
+
+## Batched rendering
+
+- **`instances(definition, { data, key, channels, shared, transition })`** is one node for N items of one shape. Per-item values (`instanceable` props such as `center`, `radius`, `fill`) are channels; everything else is shared. A data change reconciles by key into enter, update and exit, and per-item tweens or springs advance only the items in flight, so an idle layer costs nothing per frame. Circles, rects, squares and dots of a few pixels are rasterised straight into one buffer instead of one path each. Hover and taps still resolve per item (`event.item`, `event.key`) through a spatial grid, and `promote(key)` gives one item back its own node when it needs individuality.
+- **A path batch** (`PathBatch`, `pathBatch`) is many distinct outlines in one node: wedges, ribbons, areas, the lines of a multi-series chart. Panning or zooming its group re-places the items without re-tessellating them.
+- **Charts batch by default.** Every per-datum chart mark is an instances node or a path batch, at every size: there is no `rendering` prop and no threshold. `Imshow` and the gridded marks paint as one image, so a million cells pan for the cost of a blit.
+
+<Example name="vanilla/Instancing" />
+
+A batched item has no per-item arc-length reveal yet, so a few chart reveals (outlines drawing on) are approximated; end states are exact.
+
+## Guidance
+
+- **Pass the track itself as the prop.** `<Circle radius={radius} />` binds the node to the track: the animation writes it, the node pulls it at commit, and no Solid or React code runs per frame. `radius={useTrackValue(radius)()}` works, but every frame then runs a framework effect and a `set`. Use `useTrackValue` only to show a value in DOM text or for logic. Computed props are `derive(source, fn)`, which is computed once per change and only while something reads it.
+- **Use `instances()` for many similar items.** A swarm, a particle field or a grid of cells that need no individuality is one node with typed arrays, not a thousand components. Reach for separate nodes when each item needs its own children, reveal or tab stop.
+- **Let charts batch.** They already do; a 100k-point scatter is one node.
+- **Prefer fewer, bigger nodes.** One `<Path>` with many points is far cheaper than hundreds of `<Line>`s.
+- **Keep `pauseWhenHidden` on.** It is the default on `<Stage>` and `createScene`; turn it off only for a scene that must keep time while off screen (and then give it its own clock).
+- **Hide what you are not showing.** `visible={false}` removes a node from the frame, which is cheaper than painting it fully transparent.
+- **Keep identity in custom geometry.** A definition's `geometry` runs only when a `GEOMETRY` prop changes; build the outline about the origin and hand the position over as `offset`, so a move never rebuilds it. A stage that returns fresh arrays for unchanged inputs defeats the arc-length and `Path2D` caches. See [Extending](/guides/extending/).
+- **Move the camera, not the world.** To pan or zoom, change the stage's `center` / `units` (or use `panZoom`) instead of shifting every node. The first is a matrix; the second updates every spec.
+- **Drive many values from few tracks.** One `track` that several props derive from is cheaper and easier to reason about than a separate animation per prop.
+
+## Measuring
+
+Both tools live in the playground app (`apps/playground`, scenes in `src/benchmarks/`). The scenes build with `createScene` and definitions directly, and commit the scene inside the timed step, so *update* covers the track writes, the bindings' pulls, the stages and the frame collection.
+
+- **Interactively.** Run `pnpm --filter playground dev` and open `/benchmarks`. Choose a scenario, a node count and a sample length, run it, and the page reports p50, p95 and max for update and paint, compared with your previous run of the same configuration.
+- **From the command line.** `node e2e/bench.mjs <dist>` runs every scenario in headless Chromium against a production build and prints a Markdown table (`BENCH_ONLY=all-moving,churn` narrows it, `BENCH_SECONDS` sets the sample length):
+
+```sh
+pnpm --filter playground exec vite build --outDir /tmp/pg-dist --emptyOutDir
+node e2e/bench.mjs /tmp/pg-dist
+```
+
+The scene scenarios are `all-moving` (every node animates), `one-moving`, `camera-pan` (the camera moves, no node does), `churn` (nodes created and destroyed), `reorder`, `sorting` and `labels`. The chart scenarios are `scatter-pan` (the chart's range pans and zooms, so every marker re-projects), `scatter-camera`, `scatter-transition`, `imshow-pan` and `line-pan`.
+
+## Next steps
+
+- [Architecture](/project/architecture/) explains the pipeline behind these numbers.
+- [Cameras](/guides/cameras/) covers moving the view without touching the scene.
+- [Extending](/guides/extending/) covers writing definitions that keep the caches warm.

@@ -1,0 +1,27 @@
+---
+import { CATEGORIES, examplesIn } from "../lib/examples";
+import Example from "./Example.astro";
+
+interface Props {
+	/** A directory under src/examples: basic, animation, plotting, ... */
+	category: (typeof CATEGORIES)[number]["dir"];
+	/** For a category split into sub-pages, the sub-page's slug (see SUBGALLERIES). */
+	page?: string;
+}
+
+const { category, page } = Astro.props;
+if (!CATEGORIES.some((c) => c.dir === category)) {
+	throw new Error(`Gallery: unknown category "${category}".`);
+}
+const examples = examplesIn(category, page);
+---
+
+{
+	examples.length === 0 ? (
+		<p>
+			<em>Coming soon: no examples in this category yet.</em>
+		</p>
+	) : (
+		examples.map((example) => <Example name={example.name} />)
+	)
+}

@@ -1,0 +1,39 @@
+{
+	"name": "@sophistry/docs",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "astro dev",
+		"build": "astro build",
+		"preview": "astro preview",
+		"astro": "astro",
+		"typecheck": "tsc --noEmit -p .",
+		"test": "vitest run",
+		"check:links": "node scripts/check-links.mjs",
+		"sync:roadmap": "node scripts/sync-roadmap.mjs",
+		"check:roadmap": "node scripts/sync-roadmap.mjs --check",
+		"prebuild": "node scripts/sync-roadmap.mjs"
+	},
+	"dependencies": {
+		"@astrojs/solid-js": "catalog:",
+		"@astrojs/starlight": "catalog:",
+		"@solidjs/vite-plugin": "catalog:",
+		"@solidjs/web": "catalog:",
+		"@sophistry/3d": "workspace:*",
+		"@sophistry/charts": "workspace:*",
+		"@sophistry/core": "workspace:*",
+		"@sophistry/solidjs": "workspace:*",
+		"@sophistry/text": "workspace:*",
+		"astro": "catalog:",
+		"solid-js": "catalog:"
+	},
+	"devDependencies": {
+		"happy-dom": "catalog:",
+		"starlight-typedoc": "catalog:",
+		"typedoc": "catalog:",
+		"typedoc-plugin-markdown": "catalog:",
+		"typescript": "~5.9.3",
+		"vitest": "catalog:"
+	}
+}

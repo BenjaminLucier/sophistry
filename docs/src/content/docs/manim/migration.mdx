@@ -1,0 +1,481 @@
+---
+title: "Coming from Manim"
+description: "A mapping from Manim concepts and APIs to their sophistry equivalents, with side-by-side scenes."
+---
+
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+import Example from "../../../components/Example.astro";
+
+sophistry borrows Manim's vocabulary, and many names carry over unchanged (`Circle`, `Axes`, `NumberPlane`, `Arrow`, `write`, `MathTex`). The model is close to Manim's too: a scene holds retained objects (nodes, Manim's mobjects) that you create, keep and change. The differences are in how they change over time: animations drive *tracks*, not objects, and a node bound to a track follows it. This page maps what you know onto what you write here.
+
+## The mental shift
+
+**A scene is a component or a `createScene` call, not a `construct()` method.** With the Solid binding, the Manim script becomes a component: JSX inside `<Stage>` says what is on screen, and a script started from `onSettled` says what happens over time. Without a framework, `createScene({ host })` returns the scene and `scene.add(...)` / `scene.play(...)` read almost like `self.add` / `self.play`.
+
+**Mobjects become nodes made from definitions.** `circle.create({ radius: 1 })` in the core, or `<Circle radius={1} />` in a binding, makes a scene node. The node is the handle: keep it (`ref={(node) => ...}` in JSX) to measure it (`node.bounds()`, `node.center()`) or change it (`node.set("fill", RED)`).
+
+**Animations take tracks, not shapes.** `track(0)` is a value that animations write; pass the track itself as a prop (`<Circle radius={radius} />`) and the node follows it. To move a circle, animate the track bound to its `center`. There is no `.animate` proxy.
+
+**Updaters are `derive` and `watch`.** `always_redraw(lambda: ...)` and `add_updater` recompute a mobject from other values. Here `derive(x, (x) => ...)` is a computed value you pass as a prop; it recomputes only when `x` changes, once per frame at most. `watch(x, run)` runs a side effect, and `follow(target, source, spring)` chases a moving value with a spring.
+
+**Scenes are live.** Manim renders a file. sophistry paints into a page, in real time, and every value is also available to the user: draggable points, scrubbable timelines, parameters bound to sliders.
+
+<Aside type="tip">
+When porting, start from the end state. Write the scene that draws the final frame, replace the numbers that change with `track(...)`, then add the animation script.
+</Aside>
+
+## Concept mapping
+
+| Manim | sophistry |
+|---|---|
+| `Scene`, `construct()` | A component rendering `<Stage>`, with a script started in `onSettled`; or `createScene({ host })` and plain code |
+| `self.add(mob)` / `self.remove(mob)` | `scene.add(node)` / `node.dispose()`; in JSX, render or stop rendering the component |
+| `self.play(a, b)` | `scene.play(a, b)`, or `usePlayer().play(a, b)` inside a component |
+| `self.wait(2)` | `hold(2)` inside a `sequence`, or `await player.play(hold(2))` between steps |
+| Mobject | A node: `circle.create({ ... })`, or the node a `<Circle>` returns to `ref` |
+| `ValueTracker(0)` | `track(0)`: `.peek()` reads, `.set(v)` writes |
+| `tracker.get_value()` | `tracker.peek()` |
+| `tracker.animate.set_value(3)` | `valueTo(tracker, 3)` |
+| `always_redraw(f)` / `add_updater` | `derive(tracker, f)` passed as a prop; `watch(tracker, run)` for side effects |
+| An updater that chases another mobject | `follow(target, source, { stiffness, damping })` |
+| `.animate.shift(...)` | an animation preset on a track: `moveTo`, `moveBy`, `valueTo`, `scaleTo`, `rotateTo`, `colorTo` |
+| `VGroup`, `Group` | `<Group>` / `group` (shared position, rotation, scale, opacity) |
+| `VGroup.arrange(RIGHT)` | `arrange(boxes, RIGHT)` returns one `Placement` per item, for each node's `place` prop |
+| `mob.next_to(other, UP)` | `node.set("place", nextTo(node.localBounds(), other.bounds(), UP))` |
+| `mob.move_to(p)` | `centerAt(node.localBounds(), p)` (the name `moveTo` is the animation) |
+| `mob.to_edge(UP)` / `to_corner(UR)` | `toEdge(box, scene.frame.peek(), UP)` / `toCorner(box, scene.frame.peek(), UR)` |
+| `mob.get_center()` / `get_width()` | `node.center()` / `node.width()` |
+| `Text` | `<Label>` / `label` |
+| `MathTex` / `Tex` | `<MathTex>` from `@sophistry/solidjs/text` (`mathTex` in `@sophistry/text`) |
+| `Axes`, `NumberPlane` | `<Axes>`, `<NumberPlane>`; `coordsOf(node)?.coordsToPoint(x, y)` for `c2p` |
+| `axes.plot(f)` | `<FunctionGraph function={f} />` inside `<Axes>` |
+| `config.frame_width` / `self.camera.frame` | `<Stage units center>` (`createScene({ units, center })`), `<Camera>`, `<MultiStage>` |
+| `LaggedStart(..., lag_ratio=0.2)` | `lagged([...], { lagRatio: 0.2 })` |
+| `rate_func=smooth` | `easing: "smooth"` (or any `(t) => number`) |
+| `Mobject.add_updater(..., dt)` | `clock.onTick((dt) => ...)` writing a track, or `forever(...)` |
+
+### Keyword arguments
+
+| Manim | sophistry |
+|---|---|
+| `buff` | `gap` between things (`nextTo`, `arrange`, `Brace`), `padding` inside a surround (`SurroundingRectangle`), `margin` from the frame edge (`toEdge`, `Title`) |
+| `include_tip`, `include_numbers`, `include_ticks` | `tip`, `numbers`, `ticks` (a part toggles by its bare name) |
+| `tip_shape`, `tip_length` | `tipShape`, `tipLength` |
+| `z_index` | `zIndex` |
+| `color` / `fill_color` / `stroke_color` | `color` on text and dots; `fill` / `stroke` on shapes |
+| `stroke_width` | `strokeWidth`, in scene units |
+| `radius`, `width`, `height` | same names (no abbreviations: `center`, not `cx`/`cy`) |
+| `func` / `function` | `function` |
+| `lag_ratio` | `lagRatio` (fraction); `lag` is the same in seconds |
+| `run_time` | `duration`, in seconds |
+| `c2p` / `p2c`, `n2p` / `p2n` | `coordsToPoint` / `pointToCoords`, `numberToPoint` / `pointToNumber` |
+
+Every name follows the [naming conventions](/start/concepts/#naming-conventions).
+
+The complete tables follow, grouped by topic.
+
+## A first scene side by side
+
+The classic: draw a square, turn it into a circle, fade it away.
+
+<Tabs syncKey="lang">
+  <TabItem label="Manim (Python)">
+    ```python
+    from manim import *
+
+    class SquareToCircle(Scene):
+        def construct(self):
+            square = Square(side_length=3)
+            circle = Circle(radius=1.5)
+
+            self.play(Create(square))
+            self.play(Transform(square, circle))
+            self.play(FadeOut(square))
+    ```
+  </TabItem>
+  <TabItem label="sophistry (Solid)">
+    ```tsx
+    import { draw, fadeOut, morph, sequence, track } from "@sophistry/core";
+    import { circlePolyline, rectPolyline } from "@sophistry/core/geometry";
+    import { Polygon, Stage, usePlayer } from "@sophistry/solidjs";
+    import { onSettled } from "solid-js";
+
+    const SQUARE = rectPolyline(-1.5, -1.5, 3, 3);
+    const CIRCLE = circlePolyline(0, 0, 1.5);
+
+    function Shape() {
+      const player = usePlayer();
+      const points = track(SQUARE);
+      const drawn = track(0);
+      const opacity = track(1);
+
+      onSettled(() => {
+        void player.play(
+          sequence(
+            draw(drawn),
+            morph(points, CIRCLE, { closed: true }),
+            fadeOut(opacity),
+          ),
+        );
+      });
+
+      return <Polygon points={points} progress={drawn} opacity={opacity} />;
+    }
+
+    export function SquareToCircle() {
+      return (
+        <Stage units={8}>
+          <Shape />
+        </Stage>
+      );
+    }
+    ```
+  </TabItem>
+  <TabItem label="sophistry (TypeScript)">
+    ```ts
+    import {
+      createScene,
+      draw,
+      fadeOut,
+      morph,
+      polygon,
+      sequence,
+      track,
+    } from "@sophistry/core";
+    import { circlePolyline, rectPolyline } from "@sophistry/core/geometry";
+
+    const scene = createScene({ host: document.body, units: 8 });
+    const points = track(rectPolyline(-1.5, -1.5, 3, 3));
+    const drawn = track(0);
+    const opacity = track(1);
+
+    scene.add(polygon.create({ points, progress: drawn, opacity }));
+
+    void scene.play(
+      sequence(
+        draw(drawn),
+        morph(points, circlePolyline(0, 0, 1.5), { closed: true }),
+        fadeOut(opacity),
+      ),
+    );
+    ```
+  </TabItem>
+</Tabs>
+
+The polygon is bound to three tracks, and `morph` walks the `points` track from the square's outline to the circle's. `usePlayer` runs the script on the stage's clock and stops it when the component unmounts; `scene.timeline(...)` instead of `play` gives a scrubbable version of the same three animations.
+
+## A tracker and a dot, side by side
+
+`ValueTracker` plus `always_redraw` is the bread and butter of Manim explainers. Here it is as a track and a `derive`.
+
+<Tabs syncKey="lang">
+  <TabItem label="Manim (Python)">
+    ```python
+    class DotOnSine(Scene):
+        def construct(self):
+            axes = Axes(x_range=[0, 7, 1], y_range=[-1.5, 1.5, 0.5])
+            graph = axes.plot(np.sin)
+            x = ValueTracker(0)
+            dot = always_redraw(
+                lambda: Dot(axes.c2p(x.get_value(), np.sin(x.get_value())))
+            )
+
+            self.play(Create(axes), Create(graph))
+            self.add(dot)
+            self.play(x.animate.set_value(2 * PI), run_time=4)
+    ```
+  </TabItem>
+  <TabItem label="sophistry (Solid)">
+    ```tsx
+    import {
+      coordsOf,
+      derive,
+      draw,
+      type SceneNode,
+      sequence,
+      track,
+      valueTo,
+    } from "@sophistry/core";
+    import { Axes, Dot, FunctionGraph, Stage, usePlayer } from "@sophistry/solidjs";
+    import { onSettled } from "solid-js";
+
+    function Graph() {
+      const player = usePlayer();
+      const drawn = track(0);
+      const x = track(0);
+      let axes: SceneNode | undefined;
+      // Computed at commit time, when the axes node exists.
+      const at = derive(x, (x) =>
+        (axes && coordsOf(axes)?.coordsToPoint(x, Math.sin(x))) ?? { x: 0, y: 0 },
+      );
+
+      onSettled(() => {
+        void player.play(
+          sequence(draw(drawn), valueTo(x, 2 * Math.PI, { duration: 4 })),
+        );
+      });
+
+      return (
+        <>
+          <Axes
+            ref={(node) => (axes = node)}
+            xRange={[0, 7, 1]}
+            yRange={[-1.5, 1.5, 0.5]}
+            width={11}
+            height={4.5}
+          >
+            <FunctionGraph function={Math.sin} progress={drawn} />
+          </Axes>
+          <Dot center={at} />
+        </>
+      );
+    }
+
+    export function DotOnSine() {
+      return (
+        <Stage units={14}>
+          <Graph />
+        </Stage>
+      );
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+`at` is the whole `always_redraw`: a value derived from `x`, so the dot follows without being told to, and nothing runs while `x` holds still. Here it is running, with a dashed drop line added:
+
+<Example name="maths/ValueTrackerDot" />
+
+## Staggered reveals
+
+<Tabs syncKey="lang">
+  <TabItem label="Manim (Python)">
+    ```python
+    class Stagger(Scene):
+        def construct(self):
+            dots = VGroup(*[Dot() for _ in range(7)]).arrange(RIGHT)
+            self.play(
+                LaggedStart(*[FadeIn(d, shift=UP) for d in dots], lag_ratio=0.2)
+            )
+            self.wait(1)
+    ```
+  </TabItem>
+  <TabItem label="sophistry (Solid)">
+    ```tsx
+    import {
+      fadeInFrom,
+      hold,
+      lagged,
+      sequence,
+      track,
+      trackPoint,
+      UP,
+    } from "@sophistry/core";
+    import { Dot, Stage, usePlayer } from "@sophistry/solidjs";
+    import { onSettled } from "solid-js";
+
+    const XS = [-3, -2, -1, 0, 1, 2, 3];
+
+    function Dots() {
+      const player = usePlayer();
+      const opacity = XS.map(() => track(0));
+      const center = XS.map((x) => trackPoint(x, 0));
+
+      onSettled(() => {
+        void player.play(
+          sequence(
+            lagged(
+              XS.map((_, index) => fadeInFrom(opacity[index], center[index], UP)),
+              { lagRatio: 0.2 },
+            ),
+            hold(1),
+          ),
+        );
+      });
+
+      return XS.map((_, index) => (
+        <Dot center={center[index]} opacity={opacity[index]} />
+      ));
+    }
+
+    export function Stagger() {
+      return (
+        <Stage units={10}>
+          <Dots />
+        </Stage>
+      );
+    }
+    ```
+  </TabItem>
+</Tabs>
+
+Positions use `trackPoint` because `fadeInFrom` animates a position as well as an opacity. `.arrange(RIGHT)` is replaced by choosing the x values, or by `arrange(...)` over measured bounds when sizes vary. For many identical items that need no individuality, `instances(dot, { data, channels, transition: { stagger } })` does the same as one node. See [Layout](/guides/layout/).
+
+## Animations
+
+| Manim | sophistry |
+|---|---|
+| `Create` / `Write` | `draw(progress)` / `write([progress, ...])` |
+| `Uncreate` / `Unwrite` | `erase(progress)` / `unwrite([progress, ...])` (erases from the last track back) |
+| `DrawBorderThenFill` | `drawBorderThenFill` |
+| `Transform` | `morph(points, target)` (also `morphPath`, `morphCurve`, `morphWith`) |
+| `TransformMatchingShapes` | `morphShapes` or `<TransformMatchingShapes>`: pairs by point-cloud similarity, not index or parse |
+| `TransformMatchingTex` | `<MathTransform>` from `@sophistry/solidjs/text` (`mathTransform`), which carries shared glyphs across |
+| `FadeIn` / `FadeOut` | `fadeIn(opacity)` / `fadeOut(opacity)`; with a shift: `fadeInFrom` / `fadeOutTo` |
+| `Indicate` / `Flash` / `Wiggle` | `indicate(scale)` / `flash(r, opacity)` / `wiggle(rotation)` |
+| `Circumscribe` | `circumscribe` |
+| `FocusOn` / `Blink` | `focusOn(radius, opacity)` / `blink(opacity)` |
+| `ShowPassingFlash` | `showPassingFlash(progress)`, with `passingFlash(length, t)` for the stroke's `dash` props |
+| `ApplyWave` | `applyWave(points)` on a `Path`'s points track |
+| `GrowFromCenter` | `growFromCenter(scale)` |
+| `GrowFromPoint` / `GrowFromEdge` | `growFromPoint(scale, pos, from)` / `growFromEdge(scale, pos, bounds, dir)` |
+| `GrowArrow` | `growFromCenter(scale)` with `origin={tail}` on the `<Arrow>` |
+| `SpinInFromNothing` | `spinInFromNothing(scale, rotation)` |
+| `ShrinkToCenter` | `shrinkToCenter` |
+| `mob.animate.move_to(p)` | `moveTo(position, p)` |
+| `MoveAlongPath` | `moveAlong(position, polyline)` |
+| `path_arc=` / `ClockwiseTransform` / `CounterclockwiseTransform` | `pathArc` on `moveTo`, `moveBy`, `morph`, `morphPath` (`-Math.PI` / `Math.PI`) |
+| `ChangeSpeed(anim, speedinfo)` | `changeSpeed(anim, { 0.5: 0.2 })`, or a plain factor |
+| `Homotopy`, `ApplyPointwiseFunction`, `ApplyComplexFunction` | `homotopy`, `applyFunction`, `applyComplexFunction` on a points track |
+| `TracedPath(point_func)` | `<TracedPath point={point} />` with `point` a track or `derive` (`dissipatingTime`) |
+| `PhaseFlow(func, mob)` | `phaseFlow(points, f, { virtualTime })` |
+| `AnimatedBoundary(vmob)` | `<AnimatedBoundary points={…} />`, driven by the clock's time |
+| `Rotate` | `rotateBy(rotation, angle)` / `rotateTo` |
+| `AnimationGroup` | `player.play(a, b)` or `parallel(a, b)` |
+| `Succession` | `sequence(a, b)` (frame-exact) or consecutive `await player.play(...)` |
+| `LaggedStart` | `lagged([a, b], { lag: 0.15 })` or `{ lagRatio }` |
+| `Wait` / `self.wait` | `hold(seconds)` in a composite, or `await player.play(hold(seconds))` |
+| `rate_func` | `easing: "backOut"` (see `easings`) or any `(t) => number` |
+| `squish_rate_func(f, a, b)` | `squish(f, a, b)` |
+| `run_time`, `lag_ratio`, `delay` | `duration`, `lagRatio`, `delay` (all in the options object) |
+
+Two details to know. Presets take only `{ duration, delay, easing }`; the clock and abort signal belong to the runner (`scene.play`, `usePlayer`). And consecutive `await player.play(a); await player.play(b);` calls are not frame-exact; wrap them in `sequence(a, b)` inside a single `play` when timing matters. See [Animation](/guides/animation/).
+
+### Naming
+
+A few verbs are deliberately not Manim's, so they read as plain English where they are imported and do not collide with common words:
+
+- `Create` / `Uncreate` are `draw` / `erase` (`write`, `unwrite` and `drawBorderThenFill` keep their names).
+- `AnimationGroup` is `parallel`, the partner of `sequence`. `<Group>` is the transform container (`VGroup`), nothing else.
+- `Wait` inside a composite is `hold`. `pause` would clash with `Clock.pause()` and `Timeline.pause()`, which stop playback; `hold` only occupies time. `await player.play(hold(seconds))` is the awaitable form.
+- `mob.shift(v)` as an animation is `moveBy`, the relative partner of `moveTo` (and `rotateBy` of `rotateTo`). `shiftBy` in the layout helpers is unrelated.
+- The matching function is `morphShapes` (in `@sophistry/core/geometry` and `@sophistry/text`); the `<TransformMatchingShapes>` component keeps Manim's name.
+- Manim's `axes.plot` shape is `<FunctionGraph>`, because `Graph` in Manim is a network (`<NetworkGraph>`).
+- Composite geometry takes `center` (the middle of the plotting area, graph layout, bar chart or 3D dot), `Angle` and `Elbow` take `vertex`; round shapes take `center` and `radius` too, and moving a whole shape is `x`/`y` or `place`.
+- Named colours (`BLUE`, `GREY_A`, ...) are plain CSS hex strings, so they drop straight into `stroke`, `fill` and `style`.
+
+### Rate functions
+
+Pass an `easing` by name or as a function. The names in `easings` include `linear`, `smooth`, `in`, `out`, `inOut`, `quadInOut`, `sinIn`/`sinOut`/`sinInOut`, `expIn`/`expOut`/`expInOut`, `circInOut`, `backIn`/`backOut`/`backInOut`, `elasticOut`, `bounceOut`, `thereAndBack`, and Manim's `rushInto`, `rushFrom`, `slowInto`, `doubleSmooth`, `lingering`, `runningStart` and `exponentialDecay`. The ones that take parameters are functions returning a curve: `squish(curve, a, b)`, `runningStart(pull)`, `notQuiteThere(curve, proportion)`, `exponentialDecay(timeConstant)` (Manim's `half_life`) and `thereAndBackWithPause(hold)`. Anything else is a function value, since there is no easing registry:
+
+```ts
+import { circle, createScene, fadeIn, track } from "@sophistry/core";
+
+const scene = createScene({ host: document.body });
+const opacity = track(0);
+scene.add(circle.create({ radius: 1, opacity }));
+void scene.play(fadeIn(opacity, { easing: (t) => t * t * (3 - 2 * t) }));
+```
+
+## Shapes and text
+
+Each is a definition in the core (`circle`) and a component in the bindings (`<Circle>`); neither renders DOM. Names match Manim's unless noted.
+
+| Manim | sophistry |
+|---|---|
+| `Circle`, `Ellipse`, `Dot`, `Square`, `Rectangle`, `RoundedRectangle` | `Circle`, `Ellipse`, `Dot`, `Square`, `Rect` (`cornerRadius` rounds the corners) |
+| `Polygon`, `RegularPolygon` | `Polygon` (explicit `points`, or `radius` + `sides`) |
+| `Line`, `Arrow`, `DashedLine`, `DoubleArrow`, `Vector`, `CurvedArrow` | same names |
+| `Arc`, `ArcBetweenPoints`, `Sector`, `Annulus`, `AnnularSector` | same names; `startAngle` + signed `angle`, as in Manim |
+| `Angle`, `RightAngle`, `Elbow` | same names; `Angle` takes two rays or two lines, with the corner as `vertex` |
+| `CubicBezier` | `CubicBezier`, `QuadraticBezier` |
+| `Star`, `Polygram`, `RegularPolygram` | same names |
+| `SurroundingRectangle`, `BackgroundRectangle`, `Cross`, `Underline` | same names; each takes a `target` **`Bounds`**, not a mobject |
+| `Brace`, `BraceBetweenPoints`, `BraceLabel` | `<Brace target direction />` or `<Brace from to />`, with `label` for the tip |
+| `AnnotationDot`, `LabeledDot` | same names |
+| `TangentLine` | `TangentLine` (a central difference on the samples, not an exact derivative) |
+| Arrow tips | `<Arrow tipShape="triangle" \| "stealth" \| "circle" \| "square">`, `tipAt="end" \| "start" \| "both"` |
+| `SVGMobject` (single path) | `Path` (`points` or SVG `pathData`) |
+| `ParametricFunction` | `Plot` in scene units; `ParametricGraph` in data space |
+| `Text` | `Label` |
+| `Paragraph`, `BulletedList`, `Title` | same names; `Paragraph` wraps to a `width` |
+| `DecimalNumber`, `Integer`, `Variable` | same names |
+| `MathTex`, `Tex` | `<MathTex tex="...">` from `@sophistry/solidjs/text`; draws on with `progress` |
+
+The shape matchers wrap a *box*: pass `node.bounds()` of the node to surround, measured once it exists (in `onSettled`, or a `ref`).
+
+## Layout and positioning
+
+| Manim | sophistry |
+|---|---|
+| `UP`, `DOWN`, `LEFT`, `RIGHT`, `UL`, `UR`, `DL`, `DR`, `ORIGIN` | same names; unit vectors, y up |
+| `next_to` / `align_to` / `move_to` | `nextTo` / `alignTo` / `centerAt`; each returns a `Placement` for the `place` prop |
+| `to_edge` / `to_corner` | `toEdge(box, scene.frame.peek(), UP)` / `toCorner(box, scene.frame.peek(), UR)`, with `scene` from `useScene()` |
+| `arrange` / `arrange_in_grid` | `arrange` / `arrangeInGrid`; one `Placement` per item |
+| `VGroup` as a transform | `<Group x y rotation scale opacity>` |
+| `get_critical_point(dir)` | `node.pointAt(dir)` |
+
+Measure with the node handles once they exist (`node.localBounds()`, `other.bounds()`) and write the result with `node.set("place", placement)`. Placements are only accepted by `place` (a `Group` also takes one). Shape geometry props can't take them, which rules out a layout feeding its own input. See [Layout](/guides/layout/).
+
+## Plotting and graphs
+
+| Manim | sophistry |
+|---|---|
+| `Axes`, `NumberLine`, `NumberPlane` | same names |
+| `x_range` / `y_range` | `xRange` / `yRange`: `[min, max, step?]`, the same tuple |
+| `Axes(y_axis_config={"scaling": LogBase()})` | `<Axes yAxis={{ scale: "log" }} />` |
+| `axes.c2p` / `axes.p2c` | `<Axes ref={(node) => (axes = node)} />`, then `coordsOf(axes)?.coordsToPoint(x, y)`; `coordsReadable(axes)` to `derive` from it |
+| `axes.plot`, `plot_parametric_curve` | `<FunctionGraph function={...} />`, `<ParametricGraph function={...} from to />` |
+| `get_area` | `<AreaUnderGraph>` (`bounded` is Manim's `bounded_graph`) |
+| `get_riemann_rectangles` | `<RiemannRectangles>` with `dx` or `count`, `sample="left" \| "right" \| "midpoint"` |
+| `get_vertical_line_to_graph`, `get_T_label` | `<VerticalLineToGraph>` (`label`), `<HorizontalLineToGraph>` |
+| `get_secant_slope_group` | `<SecantSlopeGroup>` |
+| `ComplexPlane` | `<ComplexPlane />` with `numberToPoint({ re, im })` / `pointToNumber(point)` |
+| `PolarPlane` | `<PolarPlane size>` (`size` is the scene-unit diameter, `maxRadius` the data radius at its edge) |
+| `plot_polar_graph` | `<PolarGraph function={(theta) => r} />` inside a `<PolarPlane>` (or `<Axes>`); `theta_range` becomes `from`/`to` |
+| `ImplicitFunction` | `<ImplicitFunction function={(x, y) => ...} />`, with the same `minDepth` and `maxQuads` |
+| `BarChart` | `<BarChart data value label />` from `@sophistry/solidjs/charts` |
+| `ArrowVectorField(func)` | `<VectorField function={...} />` |
+| `StreamLines(func)` | `<StreamLines function={...} />` (`virtual_time` becomes `virtualTime`, `dt` becomes `steps`) |
+| `Graph(vertices, edges, layout=...)` | `<NetworkGraph vertices edges layout />`; the function plotter is `FunctionGraph` |
+| `DiGraph` | `<DiGraph />` |
+| `graph.change_layout("tree")` | blend two layout maps and `valueTo` the mix |
+| `LinearTransformationScene` | `<LinearTransform>` and `<BasisVectors>` |
+| `ThreeDAxes`, `ThreeDScene` | `Axes3D` and `Camera3D` from `@sophistry/solidjs/3d` |
+| `Tetrahedron`, `Octahedron`, `Icosahedron`, `Dodecahedron` | `Tetrahedron3D`, `Octahedron3D`, `Icosahedron3D`, `Dodecahedron3D` from `@sophistry/solidjs/3d`, with `edgeLength` |
+| `Polyhedron`, `ConvexHull3D` | `Polyhedron3D` (`vertices`, `faces`), `ConvexHull3D` (`points`) |
+
+Details in [Coordinate systems](/guides/coordinate-systems/) and [Charts](/guides/charts/).
+
+## Cameras
+
+Manim moves a camera frame object. Here the "camera" is the stage's own view, whose props are tracks like any other.
+
+| Manim | sophistry |
+|---|---|
+| `config.frame_width` | `<Stage units>` |
+| `self.camera.frame.animate.scale(0.5)` | `valueTo(units, ...)`, with `units` a `track` passed to the stage |
+| `self.camera.frame.animate.move_to(p)` | `moveTo(center, p)`, with `center` a `trackPoint` passed to the stage |
+| `MultiCamera` | `<MultiStage>` with one `<Camera>` per view |
+| `SplitScreenCamera` | `<SplitScreen panes={[...]} split ratio />` |
+| `setupPictureInPicture` | `<PictureInPicture main inset corner size />` |
+| `setupQuadView` | `<QuadView panes={[...]} />` |
+| `MovingCameraScene` | `<PanZoom>` (core: `panZoom(scene)`) for user navigation, or animate `units` and `center` |
+
+See [Cameras](/guides/cameras/).
+
+## What does not map
+
+- **Video output.** There is no video encoder, no `--save_sections`, no `manim-slides`. sophistry plays live in a page; [Export stills](/recipes/export-stills/) covers PNGs and fixed-fps frame sequences.
+- **Copying mobjects.** `copy`, `become`, `save_state`/`Restore`, `generate_target`/`MoveToTarget` have no equivalent; keep the state in tracks and `set` them back, or create a second node from the same props.
+- **The `.animate` proxy.** Deliberately omitted. Call a preset on the track you want to change.
+- **Submobject operations.** Containers have `add`, `remove` and `setChildren`, but there is no `submobjects` indexing or family flattening; keep the nodes you need in variables or arrays. In JSX, render shapes conditionally with `<Show>` and lists with `<For>`.
+- **Missing shapes and animations.** `Table`/`Matrix`, `Code`, `MarkupText`, `ImageMobject`, and boolean ops are not offered yet.
+
+The public view of what is planned is the [roadmap](/project/roadmap/).
+
+## Next steps
+
+- [Your first scene](/start/first-scene/): build one end to end
+- [Core concepts](/start/concepts/): the model behind the mapping
+- [Animation](/guides/animation/) and [Timelines](/guides/timelines/)

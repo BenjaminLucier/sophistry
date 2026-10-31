@@ -1,0 +1,35 @@
+{
+	"name": "playground",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"description": "Scratch app for trying sophistry out. Not published.",
+	"scripts": {
+		"dev": "vite",
+		"build": "tsc -b && vite build",
+		"preview": "vite preview",
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write"
+	},
+	"dependencies": {
+		"@solidjs/meta": "catalog:",
+		"@solidjs/router": "catalog:",
+		"@solidjs/web": "catalog:",
+		"@sophistry/3d": "workspace:*",
+		"@sophistry/charts": "workspace:*",
+		"@sophistry/core": "workspace:*",
+		"@sophistry/solidjs": "workspace:*",
+		"@sophistry/text": "workspace:*",
+		"solid-js": "catalog:"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@solidjs/vite-plugin": "catalog:",
+		"@tailwindcss/vite": "catalog:",
+		"filesystem-routing": "catalog:",
+		"tailwindcss": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:"
+	}
+}

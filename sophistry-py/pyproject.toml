@@ -1,0 +1,23 @@
+[project]
+name = "sophistry"
+version = "0.1.0"
+description = "Reserved placeholder for future Python bindings to sophistry, a Manim-for-the-web library for SolidJS. Nothing usable yet."
+readme = "README.md"
+authors = [
+    { name = "Benjamin Lucier", email = "benjaminlucier@gmail.com" }
+]
+requires-python = ">=3.10"
+keywords = ["sophistry", "animation", "visualization", "placeholder"]
+classifiers = ["Development Status :: 1 - Planning"]
+license = "MIT"
+license-files = ["LICENSE"]
+dependencies = []
+
+[build-system]
+requires = ["uv_build>=0.12.4,<0.13.0"]
+build-backend = "uv_build"
+
+[project.urls]
+Homepage = "https://sophistry.dev"
+Repository = "https://github.com/BenjaminLucier/sophistry"
+Issues = "https://github.com/BenjaminLucier/sophistry/issues"

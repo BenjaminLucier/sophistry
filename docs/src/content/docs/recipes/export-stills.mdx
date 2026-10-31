@@ -1,0 +1,247 @@
+---
+title: "Exporting stills"
+description: "Capture a stage as a PNG, or render a timeline to a deterministic image sequence with exportFrames."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+sophistry paints to an ordinary `<canvas>`, so a still frame is `canvas.toBlob()` away. This recipe covers getting the canvas, capturing a still, resolution, and rendering a timeline to a deterministic image sequence with `exportFrames`. Video encoding is a non-goal of the library, but the frames feed `ffmpeg` directly.
+
+<Example name="advanced/ExportStill" />
+
+## Getting the canvas
+
+The scene owns its canvas: `scene.canvas` (null for a headless scene). `ref` on `<Stage>` and `<MultiStage>` is called once with the `Scene`, after its children are in it:
+
+```tsx
+import type { Scene } from "@sophistry/core";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+let scene: Scene | undefined;
+
+export function Figure() {
+  return (
+    <Stage
+      units={8}
+      ref={(created) => {
+        scene = created;
+      }}
+    >
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+
+export const canvas = () => scene?.canvas ?? null;
+```
+
+Inside the stage, `useScene().canvas` is the same element; in a vanilla scene it is the `canvas` of what `createScene` returned. The element is yours to read, not to draw on or resize. The scene owns its backing-store size and repaints it on the shared frame loop. The canvas is `aria-hidden`; do not attach semantics to it.
+
+## Waiting for a paint
+
+Writing a track does not paint immediately. The scene commits and the renderer paints in the shared `requestAnimationFrame` loop, so the pixels you want do not exist until the next frame after the change. Capturing right after a write gives you the previous frame.
+
+Wait for the frame before you read pixels. Two animation frames is a safe margin:
+
+```ts
+const nextFrame = () =>
+  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+export async function painted() {
+  await nextFrame();
+  await nextFrame();
+}
+```
+
+For an animation, `player.play()` (or `scene.play()`) resolves `"done"` once the last track is written, which is before that final state has been painted. So wait for the promise and then for a frame:
+
+```ts nocheck
+await player.play(animation);
+await painted();
+```
+
+<Aside type="note">
+A stage scrolled out of view skips painting and suspends its own clock, so a capture taken off-screen reads a stale frame. Export from a visible stage, or pass `pauseWhenHidden={false}`.
+</Aside>
+
+## toBlob and download
+
+`toBlob` is asynchronous and encodes the PNG without blocking the main thread. Turn the blob into an object URL and click a temporary link:
+
+```tsx
+import type { Scene } from "@sophistry/core";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+let scene: Scene | undefined;
+
+const nextFrame = () =>
+  new Promise<void>((resolve) => requestAnimationFrame(() => resolve()));
+
+async function exportPng(filename = "still.png") {
+  const canvas = scene?.canvas;
+  if (!canvas) return;
+  await nextFrame();
+  await nextFrame();
+  canvas.toBlob((blob) => {
+    if (!blob) return;
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = filename;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, "image/png");
+}
+
+export function Figure() {
+  return (
+    <>
+      <Stage
+        units={8}
+        ref={(created) => {
+          scene = created;
+        }}
+      >
+        <Circle radius={2} />
+      </Stage>
+      <button type="button" onClick={() => void exportPng()}>
+        Export PNG
+      </button>
+    </>
+  );
+}
+```
+
+`canvas.toDataURL("image/png")` is the synchronous alternative. It is handy for quick checks but creates a large string, so prefer `toBlob` for real downloads.
+
+## Resolution and device pixel ratio
+
+The canvas backing store is the host box size times `devicePixelRatio` (`scene.size` and `scene.dpr` report both as `Readable`s), clamped to 16384 pixels per side (the browser limit). So an export on a retina display is already 2x the CSS size, and on a standard display it is 1x.
+
+You cannot ask for a bigger canvas directly, but you can change what the stage is given:
+
+- Export from a larger host. If the stage is wider on the page (or in a hidden, off-screen container of fixed width that is still laid out), the backing store is larger. A stage 1600 CSS pixels wide at a ratio of 2 exports at 3200 pixels.
+- Keep the layout deterministic. Because everything is in scene units, a bigger or smaller host shows the same scene at a different resolution, never a different scene.
+- Strokes, text and dashes are scene-unit lengths, so they scale with the export automatically.
+
+## Theme and background
+
+By default the stage fills the palette's `background` color before the scene, so a PNG has that color behind the picture. For a transparent export, set `background="transparent"`: the stage then only clears the canvas, the PNG keeps its alpha channel, and the page shows through the live stage too. Any other color (a CSS string or a `Color` such as `BLUE`) fills with that instead. `<Camera>`s inherit the stage's background, so a transparent `<MultiStage>` leaves its viewports unfilled unless a camera sets its own.
+
+Pick the look you want before you capture. The `mode` prop (`"light"` or `"dark"`) overrides the page's mode for one stage, and `palette` or `theme` change the colors outright. Exporting a light-mode figure from a dark page is just `<Stage mode="light" ...>`. See [Theming and color](/guides/theming-and-color/).
+
+## Capturing a still with captureFrame
+
+`captureFrame(canvas, { type, quality })` is the promise form of `toBlob` (and of `convertToBlob` on an `OffscreenCanvas`). It encodes whatever the canvas holds right now, so wait for the paint as above:
+
+```tsx
+import { captureFrame } from "@sophistry/core";
+
+declare const canvas: HTMLCanvasElement;
+
+const png = await captureFrame(canvas); // image/png, keeps alpha
+const webp = await captureFrame(canvas, { type: "image/webp", quality: 0.9 });
+```
+
+## Deterministic frames with exportFrames
+
+Playing in real time and clicking a button gives you whatever frame the clock reached. For a reproducible export, hand control of time to the library. `exportFrames` takes a timeline and the scene's canvas and, for every frame, seeks the timeline to the exact instant, runs the shared frame loop **synchronously** for that instant without ticking any clock (every scene commits and every visible renderer paints exactly the state just written), and encodes the canvas. The result does not depend on machine speed or frame pacing.
+
+```tsx
+import { exportFrames, moveTo, type Scene, type Timeline, trackPoint } from "@sophistry/core";
+import { Circle, Stage, usePlayer } from "@sophistry/solidjs";
+
+let scene: Scene | undefined;
+let slide: Timeline | undefined;
+
+function Slider() {
+  const position = trackPoint(-3, 0);
+  slide = usePlayer().timeline(moveTo(position, { x: 3, y: 0 }, { duration: 2 }));
+  return <Circle center={position} radius={0.5} />;
+}
+
+/** 61 PNG blobs: t = 0, 1/30, ... 2 seconds. */
+export async function render() {
+  const canvas = scene?.canvas;
+  if (!canvas || !slide) return [];
+  return exportFrames({ timeline: slide, canvas, fps: 30 });
+}
+
+export const Figure = () => (
+  <Stage units={8} ref={(created) => (scene = created)}>
+    <Slider />
+  </Stage>
+);
+```
+
+<Example name="advanced/ExportFrames" />
+
+What it does, in order, and what it guarantees:
+
+- Frames are taken at `from + i / fps` (defaults: `from = 0`, `to = timeline.duration`, `fps = 30`) and **include the end frame** when it lands on a frame boundary, so a 2 s timeline at 30 fps gives 61 frames. When `(to - from) * fps` is not a whole number the grid stops short of `to`, so one extra final frame at exactly `to` is added (the exact end state): the count is `floor((to - from) * fps) + 1`, plus one in that case, and the last gap is shorter than `1 / fps` (each frame carries its exact `time`). Use `to: duration - 1 / fps` for a seamless loop, or `from`/`to`/`duration` to export a slice. An infinite timeline (`forever`) needs `to` or `duration`.
+- The timeline is paused and scrubbed, and **the clock it runs on is held still** automatically, so ambient animations on it cannot move the scene between the seek and the encode (pass `clock` only to hold a different clock, such as the stage's). Scrubbing is internal, so a `play()` you already started is **not** settled when the export passes the end: its promise keeps waiting, and afterwards the timeline returns to where it was, plays again if it was playing, and the clock resumes if it was running. A timeline that had never run goes back to its untouched start.
+- `type` (`image/png` by default, `image/webp`, `image/jpeg`) and `quality` are passed to the encoder. Browsers may fall back (Safari encodes `image/webp` as PNG), so every frame reports the type actually produced in `frame.type`; check it before naming files by the requested extension. Resolution is the canvas backing store (see below).
+- `signal` aborts the export with an `AbortError`; state is still restored.
+- Exporting **ignores reduced motion**. Nothing is played: it is offline rendering by scrubbing, which the preference never affects.
+- The stage must be mounted and visible: a stage scrolled out of view skips painting, so use `pauseWhenHidden={false}` for off-screen exports.
+- Nothing here knows about scenes: it drives the frame loop and encodes a canvas, so any canvas a scene paints into will do, including one of several stages on the page.
+
+For long clips do not hold every blob in memory. Iterate instead (`for await (const frame of renderFrames(...))`), or pass `onFrame` to `exportFrames` and write each frame out as it arrives:
+
+```tsx
+import { type Animation, renderFrames } from "@sophistry/core";
+
+declare const canvas: HTMLCanvasElement;
+declare const intro: Animation;
+declare function save(name: string, blob: Blob): Promise<void>;
+
+const controller = new AbortController();
+
+for await (const frame of renderFrames({
+  timeline: intro, // a bare animation works too
+  canvas,
+  fps: 24,
+  signal: controller.signal,
+})) {
+  await save(`frame-${String(frame.index).padStart(4, "0")}.png`, frame.blob);
+}
+```
+
+### Zips and video
+
+The library hands you blobs; packaging them is up to you. In the browser, a zip library such as `fflate` or `JSZip` turns the blobs into one download (add each `frame.blob` as `frame-0001.png`, and save the archive with an object URL as in the download example above). To make a video from the files, use `ffmpeg` outside the browser:
+
+```sh
+# 30 fps frames named frame-0000.png, frame-0001.png, ...
+ffmpeg -framerate 30 -i frame-%04d.png -c:v libx264 -pix_fmt yuv420p out.mp4
+
+# a looping GIF or WebM
+ffmpeg -framerate 30 -i frame-%04d.png out.gif
+ffmpeg -framerate 30 -i frame-%04d.png -c:v libvpx-vp9 -pix_fmt yuva420p out.webm
+```
+
+For a transparent video, export with `background="transparent"` and use a format with alpha (WebM above, or ProRes 4444).
+
+## Specs instead of pixels
+
+For tests and tooling, pixels are often the wrong thing to compare. `scene.snapshot()` returns the z-sorted draw specs the next paint will draw (scene-unit shapes, text and marks), and `scene.commit()` brings the scene up to date first, without painting. A **headless** scene (`createScene({ headless: true, size })`) touches no DOM at all and still commits, so a script can build a scene, step it, and assert on its specs in Node:
+
+```ts
+import { circle, createScene } from "@sophistry/core";
+
+const scene = createScene({ headless: true, size: { width: 800, height: 450 } });
+scene.add(circle.create({ radius: 2 }));
+scene.commit();
+const specs = scene.snapshot(); // one shape spec for the circle
+scene.dispose();
+```
+
+## Video
+
+sophistry does not encode video; render a frame sequence as above, or record `scene.canvas` live with `canvas.captureStream()` and `MediaRecorder`.
+
+## Next steps
+
+- [Timelines](/guides/timelines/): `seek` to the exact frame you want.
+- [Recipe: embedding in your site](/recipes/embedding/): sizing and theming the stage you export from.

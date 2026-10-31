@@ -1,0 +1,113 @@
+---
+title: "Fields and graphs"
+description: "Vector fields, stream lines and network graphs: VectorField, StreamLines, NetworkGraph and graph layouts."
+---
+
+import Example from "../../../components/Example.astro";
+
+Two kinds of plot that draw many related pieces from one description: a vector field from a function, and a network graph from vertices and edges. Both are core definitions (`vectorField`, `streamLines`, `networkGraph`, `diGraph` in `@sophistry/core`; `<VectorField>`, `<StreamLines>`, `<NetworkGraph>`, `<DiGraph>` in `@sophistry/solidjs`), and both work inside an `<Axes>` or plane (see [Coordinate systems](/guides/coordinate-systems/)) or on their own.
+
+## Vector fields
+
+A vector field is one function drawn two ways. `<VectorField>` samples it onto a lattice of arrows; `<StreamLines>` integrates it with RK4 and draws the flow lines. Both take `function` as `(point) => vector` in **data** coordinates inside an `<Axes>` or plane, and in scene units outside one.
+
+```tsx
+import { Axes, Stage, StreamLines, VectorField } from "@sophistry/solidjs";
+
+const swirl = ({ x, y }: { x: number; y: number }) => ({ x: -y, y: x });
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes xRange={[-3, 3, 1]} yRange={[-3, 3, 1]} width={7} height={7}>
+      <VectorField function={swirl} step={0.75} ramp="viridis" />
+      <StreamLines function={swirl} noise={0.2} />
+    </Axes>
+  </Stage>
+);
+```
+
+Magnitude is measured on screen, after mapping through the coordinate system, since that is what a reader compares. Colour follows magnitude through `ramp` (a stop list, colormap name or function) cut into `bands`; each band is one node, so a large field stays cheap, and a `progress` reveal goes band by band.
+
+Inside an `<Axes>` or plane, fields paint over the grid and under the axes and their numbers (`zIndex` −0.5, exported as `UNDER_AXES_Z_INDEX`), so the numbers stay readable. Pass `zIndex` to change that.
+
+Useful knobs: `xRange` / `yRange` / `step` (or `xStep` / `yStep`) / `columns` for the lattice, and `magnitudeRange` to pin the colour scale; for arrows `maxLength` and `lengthFunction`; for stream lines `virtualTime`, `steps`, `noise` (deterministic seed jitter, 0 for an exact lattice), `seeds`, `direction`, `minSpeed`, and `colorAlong` to colour each line by the magnitude along it. Animate `dashOffset` against a `dash` pattern for flow that moves.
+
+`fieldHandle(node)` is the imperative half of a field node: `vectorAt(point)` returns the vector at a field-space point in scene units, and `streamlineAt(point)` the flow line through it, ready for `moveAlong` so a particle can ride the field.
+
+<Example name="plotting/VectorFieldPendulum" />
+
+## Network graphs
+
+`<NetworkGraph>` is Manim's `Graph` and `<DiGraph>` is its directed twin. (The function plotter is `<FunctionGraph>`.) A graph is `vertices` (strings or numbers) and `edges` (pairs or `{ source, target }`), laid out by a function.
+
+```tsx
+import { NetworkGraph, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={12}>
+    <NetworkGraph
+      vertices={[8, 3, 10, 1, 6]}
+      edges={[
+        [8, 3],
+        [8, 10],
+        [3, 1],
+        [3, 6],
+      ]}
+      layout="tree"
+      layoutOptions={{ root: 8 }}
+      layoutScale={{ width: 8, height: 3.6 }}
+      labels
+      vertexConfigs={{ 6: { color: "tomato" } }}
+    />
+  </Stage>
+);
+```
+
+### Layouts
+
+A layout is a **pure function** `(graph, options) => Map<vertexId, point>`. A name is sugar for a built-in: `"spring"` (the default, a deterministic Fruchterman-Reingold), `"tree"` (Reingold-Tilford over a spanning forest), `"circular"`, `"grid"`, `"shell"`, `"partite"` and `"explicit"`. Your own function drops into the same slot, and every layout is testable outside a scene:
+
+```tsx
+import type { GraphLayout } from "@sophistry/core/geometry";
+import { NetworkGraph, Stage } from "@sophistry/solidjs";
+
+const alongASine: GraphLayout = (graph) =>
+  new Map(graph.vertices.map((id, i) => [id, { x: i, y: Math.sin(i) }]));
+
+export const Scene = () => (
+  <Stage units={12}>
+    <NetworkGraph
+      vertices={["a", "b", "c", "d"]}
+      edges={[
+        ["a", "b"],
+        ["c", "d"],
+      ]}
+      layout={alongASine}
+    />
+  </Stage>
+);
+```
+
+Layout results are fitted to `layoutScale` around the graph's `center`, uniformly by default so a circular layout stays a circle. The built-in layout table is `graphLayouts` in `@sophistry/core/geometry`.
+
+<Example name="plotting/NetworkLayouts" />
+
+There is no `change_layout`: two layouts are two `Map`s, and blending them is a `derive` over a track that `valueTo` drives.
+
+### Styling, handles and traversals
+
+`vertexConfig` / `edgeConfig` are shared defaults and `vertexConfigs` / `edgeConfigs` override them per vertex or edge (edge keys come from `edgeKey(u, v)` in `@sophistry/core/geometry`, which is `"u v"` for plain ids). They are ordinary props, so pass a `derive` and highlighting a traversal is a function of the visited set: `pathEdges(walk)` turns a vertex walk into the pairs to light. `renderVertex` and `renderEdge` replace the default disc or line with nodes of your own.
+
+`networkHandle(node)` reads the graph from outside: `positionOf(id)`, `positions()`, `radiusOf(id)`, `vertexIds()`, `edgeKeys()`, and `vertexHandle(id)` / `edgeHandle(u, v)`, which return the drawn node itself (for `nextTo` or a surrounding rectangle). The handle is empty until the graph's first commit.
+
+For a worked traversal, see the [algorithm visualizer recipe](/recipes/algorithm-visualizer/).
+
+<Example name="advanced/GraphTraversal" />
+
+Each vertex and edge is its own node, so drawing is capped at the first 400 vertices and 1500 edges (thinned evenly). Layout is never capped, so `positionOf` works for every vertex.
+
+## Next steps
+
+- [Coordinate systems](/guides/coordinate-systems/): the axes and planes these plot into.
+- [Recipe: an algorithm visualizer](/recipes/algorithm-visualizer/): a traversal on a `NetworkGraph`.
+- [Function graphs gallery](/gallery/plotting/function-graphs/) and [hierarchies and networks gallery](/gallery/plotting/hierarchies-and-networks/).

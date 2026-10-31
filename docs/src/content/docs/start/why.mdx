@@ -1,0 +1,73 @@
+---
+title: "Why sophistry"
+description: "What sophistry is for, how it thinks (a framework-free core with generated bindings), and how it compares with Manim, Motion Canvas, D3 and plain Canvas or Three.js."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+sophistry is a TypeScript library for animations and visualizations that people can play with. You build a scene (in plain TypeScript, or as Solid or React components), drive it with tracks, and it paints to a `<canvas>` in your page. Think of it as Manim's vocabulary (`Create`, `Axes`, `Transform`, `MathTex`) running live in the browser, where a reader can pause it, scrub it, drag things in it and change its inputs.
+
+## What it is for
+
+- **Interactive explainers and explorables.** Put a draggable triangle next to the paragraph that explains it.
+- **Lesson runtimes.** A scripted walk-through that a student can step, rewind, or abandon halfway to experiment.
+- **Data-driven visuals.** Charts, scatter plots, heatmaps, graphs and vector fields that animate between states.
+- **Algorithm visualizers.** Sorting, search, gradient descent: state in tracks, steps as animations.
+- **Maths and physics figures.** Coordinate systems, function graphs, LaTeX rendered as real geometry, projected 3D.
+
+<Example name="advanced/FourierEpicycles" />
+
+## The core ideas
+
+**A framework-free core with generated bindings.** The core is a retained scene graph in plain TypeScript: a scene is a tree of nodes, each made from a *definition* such as `circle` or `axes`. The Solid and React bindings are generated from those definitions (`<Circle>` is `wrap(circle)`), so every shape, chart and composite is a component in both, and the core works on its own in any page.
+
+**Writes are precise.** A node changes only when one of its props is written, and a write marks exactly the stage it affects (outline, position, style). The frame loop recomputes only that. Nothing re-renders and nothing diffs a tree, so the cost of a frame follows what changed, and [instancing](/start/concepts/#instancing-and-path-batches) draws thousands of items as one node.
+
+**Tracks are the single source of truth.** A prop is usually a `track()`: a small observable value that animations, drags and sliders write. Give the track itself to a node and the node binds to it, with no framework code running per frame.
+
+**Animations are seekable descriptions.** `draw(drawn)`, `moveTo(position, ...)` and `sequence(...)` build lazy values with a known duration. A runner samples them against a clock, so you can `play` them, or wrap them in a `timeline` and `seek` to any moment, forwards or backwards. Springs are animations too.
+
+**Anything can drive anything.** A tween, a pointer drag, a slider, a scroll position or your own store can all write to the same track. The renderer repaints what the tracks say, and nothing else.
+
+<Example name="interaction/ParameterSlider" />
+
+Coordinate systems live in the core; LaTeX (`@sophistry/text`), charts (`@sophistry/charts`) and projected 3D (`@sophistry/3d`) are separate packages built on the same primitives, so a graph can react to a drag and a formula can morph into the next.
+
+## How it compares
+
+These tools overlap less than they appear to. This is a short orientation, not a review; each is excellent at the thing it was built for.
+
+| | sophistry | [Manim](https://www.manim.community/) | [Motion Canvas](https://motioncanvas.io/) | [D3](https://d3js.org/) | Plain Canvas / [Three.js](https://threejs.org/) |
+|---|---|---|---|---|---|
+| Language | TypeScript (plain, Solid or React) | Python | TypeScript | JavaScript / TypeScript | JavaScript / TypeScript |
+| Output | Live canvas in a page | Rendered video or images | Editor preview, rendered video, embeddable player | DOM, SVG or canvas you draw yourself | Pixels (Canvas2D) or WebGL scenes |
+| Authoring style | A retained scene graph driven by tracks, from code or JSX | Imperative `construct()` script of mobjects | Generator functions that `yield` frames | Data joins and scales | You write the draw loop (or scene graph) |
+| Interactive for the reader | Yes: drag, hover, keyboard, scrub | No (video) | Limited: playback in a player | Yes, by hand | Yes, by hand |
+| Strongest at | Explorable maths, charts and lessons in a web page or app | Polished maths videos | Narrated vector videos with a timeline editor | Bespoke data graphics, scales and layouts | Raw control; real 3D with shaders |
+
+**Pick Manim** when the deliverable is a video and you are happy in Python. Its library of mobjects and animations is deeper than ours. See [Coming from Manim](/manim/migration/) if you want the same ideas in a page.
+
+**Pick Motion Canvas** when you are producing a video and want an editor with a timeline, audio sync and a generator-based flow. sophistry has no editor and no video output; in exchange its scenes live in your page and readers can interact with them.
+
+**Pick D3** when you need maximum flexibility for custom data graphics, or you are working in the DOM or SVG. sophistry uses d3's scale, array, color, ease and interpolate modules internally, and you can use d3 alongside it (compute with d3, draw with sophistry shapes).
+
+**Pick plain Canvas or Three.js** when you need direct control of pixels, very large numbers of animated sprites, or real GPU 3D. sophistry's 3D is projected into the same 2D pipeline, which is lovely for explaining a surface and wrong for a game.
+
+<Aside type="note">
+Comparisons reflect each project's public documentation at the time of writing. Check the linked sites for their current capabilities.
+</Aside>
+
+## What sophistry is not
+
+- **Not a video renderer.** There is no mp4 export. [Export stills](/recipes/export-stills/) covers saving frames; for video, use a screen recorder or one of the tools above.
+- **Not a game or GPU engine.** It is a Canvas2D renderer. 3D is projected into 2D, with no shaders or lighting model.
+- **Not SVG or DOM output.** You cannot style a shape with CSS or inspect it in the elements panel. Accessibility comes from a hidden DOM mirror for interactive nodes (see [Accessibility](/guides/accessibility/)).
+- **Not 1.0.** The API is pre-1.0 (and the Solid binding is built on a Solid 2 release candidate), so expect churn. See [Stability](/project/stability/).
+
+## Next steps
+
+- [Installation](/start/installation/): core alone, or core plus the Solid or React binding
+- [Your first scene](/start/first-scene/): build a small interactive scene step by step
+- [Core concepts](/start/concepts/): the mental model in one page
+- [Gallery](/gallery/): browse what it can do

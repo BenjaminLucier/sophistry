@@ -1,0 +1,99 @@
+---
+title: Animation you can <em>steer</em>
+description: Controllable Manim-for-the-web. A framework-free TypeScript scene graph with scrubbable timelines and Canvas2D rendering, plus generated Solid and React bindings.
+template: splash
+hero:
+  tagline: Controllable Manim-for-the-web. A retained scene graph, track-driven timelines and Canvas2D rendering in plain TypeScript, with Solid and React bindings.
+  actions:
+    - text: Get started
+      link: /start/installation/
+      icon: right-arrow
+    - text: Browse the gallery
+      link: /gallery/
+      variant: secondary
+    - text: GitHub
+      link: https://github.com/BenjaminLucier/sophistry
+      variant: minimal
+      icon: external
+---
+
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+import CodeSplit from "../../components/home/CodeSplit.astro";
+import Thumbs from "../../components/home/Thumbs.astro";
+
+## What you get
+
+<CardGrid>
+  <LinkCard
+    title="Animation and timelines"
+    description="Every animation is a tween over a track, and every timeline is seekable: pause, scrub, even run backwards. Springs included."
+    href="/guides/animation/"
+  />
+  <LinkCard
+    title="Interaction and accessibility"
+    description="Drag, constrain, pan and zoom, with keyboard-accessible controls built in."
+    href="/guides/interaction/"
+  />
+  <LinkCard
+    title="Charts, driven by data"
+    description="Bar, line, scatter, heatmaps and contours that reveal, update and transition from plain arrays, batched into a few nodes."
+    href="/gallery/plotting/"
+  />
+  <LinkCard
+    title="LaTeX as geometry"
+    description="Formulas become real paths: they draw on, morph into each other and obey the same tracks as any shape."
+    href="/gallery/maths/"
+  />
+  <LinkCard
+    title="3D on the same canvas"
+    description="Cameras, meshes and orbit controls projected into the 2D pipeline: no WebGL, one renderer."
+    href="/gallery/three-d/"
+  />
+  <LinkCard
+    title="Theming"
+    description="Catppuccin by default, light and dark following your page. Bring a palette with definePalette."
+    href="/gallery/basic/#ThemeColors"
+  />
+</CardGrid>
+
+## Show me the code
+
+A scene is a tree of nodes. In Solid it is an ordinary component; tracks are
+the source of truth and bind straight into the scene graph, a Canvas2D
+renderer paints it, and a `timeline` gives you a controller you can play,
+pause and `seek`. The same scene can be built [without a
+framework](/start/first-scene/#the-same-scene-without-a-framework) or [in
+React](/start/first-scene/#the-same-scene-in-react).
+
+<CodeSplit />
+
+## See it move
+
+Every thumbnail below is a live scene from the [gallery](/gallery/).
+
+<Thumbs />
+
+## One core, any framework
+
+The core, `@sophistry/core`, is plain TypeScript with no UI framework
+dependency: a retained scene graph that recomputes only what a write
+touches, instancing for thousands of items in one node, and a renderer
+behind a clean spec boundary. The Solid and React bindings are generated
+from the core's definitions, so every shape, chart and composite is a
+component in both. See [Core concepts](/start/concepts/).
+
+The library is pre-1.0, and the Solid binding targets **Solid 2.0**, which is
+currently a release candidate, so the API may still change. What that means
+in practice, and what we promise between releases, is in
+[Stability and versioning](/project/stability/).
+
+## Packages
+
+`@sophistry/core` plus a binding (`@sophistry/solidjs` or
+`@sophistry/react`), or the core alone. LaTeX, charts and 3D are separate
+packages (`@sophistry/text`, `@sophistry/charts`,
+`@sophistry/3d`), so you only bundle what you import. See
+[Installation](/start/installation/).
+
+[GitHub](https://github.com/BenjaminLucier/sophistry) ·
+[API reference](/api/sophistry/core/readme/)

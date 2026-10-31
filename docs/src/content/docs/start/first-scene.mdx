@@ -1,0 +1,143 @@
+---
+title: "Your first scene"
+description: "Build a small interactive scene step by step: shapes, labels, an animation, a drag handle and a scrubbable timeline. In Solid, then the same scene without a framework and in React."
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+import Example from "../../../components/Example.astro";
+
+In this tutorial you build one small scene, a point travelling around a circle with its angle marked, and give it each of sophistry's superpowers in turn: it draws itself, you can drag it, and you can scrub its whole script like a video. Every step ends in a live example you can copy.
+
+The steps use the Solid binding (`@sophistry/solidjs`). The scene graph underneath is plain TypeScript, so the end of the page shows [the same scene without a framework](#the-same-scene-without-a-framework) and [in React](#the-same-scene-in-react). You need a project set up as described in [Installation](/start/installation/).
+
+<Steps>
+
+1. **Mount a stage**
+
+   A `<Stage>` makes a scene (`createScene` in the core) in a `<div>`, with a canvas inside. Its children are scene components such as `Circle` and `Label`. They render no DOM: each one creates a single **node** in the scene graph, and from then on the core owns it.
+
+   ```tsx
+   import { Circle, Stage } from "@sophistry/solidjs";
+
+   export function Hello() {
+     return (
+       <Stage units={10}>
+         <Circle radius={2.4} />
+       </Stage>
+     );
+   }
+   ```
+
+   You work in **scene units**, never pixels. `units={10}` means ten units span the stage's width, and **y points up**, with the origin in the middle. The stage fills its container, and everything (strokes, fonts, dashes) is measured in units, so the scene looks the same at any size or pixel density.
+
+2. **Add shapes and labels**
+
+   Add a radius `Line`, an `Arc` for the angle and a `Dot`. Colours come from the scene's theme (`useScene().theme`, a value you can `derive` from), so they follow light and dark mode.
+
+   Labels are where layout starts. A component returns its node, and `ref={(node) => ...}` hands it to you. Nodes measure themselves (`node.bounds()`, `node.localBounds()`), and `nextTo` turns two boxes into a `place` prop. Here the label "P" sits up and to the right of the dot.
+
+   <Example name="basic/FirstSceneShapes" />
+
+   A node is the handle: there is no separate handle object. See [Layout](/guides/layout/) for `arrange`, `toEdge` and friends.
+
+3. **Animate with tracks**
+
+   Nothing above moves, because nothing is a track yet. Replace the constants with **tracks**: `track(0)` is a small observable value with `peek()` and `set()`. Pass the track itself as a prop (`angle={theta}`), and use `derive` for values computed from it (`to={derive(theta, ...)}`). The node binds to it: when an animation writes the track, the node recomputes in the next frame, and no Solid code runs per frame.
+
+   Run the script with `usePlayer()`. It gives you `play` and `timeline` bound to the stage's clock, and aborts anything still running when the component is removed. It must be called in a component *inside* the `<Stage>`, so the scene moves into its own component. Start the script from `onSettled`, Solid 2's after-mount hook.
+
+   <Example name="animation/FirstSceneAnimated" />
+
+   `draw(drawn)` reveals a shape by driving its `progress` prop from 0 to 1. `valueTo(theta, 1.1)` tweens any number. `sequence(a, b)` runs them one after the other. The shapes only know their props; they have no idea an animation is running.
+
+4. **Make it interactive**
+
+   Because `theta` is just a track, anything can write to it. Spread `draggable(...)` onto the dot with an `angleParam`, which turns the pointer position into an angle around the origin, and now dragging the dot sets `theta`, the radius and arc follow, and the readout updates.
+
+   <Example name="interaction/FirstSceneDraggable" />
+
+   The animation and the drag are writing the same track, with no glue between them. The `label="angle"` prop also makes the dot keyboard-focusable: Tab to it and use the arrow keys. See [Interaction](/guides/interaction/) for constraints, drop targets and more.
+
+   <Aside type="note">
+   Try dragging while the intro is still playing. Both are writing `theta`, so the last write wins. For a real lesson you would typically abort the script on the first pointer-down.
+   </Aside>
+
+5. **Scrub it with a timeline**
+
+   `play()` is fire and forget. `timeline()` wraps the same animation in a controller you can pause and **seek**: `tl.seek(2)` jumps to the two-second mark and writes that state to every track, backwards as well as forwards. The timeline's time is a track too, so a slider reads it like any other value.
+
+   This version creates the clock itself with `createClock()` and gives it to both the `<Stage clock>` and the timeline, so the controls can live outside the stage.
+
+   <Example name="animation/FirstSceneTimeline" />
+
+</Steps>
+
+## The same scene without a framework
+
+The components above are generated from core **definitions**: `<Circle>` is `wrap(circle)`. Without a framework you use the definitions directly. `createScene({ host })` mounts a scene in any element, `definition.create(props)` makes a node, `scene.add(node)` puts it in the tree, and `scene.play(...)` runs animations on the scene's clock. Tracks bind exactly as in JSX.
+
+<Example name="vanilla/FirstScene" />
+
+The site passes each example its own clock; in your app, leave `clock` out and the scene uses the shared default. `scene.dispose()` removes the canvas and releases everything the scene holds. More framework-free scenes are in the [gallery](/gallery/vanilla/).
+
+## The same scene in React
+
+The React binding has the same components and hooks, generated from the same definitions. Make tracks with `useTrack` (so they survive re-renders) and start scripts in an effect. A track passed as a prop binds in the core here too, so an animation causes no React renders at all.
+
+```tsx nocheck
+import { derive, draw, sequence, valueTo } from "@sophistry/core";
+import { Arc, Circle, Dot, Line, Stage, usePlayer, useTrack } from "@sophistry/react";
+import { useEffect, useMemo } from "react";
+
+const RADIUS = 2.4;
+
+function Scene() {
+  const drawn = useTrack(0);
+  const theta = useTrack(0);
+  const tip = useMemo(
+    () => derive(theta, (angle) => ({ x: RADIUS * Math.cos(angle), y: RADIUS * Math.sin(angle) })),
+    [theta],
+  );
+  const player = usePlayer();
+  useEffect(() => {
+    void player.play(sequence(draw(drawn, { duration: 1.2 }), valueTo(theta, 1.1, { duration: 1.6 })));
+  }, [player, drawn, theta]);
+
+  return (
+    <>
+      <Circle radius={RADIUS} progress={drawn} />
+      <Line from={{ x: 0, y: 0 }} to={tip} />
+      <Arc radius={0.8} angle={theta} />
+      <Dot center={tip} />
+    </>
+  );
+}
+
+export function FirstScene() {
+  return (
+    <Stage units={10}>
+      <Scene />
+    </Stage>
+  );
+}
+```
+
+The site does not run React, so this block is not live. [Bindings](/guides/bindings/) covers how the two bindings differ.
+
+## What you built
+
+You used the four ideas that the rest of the library elaborates:
+
+- A scene is a **tree of nodes**, each made from a definition; JSX is one way to build it.
+- State lives in **tracks**, and a track given as a prop binds: the node follows it.
+- Animations are **seekable descriptions** run by a clock, so they can be played, paused and scrubbed.
+- **Anything** (a tween, a drag, a slider) can write a track.
+
+## Next steps
+
+- [Core concepts](/start/concepts/): the scene graph, tracks and the frame loop in more depth
+- [Animation](/guides/animation/): sequencing, emphasis effects and morphing
+- [Timelines](/guides/timelines/): seeking, chapters and speed
+- [Interaction](/guides/interaction/): dragging, constraints, keyboard access
+- [Recipe: a scrubbable timeline](/recipes/scrub-slider/): this step's slider in detail
+- [Gallery](/gallery/): live, copyable examples for every feature

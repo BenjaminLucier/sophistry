@@ -1,0 +1,217 @@
+---
+title: "Animation presets"
+description: "Every animation preset: creation, fades and growing, movement, bending shapes, emphasis, indication, transforms and animated numbers."
+---
+
+import Example from "../../../components/Example.astro";
+
+The presets are ready-made animations, grouped here by what they do. All of them come from `@sophistry/core`. Each takes the track to drive as its first argument (or any [animatable](/guides/animation/#animating-signals-and-stores)), plus the same `{ duration, delay, easing }` options (see [Options every preset accepts](/guides/animation/#options-every-preset-accepts)), and returns a seekable animation you run with `usePlayer()` in a component or `scene.play` / `scene.timeline` without a framework. Bind the same track to the node's prop (`progress={drawn}`, `opacity={opacity}`), and the preset animates the node with no framework work per frame. To combine them, see [Composing animations](/guides/animation/#composing-animations).
+
+## Creation
+
+Reveals that draw a shape's outline. Bind the track to a shape's `progress` prop.
+
+| Preset | What it does |
+| --- | --- |
+| `draw(progress)` | Draws the outline from 0 to 1. |
+| `erase(progress)` | Erases it. |
+| `write(progresses, { lag, lagRatio })` | `draw` across several tracks, staggered. `lagRatio` wins if both are given. |
+| `unwrite(progresses, { lag, reverse })` | Staggered `erase`, last stroke first by default. |
+| `drawBorderThenFill(progress, fillOpacity)` | Traces the outline (65%), then fades the fill in (35%). |
+
+`draw` is an arc-length reveal: the renderer measures the shape's polylines and trims them to the current progress. A shape's polylines share one reveal budget, spent in order, so a multi-part shape draws part by part. An arrow's shaft finishes before its head starts. `<Label>` is the exception: canvas cannot trim a glyph outline, so text is written glyph by glyph instead, each glyph fading in whole. For maths, `@sophistry/text` turns LaTeX into real geometry that does reveal stroke by stroke (see [Math and LaTeX](/guides/math-and-latex/)).
+
+<Example name="animation/WriteAndErase" />
+
+## Fades and growing
+
+| Preset | What it does |
+| --- | --- |
+| `fadeIn(opacity)`, `fadeOut(opacity)`, `fadeTo(opacity, value)` | Opacity tweens. |
+| `fadeInFrom(opacity, position, offset)`, `fadeOutTo(...)` | Fade while drifting in from, or out toward, an offset. |
+| `growFromCenter(scale)` | Swells from nothing about the shape's center. |
+| `growFromPoint(scale, position, from)` | Grows while travelling from a point. |
+| `growFromEdge(scale, position, bounds, direction)` | Grows out of one edge. |
+| `shrinkToCenter(scale)` | The inverse of `growFromCenter`. |
+| `spinInFromNothing(scale, rotation)` | Grows while spinning in. |
+
+`growFromCenter` is also Manim's `GrowArrow`: set `origin={tail}` on an `<Arrow>` and the scale pivots on the tail, inflating a small complete arrow, head and all. The grow presets snap back to their resting scale if a run is aborted midway, so a cancelled script never leaves a shape stuck at half size.
+
+<Example name="animation/FadeAndGrow" />
+
+## Movement and values
+
+| Preset | What it does |
+| --- | --- |
+| `moveTo(position, point)` | Moves a point track to a target. |
+| `moveBy(position, delta)` | Moves by an offset from wherever it is when it starts. |
+| `moveAlong(position, polyline)` | Follows a path at constant speed. |
+| `rotateTo(rotation, radians)`, `rotateBy(rotation, radians)` | Absolute and relative rotation. |
+| `scaleTo(scale, value)` | Scale tween. |
+| `colorTo(color, target, { colorSpace })` | Color tween; `colorSpace: "oklch"` blends perceptually. |
+| `valueTo(value, target)` | Any number track: the base case the others build on. |
+| `springTo(target, to, spring)` | Any value, moved by a spring: seekable, its duration is the settle time, and it can overshoot. See [Springs](/guides/animation/#springs). |
+
+`rotateTo`, `scaleTo` and `fadeTo` are literally `valueTo` under another name. The target of `valueTo` can be a function of the starting value, such as `valueTo(x, (v) => v + 5)`.
+
+<Example name="animation/PointMovingOnShapes" />
+
+`moveTo` and `moveBy` travel in a straight line unless you pass `pathArc`: the point swings round an arc that turns through that many radians on the way (Manim's `path_arc`), counter-clockwise for positive. `Math.PI` is a half circle, which is how two things swap places without passing through each other. The same option on `morph` and `morphPath` carries every vertex of a shape along its own arc, which is Manim's `ClockwiseTransform` (`-Math.PI`) and `CounterclockwiseTransform` (`Math.PI`). The path on its own is `pathAlongArc(angle)` in `@sophistry/core/geometry`.
+
+To show where something has been, put a `<TracedPath point={position} />` beside it, bound to the same point track. It remembers the point against time (the stage clock's, by default), and `dissipatingTime` keeps only the recent stretch. It is safe to scrub: bind a timeline's `time` as `time={tl.time}`, and seeking back shortens the trail to match.
+
+<Example name="animation/ArcsTrailsAndSpeed" />
+
+## Bending shapes
+
+These drive a shape's `points` track (one polyline or several) by sending each point somewhere. A curving map bends the space between two vertices too, so long edges are split first, into pieces a sixty-fourth of the shape's size unless you set `segmentLength`.
+
+| Preset | What it does |
+| --- | --- |
+| `homotopy(points, (p, t) => …)` | Flows every point through a family of maps over time; `h(p, 0)` should be `p`. Manim's `Homotopy` (3 s by default). |
+| `applyFunction(points, f)` | Sends every point to `f(p)` and leaves it there (`ApplyPointwiseFunction`). `pathArc` curves the trip. |
+| `applyComplexFunction(points, f)` | The plane as complex numbers, each point sent to `f(z)` along an arc turning through the argument of `f(1)`, as Manim's does. |
+| `phaseFlow(points, f, { virtualTime })` | Every point flows along the vector field `f` for `virtualTime` (Manim's `PhaseFlow`). Paths are integrated once on entry, so it scrubs exactly. |
+
+For a linear map use `<LinearTransform>` instead, which is exact and costs nothing (see [Coordinate systems](/guides/coordinate-systems/)).
+
+<Example name="maths/ComplexSquaring" />
+
+<Example name="maths/PendulumPhaseFlow" />
+
+## Emphasis
+
+Manim's emphasis family animates around a shape without moving it.
+
+| Preset | What it does |
+| --- | --- |
+| `indicate(scale)` | Swells and returns, optionally flashing a color. |
+| `pulse(scale)` | A gentle there-and-back scale; good inside `forever`. |
+| `flash(radius, opacity)` | A ring that expands and fades. |
+| `wiggle(rotation)` | Shakes back and forth. |
+| `circumscribe(progress)` | Draws a box around something, then erases it. |
+
+<Example name="animation/EmphasisEffects" />
+
+## Indication
+
+The rest of Manim's indication family. Each one also leaves its tracks at rest when it finishes.
+
+| Preset | What it does |
+| --- | --- |
+| `focusOn(radius, opacity)` | A wide, faint disc closes in on a point, then vanishes. Start the disc wide and at opacity 0. |
+| `blink(opacity)` | Hides and shows again, `blinks` times (`timeOn`, `timeOff`, `hideAtEnd`). |
+| `showPassingFlash(progress)` | A short stretch of stroke runs along a path and off its end. |
+| `applyWave(points)` | A wave runs across a shape's points and lets them settle back. |
+
+`showPassingFlash` only drives a `0..1` track. `passingFlash(length, t, width)` turns that into the stroke's `dash`, `dashOffset` and `visible`, for a copy of the path drawn in a highlight color. `length` is the path's arc length, `measure(points).total` from `@sophistry/core/geometry`. Derive each prop from the progress track, as in `dash={derive(flash, (t) => passingFlash(length, t).dash)}`, so they follow it with no framework work. A dash starts over on each ring of a shape, so on a shape with several rings, each carries its own flash. `applyWave` drives the `points` track of a `Path` or `Polygram`, either one polyline or several. Long straight edges are split for the duration so they can bend, and the original points come back at the end. `direction`, `amplitude`, `timeWidth` and `ripples` shape the wave.
+
+<Example name="animation/IndicationEffects" />
+
+For emphasis that just keeps going, `<AnimatedBoundary points={…} />` runs a colored stroke round an outline, a new color each cycle (`colors`, `cycleRate`), drawing every other cycle backwards while the previous one thins away. It is a component rather than an animation: it reads the stage clock's time, or a `time` you bind, so it runs with no `play` at all and scrubs with a timeline's `time`. Give it the outline of the shape it surrounds.
+
+<Example name="animation/AnimatedBoundaryHighlight" />
+
+## Transforms
+
+| Preset | What it does |
+| --- | --- |
+| `morph(polyline, target, { closed, pathArc })` | Interpolates a polyline track into another shape with closed-ring correspondence, so shapes do not spin en route. `pathArc` swings it round an arc. |
+| `morphPath(rings, fromSvg, toSvg)` | Morphs between two SVG path strings into a track of rings (`Polyline[]`). Holes stay holes, and pieces with no partner grow or shrink. |
+| `morphCurve(curve, target)` | Morphs a curve path. |
+| `morphWith(polyline, interpolator)` | Bring your own interpolator. |
+| `<TransformMatchingShapes>` | Pairs groups of shapes by similarity (below). |
+
+```tsx
+import { morph, track } from "@sophistry/core";
+import { circlePolyline, rectPolyline } from "@sophistry/core/geometry";
+import { Polygon, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Morphing() {
+  const shape = track(circlePolyline(0, 0, 2));
+  const player = usePlayer();
+  onSettled(() => {
+    void player.play(morph(shape, rectPolyline(-1.8, -1.8, 3.6, 3.6), { closed: true }));
+  });
+  return <Polygon points={shape} />;
+}
+
+export const Scene = () => (
+  <Stage units={8}>
+    <Morphing />
+  </Stage>
+);
+```
+
+<Example name="animation/MorphShapes" />
+
+### Matching shapes
+
+`<MathTransform>` pairs glyphs by parsing TeX. Ordinary shapes have nothing to parse, so `<TransformMatchingShapes>` pairs them by point-cloud similarity instead, which is Manim's `TransformMatchingShapes`. You drive its `blend` from 0 to 1 with a track:
+
+```tsx
+import { track, valueTo } from "@sophistry/core";
+import type { ShapePart } from "@sophistry/core/geometry";
+import { Stage, TransformMatchingShapes, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+const from: ShapePart[] = [
+  { polylines: [[{ x: -1, y: -1 }, { x: 1, y: -1 }, { x: 1, y: 1 }, { x: -1, y: 1 }]] },
+];
+const to: ShapePart[] = [
+  { polylines: [[{ x: -1, y: -1 }, { x: 1, y: -1 }, { x: 0, y: 1 }]] },
+];
+
+function Matching() {
+  const blend = track(0);
+  const player = usePlayer();
+  onSettled(() => void player.play(valueTo(blend, 1, { duration: 1.5 })));
+  return <TransformMatchingShapes from={from} to={to} blend={blend} />;
+}
+
+export const Scene = () => (
+  <Stage units={6}>
+    <Matching />
+  </Stage>
+);
+```
+
+Matching has two phases. Correspondence decides which `from` shape becomes which `to` shape. Then each matched pair is morphed, so shapes with different vertex counts still resample cleanly. Unmatched shapes cross-fade. The component renders the result directly, a group of paths that changes frame to frame as `blend` moves.
+
+Matching ignores position and size, and unrelated shapes with similar vertex counts and areas (a hexagon and a heptagon) can still pair. Set `maxCost` to refuse pairs worse than a threshold; those shapes fade instead.
+
+<Example name="animation/MatchingShapes" />
+
+## Animated numbers
+
+`Integer`, `DecimalNumber` and `Variable` are numbers as scene objects: one node per character, tabular columns so nothing shimmers, and `value` as an ordinary prop driven by `valueTo`.
+
+```tsx
+import { track, valueTo } from "@sophistry/core";
+import { Integer, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Counter() {
+  const count = track(0);
+  const player = usePlayer();
+  onSettled(() => void player.play(valueTo(count, 2048, { duration: 2 })));
+  return <Integer value={count} fontSize={1.2} minIntegerDigits={4} />;
+}
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Counter />
+  </Stage>
+);
+```
+
+`value` is bound to the track, so nothing in Solid runs while the number counts.
+
+<Example name="animation/AnimatedNumbers" />
+
+## Next steps
+
+- [Animation](/guides/animation/): options, easing, composition, springs and custom animations.
+- [Timelines and playback](/guides/timelines/): run, pause and scrub what you build.
+- [Tweens and effects gallery](/gallery/animation/tweens-and-effects/): every preset family running live.

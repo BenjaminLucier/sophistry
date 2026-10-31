@@ -1,0 +1,130 @@
+---
+title: "A scrubbable timeline"
+description: "Drive a scripted explainer from a range slider, with play/pause and chapter markers."
+---
+
+import Example from "../../../components/Example.astro";
+
+Build a scene whose whole animation can be scrubbed backwards and forwards with a slider, with a play/pause button and chapter markers positioned from the steps' durations.
+
+## The result
+
+Drag the slider, press play, or jump to a chapter. Scrubbing backwards un-draws the circle and fades things out again, because seeking restores earlier steps to their start state.
+
+<Example name="animation/ScrubChapters" />
+
+## The script
+
+Describe each step as data: a title and an animation. The animation is a plain `sequence` of the steps, so the total length is the sum of their durations. The tracks are what the scene binds to.
+
+```tsx
+import { draw, fadeIn, moveAlong, track, trackPoint } from "@sophistry/core";
+import { circlePolyline } from "@sophistry/core/geometry";
+
+const orbit = circlePolyline(0, 0, 2);
+const drawn = track(0);
+const dotOpacity = track(0);
+const dot = trackPoint(2, 0);
+const labelOpacity = track(0);
+
+const steps = [
+  { title: "1. Draw the orbit", anim: draw(drawn, { duration: 1.5 }) },
+  { title: "2. Place a body", anim: fadeIn(dotOpacity, { duration: 0.8 }) },
+  { title: "3. Send it around", anim: moveAlong(dot, orbit, { duration: 3 }) },
+  { title: "4. Name it", anim: fadeIn(labelOpacity, { duration: 0.8 }) },
+];
+```
+
+## The timeline
+
+The controls (button, slider) are DOM beside the `<Stage>`, so the timeline is built in the component that renders both. Get it from `usePlayer()`, which aborts it when the component is disposed, and start it from `onSettled`.
+
+```tsx nocheck
+import { createClock, sequence } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+const clock = createClock();
+const tl = usePlayer().timeline(sequence(...steps.map((step) => step.anim)), { clock });
+
+onSettled(() => void tl.play());
+```
+
+The stage renders the scene with the tracks as props, on the same clock:
+
+```tsx nocheck
+<Stage units={10} clock={clock}>
+  <Circle radius={2} progress={drawn} />
+  <Dot center={dot} radius={0.2} opacity={dotOpacity} />
+  <Label text="orbit" opacity={labelOpacity} />
+</Stage>
+```
+
+`usePlayer()` here is called outside the stage, so on its own it would run on the shared `defaultClock`. Giving the stage and the timeline one `createClock()` ties them together, which has two bonuses: the clock is suspended while the stage is off-screen, so playback does not run away unseen, and pausing or slowing it touches this scene only. (The live example can leave the clock out: on this site every example already runs on a clock of its own.)
+
+## The slider
+
+A native `<input type="range">`, bound to `tl.time` and `tl.seek`. `tl.time` and `tl.playing` are `Readable`s; `useTrackValue` turns them into Solid accessors for the DOM. Pause on input so the user's position is not overwritten by the next clock step.
+
+```tsx nocheck
+import { useTrackValue } from "@sophistry/solidjs";
+
+const time = useTrackValue(tl.time);
+const playing = useTrackValue(tl.playing);
+
+<button type="button" onClick={() => (playing() ? tl.pause() : void tl.play())}>
+  {playing() ? "Pause" : "Play"}
+</button>
+
+<input
+  type="range"
+  aria-label="Timeline position"
+  min={0}
+  max={tl.duration}
+  step="any"
+  value={time()}
+  onInput={(e) => {
+    tl.pause();
+    tl.seek(Number(e.currentTarget.value));
+  }}
+/>
+```
+
+The thumb follows playback and the button label stays correct with no extra state. Pressing play at the end restarts from 0. Only the DOM controls read the time through Solid; the scene itself is bound to the tracks, so scrubbing runs no Solid code inside the stage.
+
+A native range input is keyboard-accessible (arrows, Home, End) for free, which is a good reason to use one rather than a draggable canvas handle. If you want the knob inside the scene instead, see the `ParameterSlider` example in [Interaction](/guides/interaction/).
+
+## Chapter markers
+
+Each step's start is the running sum of the durations before it. Compute them once, then use them for both the buttons and the "current chapter" readout.
+
+```tsx nocheck
+import { derive } from "@sophistry/core";
+
+let at = 0;
+const chapters = steps.map((step) => {
+  const chapter = { title: step.title, start: at, end: at + step.anim.duration };
+  at = chapter.end;
+  return chapter;
+});
+
+const chapter = derive(tl.time, (t) => chapters.filter((c) => t >= c.start).pop() ?? chapters[0]);
+const current = useTrackValue(chapter); // for the DOM buttons
+
+<Label text={derive(chapter, (c) => c.title)} y={-2.5} fontSize={0.4} />; // in the scene
+```
+
+Position a button for each chapter at `start / tl.duration` percent along the slider, and have it call `tl.pause(); tl.seek(c.start)`. `chapter` is a `derive` of `tl.time`, so the caption in the scene binds to it directly, and the highlighted button follows it through `current()`, as the timeline plays or is scrubbed.
+
+## Variations
+
+- **Looping.** Wrap the sequence in `repeat(..., 3)`, or await `tl.play()` in a loop. Note that `tl.duration` of `forever(...)` is `Infinity`, which a slider cannot map; use `repeat` with a finite count.
+- **Speed control.** The timeline runs on `clock`, so `clock.setSpeed(0.5)` slows everything, and a `<select>` of speeds is one line.
+- **Single steps.** `clock.advance(1 / 30)` while paused nudges time forward by hand. Or `tl.seek(tl.time.peek() + 0.1)`.
+- **A trail that scrubs.** `<TracedPath point={dot} time={tl.time} />` draws where the body has been, and shortens as you scrub back.
+- **A seek-only scene.** If you never call `tl.play()`, the timeline is purely a function from time to state, which is exactly what [scroll-driven animation](/recipes/scroll-driven/) uses.
+
+## Next steps
+
+- [Timelines and playback](/guides/timelines/) for the full `timeline()` and seeking semantics.
+- [Animation](/guides/animation/) for the presets used in the script.

@@ -1,0 +1,33 @@
+---
+title: "Changelog"
+description: "Release notes for the sophistry packages."
+---
+
+Release notes for the sophistry packages are generated from [changesets](https://github.com/changesets/changesets) when a release is cut, and published in two places:
+
+- [GitHub releases](https://github.com/BenjaminLucier/sophistry/releases) for each version.
+- Each package's `CHANGELOG.md`, which ships on npm with every release.
+
+sophistry is pre-1.0, so a minor version may contain breaking changes; each one comes with migration notes. See [Stability and versioning](/project/stability/) for the policy.
+
+## 0.0.1
+
+The first release. All packages are published under the `@sophistry/` scope and versioned together:
+
+- **`@sophistry/core`** is plain TypeScript with no UI-framework dependency: a retained scene graph of nodes made from definitions (`circle.create({ radius })`), tracks (`track`, `derive`, `watch`) with push-stale, pull-value updates, seekable animations and springs, first-class instancing (`instances()`) and path batches, interaction, cameras, and the Canvas2D renderer. Subpaths `/geometry`, `/color` and `/themes` hold the pure helpers.
+- **`@sophistry/text`** (text and LaTeX), **`@sophistry/charts`** (with `/charts/3d`) and **`@sophistry/3d`** build on the core.
+- **`@sophistry/solidjs`** and **`@sophistry/react`** are the declarative bindings. Every component (`<Circle>`, `<Axes>`, `<BarChart>`) is generated from the core's definitions; `<Stage>`, `<MultiStage>`, `<Camera>` and the hooks (`useScene`, `useClock`, `useTrack`, `useTrackValue`, `usePlayer`, `useMovablePoint`) are hand-written.
+
+Scene code works with tracks and nodes:
+
+- Tracks are objects: read with `peek()`, write with `set()`. Pass the track itself as a prop (`progress={drawn}`), and compute props with `derive(...)` instead of reading signals in JSX.
+- The node is the handle: a component's `ref` receives its scene node, so `node.bounds()`, `coordsOf(node)` and `chartHandle(node)` give its geometry, coordinate system and chart state.
+- Animations run on a scene's clock: `scene.play(...)`, or `usePlayer()` in a component.
+- Charts always batch.
+
+On the benchmark scenes, updating 10,000 moving nodes takes 2.8 ms a frame and mounting them 70 ms. See [Performance](/project/performance/) and [Architecture](/project/architecture/).
+
+## Next steps
+
+- [Stability and versioning](/project/stability/)
+- [Roadmap](/project/roadmap/)

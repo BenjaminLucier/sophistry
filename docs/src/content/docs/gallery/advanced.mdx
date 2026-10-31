@@ -1,0 +1,20 @@
+---
+title: Advanced projects
+description: "Larger scenes that combine timelines, interaction, charts and custom shapes."
+---
+
+import Gallery from "../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Bigger scenes built from the pieces in the other categories: epicycles and gradient descent from tracks and paths, a sorting algorithm recorded as a scrubbable timeline, a graph traversal, a custom shape written with `defineShape` and used like a built-in component, and exporting the canvas as a PNG.
+
+Read the recipes alongside these: each is a walkthrough of a pattern you can see running here.
+
+<CardGrid>
+  <LinkCard title="Algorithm visualizer" href="/recipes/algorithm-visualizer/" description="Record steps, then play and scrub them." />
+  <LinkCard title="Extending sophistry" href="/guides/extending/" description="Custom shapes and animations." />
+  <LinkCard title="Export stills" href="/recipes/export-stills/" description="Save the canvas as an image." />
+  <LinkCard title="Embedding" href="/recipes/embedding/" description="Use a Stage inside your app." />
+</CardGrid>
+
+<Gallery category="advanced" />

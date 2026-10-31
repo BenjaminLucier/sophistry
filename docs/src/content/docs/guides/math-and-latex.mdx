@@ -1,0 +1,320 @@
+---
+title: "Math and LaTeX"
+description: "LaTeX as geometry: mathTex, createLatex, mathTransform, plus animated numbers."
+---
+
+import Example from "../../../components/Example.astro";
+
+`@sophistry/text` typesets LaTeX with KaTeX and extracts the glyph outlines as scene geometry. Its definitions are `mathTex` and `mathTransform`, and the components `<MathTex>` and `<MathTransform>` come from `@sophistry/solidjs/text` (or `@sophistry/react/text`). A formula is therefore *shapes*, not a text run: it writes itself on stroke by stroke, takes gradients and the theme's colors, and morphs into another formula with every symbol the two share gliding to its new place.
+
+## MathTex
+
+`<MathTex>` renders a TeX string, centred on its position. `fontSize` is in scene units per em and is the only thing that sets size, so every dimension inside the formula scales with it. The component returns the node, and the node is the handle: `ref` receives a `MathTexNode` with `ready()`, `pending()`, `status`, `placed()`, `parts()` and `partBounds(index)` on top of every node method.
+
+```tsx
+import { draw, track } from "@sophistry/core";
+import { Stage, usePlayer } from "@sophistry/solidjs";
+import { MathTex } from "@sophistry/solidjs/text";
+import type { MathTexNode } from "@sophistry/text";
+import { onSettled } from "solid-js";
+
+export function Euler() {
+  const drawn = track(0);
+  const player = usePlayer();
+  let formula: MathTexNode | undefined;
+
+  onSettled(() => {
+    // Typesetting is async: wait for the formula before writing it out.
+    void formula
+      ?.ready()
+      .then(() => player.play(draw(drawn, { duration: 2 })))
+      .catch(() => {});
+  });
+
+  return (
+    <Stage units={10}>
+      <MathTex
+        tex="e^{i\pi} + 1 = 0"
+        fontSize={0.9}
+        progress={drawn}
+        ref={(node) => {
+          formula = node;
+        }}
+      />
+    </Stage>
+  );
+}
+```
+
+Without a framework it is the same definition: `scene.add(mathTex.create({ tex, fontSize: 0.9, progress: drawn }))`, then `await node.ready()` before `scene.play(draw(drawn))`.
+
+`tex` is KaTeX source. In a JSX string attribute (`tex="\frac{a}{b}"`) write backslashes as-is; inside a JS expression (`tex={"\\frac{a}{b}"}`) double them, or use `String.raw`. Other props:
+
+- `fill`, `stroke`, `opacity`, `x`, `y`, `rotation`, `scale` and the rest of the shape props. `fill` defaults to the theme foreground, so a formula follows light and dark mode. `strokeWidth` defaults to 0; the outline a formula is written with is drawn in `stroke` if you give one, and otherwise in the fill.
+- `displayMode` (default `true`: display-size operators and centered fractions) and `macros` (extra KaTeX macros such as `{ "\\R": "\\mathbb{R}" }`).
+- `partFill` colours parts individually (Manim's `tex_to_color_map`): a record from source character to paint (`{ x: "gold" }`) or a function of the part and its index. See [below](#per-glyph-control-with-createlatex).
+- `onTypeset` is called with the placed parts whenever the placed formula changes: a new outline landing, and `fontSize` re-placing the current one. The loading model is described [below](#loading-pending-and-waiting).
+- `onError` is called when typesetting fails and also contains the failure (the formula renders nothing); without it the error is rethrown from the scene's next commit. KaTeX *parse* errors are not failures: KaTeX renders the bad source in its error color, so a half-typed formula still draws.
+
+`progress` writes a formula out the way Manim's `Write` does: glyph after glyph in reading order, each starting a little after the last (`lag_ratio = min(4 / glyphs, 0.2)`), each tracing its outline over the first half of its window and filling in over the second as the outline fades. So `draw(progress)` is `Write`, and a finished formula is fill alone, with no stroke. `write` takes an array of tracks to stagger several formulas:
+
+<Example name="maths/QuadraticFormula" />
+
+<Example name="maths/EulerIdentity" />
+
+Use `<Label>` (`label`) for prose. It draws with `fillText`, which is one call instead of a few thousand points. Reach for `MathTex` when the text is maths, or when the writing itself is the point.
+
+## Loading, pending and waiting
+
+Typesetting is asynchronous: a couple of frames the first time a formula is seen, a cache hit afterwards. There are no loading boundaries to set up; each formula node manages its own state.
+
+- **First load.** Typesetting starts at the node's **first commit**. Until the formula lands the node draws nothing, and the rest of the scene paints as usual.
+- **A changed formula** (`tex`, `displayMode` or `macros`) stays on screen until the new one is ready, then swaps in one step. `fontSize` changes never wait: they re-place the outline without typesetting. A formula already typeset elsewhere on the page (the outline cache shares one request per formula) is taken in the same commit, so going back to a formula never blanks a frame.
+- **`pending()`** on the node is true while typesetting, and **`status`** is the same state as a `Readable` (`"pending"`, `"ready"` or `"failed"`) to bind a prop to.
+- **`ready()`** resolves once the formula is typeset, and rejects with the error, or with an `AbortError` if the node is disposed first. Await it before `draw` or a morph, or the animation runs while nothing is on screen. A `mathTransform` node's `ready()` covers both formulas.
+- **Errors** go to `onError`, which also contains them; without it they are rethrown from the scene's next commit. Either way `ready()` rejects and `error()` returns the failure, and the formula recovers when `tex` changes to something valid.
+
+```tsx
+import { derive } from "@sophistry/core";
+import { Stage } from "@sophistry/solidjs";
+import { MathTex } from "@sophistry/solidjs/text";
+import { createSignal } from "solid-js";
+
+export function Swap() {
+  const [tex, setTex] = createSignal("a^2 + b^2");
+
+  return (
+    <>
+      <Stage units={8}>
+        <MathTex
+          tex={tex()}
+          // Dim the old formula while the next one loads: bound in core.
+          ref={(formula) =>
+            formula.set("opacity", derive(formula.status, (status) => (status === "pending" ? 0.4 : 1)))
+          }
+        />
+      </Stage>
+      <button type="button" onClick={() => setTex("c^2")}>
+        next
+      </button>
+    </>
+  );
+}
+```
+
+`ready()` is safe to call from `onSettled`. A rejected `ready()` with an `AbortError` only means the formula unmounted first, so most scripts ignore that one.
+
+## Per-glyph control with createLatex
+
+For colouring parts, `partFill` on `<MathTex>` is usually enough: the formula becomes one shape per part, and `progress` still writes it as a whole.
+
+```tsx
+<MathTex tex="3x^2 + 2x - x = 4x^2 - 5" partFill={{ x: "gold" }} fontSize={0.9} />
+```
+
+`createLatex(tex, options)` stops one step short of a node: it returns the placed formula as a **`Readable`** (`null` until the first typeset lands), with the same `pending()`, `status`, `ready()` and `error()` as the nodes, plus `dispose()`. `tex` and `options` may themselves be `Readable`s. The value has `parts` (one per glyph, rule or stretchy piece, in reading order, already in scene units, y up and centred on the origin), plus `width` and `height`. Render each part as its own `<Path>` and give it its own colour, track or interaction:
+
+```tsx
+import { derive } from "@sophistry/core";
+import { Path, Stage, useScene, useTrackValue } from "@sophistry/solidjs";
+import { createLatex } from "@sophistry/text";
+import { For, onCleanup } from "solid-js";
+
+function Parts() {
+  const palette = derive(useScene().theme, (theme) => theme.palette);
+  const formula = createLatex("3x^2 + 2x - x = 4x^2 - 5", { fontSize: 0.9 });
+  onCleanup(() => formula.dispose());
+  // The parts change only when a new formula lands: fine to follow in Solid.
+  const placed = useTrackValue(formula);
+
+  return (
+    <For each={placed()?.parts ?? []}>
+      {(part) => (
+        <Path
+          points={part.polylines}
+          closed
+          fill={derive(palette, (palette) => (part.char === "x" ? palette.highlight : palette.foreground))}
+          stroke="none"
+        />
+      )}
+    </For>
+  );
+}
+
+export const Highlighted = () => (
+  <Stage units={12}>
+    <Parts />
+  </Stage>
+);
+```
+
+Each part has `kind` (`"glyph"`, `"rule"` for fraction bars and overlines, or `"svg"` for stretchy pieces such as radical tails and big delimiters), `char` (glyph only: the source character), `polylines` and `box`. Matching on `char` is the simple way to colour all the `x`s; for a specific symbol, find its index in reading order. Give each part `stroke="none"`: a glyph is fill alone, as in `MathTex`, and a `<Path>` otherwise strokes in the theme's diagram width and colour, which rings every letter.
+
+To write the parts out the way `MathTex` does, give each one its place in the write with `writePhase(progress, index, count)` (from `@sophistry/core`). It returns how much of the glyph's outline is traced (`border`, its `progress`) and how far its fill is up (`fill`, its `fillOpacity`); the outline is `fontSize * OUTLINE_RATIO` wide (`OUTLINE_RATIO` is exported by `@sophistry/text`) and thins away as the fill comes up:
+
+<Example name="maths/ColoredFormula" />
+
+## Transforming formulas
+
+`<MathTransform from to blend />` morphs one formula into another. `blend` runs 0 to 1 (0 is exactly `from`, 1 exactly `to`); it is a morph, not a reveal, hence not `progress`. Bind it to a track and drive that with `valueTo` or a spring:
+
+```tsx
+import { track, valueTo } from "@sophistry/core";
+import { Stage, usePlayer } from "@sophistry/solidjs";
+import { MathTransform } from "@sophistry/solidjs/text";
+import type { MathTransformNode } from "@sophistry/text";
+import { onSettled } from "solid-js";
+
+export function Square() {
+  const blend = track(0);
+  const player = usePlayer();
+  let formula: MathTransformNode | undefined;
+
+  onSettled(() => {
+    // `ready()` covers both formulas: the morph never starts from half a pair.
+    void formula
+      ?.ready()
+      .then(() => player.play(valueTo(blend, 1, { duration: 1.6 })))
+      .catch(() => {});
+  });
+
+  return (
+    <Stage units={8}>
+      <MathTransform
+        from="x^2 + 2x + 1"
+        to="(x + 1)^2"
+        blend={blend}
+        fontSize={1.1}
+        ref={(node) => {
+          formula = node;
+        }}
+      />
+    </Stage>
+  );
+}
+```
+
+`MathTransform` is Manim's `TransformMatchingTex`: parts pair by character, each going to the **nearest** part of the same character and size (an exponent `2` goes to the exponent `2`, not a full-size `2` next door). Matched parts move; the rest cross-fade, drifting toward where the new parts arrive.
+
+<Example name="maths/FormulaMorph" />
+
+Two options steer the matching:
+
+- `keyMap={{ "2": "\\pi" }}` forces a correspondence the characters do not imply, so that pair *moves* instead of cross-fading.
+- `mismatch="morph"` reshapes leftover parts (a `2` that must become a `\pi`) into their nearest partner instead of fading them: more spectacle, less legibility. The default `"fade"` is Manim's behavior. Outlines become outlines and holes become holes, so a counter never fills in on the way, and a piece with no partner grows or shrinks.
+
+To color parts by what the transform did to them, use `partFill`: it receives each `MorphedPart` (with a `role` of `"moved"`, `"morphed"`, `"out"` or `"in"`) and returns a paint, or `undefined` for the default:
+
+```tsx
+<MathTransform
+  from="2x + 6 = 10"
+  to="2x = 10 - 6"
+  blend={blend}
+  partFill={(part) => (part.role === "in" ? "tomato" : undefined)}
+/>
+```
+
+Nothing is drawn until both formulas are typeset, and when `from` or `to` changes the previous morph stays up until the new pair has landed. `MathTransform` does not support `strokeAlong` or pointer interaction props; its `ref` receives a `MathTransformNode`, with the same loading methods as a `MathTexNode`.
+
+### Matching arbitrary shapes
+
+For shapes that are not TeX (an imported outline, a different font), the same idea works from raw geometry. The `transformMatchingShapes` definition (`<TransformMatchingShapes>` in the bindings; see [Animation](/guides/animation/)) draws this morph for you; underneath it is the `morphShapes(from, to, options)` function (from `@sophistry/core/geometry`, re-exported by `@sophistry/text`), which takes two lists of `{ id?, polylines }` and returns a function from `t` to the in-between parts, each with `polylines`, `opacity` and a `role`. `matchShapesByPointCloud` returns just the correspondence.
+
+```ts
+import { morphShapes, regularPolygon, type ShapePart } from "@sophistry/core/geometry";
+
+const sourceShapes: ShapePart[] = [{ id: "tri", polylines: [regularPolygon(0, 0, 1, 3)] }];
+const targetShapes: ShapePart[] = [{ id: "sq", polylines: [regularPolygon(0, 0, 1, 4)] }];
+
+const at = morphShapes(sourceShapes, targetShapes, { maxCost: 5 });
+const parts = at(0.5); // [{ id, polylines, opacity, role }, ...]
+```
+
+Pairing is greedy, cheapest first, on a similarity descriptor with no rotation invariance, so coincidental matches are possible: a round blob will happily match another round blob. `maxCost` leaves poor pairs unmatched (they fade) instead of forcing them together. There is no `"morphed"` role here: an unmatched shape has nothing plausible to become.
+
+## Numbers that animate
+
+Not everything needs LaTeX. `DecimalNumber`, `Integer` and `Variable` (definitions `decimalNumber`, `integer` and `variable` in `@sophistry/core`) draw a number one character per node, with tabular digits so the width does not shimmer as it counts. Bind `value` to a track and drive it with `valueTo`:
+
+```tsx
+import { track, valueTo } from "@sophistry/core";
+import { DecimalNumber, Stage, usePlayer, Variable } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+export function Counter() {
+  const price = track(0);
+  const player = usePlayer();
+  onSettled(() => {
+    void player.play(valueTo(price, 9.5, { duration: 1.5 }));
+  });
+
+  return (
+    <Stage units={8}>
+      <Variable label="price" value={price} y={1} />
+      <DecimalNumber value={price} decimalPlaces={2} unit=" USD" y={-1} />
+    </Stage>
+  );
+}
+```
+
+`minIntegerDigits` and `reserveSign` hold columns open so a centered counter stays still when it grows from 9 to 10; `digitStyle` styles individual characters; `Integer` is `DecimalNumber` with no decimals; `Variable` draws `label = value` (left-aligned by default).
+
+<Example name="animation/AnimatedNumbers" />
+
+## Fonts, loading and cost
+
+KaTeX typesets the formula into a hidden DOM node, the layout is read back out, and opentype.js supplies glyph outlines from KaTeX's own fonts, so the canvas draws exactly what the DOM would.
+
+- **Each distinct formula** costs a few milliseconds once, then is cached. The first time, nothing is drawn for a couple of frames while fonts load.
+- **Fonts load lazily**: only the faces a formula uses are fetched, and opentype.js itself is loaded on the first face it parses. `ensureWebFonts()`, `loadFace(name)` and `resolveFace(...)` preload them.
+- **On the server** nothing typesets (a request never settles there); the formula typesets in the browser after mount, with no mismatch.
+- **Bundle size**: KaTeX and opentype.js are large. They are dependencies of `@sophistry/text` only, so apps that never import it (or the bindings' `/text` subpaths) pay nothing; see [Installation](/start/installation/#bundle-size).
+
+### Lazy-loading the text entry point
+
+If maths is a minor feature of your page, keep it out of the main bundle. Put the scene that uses `/text` in its own module and load it with Solid's `lazy` (or React's):
+
+```tsx title="FormulaScene.tsx"
+import { Stage } from "@sophistry/solidjs";
+import { MathTex } from "@sophistry/solidjs/text";
+
+export default function FormulaScene() {
+  return (
+    <Stage units={10}>
+      <MathTex tex="\int_0^1 x^2\,dx = \tfrac{1}{3}" fontSize={0.9} />
+    </Stage>
+  );
+}
+```
+
+```tsx title="App.tsx" nocheck
+import { lazy, Loading } from "solid-js";
+
+const FormulaScene = lazy(() => import("./FormulaScene"));
+
+export function App() {
+  return (
+    <Loading fallback={<p>Loading formula…</p>}>
+      <FormulaScene />
+    </Loading>
+  );
+}
+```
+
+The bundler splits `FormulaScene` (with KaTeX and opentype.js) into a chunk fetched on first render. You can also trigger the load yourself, for example on hover or scroll, with `FormulaScene.preload()`, or with a plain dynamic `import("@sophistry/text")` inside an event handler.
+
+## More recipes
+
+Formulas compose with the rest of the toolkit. The Taylor series example draws successive polynomial approximations of sin x next to their formulas, and the Fourier example adds harmonics one at a time until a sine wave becomes a square wave:
+
+<Example name="maths/TaylorSeries" />
+
+<Example name="maths/FourierSquareWave" />
+
+For plotting what a formula describes, see [Coordinate systems and graphs](/guides/coordinate-systems/); for sequencing a formula's reveal with the rest of a scene, see [Timelines](/guides/timelines/).
+
+## Next steps
+
+- [Animation](/guides/animation/): drive `blend` and `progress` with presets.
+- [Timelines](/guides/timelines/): scrub a formula's reveal.
+- [Maths gallery](/gallery/maths/): live, copyable examples.

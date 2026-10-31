@@ -1,0 +1,54 @@
+---
+import { type ExampleEntry, galleryHref } from "../lib/examples";
+
+interface Props {
+	examples: ExampleEntry[];
+}
+
+const { examples } = Astro.props;
+---
+
+<ul class="cards">
+	{
+		examples.map((example) => (
+			<li>
+				<a href={galleryHref(example)}>
+					<strong>{example.meta.title}</strong>
+					<span>{example.meta.description}</span>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.cards {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(14rem, 1fr));
+		gap: 1rem;
+		list-style: none;
+		padding: 0;
+	}
+	.cards li {
+		margin: 0;
+	}
+	.cards a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.25rem;
+		height: 100%;
+		padding: 0.9rem 1rem;
+		border: 1px solid var(--sl-color-gray-5);
+		border-radius: 0.5rem;
+		background: var(--sl-color-bg-nav);
+		color: var(--sl-color-text);
+		text-decoration: none;
+	}
+	.cards a:hover {
+		border-color: var(--sl-color-accent);
+	}
+	.cards span {
+		font-size: var(--sl-text-sm);
+		color: var(--sl-color-gray-2);
+	}
+</style>

@@ -1,0 +1,39 @@
+packages:
+  - packages/*
+  - apps/*
+  - docs
+  - e2e
+
+# Shared dependency versions. Packages reference these as `catalog:` so a
+# bump happens in exactly one place.
+catalog:
+  "@astrojs/starlight": ^0.42.6
+  "@astrojs/solid-js": ^7.0.2
+  "@biomejs/biome": ^2.5.15
+  "@solidjs/meta": 1.0.0-next.2
+  "@solidjs/router": 2.0.0-next.34
+  "@solidjs/vite-plugin": 3.0.0-next.49
+  "@solidjs/web": 2.0.0-rc.14
+  "@tailwindcss/vite": ^4.3.3
+  astro: ^7.3.8
+  "@types/d3-array": ^3.2.2
+  "@types/d3-color": ^3.1.3
+  "@types/d3-ease": ^3.0.2
+  "@types/d3-interpolate": ^3.0.4
+  "@types/d3-scale": ^4.0.9
+  "@types/katex": ^0.16.8
+  "@vitest/coverage-v8": ^4.1.10
+  d3-array: ^3.2.4
+  filesystem-routing: ^0.4.0
+  happy-dom: ^20.11.2
+  solid-js: 2.0.0-rc.14
+  starlight-typedoc: ^0.23.1
+  tailwindcss: ^4.3.3
+  typedoc: ^0.28.20
+  typedoc-plugin-markdown: ^4.13.1
+  typescript: ~7.0.2
+  vite: ^8.3.4
+  vitest: ^4.1.10
+
+minimumReleaseAgeExclude:
+  - "@solidjs/vite-plugin@3.0.0-next.49"

@@ -1,0 +1,203 @@
+---
+title: "Shapes and styling"
+description: "The shape primitives, their shared props, transforms, groups, paint order and gradients."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+Every visible thing in sophistry is a node in the scene graph, made from a definition: `circle.create(props)` in the core, `<Circle>` in the Solid and React bindings (each component is generated from its definition, so the props are the same). This guide tours the primitives and the props they all share, so once you know how to style a `Circle` you know how to style everything else.
+
+<Example name="basic/ShapesGallery" />
+
+## The primitive set
+
+Names follow Manim's where a Manim equivalent exists. The table lists the binding components; each has a lowercase definition in `@sophistry/core` (`Circle` is `circle`, `SurroundingRectangle` is `surroundingRectangle`). All sizes are in [scene units](/guides/layout/#scene-units-and-the-frame), y up.
+
+| Purpose | Components |
+| --- | --- |
+| Circles and ellipses | `Circle`, `Ellipse`, `Dot`, `AnnotationDot`, `LabeledDot` |
+| Arcs and rings | `Arc`, `ArcBetweenPoints`, `Sector`, `Annulus`, `AnnularSector` |
+| Polygons | `Rect` (`cornerRadius` rounds corners), `Square`, `Polygon` (explicit `points`, or `radius` + `sides`), `Star`, `Polygram`, `RegularPolygram` |
+| Lines and arrows | `Line`, `DashedLine`, `Arrow`, `DoubleArrow`, `Vector`, `CurvedArrow`, `CurvedDoubleArrow` |
+| Curves | `CubicBezier`, `QuadraticBezier`, `Path` (`points`, `curvePoints` or an SVG `pathData`), `Plot` (a parametric `function(t)` in scene units) |
+| Angles | `Angle`, `RightAngle`, `Elbow` |
+| Matchers | `SurroundingRectangle`, `BackgroundRectangle`, `Cross`, `Underline`, `Brace` |
+| Text and numbers | `Label`, `Paragraph`, `BulletedList`, `Title`, `DecimalNumber`, `Integer`, `Variable` (LaTeX lives in [Math and LaTeX](/guides/math-and-latex/)) |
+| Containers | `Group`, `LinearTransform` |
+| Plotting | `Axes`, `NumberPlane`, `NumberLine`, `FunctionGraph`, ... see [Coordinate systems](/guides/coordinate-systems/) |
+
+Each shape takes its own geometry props (`center`/`radius` for a circle, `from`/`to` for a line) on top of the shared ones below. Every export has a full page in the [API reference](/api/sophistry/core/readme/).
+
+Arrows are tipped lines: `tipShape` picks the head (`"triangle"`, `"stealth"`, `"circle"`, `"square"`, `"vee"`), `tipAt` puts it on `"end"` (the default), `"start"` or `"both"`, and closed tips fill with the stroke color unless you pass `tipFill`.
+
+<Example name="basic/VectorArrow" />
+
+## Shared props
+
+Every geometric shape accepts the same `ShapeProps`:
+
+| Prop | Meaning |
+| --- | --- |
+| `stroke`, `fill` | A CSS color, a gradient, or `"none"`. Unset `stroke` is the theme foreground; unset `fill` means no fill. |
+| `strokeWidth` | Outline thickness in **scene units** (not pixels), so it scales with the stage. |
+| `opacity`, `fillOpacity` | 0 to 1. `fillOpacity` multiplies on top of `opacity`. |
+| `dash`, `dashOffset` | Dash pattern in scene units, e.g. `[0.2, 0.1]`. |
+| `lineCap`, `lineJoin` | Canvas caps and joins. Both default to `"round"`. |
+| `progress` | The arc-length reveal, 0 to 1 (see below). |
+| `zIndex`, `visible` | Paint order and removal from the frame. |
+| `x`, `y`, `rotation`, `scale`, `origin`, `place` | The shape's own transform. |
+| `label`, `onTap`, `hover`, `drag`, ... | Everything in [Interaction](/guides/interaction/). |
+
+Every prop takes a plain value or a `Readable`. Pass a track itself (`opacity={fade}`, or `circle.create({ opacity: fade })`) and the node binds to it: a write reruns only the stage that prop invalidates (an `opacity` write restyles; a `center` write only moves), with no framework code per frame. A Solid signal or a React re-render also works (the binding calls `node.set` for the changed key), which suits values the user changes rather than ones that animate. There is no `ref` handle object: the node a component returns, or `ref={(node) => ...}` receives, is itself the [handle](/guides/layout/#handles-and-bounds).
+
+Geometry takes `stroke` and `fill`; text and single-colour marks (`Dot`, `LabeledDot`, `Label`, `DecimalNumber`) take `color`, which fills the mark and is its default outline. No component takes both `fill` and `color`; see [Naming conventions](/start/concepts/#naming-conventions).
+
+### `progress` and `blend`
+
+`progress` is always the arc-length reveal: the fraction of the outline drawn so far, default 1. It is the prop that `draw()` and `erase()` drive. Components that morph one thing into another (`TransformMatchingShapes`, `MathTransform`) have no reveal, so they call their 0 to 1 amount `blend` instead.
+
+```tsx
+import { draw, track } from "@sophistry/core";
+import { Circle, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+function Ring() {
+  const drawn = track(0);
+  const player = usePlayer();
+  onSettled(() => void player.play(draw(drawn, { duration: 1.5 })));
+  return <Circle radius={1.5} stroke="#58c4dd" fill="#58c4dd" fillOpacity={0.2} progress={drawn} />;
+}
+
+export function Reveal() {
+  return (
+    <Stage units={6}>
+      <Ring />
+    </Stage>
+  );
+}
+```
+
+## Transforms
+
+`x`, `y`, `rotation` (radians, counter-clockwise), `scale` and `origin` move a shape without touching its geometry. `rotation` and `scale` pivot about `origin`, which defaults to the shape's center. `place` takes the result of a placement helper and adds to `x`/`y`; see [Layout](/guides/layout/).
+
+Geometry props (`center`, `from`, `points`) say what the shape *is*; the transform props say where it was *put*. Both are cheap to animate: a circle's `center` and every transform prop invalidate only the node's matrix (`Invalidate.TRANSFORM`), so its outline keeps its identity and the renderer's path cache stays warm. Props that change the outline itself (`radius`, `points`) rebuild it.
+
+## Groups
+
+A `<Group>` transforms and dims everything inside it. It takes `x`, `y`, `rotation`, `scale`, `scaleY`, `origin` and `opacity`. Groups nest, and transforms and opacities compose down the tree. Strokes and text scale with the group.
+
+<Example name="basic/GroupTransforms" />
+
+A group is a container node: it hands its children a coordinate space (matrix, opacity, clip), and a change to it marks only their transforms dirty, never their outlines. Its children still paint in one global order (tree order plus `zIndex`), so a group does not form a layer of its own. `zIndex` is not a group prop; give the children their own.
+
+### Clipping
+
+`clip` paints a group's children only inside a region: a box (`{ minX, minY, maxX, maxY }`), a polygon (`Point[]`), or several rings (filled by the non-zero rule, so a ring wound the other way is a hole). The region is stated in the group's own units, the ones its children are written in, so it moves, turns and scales with the group. Nested clips intersect. What a clip hides is not hit either: a tap outside the region goes to whatever is behind it, and focus rings shrink to the visible part.
+
+The prop is reactive, so a region that follows a track is a wipe:
+
+<Example name="basic/ClipWipe" />
+
+Clipping a thousand marks costs about as much as clipping one: the renderer installs a group's clip once.
+
+## Paint order and `zIndex`
+
+`zIndex` sorts, and higher draws later. Ties paint in **tree order**: the order of the nodes in the scene graph, which in JSX is the order the components appear in, not the order they happened to mount in. A shape that appears later inside a `<Show>` paints where it is written, and reordering a `<For>` (or `container.setChildren` with a new order) reorders painting.
+
+The same order drives `<Camera>` layering and the keyboard tab order ([how it works](/project/architecture/#registries-and-paint-order)).
+
+Use `zIndex` when an order must not depend on the tree at all. `BackgroundRectangle` defaults to `zIndex: -1`; if the shape it covers has an explicit `zIndex`, sort the two by hand. Custom shapes take part in the same order as any node; see [Extending](/guides/extending/).
+
+`visible={false}` removes a shape from the frame entirely.
+
+## Matchers
+
+`SurroundingRectangle`, `BackgroundRectangle`, `Cross` and `Underline` wrap a `target`: a **node** or a box. Given a node, a matcher follows it: it listens to the node's props and re-measures its `bounds()` when the node is moved, resized, retexted or restyled.
+
+```tsx
+import type { SceneNode } from "@sophistry/core";
+import { Circle, Stage, SurroundingRectangle } from "@sophistry/solidjs";
+
+export function Boxed() {
+  let circle!: SceneNode;
+  return (
+    <Stage units={8}>
+      <Circle ref={(node) => (circle = node)} radius={1} />
+      <SurroundingRectangle target={circle} padding={0.2} cornerRadius={0.15} />
+    </Stage>
+  );
+}
+```
+
+In the core the same is `surroundingRectangle.create({ target: ringNode, padding: 0.2 })`. A matcher does not see changes that reach its target from elsewhere (an enclosing group moving, a font arriving); for those, bind `target` to a `derive` that returns the box. A `null` or `undefined` target draws nothing. The box is axis-aligned in the stage's units, so wrapping something inside a rotated group gives you its upright bounding box.
+
+### Braces
+
+`Brace` is the matcher that measures. Give it a `target` box and a `direction` (`DOWN` by default; any vector works, not only the four sides) and it runs along that side, `gap` away, with its tip pointing out. Give it `from` and `to` instead to brace any segment, such as a triangle's hypotenuse: the tip points to the right of the way from `from` to `to`, so swap them to flip it, and `gap` pushes it off the segment. `label` puts text at the tip, which covers Manim's `BraceLabel`.
+
+```tsx
+<Brace target={box.bounds()} direction={DOWN} label="width" />
+<Brace from={c} to={a} gap={0.15} label="c" />
+```
+
+A brace is a filled shape, so `fill` colors it (the theme's foreground by default) and the label takes the same color unless you pass `labelColor`. Its `depth` and `thickness` stay the same whatever its length, as Manim's do, so braces under a letter and under a whole equation look alike. `progress` draws it like any other shape, and the label follows. The bare geometry is `braceRings`, `braceTip` and `braceSpan` in `@sophistry/core/geometry`.
+
+<Example name="basic/BraceAnnotations" />
+
+## Text and numbers
+
+`Label` draws a line of text. Canvas2D can't trim glyph outlines, so its `progress` writes it left to right glyph by glyph, each glyph fading in whole. `DecimalNumber`, `Integer` and `Variable` draw numbers that update when their `value` does, and `valueTo` makes them count. Typeset maths goes through [LaTeX as geometry](/guides/math-and-latex/).
+
+For more than one line there are three blocks, each a stack of labels:
+
+- `Paragraph` wraps `text` to a `width` in scene units, breaking between words, and always at a newline. `align` sets each line left (the default), center or right within the block. Without a `width`, only newlines break.
+- `BulletedList` gives each of its `items` a bullet, with a hanging indent when an item wraps. `bullet`, `indent` and `itemGap` adjust it.
+- `Title` is a heading at the top of the frame with a rule under it. The rule spans the frame, or only the text with `matchUnderlineToText`; `underline={false}` drops it.
+
+A `Paragraph` or `BulletedList` is centered on `x`/`y` and takes a `place`, and its node measures as the box of the whole block, so `nextTo`, `arrange` and `SurroundingRectangle` treat it as one thing. `progress` writes it a line at a time (a list, an item at a time), each line wiping in as a `Label` does. A word wider than the measure gets a line to itself, and there is no hyphenation, justification or mixed styling within a line. `wrapText(text, style, width)` is the line breaking on its own, if you lay text out yourself.
+
+<Example name="basic/TextBlocks" />
+
+## Fills, strokes and gradients
+
+`fill` and `stroke` take a gradient wherever they take a color:
+
+```tsx
+import { radialGradient, sheen } from "@sophistry/core";
+import { Circle, Rect, Stage } from "@sophistry/solidjs";
+
+export function Lit() {
+  return (
+    <Stage units={8}>
+      <Circle center={{ x: -2, y: 0 }} radius={1.5} fill={radialGradient(["#ffffff", "#4dabf7", "#14213d"], { from: { x: 0.35, y: 0.7 } })} />
+      <Rect center={{ x: 2, y: 0 }} width={3} height={2} fill={sheen("#4dabf7", { at: 0.6 })} />
+    </Stage>
+  );
+}
+```
+
+- `linearGradient(colors, { angle | from, to, offsets, units })` runs along an axis. The default axis is left to right.
+- `radialGradient(colors, { from, to, fromRadius, toRadius, offsets, units })`. Offsetting `from` from `to` is what makes a sphere read as lit.
+- `sheen(base, { at, width, factor, angle, highlight })` is a lighter band laid across a shape. `at` is an ordinary option, so a `derive` of a track slides the highlight (`fill={derive(at, (at) => sheen(base, { at }))}`) and `valueTo` animates it like anything else.
+
+Endpoints are **fractions of the shape's own bounding box** by default, so a gradient moves, turns and scales with the shape that wears it. `units: "scene"` pins it to absolute scene coordinates instead, for light the shapes travel *through*. Gradients stay correct through every `<Camera>`.
+
+For colour **along** a curve, use `strokeAlong`: a list of colours (often a [`colorRamp`](/guides/theming-and-color/#colormaps-and-ramps)) spread over the outline by arc length. A gradient `stroke` runs along a straight axis instead. "Left is cold, right is hot" is a gradient; "the path heats up as it goes" is `strokeAlong`.
+
+<Example name="basic/GradientsAndStrokes" />
+
+## Annulus, holes and the fill rule
+
+`Annulus` is the one shape that leans on the canvas fill rule: its inner ring is wound backwards so the non-zero rule punches a real hole. Anything more elaborate, such as a hole in an arbitrary `Path`, wants explicit winding control, which is not exposed yet.
+
+<Aside type="note">
+`TangentLine` approximates: curves are flattened before it sees them, so it takes a central difference along the sampled polyline instead of differentiating. For an exact slope on a function graph use `TangentToGraph` (data space).
+</Aside>
+
+## Next steps
+
+- [Layout](/guides/layout/) to position shapes relative to each other.
+- [Theming and color](/guides/theming-and-color/) for the palette behind every default.
+- [Animation](/guides/animation/) to drive `progress`, `opacity` and the transform props.

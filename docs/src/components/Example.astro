@@ -1,0 +1,79 @@
+---
+import { Code } from "@astrojs/starlight/components";
+import { requireApiUrl } from "../lib/api-links";
+import { getExample } from "../lib/examples";
+import { ExampleIsland } from "./ExampleIsland.tsx";
+
+interface Props {
+	/** "<category>/<Name>", e.g. "basic/UnitCircle". */
+	name: string;
+	caption?: string;
+}
+
+const { name, caption } = Astro.props;
+const example = getExample(name);
+const { meta } = example;
+// Throws on any name the generated reference has no page for.
+const uses = meta.uses.map((use) => ({ use, href: requireApiUrl(use, name) }));
+// The stage's aspect ratio, so the placeholder that holds its space before it
+// mounts is the right height. Read from the first <Stage aspect={...}> in the
+// source, or a framework-free example's `createScene({ aspect: ... })`; 16 / 9
+// (the default) otherwise.
+const aspectMatch =
+	/<Stage\b[^>]*?\baspect=\{\s*([\d.]+)(?:\s*\/\s*([\d.]+))?\s*\}/.exec(
+		example.source,
+	) ??
+	/createScene\(\{[^}]*?\baspect:\s*([\d.]+)(?:\s*\/\s*([\d.]+))?/.exec(
+		example.source,
+	);
+const aspect = aspectMatch
+	? Number(aspectMatch[1]) / Number(aspectMatch[2] ?? 1)
+	: 16 / 9;
+---
+
+<section class="sophistry-example" id={example.id} data-example={name}>
+	<h3>
+		<a href={`#${example.id}`}>{meta.title}</a>
+	</h3>
+	<p>{caption ?? meta.description}</p>
+	<ExampleIsland client:only="solid2" name={name} aspect={aspect}>
+		<div slot="fallback" class="sophistry-island" aria-hidden="true">
+			<div class="sophistry-controls"></div>
+			<div class="sophistry-placeholder" style={`aspect-ratio: ${aspect}`}>
+				Loading example…
+			</div>
+		</div>
+	</ExampleIsland>
+	<Code
+		code={example.source}
+		lang={example.lang}
+		title={`${example.id}.${example.lang}`}
+	/>
+	<p class="uses">
+		<strong>Uses:</strong>
+		{
+			uses.map(({ use, href }, i) => (
+				<>
+					{i > 0 && ", "}
+					<a href={href}><code>{use}</code></a>
+				</>
+			))
+		}
+	</p>
+</section>
+
+<style>
+	.sophistry-example {
+		margin-block: 2.5rem;
+	}
+	.sophistry-example h3 a {
+		color: inherit;
+		text-decoration: none;
+	}
+	.sophistry-example h3 a:hover {
+		text-decoration: underline;
+	}
+	.uses {
+		font-size: var(--sl-text-sm);
+	}
+</style>

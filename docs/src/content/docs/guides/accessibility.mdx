@@ -1,0 +1,260 @@
+---
+title: "Accessibility"
+description: "The accessibility mirror, labels, focus, keyboard control, dense layers, reduced motion and chart descriptions."
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Example from "../../../components/Example.astro";
+
+A canvas is one untabbable element with no text in it. Sophistry mirrors every focusable node into a visually hidden DOM overlay, so keyboard and assistive-tech users get real tab order, real focus and real announcements. The scene owns the mirror: `createScene` builds it, and `<Stage>` gets it for free.
+
+## The accessibility mirror
+
+Inside each scene's box there is a visually hidden overlay holding one transparent, focusable element per focusable node. Each element sits over its node's box (through whichever camera shows it) and carries an `aria-label` and a role. The canvas itself is `aria-hidden`: it is a picture with no structure, and the mirror is what assistive tech sees instead.
+
+Real DOM elements are what give real tab order, screen-reader output, `:focus-visible` and assistive-tech gestures such as a rotor listing the handles.
+
+You do not build the mirror. If a node is interactive, it is in it. It is plain DOM with no framework: a change only marks it stale, and it is brought up to date once per frame, after the commit that produced the picture.
+
+## Labels, roles and focusable
+
+`label` is the accessible name. It is the only thing a shape can be announced as, so leaving it off an interactive node is a bug rather than a default: the node is still a tab stop, and a screen reader says only "button".
+
+```tsx
+import { draggable, track, trackPoint } from "@sophistry/core";
+import { Circle, Rect, Stage } from "@sophistry/solidjs";
+
+export function Controls() {
+  const point = trackPoint(0, 0);
+  const hovered = track(false);
+
+  return (
+    <Stage units={8}>
+      <Circle center={point} radius={0.4} label="Point P" {...draggable(point)} />
+      <Circle center={{ x: 2, y: 2 }} radius={0.2} hover={hovered} />
+      <Rect
+        center={{ x: -2, y: 2 }}
+        width={1}
+        height={1}
+        label="Reset"
+        focusable={false}
+        onTap={() => point.set({ x: 0, y: 0 })}
+      />
+    </Stage>
+  );
+}
+```
+
+- A node with `onTap`, a drag or a keyboard behaviour is focusable by default.
+- A node with only `hover` is not: a tab stop that does nothing on Enter is noise.
+- `focusable` overrides either way. `focusable={false}` opts out (the "Reset" rect above is still clickable); `focusable` with a `label` and no handlers makes a node readable.
+- `role` defaults to `"button"`. Override it with any ARIA role when something else fits (for example `"slider"` for a scrubber).
+- `pressed` makes a node a toggle button: its element reports `aria-pressed` with that state, so a screen reader says "Pan, toggle button, pressed".
+
+These are ordinary props, the same in `circle.create({ label: "Point P", ... })` as in JSX.
+
+<Example name="interaction/KeyboardAccessible" />
+
+## Keyboard control
+
+| Key | On a focused node |
+| --- | --- |
+| Tab / Shift+Tab | Move between nodes in tree order. |
+| Enter, Space | Activate: calls `onTap` with a synthesised event centred on the node's box (`pointerId` is `-1`). |
+| Arrow keys | Nudge a draggable by `step` scene units (default 0.25). |
+| Shift + arrow | Fine nudge by `fineStep` (default `step / 5`). |
+| Escape | Cancel an in-flight drag and restore the starting value. With none in flight, the node's own `keyboard.key` hears it. |
+| Any other key | The node's `keyboard.key`, when it has one. |
+
+A node's `keyboard` behaviour can take keys of its own: `key(event)` is asked first for every key (Escape only when it cancelled no drag) and returns `true` for one it handled, which then has its default prevented; `shortcuts` lists those keys for `aria-keyshortcuts`, after the arrows when the behaviour has a `nudge`. The charts use it for `+`/`-`, `0`/Home and Backspace on a zoomable plot, and Escape to climb out of a drill-down:
+
+```tsx
+import type { KeyboardBehaviour } from "@sophistry/core";
+import { track } from "@sophistry/core";
+import { Rect, Stage } from "@sophistry/solidjs";
+
+export function Zoomable() {
+  const zoom = track(1);
+  const keys: KeyboardBehaviour = {
+    shortcuts: "+ -",
+    key: (event) => {
+      if (event.key === "+") zoom.set(zoom.peek() * 1.25);
+      else if (event.key === "-") zoom.set(zoom.peek() / 1.25);
+      else return false;
+      return true;
+    },
+  };
+
+  return (
+    <Stage units={8}>
+      <Rect width={4} height={3} scale={zoom} label="zoomable view" keyboard={keys} />
+    </Stage>
+  );
+}
+```
+
+Pressing a node with the pointer focuses it, so its keys work straight after a click.
+
+A nudge goes through the same param and constraints a pointer drag does: a handle locked to a curve stays on it, `onDragEnd` fires, and `ArrowRight` moves right on screen even inside a rotated `<Group>`.
+
+Set the steps on the draggable (or on `useMovablePoint`, which takes the same options):
+
+```ts
+draggable(position, { step: 0.5, fineStep: 0.1 });
+```
+
+<Aside type="caution" title="Shift on a quantised constraint">
+On a `snapToGrid` handle, Shift does nothing visible: the fine step is smaller than the grid, so the result snaps straight back. The key press is real and the pipeline ran, but the value is unchanged. Size `fineStep` against the grid spacing, or leave it off.
+</Aside>
+
+**Hover has no keyboard equivalent.** Anything that only appears on hover is invisible to keyboard and touch users. Give it a tap route (`onTap` toggles the same state) and expose it with a `label`.
+
+## Groups and focus order
+
+An `<InteractionGroup>` is one tab stop, not one per member. It elects its first registered member (tree order) and puts the group's `label` on it, so a `LabeledDot` is met once rather than twice. The focus ring wraps the union of the members' boxes, which is the thing as it looks.
+
+Tree order is tab order. In the bindings that is JSX order, and reordering a `<For>` list reorders tab order with it.
+
+`scene.focus` is the focus channel. `focus.state` is a `Readable` of `{ id, source }`: the focused node's id (or `null`) and whether a `"keyboard"` or a `"pointer"` moved it last; the ring shows only for the keyboard. `focus.set(id)` moves focus from script, browser focus included. Derive from it to reveal a hint when a handle is focused:
+
+```tsx
+import { derive, draggable, trackPoint } from "@sophistry/core";
+import { Dot, Label, Stage, useScene } from "@sophistry/solidjs";
+
+function FocusHint() {
+  const focus = useScene().focus.state;
+  const hint = derive(focus, (state) =>
+    state.id !== null && state.source === "keyboard" ? "arrow keys nudge" : "press Tab",
+  );
+  return <Label text={hint} y={-3} />;
+}
+
+export function Demo() {
+  const position = trackPoint(0, 0);
+
+  return (
+    <Stage units={10}>
+      <Dot center={position} label="point" {...draggable(position)} />
+      <FocusHint />
+    </Stage>
+  );
+}
+```
+
+To compare against a particular node, keep its id from the node handle (`ref={(node) => (handleId = node.id)}`). To show the state in DOM text instead, `useTrackValue(useScene().focus.state)`.
+
+## The focus ring
+
+The renderer draws the focus ring itself, after the scene, so it is always correct with no authoring. It uses the theme's accent, the focused node's box, and a width in CSS pixels so it does not scale with camera zoom.
+
+It appears for keyboard focus only (the `:focus-visible` distinction). Clicking a node does not draw a ring; pressing a key on it does. With several cameras the ring is painted in every camera that shows the node, while the mirror element sits in the topmost pane containing the node's centre, so the screen-reader cursor and the mouse agree on which pane it is.
+
+## Dense layers
+
+A batched layer (an [instances](/guides/instancing/) node, a path batch, any chart mark) is one tab stop rather than one per item: a hundred thousand tab stops would be unusable. Give it a `label` and an `itemLabel: (item) => string`, and its mirror element becomes a list of the layer's items, with the keys walking a *current item* within it:
+
+- Left and Right step through the items in the order they stand across the screen. Up and Down go to the nearest item above or below.
+- Home and End go to the first and last, and PageUp and PageDown jump a tenth of the way.
+- Enter or Space taps the current item. Escape leaves it.
+
+The current item behaves as if hovered: its hover handlers run (so a chart's tooltip shows) and the focus ring wraps it. A screen reader announces its `itemLabel` and its place, as in "x: 2, y: 2, 2 of 4". Under the hood this is the standard virtualised listbox: one `role="option"` element, re-filled as the item moves, referenced by `aria-activedescendant`, with `aria-posinset` and `aria-setsize`.
+
+```ts
+import { circle, instances } from "@sophistry/core";
+
+const readings = [3.2, 4.1, 2.7, 5.0];
+
+const layer = instances(circle, {
+  data: readings,
+  channels: { center: (value, index) => ({ x: index, y: value }) },
+  shared: {
+    radius: 0.1,
+    label: "Daily readings",
+    itemLabel: (item) => `day ${item + 1}: ${readings[item]}`,
+  },
+});
+```
+
+The chart library sets these for you on any mark that has tooltips, from each item's tooltip text.
+
+## Limits
+
+- Rings and mirror elements follow a node's axis-aligned bounding box. A rotated or curved shape gets a box around it, not an outline.
+- A text run is hit as one run and focused as one element.
+- Only interactive nodes (and those marked `focusable`) are mirrored. Plain shapes and labels contribute nothing for screen readers to find.
+
+## Describing visuals and charts
+
+A static picture has no text for assistive tech to read, so say what it shows. Put a caption or description in the page next to the stage, or give a focusable summary node a `label`. For anything the learner needs to understand, offer the information in text too (a readout, a table, the equation as a heading).
+
+A chart mark with tooltips is a dense layer whose items are announced with their tooltip text (see above). `PieChart` and `PolarAreaChart` take an `ariaLabel`, and each slice is then announced as `"<ariaLabel>: <label>"`, where `label` is the slice's text channel:
+
+```tsx
+import { Stage } from "@sophistry/solidjs";
+import { PieChart } from "@sophistry/solidjs/charts";
+
+export function Spending() {
+  return (
+    <Stage units={10}>
+      <PieChart
+        data={[
+          { name: "Rent", amount: 1200 },
+          { name: "Food", amount: 450 },
+        ]}
+        value="amount"
+        label="name"
+        ariaLabel="Monthly spending"
+      />
+    </Stage>
+  );
+}
+```
+
+Without `ariaLabel` the slices are not exposed to assistive technology at all. See the [charts guide](/guides/charts/) for the channel model.
+
+## Reduced motion
+
+Sophistry honours `prefers-reduced-motion` with no code from you. Under it, runs jump to each animation's end state (shown as a short cross-fade), and instanced and chart transitions jump to their end too; `seek()`, scrubbers and frame export are unaffected.
+
+Where the decision is made:
+
+- **The clock.** `createClock({ reducedMotion })` takes `"auto"` (the default: follow the OS setting, live), `"reduce"` or `"no-preference"`.
+- **The scene.** `createScene({ reducedMotion })` (or `<Stage reducedMotion="...">`) overrides the clock's setting for that scene, and `reducedMotionTransition: "fade" | "cut"` chooses how a jump is shown. `scene.reducedMotion` is the resulting `Readable<boolean>`.
+- **The run.** A run marked `{ motion: "essential" }` plays even under reduced motion. Use it for motion that carries information the user needs (the one thing a demo exists to show), and keep it small and gentle:
+
+```tsx
+import { rotateBy, track } from "@sophistry/core";
+import { Rect, Stage, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+export function Essential() {
+  const angle = track(0);
+  const player = usePlayer();
+  onSettled(() => void player.play(rotateBy(angle, Math.PI * 2, { duration: 2 }), { motion: "essential" }));
+
+  return (
+    <Stage units={8}>
+      <Rect width={2} height={0.2} rotation={angle} />
+    </Stage>
+  );
+}
+```
+
+For things Sophistry cannot see, such as CSS transitions next to the stage, read `prefersReducedMotion`, a `Readable<boolean>` that follows the OS setting. The details and per-clock modes are in [Timelines: reduced motion](/guides/timelines/#reduced-motion).
+
+## Testing
+
+A quick pass catches most problems:
+
+1. Unplug the mouse. Tab through the page; every interactive node should be reachable, show a focus ring, and do its job with Enter, Space and the arrow keys.
+2. Press Escape mid-drag and confirm the handle returns to where it started.
+3. Turn on a screen reader (VoiceOver on macOS, NVDA on Windows, TalkBack on Android). Each handle should be announced with its label, not just "button".
+4. Check with the rotor or elements list that the controls are listed.
+5. Turn on "reduce motion" in your OS settings and reload, or pass `reducedMotion="reduce"` to the stage while developing.
+6. Look for hover-only behaviour and add a tap route.
+
+## Next steps
+
+- [Interaction](/guides/interaction/): the handlers and `draggable` behaviour that the mirror exposes.
+- [Recipe: a step-through lesson](/recipes/step-through-lesson/): a keyboard-operable lesson end to end.
+- [Timelines](/guides/timelines/): sequencing motion that you can also switch off.

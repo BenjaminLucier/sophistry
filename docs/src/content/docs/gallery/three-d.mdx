@@ -1,0 +1,18 @@
+---
+title: 3D
+description: "Cameras, meshes, surfaces and orbit controls, projected onto the same Canvas2D stage."
+---
+
+import Gallery from "../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+`@sophistry/3d` projects 3D into 2D: a `<Camera3D>` (from `@sophistry/solidjs/3d`) inside a normal `<Stage>` turns points into screen positions, and 3D primitives paint onto the same canvas, so tracks, animations and themes work unchanged. The camera eye is a plain track, which is why `rotateBy` can spin it and `useOrbitControls3D` can drag it. 3D charts come from `@sophistry/charts/3d`.
+
+Start with `OrbitScene`, then `HelixCurve` and `SurfacePlot3D`. `CameraMotion` shows animating the camera.
+
+<CardGrid>
+  <LinkCard title="3D" href="/guides/3d/" description="Cameras, primitives, plots and controls." />
+  <LinkCard title="Animation" href="/guides/animation/" description="The same presets drive 3D tracks." />
+</CardGrid>
+
+<Gallery category="three-d" />

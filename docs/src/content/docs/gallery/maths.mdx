@@ -1,0 +1,19 @@
+---
+title: Math and LaTeX
+description: "LaTeX typeset as geometry that draws and morphs, plus linear algebra, complex numbers and Fourier series."
+---
+
+import Gallery from "../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+LaTeX in sophistry is geometry, not an image: `MathTex` turns a formula into outlines you can `draw`, `write` or recolor, and `MathTransform` morphs one formula into another by matching shared symbols. The components come from `@sophistry/solidjs/text` and the definitions from `@sophistry/text`, a separate package, so KaTeX and opentype.js are bundled only when you use it.
+
+Start with `EulerIdentity` and `QuadraticFormula` for typesetting, then `FormulaMorph`. The remaining examples combine formulas with graphs, planes and linear maps.
+
+<CardGrid>
+  <LinkCard title="Maths and LaTeX" href="/guides/math-and-latex/" description="MathTex, MathTransform and fonts." />
+  <LinkCard title="Coordinate systems" href="/guides/coordinate-systems/" description="Planes, complex planes and linear transforms." />
+  <LinkCard title="Coming from Manim" href="/manim/migration/" description="MathTex and Transform, side by side." />
+</CardGrid>
+
+<Gallery category="maths" />

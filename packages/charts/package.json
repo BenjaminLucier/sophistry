@@ -1,0 +1,96 @@
+{
+	"name": "@sophistry/charts",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"description": "Charts for Sophistry scenes: bars, lines, scatter, pies, hierarchies and more, with keyed transitions and reveals.",
+	"keywords": [
+		"charts",
+		"data-visualization",
+		"visualization",
+		"canvas",
+		"animation"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/charts"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./math": "./src/math/index.ts",
+		"./3d": "./src/3d/index.ts",
+		"./3d/definitions": "./src/3d/definitions.ts",
+		"./definitions": "./src/entries/definitions.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./math": {
+				"types": "./dist/math/index.d.ts",
+				"default": "./dist/math/index.js"
+			},
+			"./3d": {
+				"types": "./dist/3d/index.d.ts",
+				"default": "./dist/3d/index.js"
+			},
+			"./3d/definitions": {
+				"types": "./dist/3d/definitions.d.ts",
+				"default": "./dist/3d/definitions.js"
+			},
+			"./definitions": {
+				"types": "./dist/entries/definitions.d.ts",
+				"default": "./dist/entries/definitions.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"d3-array": "catalog:",
+		"d3-hierarchy": "^3.1.2",
+		"d3-interpolate": "^3.0.1"
+	},
+	"peerDependencies": {
+		"@sophistry/core": "workspace:^",
+		"@sophistry/3d": "workspace:^"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@sophistry/3d": "workspace:*",
+		"@sophistry/core": "workspace:*",
+		"@types/d3-array": "catalog:",
+		"@types/d3-hierarchy": "^3.1.7",
+		"@types/d3-interpolate": "catalog:",
+		"happy-dom": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	},
+	"peerDependenciesMeta": {
+		"@sophistry/3d": {
+			"optional": true
+		}
+	}
+}

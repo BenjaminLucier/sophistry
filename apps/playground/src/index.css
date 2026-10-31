@@ -1,0 +1,28 @@
+@import "tailwindcss";
+
+/* The page's colours are the sophistry palette's tokens. `--c-*` are emitted
+ * from the palette by the sophistryTheme() Vite plugin (one block for dark, one
+ * for light, keyed off <html data-mode>); nothing here hardcodes a hex. `inline`
+ * keeps the utilities as var() references so they repaint when the mode flips. */
+@theme inline {
+	--color-paper: var(--c-background);
+	--color-ink: var(--c-foreground);
+	--color-muted: var(--c-muted);
+	--color-surface: var(--c-surface);
+	--color-rule: var(--c-border);
+	--color-accent: var(--c-accent);
+}
+
+/* `dark:` follows the attribute, not the OS. */
+@custom-variant dark (&:where([data-mode="dark"], [data-mode="dark"] *));
+
+body {
+	@apply bg-paper text-ink antialiased;
+}
+
+/* The router decorates links itself: data-active covers the current path's
+ * prefix, aria-current="page" marks the exact match. */
+nav a[data-active],
+nav a[aria-current="page"] {
+	@apply border-accent bg-surface text-ink;
+}

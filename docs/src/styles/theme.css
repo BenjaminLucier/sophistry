@@ -1,0 +1,239 @@
+/*
+ * sophistry brand theme for Starlight.
+ *
+ * The accent is Catppuccin Mauve, the same swatch the library's default
+ * palette uses for its series colour, so the page and the <Stage>s on it match.
+ * The neutrals follow Mocha (dark) and Latte (light) so a stage's background
+ * (`base`) dissolves into the page instead of sitting in a box.
+ *
+ * Contrast (WCAG 2.x, computed from the hex values):
+ *   dark   accent-high #cba6f7 on bg #1e1e2e ............ 8.07:1  (links, AAA)
+ *          accent-high #cba6f7 on nav #181825 ............ 8.64:1
+ *          button  #1e1e2e on accent #a97bf0 ............ 5.29:1
+ *          muted   #a6adc8 on bg #1e1e2e ................ 7.37:1
+ *   light  accent-high #6d28d9 on bg #eff1f5 ............. 6.28:1  (links, AA)
+ *          button  #eff1f5 on accent #8839ef ............. 4.79:1
+ *          muted   #5c5f77 on bg #eff1f5 ................. 5.53:1
+ */
+
+:root {
+	/* Dark: Catppuccin Mocha */
+	--sl-color-accent-low: #2b2347;
+	--sl-color-accent: #a97bf0;
+	--sl-color-accent-high: #cba6f7;
+
+	--sl-color-white: #cdd6f4;
+	--sl-color-gray-1: #cdd6f4;
+	--sl-color-gray-2: #bac2de;
+	--sl-color-gray-3: #a6adc8;
+	--sl-color-gray-4: #6c7086;
+	--sl-color-gray-5: #313244;
+	--sl-color-gray-6: #181825;
+	--sl-color-gray-7: #1e1e2e;
+	--sl-color-black: #1e1e2e;
+
+	--sl-color-bg-inline-code: #313244;
+	--sl-color-hairline: #313244;
+	--sl-color-hairline-light: #45475a;
+
+	--sophistry-glow: rgb(203 166 247 / 0.22);
+	--sophistry-surface: #181825;
+	--sophistry-frame: #45475a;
+}
+
+:root[data-theme="light"] {
+	/* Light: Catppuccin Latte */
+	--sl-color-accent-low: #e5d9fb;
+	--sl-color-accent: #8839ef;
+	--sl-color-accent-high: #6d28d9;
+
+	--sl-color-white: #1f2033;
+	--sl-color-gray-1: #2b2d42;
+	--sl-color-gray-2: #43455c;
+	--sl-color-gray-3: #5c5f77;
+	--sl-color-gray-4: #8c8fa1;
+	--sl-color-gray-5: #ccd0da;
+	--sl-color-gray-6: #e6e9ef;
+	--sl-color-gray-7: #eff1f5;
+	--sl-color-black: #eff1f5;
+
+	--sl-color-bg-inline-code: #e6e9ef;
+	--sl-color-hairline: #ccd0da;
+	--sl-color-hairline-light: #bcc0cc;
+
+	--sophistry-glow: rgb(136 57 239 / 0.16);
+	--sophistry-surface: #e6e9ef;
+	--sophistry-frame: #bcc0cc;
+}
+
+:root {
+	--sl-text-h1: clamp(2rem, 1.5rem + 2vw, 2.75rem);
+	--ec-brdRad: 0.6rem;
+	--ec-brdCol: var(--sophistry-frame);
+	--sophistry-radius: 0.75rem;
+}
+
+/* Typography ------------------------------------------------------------- */
+.sl-markdown-content :is(h1, h2, h3, h4) {
+	font-weight: 650;
+	letter-spacing: -0.015em;
+}
+.sl-markdown-content h2 {
+	margin-top: 2.25em;
+}
+h1[data-page-title] {
+	font-weight: 700;
+	letter-spacing: -0.025em;
+}
+
+.sl-markdown-content a:not(.sl-link-button, [class*="card"], .anchor-link a) {
+	text-decoration-thickness: 1px;
+	text-underline-offset: 0.2em;
+	text-decoration-color: color-mix(
+		in srgb,
+		var(--sl-color-accent-high) 45%,
+		transparent
+	);
+	transition: text-decoration-color 0.15s;
+}
+.sl-markdown-content a:not(.sl-link-button):hover {
+	text-decoration-color: currentColor;
+}
+:focus-visible {
+	outline: 2px solid var(--sl-color-accent-high);
+	outline-offset: 2px;
+}
+::selection {
+	background: color-mix(in srgb, var(--sl-color-accent) 35%, transparent);
+}
+
+.sl-markdown-content :not(pre) > code {
+	border-radius: 0.35rem;
+}
+
+/* Cards ------------------------------------------------------------------ */
+.sl-link-card,
+.card {
+	border-radius: var(--sophistry-radius);
+	border-color: var(--sophistry-frame);
+	background: var(--sophistry-surface);
+	transition:
+		border-color 0.15s,
+		transform 0.15s,
+		box-shadow 0.15s;
+}
+.sl-link-card:hover {
+	border-color: var(--sl-color-accent);
+	box-shadow:
+		0 0 0 1px var(--sl-color-accent),
+		0 8px 28px -12px var(--sophistry-glow);
+	transform: translateY(-2px);
+	background: var(--sophistry-surface);
+}
+.sl-link-card .title {
+	font-weight: 650;
+}
+@media (prefers-reduced-motion: reduce) {
+	.sl-link-card,
+	.card {
+		transition: none;
+	}
+	.sl-link-card:hover {
+		transform: none;
+	}
+}
+
+/* Buttons ---------------------------------------------------------------- */
+.sl-link-button {
+	border-radius: 999px;
+	font-weight: 600;
+}
+.sl-link-button.primary {
+	box-shadow: 0 6px 20px -8px var(--sophistry-glow);
+}
+
+/* Header ----------------------------------------------------------------- */
+.site-title {
+	font-weight: 700;
+	letter-spacing: -0.02em;
+}
+.site-title img {
+	height: 1.6rem;
+	width: auto;
+}
+
+/* Example playback controls ---------------------------------------------- */
+.sophistry-controls {
+	display: flex;
+	justify-content: flex-end;
+	gap: 0.375rem;
+	min-height: 1.85rem;
+	margin-block-end: 0.5rem;
+}
+/* Holds a stage's space until it mounts (see ExampleIsland.tsx). */
+.sophistry-placeholder {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 100%;
+	box-sizing: border-box;
+	border-radius: 0.5rem;
+	background: rgba(127, 127, 127, 0.12);
+	color: var(--sl-color-gray-3);
+	font-size: var(--sl-text-sm);
+}
+.sophistry-island button {
+	display: inline-flex;
+	align-items: center;
+	gap: 0.35rem;
+	height: 1.85rem;
+	margin: 0;
+	padding: 0 0.65rem;
+	border: 1px solid var(--sophistry-frame);
+	border-radius: 0.45rem;
+	background: var(--sophistry-surface);
+	color: var(--sl-color-gray-2);
+	font: inherit;
+	font-size: var(--sl-text-xs);
+	font-weight: 600;
+	line-height: 1;
+	cursor: pointer;
+	transition:
+		border-color 0.15s,
+		color 0.15s,
+		background 0.15s;
+}
+.sophistry-island button:hover:not(:disabled) {
+	border-color: var(--sl-color-accent);
+	color: var(--sl-color-white);
+}
+.sophistry-island button[aria-pressed="true"] {
+	border-color: var(--sl-color-accent);
+	background: var(--sl-color-accent-low);
+	color: var(--sl-color-accent-high);
+}
+.sophistry-island button:disabled {
+	opacity: 0.45;
+	cursor: default;
+}
+.sophistry-controls svg {
+	width: 0.85rem;
+	height: 0.85rem;
+	fill: currentColor;
+}
+/* Controls an example renders itself (scrubbers, step buttons) match the bar. */
+.sophistry-island button {
+	flex: none;
+	white-space: nowrap;
+}
+.sophistry-island input[type="range"] {
+	margin: 0;
+	min-width: 0;
+	accent-color: var(--sl-color-accent);
+	cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+	.sophistry-island button {
+		transition: none;
+	}
+}

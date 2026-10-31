@@ -1,0 +1,252 @@
+---
+title: "Embedding in your site"
+description: "Use scenes from plain TypeScript, Solid or React, in Vite, Astro islands and other hosts, with or without server rendering."
+---
+
+import { Aside, Steps } from "@astrojs/starlight/components";
+
+A scene needs a real canvas and a `ResizeObserver`, so it only paints in the browser. This recipe shows how to embed one in common hosts, and what happens when the page is server-rendered.
+
+Everywhere, the same three rules apply:
+
+1. **Scenes live in the browser.** A scene is created against a real element, so drawing, animation scripts and anything touching `window` run only after mount. The React `<Stage>` server-renders an empty box and creates the scene on mount; the Solid `<Stage>` is mounted client-only.
+2. **Use one copy of each framework and of the core.** `@sophistry/solidjs` has `solid-js`, `@solidjs/web` and `@sophistry/core` as peer dependencies (and `@sophistry/react` has `react`); `text`, `charts` and `3d` are optional peers you add when you use their subpaths. Two copies of Solid break reactivity in confusing ways, and two copies of the core make two frame loops, so dedupe them in your bundler.
+3. **Give the stage a box.** It fills its container's width and takes its height from `aspect`, so the host element must have a width (see [Sizing](#sizing)).
+
+## Without a framework
+
+The core needs no framework at all. `createScene({ host })` creates the scene's box inside any element and returns a `Scene`; `scene.dispose()` removes it:
+
+```ts
+import { circle, createScene, draw, track } from "@sophistry/core";
+
+const host = document.getElementById("figure");
+if (!host) throw new Error("#figure missing");
+
+const scene = createScene({ host, units: 8 });
+const drawn = track(0);
+scene.add(circle.create({ radius: 2, progress: drawn }));
+void scene.play(draw(drawn, { duration: 1.5 }));
+
+// When the figure goes away (a route change, a hot reload):
+// scene.dispose();
+```
+
+This is also how to embed a scene in a framework sophistry has no binding for: create it in that framework's mount hook and dispose it in the unmount hook. The options are the `<Stage>` props (`units`, `center`, `aspect`, `palette`, `mode`, `background`, `clock`, `pauseWhenHidden`, ...).
+
+## Plain Vite SPA
+
+The shortest path is Vite's start mode, where the plugin owns the entries and you only write `src/App.tsx`; see [Installation](/start/installation/#vite-with-start-mode-recommended). If you would rather own `index.html` and the entry, install Solid 2, the Vite plugin, `@sophistry/core` and `@sophistry/solidjs`, then render into a root element.
+
+```ts nocheck
+// vite.config.ts
+import solid from "@solidjs/vite-plugin";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [solid()],
+  resolve: { dedupe: ["solid-js", "@solidjs/web", "@sophistry/core"] },
+});
+```
+
+```tsx
+// src/index.tsx
+import { Circle, Stage } from "@sophistry/solidjs";
+import { render } from "@solidjs/web";
+
+function App() {
+  return (
+    <Stage units={8}>
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+
+const root = document.getElementById("root");
+if (!root) throw new Error("#root missing");
+render(() => <App />, root);
+```
+
+Add `<div id="root"></div>` and `<script type="module" src="/src/index.tsx"></script>` to `index.html`. The repo's `apps/playground` is a complete version of this setup, including the theme script described [below](#matching-the-page-theme).
+
+## Astro islands
+
+This documentation site is built with Astro, and every live example on it is a Solid 2 island.
+
+<Aside type="caution">
+`@astrojs/solid-js` still targets Solid 1 (its client entry imports `render` and `hydrate` from `solid-js/web`, which no longer exists in Solid 2). You need a renderer written for Solid 2's module layout.
+</Aside>
+
+This site ships a small Astro integration for exactly that. Copy it into your project and use it in place of `@astrojs/solid-js`. It lives in [`docs/src/integrations/solid2`](https://github.com/BenjaminLucier/sophistry/tree/main/docs/src/integrations/solid2): `index.ts` (below), plus `client.js` and `server.js`, which are `@astrojs/solid-js`'s entry points ported to Solid 2's module layout (`render` and `hydrate` from `@solidjs/web`, no `Suspense` wrapper).
+
+```ts
+// src/integrations/solid2/index.ts
+import { fileURLToPath } from "node:url";
+import solid from "@solidjs/vite-plugin";
+import type { AstroIntegration } from "astro";
+
+export default function solid2(
+  options: { ssr?: boolean } = {},
+): AstroIntegration {
+  return {
+    name: "@sophistry/solid2",
+    hooks: {
+      "astro:config:setup": ({ addRenderer, updateConfig }) => {
+        addRenderer({
+          name: "@sophistry/solid2",
+          clientEntrypoint: fileURLToPath(new URL("./client.js", import.meta.url)),
+          serverEntrypoint: fileURLToPath(new URL("./server.js", import.meta.url)),
+        });
+        updateConfig({
+          vite: {
+            plugins: [solid({ ssr: options.ssr })],
+            resolve: { dedupe: ["solid-js", "@solidjs/web"] },
+          },
+        });
+      },
+    },
+  };
+}
+```
+
+Register it:
+
+```js
+// astro.config.mjs
+import { defineConfig } from "astro/config";
+import solid2 from "./src/integrations/solid2/index.ts";
+
+export default defineConfig({
+  // ssr: true compiles the server bundle with SSR codegen and the client bundle as hydratable.
+  integrations: [solid2({ ssr: true })],
+  vite: { resolve: { dedupe: ["solid-js", "@solidjs/web"] } },
+});
+```
+
+Then write the island as an ordinary Solid component and mount it with `client:only`:
+
+```tsx
+// src/components/Scene.tsx
+import { Circle, Stage } from "@sophistry/solidjs";
+
+export function Scene() {
+  return (
+    <Stage units={8}>
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+```
+
+```astro
+---
+// src/pages/demo.astro
+import { Scene } from "../components/Scene.tsx";
+---
+
+<Scene client:only="solid2" />
+```
+
+`client:only` keeps sophistry out of Astro's server render (the tested setup). To defer islands further, wrap the mount in an `IntersectionObserver`, as this site's `docs/src/components/ExampleIsland.tsx` does, so a page with twenty canvases does not start twenty renderers at once.
+
+## React
+
+`@sophistry/react` works in any React 19 host (Vite, Next.js, Remix). `<Stage>` renders a `<div>` and creates the scene in an effect, so it is safe to server-render: the server emits the empty box and the scene appears after hydration. In Next.js's App Router, put the scene in a client component:
+
+```tsx nocheck
+"use client";
+import { Circle, Stage } from "@sophistry/react";
+
+export function Figure() {
+  return (
+    <Stage units={8} className="my-figure">
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+```
+
+React contexts from your app (router, theme, your own) reach components inside `<Stage>` through its `its-fine` bridge; see [Bindings and codegen](/guides/bindings/).
+
+## Server rendering with start mode
+
+Solid 2's server rendering lives in `@solidjs/vite-plugin`'s start mode (which replaces SolidStart). Add `ssr: true`:
+
+```ts nocheck
+plugins: [solid({ start: true, ssr: true })],
+```
+
+The Solid `<Stage>` creates its scene (and canvas) in the component body, against a real DOM element, so keep it out of the server render: load the scene with `clientOnly`, as below. The rest of the page server-renders as usual.
+
+`clientOnly` from `@solidjs/web` keeps sophistry out of the server bundle altogether. The server renders only the fallback, and the client swaps the scene in after hydration:
+
+```tsx nocheck
+import { clientOnly } from "@solidjs/web";
+
+// ./Scene default-exports a component that renders a <Stage>.
+const Scene = clientOnly(() => import("./Scene"));
+
+export function Page() {
+  return (
+    <Scene fallback={<div style={{ "aspect-ratio": "16 / 9", width: "100%" }} />} />
+  );
+}
+```
+
+Give the fallback the same `aspect-ratio` as your stage (`aspect`, default `16 / 9`) so the layout does not jump when the canvas arrives.
+
+Hosts that render with the Solid 2 server runtime outside start mode (for example TanStack Start's Solid 2.0 beta) need the same `clientOnly` wrapper.
+
+Make sure your bundler dedupes `solid-js`, `@solidjs/web` and `@sophistry/core` for both the client and the server build.
+
+Two things always need to stay out of server code. Anything that reads `window` or `matchMedia` (for example a reduced-motion check) should live inside an event handler, `onSettled` or a client-only module. And scripts that start animations belong in `onSettled` too (call `usePlayer()` in the body, `player.play(...)` there); see [Animation](/guides/animation/).
+
+## Matching the page theme
+
+A scene follows `<html data-mode>` (`"light"` or `"dark"`) on its own: core watches the attribute and exposes it as `colorModeReadable`, which every scene without a `mode` follows. To avoid a flash of the wrong theme on load, set that attribute before first paint with a blocking inline script in `<head>`. `themeInitScript()` returns the source:
+
+```ts
+import { themeInitScript } from "@sophistry/core/themes";
+
+// Embed verbatim in <head>, e.g. <script is:inline set:html={headScript} /> in Astro.
+export const headScript = themeInitScript({ fallback: "system" });
+```
+
+It reads the stored preference, sets `data-mode` and `data-pref` on `<html>`, keeps `<meta name="theme-color">` in sync, and follows OS changes live. A strict Content Security Policy needs a nonce or hash for it.
+
+If your site already has its own light/dark switch, mirror it onto `data-mode` instead. The docs site does this in `docs/astro.config.mjs`: Starlight stores its choice on `data-theme`, and a tiny script copies it to `data-mode` on load and on every change.
+
+Where you cannot inline a script (a client-only dev server, an embed), call `installColorMode()` from the client instead. See [Theming and color](/guides/theming-and-color/) for the toggle helpers and custom palettes. You can also pin a stage with the `mode` prop and ignore the page entirely.
+
+## Sizing
+
+A stage is a `<div>` that is as wide as its container, with a CSS `aspect-ratio` that sets its height from the `aspect` prop (default `16 / 9`). The scene is never stretched: `units` always maps to the width.
+
+- Put the stage in any block with a width. In a flex or grid cell, make sure the cell can shrink (`min-width: 0`).
+- Change the shape with `aspect={1}` for a square, `aspect={4 / 3}`, and so on.
+- `class` (Solid) or `className` (React) styles the outer `<div>`; `boxClass` replaces the default classes of the scene's box inside it (`"w-full overflow-hidden rounded-xl"`). Width, aspect ratio and `overflow: hidden` are applied inline either way, so styling never breaks sizing.
+- The canvas backing store follows the host box times `devicePixelRatio`, and updates when the box resizes or you move the window to a different display.
+
+## Many stages on one page
+
+Each stage owns its canvas, but they share one animation-frame loop, so a page of several is cheap. A stage that is scrolled out of view (with a margin of 100 px) skips painting and suspends its own clock. When it scrolls back in, it repaints immediately.
+
+- Give each stage its own clock with `createClock()` (the `clock` prop, read once) if scenes should pause and speed up independently. The shared default clock never suspends. This site does exactly that: every live example runs on its own clock.
+- A run started on a suspended stage's clock stays pending until the stage is visible again. That is usually what you want for an intro animation; abort the run if a script must not wait.
+- Pass `pauseWhenHidden={false}` to keep a stage painting and ticking while off screen.
+- Create heavy stages lazily, as in the Astro section, so a long page does not build them all at load.
+
+<Steps>
+
+1. Mount on the client only.
+2. Dedupe your framework and `@sophistry/core`.
+3. Put a theme init script in `<head>`.
+4. Give every stage a container with a width.
+
+</Steps>
+
+## Next steps
+
+- [Installation](/start/installation/): per-bundler setup.
+- [Theming and color](/guides/theming-and-color/): the full color-mode API.
+- [Performance](/project/performance/): keeping a page with many stages light.

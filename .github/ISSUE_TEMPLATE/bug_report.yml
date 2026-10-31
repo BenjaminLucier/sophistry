@@ -1,0 +1,51 @@
+name: Bug report
+description: Something renders or behaves incorrectly.
+labels: [bug, triage]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for the report. A minimal reproduction is the fastest way to a fix.
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      description: What you expected, and what you saw instead. Screenshots or a screen recording help.
+    validations:
+      required: true
+  - type: input
+    id: repro
+    attributes:
+      label: Reproduction link
+      description: A StackBlitz, CodeSandbox or GitHub repo that reproduces the bug. Fork the docs gallery example closest to yours if you can.
+      placeholder: https://stackblitz.com/...
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal code
+      description: If you have no link, paste the smallest component that shows the problem.
+      render: tsx
+  - type: input
+    id: version
+    attributes:
+      label: "@sophistry/core version"
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: solid
+    attributes:
+      label: solid-js and @solidjs/web versions
+      placeholder: 2.0.0-rc.14
+    validations:
+      required: true
+  - type: input
+    id: env
+    attributes:
+      label: Browser, OS and bundler
+      placeholder: Chrome 140 on macOS, Vite 8
+  - type: textarea
+    id: logs
+    attributes:
+      label: Console output
+      render: shell

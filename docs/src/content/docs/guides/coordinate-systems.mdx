@@ -1,0 +1,401 @@
+---
+title: "Coordinate systems"
+description: "Axes, NumberLine, NumberPlane, PolarPlane, ComplexPlane, function graphs and annotations, and reading a coordinate system from a node."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+Scene units are where things *are*; data coordinates are what a graph is *about*. An axes node owns a plotting area of a known size in scene units and publishes a **coordinate system** that translates between the two. Everything else (graphs, annotations, charts, fields) plots in data space by asking that coordinate system where to draw.
+
+The definitions live in `@sophistry/core` (`axes`, `numberLine`, `numberPlane`, `polarPlane`, `complexPlane`, `functionGraph`, ...); the Solid components (`<Axes>`, `<FunctionGraph>`, ...) come from `@sophistry/solidjs`.
+
+## Data space and scene space
+
+`<Axes>` takes a data range for each axis (`[min, max, step?]`) and a size in scene units. The graphs and annotations you put inside it read its coordinate system from the tree, so a `<FunctionGraph>` plots in data coordinates with no extra wiring.
+
+```tsx
+import { Axes, FunctionGraph, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes
+      xRange={[-3, 3, 1]}
+      yRange={[-2, 2, 1]}
+      width={8}
+      height={4.6}
+      tip
+      xLabel="x"
+      yLabel="y"
+    >
+      <FunctionGraph function={Math.sin} />
+    </Axes>
+  </Stage>
+);
+```
+
+Without a framework it is the same tree, built with `create`:
+
+```ts
+import { axes, createScene, functionGraph } from "@sophistry/core";
+
+const scene = createScene({ host: document.getElementById("figure")!, units: 10 });
+scene.add(
+  axes.create({
+    xRange: [-3, 3, 1],
+    yRange: [-2, 2, 1],
+    width: 8,
+    height: 4.6,
+    children: [functionGraph.create({ function: Math.sin })],
+  }),
+);
+```
+
+Three details decide whether axes look right:
+
+- **`width` and `height` are the plotting area; `center` is its middle.** It is not the data origin. `[3, 8] × [120, 160]` occupies exactly the same box as `[-1, 1]²`.
+- **Neither axis assumes zero is in range.** Each axis pins to the nearest edge of the other's range when zero is outside it, the way Manim does. `coords.crossing()` tells you where the axes cross, in data units.
+- **Ticks are anchored on multiples of the step**, not on the range minimum, so `[-3.5, 3.5, 1]` still marks the origin.
+
+Only nodes that ask for a coordinate system plot in data space: graphs, annotations, fields and chart layers. A plain shape such as a `<Dot>` inside `<Axes>` is still placed in scene units; map its position yourself (below).
+
+### The coordinate system
+
+The object an axes node publishes is a `CoordinateSystem`:
+
+| Member | Meaning |
+|---|---|
+| `coordsToPoint(x, y?)` | data coordinates to scene units (a `Point`) |
+| `pointToCoords(point)` | scene units back to `{ x, y }` in data units |
+| `xRange()`, `yRange()` | the ranges as given |
+| `area()` | the plotting area's bounds in scene units |
+| `crossing()` | the data point where the axes cross |
+
+A coordinate system is **immutable**: its methods are pure functions of the ranges and size it was made from. When a range or the size changes, the axes publish a *new* object, and keep the same one while nothing changed. So never cache one across changes; read it again. Values outside the range are not clamped; they land outside `area()`.
+
+There are two ways to get one.
+
+**From the node.** The node is the handle: `ref` receives the axes node, and `coordsOf(node)` returns the system it publishes (or `null` for a node that publishes none). It brings the node up to date first, so it works as soon as the node exists.
+
+```tsx
+import { coordsOf, track } from "@sophistry/core";
+import { Axes, Dot, Stage } from "@sophistry/solidjs";
+
+export function Marked() {
+  const marker = track({ x: 0, y: 0 });
+
+  return (
+    <Stage units={10}>
+      <Axes
+        xRange={[0, 5]}
+        yRange={[0, 3]}
+        width={8}
+        height={5}
+        ref={(plot) => marker.set(coordsOf(plot)?.coordsToPoint(2, 1) ?? marker.peek())}
+      />
+      <Dot center={marker} />
+    </Stage>
+  );
+}
+```
+
+That reads the system once. When the ranges move (an animated range, a zoom), follow it instead: `coordsReadable(node)` is a `Readable` of the node's current system, so `derive` from it, or `watch` it to write a track:
+
+```tsx
+import { coordsReadable, track, watch } from "@sophistry/core";
+import type { Range, RangeTransition } from "@sophistry/core/geometry";
+import type { Readable } from "@sophistry/core";
+import { Axes, Dot } from "@sophistry/solidjs";
+import { onCleanup } from "solid-js";
+
+// Keep the dot on (2, 1) whatever the x range does.
+export function Pinned(props: { xRange: Readable<Range | RangeTransition> }) {
+  const marker = track({ x: 0, y: 0 });
+  return (
+    <>
+      <Axes
+        xRange={props.xRange}
+        yRange={[0, 3]}
+        width={8}
+        height={5}
+        ref={(plot) =>
+          onCleanup(
+            watch(coordsReadable(plot), (coords) => {
+              if (coords) marker.set(coords.coordsToPoint(2, 1));
+            }),
+          )
+        }
+      />
+      <Dot center={marker} />
+    </>
+  );
+}
+```
+
+The richer systems have typed helpers: `polarCoordsOf(node)` and `complexCoordsOf(node)`.
+
+**Down the tree.** A composite you write reads the enclosing system with `ctx.context(coordsContext)` (or `requireCoords(ctx, "MyComponent")`, which throws a helpful error outside one) in its `setup` and `update`. Because the axes publish a new object on every change, reading it that way reruns your `update` exactly when the mapping changes. That is all the built-in graphs and [charts](/guides/charts/) do; see [Extending](/guides/extending/) for writing a composite.
+
+<Aside type="tip">
+Publishing your own plane-like component? `createCartesianCoords({ xRange, yRange, width, height, center })` makes the standard rectangular system (with optional `xScale`/`yScale`), and `publishCoords(ctx, coords)` provides it to the subtree and records it for `coordsOf`. Make a new one whenever any input changes.
+</Aside>
+
+## NumberLine, Axes and NumberPlane
+
+A `<NumberLine>` is one axis: a line, ticks and numbers, with a `range`, a `length` in scene units, and `center` for its centre. `<UnitInterval>` is the same thing preset to `[0, 1, 0.25]`. `<Axes>` is two number lines plus the coordinate system they imply, and `<NumberPlane>` is `<Axes>` over a grid.
+
+```tsx
+import { NumberLine, Stage, UnitInterval } from "@sophistry/solidjs";
+
+export const Lines = () => (
+  <Stage units={10}>
+    <NumberLine range={[-4, 4, 1]} length={8} center={{ x: 0, y: 1 }} tip />
+    <UnitInterval length={6} center={{ x: 0, y: -1 }} minorTickCount={4} />
+  </Stage>
+);
+```
+
+Style and tick options for a single axis live in an options object: `axis` applies to both, and `xAxis` / `yAxis` override it per axis. They take everything a `numberLine` takes except its geometry: `step`, `minorTickCount`, `numbers`, `numbersToInclude` and `numbersToExclude`, `decimalPlaces`, `numberDirection`, `tip`, `scale`, `stroke` and so on, plus `position` to move the axis line (`"zero"`, `"edge"`, a value, or `"top"`/`"right"`).
+
+```tsx
+<Axes
+  xRange={[0, 10, 2]}
+  yRange={[0, 1, 0.25]}
+  width={8}
+  height={4}
+  axis={{ stroke: "tomato" }}
+  xAxis={{ minorTickCount: 1 }}
+  yAxis={{ decimalPlaces: 2 }}
+/>
+```
+
+`progress` on any of these is spent in phases: the axis line, then its ticks, then its numbers. So `draw(progress)` draws an axis the way a person would, with one track. `<NumberPlane>` adds a grid on the major ticks behind everything else (`gridZIndex`, −1 by default), with `minorGridLineCount` for sub-lines, and caps the line count and thins it by stride rather than drawing thousands of lines.
+
+<Example name="basic/CoordinatePlane" />
+
+## Scales and tick formats
+
+Axes are linear by default. Set `scale: "log"` on an axis for a logarithmic mapping (the range must be wholly positive; ticks land on decades, or on the 2, 3 and 5 multiples when the axis is zoomed inside one, and `base` sets the log base). `"sqrt"`, `"symlog"`, `"utc"` and `"time"` are the other names. A custom scale is a value, not a registered name: any object with `toUnit(value)` (data to a 0..1 fraction of the axis) and `fromUnit(fraction)` works, and `linearScale` / `logScale` from `@sophistry/core/geometry` are the built-ins. The axis, the grid and `coordsToPoint` all share one scale, so a graph plots exactly where the ticks say it does.
+
+<Example name="plotting/LogScaleAxes" />
+
+To change how numbers are written, use `tickFormat` on an axis (or a `<NumberLine>`). It is a built-in name (`"plain"`, `"si"`, `"scientific"`, `"percent"`, `"piMultiple"`) or your own `(value, decimalPlaces?) => string`:
+
+```tsx
+import { formatTick } from "@sophistry/core/geometry";
+import { Axes, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes
+      xRange={[0, 2 * Math.PI, Math.PI / 2]}
+      yRange={[-1, 1, 1]}
+      width={8}
+      height={4}
+      xAxis={{ tickFormat: "piMultiple" }}
+      yAxis={{ tickFormat: (value) => `${formatTick(value)} u` }}
+    />
+  </Stage>
+);
+```
+
+`tickFormatters` in `@sophistry/core/geometry` ships `plain`, `si` (1.5k, 2.5m), `scientific`, `percent` and `piMultiple` (π/2, 3π/2). They are plain `(value) => string` functions, so you can call them from your own `tickFormat` function.
+
+## PolarPlane and ComplexPlane
+
+`<PolarPlane>` is the one coordinate system that is not a rectangular lattice in disguise. It draws rings and spokes over a disc whose diameter is `size`, with `maxRadius` at the outer edge. Underneath is a square cartesian mapping, so `coordsToPoint` still means what it means inside `<Axes>`, and a graph inside it still plots in ordinary data space. On top of that, its `PolarCoordinateSystem` adds `polarToPoint(radius, theta)` and its inverse `pointToPolar(point)`, which returns `{ radius, theta }`, with theta in **radians** and coming back in `[0, 2π)`.
+
+```tsx
+import { PolarPlane, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <PolarPlane size={6} maxRadius={3} azimuthDivisions={12} azimuthUnits="radians" />
+  </Stage>
+);
+```
+
+To plot `r = f(θ)`, put a `<PolarGraph>` inside the plane (Manim's `plot_polar_graph`). It runs over a full turn unless you pass `from` and `to` (radians), and lands each sample where the plane's `polarToPoint` puts it. It takes the same sampling props as the other graphs (see [Plotting functions](#plotting-functions)) and `graphHandle(node).pointAt(theta)` gives the curve point. It works inside `<Axes>` and `<NumberPlane>` too, as `(r cos θ, r sin θ)` in their data space. A negative `r` plots on the far side of the pole, as in Manim.
+
+```tsx
+import { PolarGraph, PolarPlane, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <PolarPlane size={6} maxRadius={2} azimuthUnits="radians">
+      <PolarGraph function={(theta) => 1 + Math.cos(theta)} />
+      <PolarGraph function={(theta) => 2 * Math.cos(3 * theta)} from={0} to={Math.PI} />
+    </PolarPlane>
+  </Stage>
+);
+```
+
+`azimuthUnits` is `"none"` (the default), `"degrees"` or `"radians"`, and the radian labels are exact multiples of π: `piMultipleLabel(2, 12)` is `π/6`, not `2π/12`. Rings and spokes go through the same line cap as `<NumberPlane>`, so `radiusStep={0.001}` gives a coarse plane rather than ten thousand nodes.
+
+<Example name="plotting/PolarRose" />
+
+`<ComplexPlane>` is a `<NumberPlane>` with the imaginary axis labelled `i`, `2i`, `-i`. Its `ComplexCoordinateSystem` adds `numberToPoint({ re, im })` (Manim's `number_to_point`) and `pointToNumber(point)`.
+
+```tsx
+import { complexCoordsOf, track } from "@sophistry/core";
+import { ComplexPlane, Dot, Stage } from "@sophistry/solidjs";
+
+export function PointOnPlane() {
+  const marker = track({ x: 0, y: 0 });
+
+  return (
+    <Stage units={10}>
+      <ComplexPlane
+        xRange={[-3, 3, 1]}
+        yRange={[-2, 2, 1]}
+        width={8}
+        height={5.3}
+        ref={(plane) => {
+          const coords = complexCoordsOf(plane);
+          if (coords) marker.set(coords.numberToPoint({ re: 1.5, im: 1 }));
+        }}
+      />
+      <Dot center={marker} />
+    </Stage>
+  );
+}
+```
+
+<Example name="maths/ComplexMultiplication" />
+
+## Plotting functions
+
+`<FunctionGraph function={...} />` inside an `<Axes>` plots `y = f(x)` in data coordinates, over the axes' own `xRange` unless you pass `from` and `to`. `<ParametricGraph function={(t) => ({ x, y })} from to />` does the same for `t ↦ (x, y)`. `graphHandle(node)` turns any of the three graph nodes into a `FunctionGraphHandle`, whose `pointAt(x)` returns the curve point in scene units, so an annotation can attach to the curve without re-sampling it.
+
+```tsx
+import { Axes, FunctionGraph, ParametricGraph, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes xRange={[-3, 3, 1]} yRange={[-3, 3, 1]} width={7} height={7}>
+      <FunctionGraph function={(x) => x ** 3 - 2 * x} />
+      <ParametricGraph
+        function={(t) => ({ x: 2 * Math.cos(t), y: 2 * Math.sin(t) })}
+        from={0}
+        to={2 * Math.PI}
+      />
+    </Axes>
+  </Stage>
+);
+```
+
+Both sample the function `samples` times (default 160) and clip to the plotting area (`clip={false}` turns that off). The curve breaks at non-finite values, at inputs listed in `discontinuities`, and at jumps bigger than `jumpThreshold` (default 0.5 of the axis extent). Only the first two are exact, so when you know where a function breaks, say so:
+
+```tsx
+<FunctionGraph function={(x) => 1 / x} discontinuities={[0]} />
+<FunctionGraph function={Math.tan} discontinuities={[-Math.PI / 2, Math.PI / 2]} />
+```
+
+A graph is an ordinary shape, so `progress` draws it along its length and `stroke`, `strokeWidth` and `dash` style it. Pass a track as `progress` and play `draw` on it.
+
+<Example name="plotting/SinAndCosFunctionPlot" />
+
+### Implicit curves
+
+`<ImplicitFunction function={(x, y) => ...} />` draws the curve `function(x, y) = 0` (Manim's `ImplicitFunction`). The curve is searched for over the plotting area (or `xRange`/`yRange`) on an adaptive grid, and every connected piece is drawn; `progress` reveals the pieces one after another.
+
+```tsx
+import { Axes, ImplicitFunction, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes xRange={[-3, 3, 1]} yRange={[-3, 3, 1]} width={7} height={7}>
+      <ImplicitFunction function={(x, y) => x ** 2 + y ** 2 - 4} />
+      <ImplicitFunction function={(x, y) => y ** 2 - x ** 3 + x} />
+    </Axes>
+  </Stage>
+);
+```
+
+The search finds where `function` changes sign, so a loop smaller than one grid cell can slip through (raise `minDepth`), and a curve that touches zero without changing sign, such as `(x² + y² − 1)²`, is never found. The same pure function is `implicitCurve(f, xRange, yRange, options)` in `@sophistry/core/geometry`. It returns the pieces as `{ points, closed }`.
+
+## Annotations
+
+The annotations take `function` and read the same coordinate system as the graph, so the two cannot disagree about where the curve is. Their numeric props (`from`, `to`, `x`, `dx`, `count`) are ordinary props: pass a track and the rectangles subdivide or the secant walks into a tangent as it changes, with nothing captured at construction.
+
+| Component | Draws |
+|---|---|
+| `AreaUnderGraph` | the filled region between the graph and the baseline over `from..to` (`bounded` for the area between two functions) |
+| `RiemannRectangles` | `count` rectangles (or width `dx`) with `sample` of `"left"`, `"right"` or `"midpoint"` |
+| `VerticalLineToGraph`, `HorizontalLineToGraph` | a (dashed) drop line from the axis to the curve, with optional `dot` and `label` |
+| `SecantSlopeGroup` | a secant through `x` and `x + dx`, with the slope triangle and `dxLabel` / `dyLabel` |
+| `TangentToGraph` | the tangent at `x` |
+
+```tsx
+import {
+  AreaUnderGraph,
+  Axes,
+  FunctionGraph,
+  RiemannRectangles,
+  SecantSlopeGroup,
+  Stage,
+  VerticalLineToGraph,
+} from "@sophistry/solidjs";
+
+const f = (x: number) => 0.4 * x * x - 1;
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Axes xRange={[0, 6.5, 1]} yRange={[-2, 4, 1]} width={8.4} height={4.4}>
+      <FunctionGraph function={f} />
+      <RiemannRectangles function={f} count={8} sample="midpoint" />
+      <AreaUnderGraph function={f} from={1} to={4} />
+      <VerticalLineToGraph function={f} x={2} dot label="x = 2" />
+      <SecantSlopeGroup function={f} x={1} dx={0.8} dxLabel="dx" dyLabel="dy" />
+    </Axes>
+  </Stage>
+);
+```
+
+`SecantSlopeGroup` falls back to the true tangent direction when `dx` reaches zero, so the line stays put at the end of a `dx → 0` animation instead of collapsing to a `NaN` direction. The slopes themselves are pure functions too: `slopeOfSecant`, `angleOfTangent` and `inputToGraphPoint`.
+
+<Example name="plotting/AreaUnderCurve" />
+
+<Example name="plotting/SecantToTangent" />
+
+## Vector fields and network graphs
+
+`<VectorField>`, `<StreamLines>` and `<NetworkGraph>` have their own page: [Fields and graphs](/guides/fields-and-graphs/).
+
+## Pointer readouts
+
+Because `pointToCoords` is the inverse of `coordsToPoint`, turning a pointer position into data coordinates is one call. The scene's `pointer` is a `Readable` of where the pointer is, in scene units (`null` while it is off the canvas), so a readout is a `derive` of it:
+
+```tsx
+import { coordsOf, derive } from "@sophistry/core";
+import type { SceneNode } from "@sophistry/core";
+import { Axes, Label, useScene } from "@sophistry/solidjs";
+
+// Inside a <Stage>:
+function Readout() {
+  const scene = useScene();
+  let plot: SceneNode | undefined;
+  const text = derive(scene.pointer, (pointer) => {
+    const coords = plot && coordsOf(plot);
+    if (!pointer || !coords) return "";
+    const { x, y } = coords.pointToCoords(pointer.scene);
+    return `(${x.toFixed(2)}, ${y.toFixed(2)})`;
+  });
+
+  return (
+    <>
+      <Axes xRange={[-3, 3, 1]} yRange={[-2, 2, 1]} width={8} height={4.6} ref={(node) => (plot = node)} />
+      <Label text={text} x={0} y={3} />
+    </>
+  );
+}
+```
+
+See [Interaction](/guides/interaction/) for dragging in data space, and the [charts guide](/guides/charts/) for data-driven plots, whose frame publishes the same kind of coordinate system.
+
+## Next steps
+
+- [Charts](/guides/charts/): data-driven plots with a frame that fits itself.
+- [Interaction](/guides/interaction/): reading and dragging in data coordinates.
+- [Fields and graphs](/guides/fields-and-graphs/): vector fields, stream lines and network graphs.
+- [Function graphs gallery](/gallery/plotting/function-graphs/) and [math gallery](/gallery/maths/).

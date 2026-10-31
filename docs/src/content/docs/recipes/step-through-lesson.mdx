@@ -1,0 +1,166 @@
+---
+title: "A step-through lesson"
+description: "Gate progress on the learner's interaction with drop targets and animated transitions."
+---
+
+import Example from "../../../components/Example.astro";
+
+A lesson advances when the learner does something right: drag a token to the correct answer, then press Next. This recipe combines a step signal, `draggable`, `dropTarget` and short animations, and keeps every gate reachable without a pointer.
+
+## The result
+
+Drag the token onto the right answer. A wrong drop bounces it back; a right one locks the token, highlights the box and unlocks **Next**. With the keyboard, Tab to an answer box and press Enter.
+
+<Example name="interaction/StepThroughLesson" />
+
+## Steps as state
+
+Keep the lesson as data and the current position in one signal. Everything else (prompt, boxes, progress) derives from it. The step changes only when the learner acts, so a Solid signal is the right tool; the things that move every frame (the token, its scale, the prompt's opacity) are tracks.
+
+```tsx
+import { createSignal } from "solid-js";
+
+const QUESTIONS = [
+  { prompt: "What is 2 + 3?", options: [4, 5, 6], answer: 5 },
+  { prompt: "What is 3 × 3?", options: [6, 9, 12], answer: 9 },
+];
+
+const [step, setStep] = createSignal(0);
+const [solved, setSolved] = createSignal(false);
+
+const question = () => QUESTIONS[Math.min(step(), QUESTIONS.length - 1)];
+const finished = () => step() >= QUESTIONS.length;
+```
+
+`solved` is the gate: it starts false on every step, becomes true when the learner answers correctly, and is what enables Next and locks the token.
+
+## Checking an answer
+
+A drop target is a prop bag you spread onto any shape. `over` is written `true` while an accepted node is dragged over it (handy for a highlight) and `onDrop` fires on release. A `track(false)` makes a good `over`: bind the fill to a `derive` of it and the highlight follows the drag with no Solid work.
+
+```tsx nocheck
+import { derive, dropTarget, track } from "@sophistry/core";
+import { Rect } from "@sophistry/solidjs";
+
+const over = track(false);
+
+<Rect
+  center={{ x: 0, y: 0.8 }}
+  width={2.6}
+  height={1.6}
+  fill={derive(over, (isOver) => (isOver ? highlight : surface))}
+  {...dropTarget({ over, onDrop: () => answer(1) })}
+/>;
+```
+
+The token is a `draggable` over a point track. Two options matter for a lesson:
+
+- `onDragEnd` returns the token home. The drag settles before the drop is reported, so on release `onDragEnd` runs first and `onDrop` second; the success animation then moves the token from home into the box. Check `solved()` before snapping home so a solved step keeps its token in place.
+- `disabled` takes a boolean, a getter or a `Readable`, so `disabled: solved` locks the token as soon as the step is complete. A disabled draggable declines the gesture and ignores the arrow-key nudge. (A getter is read on each press; pass a `Readable` instead if the hover cursor should also disappear the moment it flips.)
+
+```tsx nocheck
+import { draggable, trackPoint } from "@sophistry/core";
+
+const HOME = { x: 0, y: -1.8 };
+const token = trackPoint(HOME.x, HOME.y);
+
+const drag = draggable(token, {
+  disabled: solved,
+  onDragEnd: () => {
+    if (!solved()) token.set(HOME);
+  },
+});
+
+<Circle center={token} radius={0.35} label="answer token" {...drag} />;
+```
+
+Put the decision in one function that both the pointer and the keyboard call:
+
+```tsx nocheck
+function answer(index: number) {
+  if (solved() || finished()) return;
+  if (question().options[index] === question().answer) {
+    setSolved(true);
+    // celebrate (below)
+  } else {
+    // bounce back (below)
+  }
+}
+```
+
+## Animating transitions
+
+Use short animations to make feedback legible: move the token into the box on success, bounce it home on failure, fade the next prompt in. Get `play` from `usePlayer()` so everything is aborted if the lesson unmounts mid-animation.
+
+```tsx nocheck
+import { fadeIn, indicate, moveTo, sequence, track } from "@sophistry/core";
+import { usePlayer } from "@sophistry/solidjs";
+
+const { play } = usePlayer();
+const tokenScale = track(1);
+const promptOpacity = track(1);
+
+// success
+void play(
+  sequence(
+    moveTo(token, { x: boxX, y: 0.8 }, { duration: 0.3 }),
+    indicate(tokenScale, { factor: 1.4 }),
+  ),
+);
+
+// failure
+void play(moveTo(token, HOME, { duration: 0.25 }));
+
+// next step
+function next() {
+  setStep((s) => s + 1);
+  setSolved(false);
+  token.set(HOME);
+  promptOpacity.set(0);
+  void play(fadeIn(promptOpacity, { duration: 0.5 }));
+}
+```
+
+Bind `scale={tokenScale}` on the token and `opacity={promptOpacity}` on the prompt's `<Label>`, and the animations reach the scene directly.
+
+A wrong drop could instead spring home: `springTo(token, HOME, { stiffness: 300, damping: 15 })` overshoots a little and settles, which reads as a bounce rather than a slide. It is an ordinary animation, so it goes in `play` the same way.
+
+Because this component renders its own `<Stage>`, `usePlayer()` has no stage above it and runs on the shared default clock. That is fine here since nothing needs scrubbing. If the lesson should also be pausable, make a clock and give it to both the stage and the runs, as in [Timelines](/guides/timelines/#useplayer).
+
+A richer lesson can make each step a whole `sequence` of animations and run it with `play`, awaiting the result before enabling the controls. Check for `"aborted"` and return, as shown in [Timelines](/guides/timelines/#play-and-playresult).
+
+## Gating the Next button
+
+Next is a plain HTML button, enabled only when the step is solved. Putting it outside the canvas keeps it focusable and screen-reader friendly with no extra work.
+
+```tsx nocheck
+<button type="button" disabled={!solved()} onClick={next}>
+  Next
+</button>
+<span role="status" aria-live="polite">{feedback()}</span>
+```
+
+The `role="status"` region announces feedback ("Correct! Press Next.") to screen readers when it changes.
+
+## Keyboard access
+
+A lesson that needs a mouse is not finished. Every gate must be reachable without a pointer:
+
+- **Answer boxes** carry a `label` and an `onTap` handler. A node with `onTap` is a tab stop, and Enter or Space calls `onTap`. So Tab, Enter answers the question exactly as a drop does, because both call `answer(i)`.
+- **The token** is a tab stop too (`draggable` adds arrow-key nudging; `step` and `fineStep` set the distance). It is mostly decorative for keyboard users, since they answer on the boxes directly.
+- **Feedback and Next** are real DOM, so they work with any assistive technology.
+
+```tsx nocheck
+<Rect
+  label={`Answer ${value}`}
+  onTap={() => answer(i)}
+  {...dropTarget({ over: over[i], onDrop: () => answer(i) })}
+/>
+```
+
+See [Accessibility](/guides/accessibility/) for the DOM mirror behind this, and [Interaction](/guides/interaction/) for draggables, constraints and drop targets in depth.
+
+## Next steps
+
+- [Recipe: an algorithm visualizer](/recipes/algorithm-visualizer/): a step you can also scrub.
+- [Timelines](/guides/timelines/): running a whole step as one animation.

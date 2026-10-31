@@ -1,0 +1,19 @@
+---
+import PreviewByQuery from "../components/PreviewByQuery.tsx";
+---
+
+<!doctype html>
+<html lang="en" data-theme="dark" data-mode="dark">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="robots" content="noindex" />
+		<title>Example preview</title>
+		<style>
+			body { margin: 0; padding: 16px; max-width: 960px; background: #fff; }
+			html[data-theme="dark"] body { background: #17181c; }
+		</style>
+	</head>
+	<body>
+		<PreviewByQuery client:only="solid2" />
+	</body>
+</html>

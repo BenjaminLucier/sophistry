@@ -1,0 +1,16 @@
+---
+title: Lines, areas and time series
+description: "Line and area charts, legends, time axes, annotations, secondary axes, stacks, streamgraphs and candlesticks."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Series over a continuous x: lines, bands and stacked areas inside a `<Chart>` that fits its axes to the data. Start with `ChartAutoFit` and `SeriesLegend`; `TimeSeries` and `CandlestickPrices` use a time axis inferred from `Date` values.
+
+<CardGrid>
+  <LinkCard title="Charts" href="/guides/charts/" description="Data, channels, series, legends and scales." />
+  <LinkCard title="Chart catalogue" href="/reference/chart-catalogue/#lines-scatter-and-error-bars" description="Every chart mark, grouped by kind." />
+</CardGrid>
+
+<Gallery category="plotting" page="lines-and-areas" />

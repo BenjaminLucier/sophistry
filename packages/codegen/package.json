@@ -1,0 +1,24 @@
+{
+	"name": "@sophistry/codegen",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"description": "Generates the framework bindings' component entry files from the core packages' definitions.",
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"test": "vitest run",
+		"generate": "node --experimental-strip-types src/cli.ts",
+		"check": "node --experimental-strip-types src/cli.ts --check",
+		"check:examples": "node scripts/check-examples.mjs"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@sophistry/3d": "workspace:*",
+		"@sophistry/charts": "workspace:*",
+		"@sophistry/core": "workspace:*",
+		"@sophistry/text": "workspace:*",
+		"typescript": "catalog:",
+		"vitest": "catalog:"
+	}
+}

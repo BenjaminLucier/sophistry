@@ -1,0 +1,419 @@
+---
+title: "Interaction"
+description: "Node events, dragging, constraints, drop targets, interaction groups, pointer readouts, pan and zoom, orbit controls and keyboard-accessible scenes."
+---
+
+import Example from "../../../components/Example.astro";
+
+Scenes are not just pictures. Nodes can answer the pointer, and every interaction has a keyboard counterpart (the same machine driven by arrow keys), so a scene stays operable without a mouse. Everything on this page lives in `@sophistry/core`; the bindings pass it through as props.
+
+## The model: every interaction is a value writer
+
+A node is its props, so an interaction cannot reach in and move it. All it can do is write a track the node already reads, and the scene reacts exactly as it does to an animation. A draggable position is therefore always controlled: you bind the track to the shape and hand the same track to the gesture.
+
+```tsx
+import { derive, track, trackPoint } from "@sophistry/core";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+export function Toggle() {
+  const hovered = track(false);
+  const position = trackPoint(0, 0);
+
+  return (
+    <Stage units={8}>
+      <Circle
+        center={position}
+        radius={1}
+        fill={derive(hovered, (over) => (over ? "#e9c46a" : "#264653"))}
+        hover={hovered}
+        cursor="pointer"
+        label="reset"
+        onTap={() => position.set({ x: 0, y: 0 })}
+      />
+    </Stage>
+  );
+}
+```
+
+`hover` writes the `hovered` track and `fill` is derived from it, so hovering repaints the circle with no Solid code running at all. Hit testing runs on pointer events only, over the same specs the renderer painted, so what is on top visually is what you hit, and a scene with no handlers pays nothing.
+
+## Node events
+
+Every drawable (shapes, labels, marks, images) takes the same interaction props. Giving a node any handler makes it hit-testable.
+
+| Prop | What it does |
+| --- | --- |
+| `onTap`, `onDoubleTap`, `onLongPress` | A completed click or tap; a second tap within 300 ms; a press held about 500 ms. |
+| `onPointerDown`, `onPointerMove`, `onPointerUp` | The raw press that began on this node. |
+| `onEnter`, `onLeave`, `onContextMenu` | Hover transitions (never fired by touch) and the context menu. |
+| `onWheel` | A wheel over the node. Taking it stops the page scrolling and the camera zooming; return `false` to pass it on. |
+| `hover={track}` | A boolean written `true` on enter and `false` on leave. |
+| `cursor` | CSS cursor while the pointer is over the node. |
+| `pointerEvents` | `"painted"` (default), `"bounds"`, `"all"` or `"none"`, with SVG's meaning. |
+| `hitArea` | Replaces the geometry with a box or polygon in the node's local units. |
+| `label`, `role`, `focusable`, `pressed` | Accessible name, ARIA role, tab-stop control and toggle state. See [Accessibility](/guides/accessibility/). |
+
+In a definition's descriptor these are props of kind `"event"`: the bindings forward them untouched, and a `Readable` passed to `hover` is written, never mistaken for a binding. In plain TypeScript they go in `create` like any other prop:
+
+```ts
+import { circle, createScene } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 8 });
+scene.add(circle.create({ radius: 1, label: "target", onTap: (event) => console.log(event.scene) }));
+```
+
+A node also takes listeners after it is made. `node.on(event, handler)` adds one (the names are lowercase: `"tap"`, `"doubletap"`, `"longpress"`, `"contextmenu"`, `"pointerdown"`, `"pointermove"`, `"pointerup"`, `"enter"`, `"leave"`, `"wheel"`, plus `"dispose"`) and returns its unsubscribe. In Solid, reach the node through `ref`:
+
+```tsx
+<Circle
+  radius={1}
+  label="target"
+  ref={(node) => {
+    node.on("tap", (event) => console.log("tapped at", event.scene));
+    node.on("doubletap", () => node.set("fill", "#e76f51"));
+  }}
+/>
+```
+
+<Example name="vanilla/DragAndEvents" />
+
+`hover` is the whole of hover: a boolean. What you draw while it holds is ordinary scene code (derive a fill, show a label). Touch has no hover, so anything reachable only by hovering needs a tap route as well.
+
+Two props make small or thin targets easy: `pointerEvents="bounds"` takes the bounding box, and `hitArea` takes an explicit region, such as a generous box around a hairline.
+
+```tsx
+import { derive, track } from "@sophistry/core";
+import { Line, Stage } from "@sophistry/solidjs";
+
+export function Hairline() {
+  const selected = track(false);
+
+  return (
+    <Stage units={8}>
+      <Line
+        from={{ x: -3, y: 0 }}
+        to={{ x: 3, y: 0 }}
+        stroke={derive(selected, (on) => (on ? "#e76f51" : "#264653"))}
+        hitArea={{ minX: -3, maxX: 3, minY: -0.3, maxY: 0.3 }}
+        label="hairline"
+        onTap={() => selected.set(!selected.peek())}
+      />
+    </Stage>
+  );
+}
+```
+
+### The event object
+
+Handlers receive a `ScenePointerEvent` that reports the pointer in three spaces at once:
+
+- `event.canonical` is the scene's own framing in pixels, independent of which camera is zoomed. Use it for screen-ish maths such as the distance between two fingers.
+- `event.scene` is in scene units. Use it to compare against geometry or to place something on the stage.
+- `event.local` is in the target's own units, the exact preimage through any rotated or scaled `<Group>`. Use it to write to the node's own `center`.
+
+`event.id` is the node the event was delivered to. `event.camera` is the index of the camera the gesture is locked to (`-1` on a scene without cameras). It is picked at pointerdown and kept for the whole gesture, so a drag that wanders from a zoomed inset into the main view does not jump.
+
+On a batched node (an [instances](/guides/instancing/) layer, a path batch, a chart's markers) `event.item` says which item the pointer is on, and an instances node adds `event.key`, the item's key. Hover treats each item as its own target: moving from one marker to the next leaves the first and enters the second.
+
+## Dragging
+
+`draggable(track)` returns a prop bag. Spread it onto any node; it writes the track the node is bound to.
+
+```tsx
+import { draggable, trackPoint } from "@sophistry/core";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+export function Handle() {
+  const position = trackPoint(1, 1);
+
+  return (
+    <Stage units={8}>
+      <Circle center={position} radius={0.3} label="handle" {...draggable(position)} />
+    </Stage>
+  );
+}
+```
+
+The bag carries both halves of the behaviour: the pointer `drag` and a `keyboard` twin (arrow keys nudge, Escape cancels), so a handle you can drag is always a handle you can reach without a mouse. Add a `label` so screen readers can name it.
+
+The bindings wrap the common case in a hook. `useMovablePoint(initial, options)` makes the point track and the bag together; bind `position` wherever the point is used and spread `props` on the handle:
+
+```tsx
+import { onCircle } from "@sophistry/core";
+import { Circle, Dot, Line, Stage, useMovablePoint } from "@sophistry/solidjs";
+
+export function OnTheRing() {
+  const point = useMovablePoint({ x: 2, y: 0 }, { constrain: onCircle({ x: 0, y: 0 }, 2) });
+
+  return (
+    <Stage units={8}>
+      <Circle radius={2} stroke="#6c7086" />
+      <Line from={{ x: 0, y: 0 }} to={point.position} />
+      <Dot center={point.position} radius={0.15} label="point on the ring" {...point.props} />
+    </Stage>
+  );
+}
+```
+
+Options worth knowing:
+
+| Option | Meaning |
+| --- | --- |
+| `param` | What is being dragged: a point (default), angle, number or path position. |
+| `constrain` | One clamp or an array applied in order. |
+| `threshold` | Dead zone in screen pixels (default 8). Below it a release is a tap, so `onTap` still works on a draggable. `0` starts the drag on press. |
+| `disabled` | A boolean, `Readable` or getter. The gesture is declined and falls through, so a dead handle pans the camera instead of swallowing the press. |
+| `step`, `fineStep` | Arrow-key distances in scene units (default 0.25, and a fifth of that with Shift). |
+| `cursor`, `activeCursor` | Defaults `"grab"` and `"grabbing"`. |
+| `onDragStart`, `onDrag`, `onDragEnd` | Called once the drag passes `threshold`, after every move, and on release, each with the value. |
+| `onDragOver` | The id of the topmost node under the pointer (or `null`), whenever it changes. |
+
+Every value is computed from where the gesture started, never by accumulating deltas, so there is no drift, a handle keeps its grab offset, and a cancelled gesture restores the exact value, even inside a rotated group.
+
+<Example name="interaction/LinkedDots" />
+
+Because the triangle and the area readout are bound to the same three tracks the handles write, they update on every move with no extra wiring.
+
+### Dragging things that are not points
+
+A handle on a graph drags `x`. A rotation handle drags an angle. A slider drags a number. Pass a `param` to say which, and the track holds that kind of value instead of a point.
+
+| Param | Track holds | Use for |
+| --- | --- | --- |
+| `pointParam()` | `Point` | Free 2D dragging (the default). |
+| `scalarParam(from, to, { range, step, clamp })` | `number` | A slider along a segment; scrubbers. |
+| `angleParam(pivot, { radius, step, clamp })` | radians | Rotation handles. Turns accumulate, so three laps is about 6π rather than flipping at ±π. |
+| `pathParam(line)` | `0..1` arc length | A point riding a curve, when the lesson is about the parameter. |
+
+```tsx
+import { derive, draggable, scalarParam, track } from "@sophistry/core";
+import { Dot, Line, Stage } from "@sophistry/solidjs";
+
+export function Slider() {
+  const value = track(2);
+  const param = scalarParam({ x: -2, y: 0 }, { x: 2, y: 0 }, { range: [0, 4], step: 0.5 });
+
+  return (
+    <Stage units={8}>
+      <Line from={{ x: -2, y: 0 }} to={{ x: 2, y: 0 }} />
+      <Dot
+        center={derive(value, (amount) => ({ x: -2 + amount, y: 0 }))}
+        label="value"
+        {...draggable(value, { param })}
+      />
+    </Stage>
+  );
+}
+```
+
+<Example name="interaction/ParameterSlider" />
+
+## Constraints
+
+A constraint receives the proposed point and returns the allowed one, in the node's local units. Pass one or an array to `constrain`; they run in order, before `param` turns the point into a value.
+
+| Constraint | Effect |
+| --- | --- |
+| `"free"`, `axisX()`, `axisY()` | No clamp, horizontal only, vertical only. The three no-argument ones also work as strings. |
+| `alongDirection(direction, through?)` | Along a line with that direction. |
+| `toBounds(box, { half })`, `inFrame(frame, { half })` | Keep inside a box or the visible frame (`useScene().frame` in Solid, `scene.frame` in core). `half` is the shape's half-size, so its edge stays inside rather than its centre. |
+| `snapToGrid(step, { origin, within })` | Snap to a lattice, optionally only when within a magnet radius. |
+| `snapTo(points, radius)` | A magnet toward the nearest of several points. |
+| `onCircle(center, radius)` | Pin to a circle. |
+| `alongPath(line)` | Pin to a polyline, or a `Readable` or getter of one (a function graph, a streamline). |
+| `chain(...parts)` | Compose several into one. |
+
+```ts
+import { alongPath, draggable, onCircle, snapToGrid, toBounds, trackPoint } from "@sophistry/core";
+
+const ringPosition = trackPoint(0, 2);
+const gridPosition = trackPoint(1, 1);
+const curvePosition = trackPoint(-2, 0);
+const curve = [
+  { x: -3, y: 0 },
+  { x: 0, y: 1 },
+  { x: 3, y: 0 },
+];
+
+draggable(ringPosition, { constrain: onCircle({ x: 0, y: 0 }, 2) });
+draggable(gridPosition, { constrain: snapToGrid(0.5) });
+draggable(curvePosition, {
+  constrain: [alongPath(curve), toBounds({ minX: -3, maxX: 3, minY: -1, maxY: 2 })],
+});
+```
+
+`pathParam` and `alongPath` are the same projection that differ in what you keep: take `pathParam` when the lesson is about the parameter, `alongPath` when it is about the position. Your own function `(proposed, context) => Point` works anywhere a built-in does.
+
+<Example name="interaction/DragConstraints" />
+
+## Groups
+
+An `InteractionGroup` shares one handler set across several nodes. A `LabeledDot` is a disc and a text run, and dragging "it" must mean dragging both. Spread the same bag on the group:
+
+```tsx
+import { draggable, trackPoint } from "@sophistry/core";
+import { InteractionGroup, LabeledDot, Stage } from "@sophistry/solidjs";
+
+export function NamedPoint() {
+  const position = trackPoint(0, 2);
+
+  return (
+    <Stage units={8}>
+      <InteractionGroup {...draggable(position)} label="Point P">
+        <LabeledDot center={position} text="P" />
+      </InteractionGroup>
+    </Stage>
+  );
+}
+```
+
+In core the same thing is `interactionGroup.create({ ...draggable(position), label: "Point P", children: [...] })`.
+
+Members answer with the group's handlers rather than the group building a combined hit region, so two distant dots in one group do not swallow the space between them. A child's own props win key by key, so it can add an `onTap` without losing the group's drag, or set `pointerEvents="none"` to opt out. Nested groups merge, inner winning. A group is also one tab stop (see [Accessibility](/guides/accessibility/#groups-and-focus-order)).
+
+<Example name="interaction/RingDrag" />
+
+## Drop targets
+
+`dropTarget()` is the mirror image of `draggable()`: a prop bag for the thing you drop onto. It is one helper because the handlers only make sense together (a target that never hears its leave would keep its highlight on).
+
+```tsx
+import { derive, draggable, dropTarget, track, trackPoint } from "@sophistry/core";
+import { Circle, Rect, Stage } from "@sophistry/solidjs";
+
+export function Slot() {
+  const over = track(false);
+  const dropped = track(false);
+  const token = trackPoint(-2, 0);
+  const fill = derive([over, dropped], (isOver, isDropped) =>
+    isDropped ? "#2a9d8f" : isOver ? "#e9c46a" : "#264653",
+  );
+
+  return (
+    <Stage units={8}>
+      <Rect
+        center={{ x: 1.5, y: 0 }}
+        width={2}
+        height={2}
+        fill={fill}
+        {...dropTarget({ over, onDrop: () => dropped.set(true) })}
+      />
+      <Circle center={token} radius={0.3} label="token" {...draggable(token)} />
+    </Stage>
+  );
+}
+```
+
+`over` is written `true` while something acceptable is above the target. `onEnter(dragged, event)` and `onLeave(dragged, event)` fire on transitions, `onDrop` fires before `onLeave` (never for a cancelled drag), and `accepts: (dragged) => boolean` declines particular nodes. `dragged` is the dragged node's id, the same `node.id` the node handle carries, so compare ids rather than positions. A declined target still blocks: the drop is not offered to whatever is beneath it.
+
+The dragged node can also hear what it is over through `draggable`'s `onDragOver`, which reports the topmost id under the pointer whether or not that node is a target.
+
+<Example name="interaction/DropTargets" />
+
+## Reading the pointer
+
+`scene.pointer` is where the pointer is, as opposed to a gesture that happened to a node. It is a `Readable` that is `null` while the pointer is off the canvas, else `{ scene, canonical, id, camera }`: the point in scene units and in the scene's own framing pixels, the topmost interactive node under it, and the camera it is over. It updates on every move, hover included, and when the view moves under a still pointer.
+
+Because it is a `Readable`, a crosshair is a few `derive`s bound as props:
+
+```tsx
+import { derive } from "@sophistry/core";
+import { Circle, Label, Stage, useScene } from "@sophistry/solidjs";
+
+function Crosshair() {
+  const pointer = useScene().pointer;
+  const at = derive(pointer, (state) => state?.scene ?? { x: 0, y: 0 });
+  const shown = derive(pointer, (state) => (state ? 1 : 0));
+
+  return (
+    <>
+      <Circle center={at} radius={0.15} opacity={shown} />
+      <Label
+        text={derive(at, (point) => `${point.x.toFixed(1)}, ${point.y.toFixed(1)}`)}
+        x={derive(at, (point) => point.x)}
+        y={derive(at, (point) => point.y + 0.5)}
+        opacity={shown}
+      />
+    </>
+  );
+}
+
+export function Readout() {
+  return (
+    <Stage units={10}>
+      <Crosshair />
+    </Stage>
+  );
+}
+```
+
+`Crosshair` is its own component because `useScene()` needs the stage's context, which the component that renders the `<Stage>` is outside of. There is one answer per canvas: with cameras it is the scene point under the pointer through the camera it is over. Inside an `<Axes>`, `coordsOf(axesNode)?.pointToCoords(point)` turns it into data units (see [Coordinate systems](/guides/coordinate-systems/)).
+
+## Focus
+
+`scene.focus` is the focus channel: `focus.state` is a `Readable` of `{ id, source }` (the focused node's id or `null`, and whether a `"keyboard"` or `"pointer"` moved it, which is what decides whether the ring shows), and `focus.set(id)` moves focus from script. The scene already draws the ring; read the channel to show a hint or highlight a related shape. See [Accessibility](/guides/accessibility/#groups-and-focus-order).
+
+## Pan and zoom
+
+`<PanZoom>` makes a view navigable by writing the `units` and `center` tracks the stage binds, and composes with draggable shapes: a drag that starts on a handle moves the handle, one on empty space pans.
+
+```tsx
+import { track, trackPoint } from "@sophistry/core";
+import { NumberPlane, PanZoom, Stage } from "@sophistry/solidjs";
+
+export function Navigable() {
+  const units = track(14);
+  const center = trackPoint(0, 0);
+
+  return (
+    <Stage units={units} center={center}>
+      <PanZoom units={units} center={center} minUnits={4} maxUnits={40} />
+      <NumberPlane xRange={[-10, 10]} yRange={[-6, 6]} width={20} height={12} />
+    </Stage>
+  );
+}
+```
+
+It is core's `panZoom(scene, options)` attached for the component's lifetime (`usePanZoom(options)` is the hook form). The options, wheel behaviour and per-camera navigation are in [Cameras: pan and zoom](/guides/cameras/#pan-and-zoom).
+
+## Orbit controls for 3D
+
+`orbitControls3D(scene, { eye })` from `@sophistry/3d` is the 3D counterpart: dragging empty space orbits the `eye` track around `target` (keep it equal to the camera's `target`; the origin by default), and the wheel dollies it between `minRadius` and `maxRadius`. Bind the same track to the camera's `eye`. The Solid bindings wrap it as `useOrbitControls3D` in `@sophistry/solidjs/3d`:
+
+```tsx
+import type { Track } from "@sophistry/core";
+import { track } from "@sophistry/core";
+import { Stage } from "@sophistry/solidjs";
+import { Camera3D, Cube3D, useOrbitControls3D } from "@sophistry/solidjs/3d";
+
+type Eye = { x: number; y: number; z: number };
+
+function OrbitControls(props: { eye: Track<Eye> }) {
+  useOrbitControls3D({ eye: props.eye, minRadius: 3, maxRadius: 30 });
+  return null;
+}
+
+export function Orbit() {
+  const eye = track<Eye>({ x: 6, y: 4, z: 8 });
+
+  return (
+    <Stage units={10}>
+      <OrbitControls eye={eye} />
+      <Camera3D eye={eye}>
+        <Cube3D size={2} />
+      </Camera3D>
+    </Stage>
+  );
+}
+```
+
+A shape whose drag accepts the gesture, or whose `onWheel` takes the wheel, wins over the orbit. See [3D: drag to orbit](/guides/3d/#drag-to-orbit).
+
+<Example name="three-d/OrbitScene" />
+
+## Next steps
+
+- [Accessibility](/guides/accessibility/): the DOM mirror, labels and keyboard behaviour.
+- [Cameras](/guides/cameras/): `PanZoom`, `MultiStage` and animating the view.
+- [Instancing](/guides/instancing/): events on thousands of items in one node.
+- [Animation](/guides/animation/): drive the same tracks with `player.play(...)` between gestures.

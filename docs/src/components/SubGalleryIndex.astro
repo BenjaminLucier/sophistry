@@ -1,0 +1,53 @@
+---
+import {
+	type CATEGORIES,
+	examplesIn,
+	galleryHref,
+	subGalleries,
+} from "../lib/examples";
+import ExampleCards from "./ExampleCards.astro";
+
+interface Props {
+	/** A category split into sub-pages (see SUBGALLERIES in lib/examples.ts). */
+	category: (typeof CATEGORIES)[number]["dir"];
+}
+
+const { category } = Astro.props;
+const pages = subGalleries(category);
+if (pages.length === 0) {
+	throw new Error(`SubGalleryIndex: "${category}" has no sub-pages.`);
+}
+// Old links point at examples on this page (`/gallery/plotting/#Sankey`):
+// forward them to the sub-page the example now lives on.
+const moved = Object.fromEntries(
+	examplesIn(category).map((e) => [e.id, galleryHref(e)]),
+);
+---
+
+<script is:inline define:vars={{ moved }}>
+	const target = moved[decodeURIComponent(location.hash.slice(1))];
+	if (target) location.replace(target);
+</script>
+
+{
+	pages.map((page) => (
+		<section>
+			<h2 id={page.slug}>
+				<a href={`/gallery/${category}/${page.slug}/`}>{page.title}</a>
+			</h2>
+			<p>{page.blurb}</p>
+			<ExampleCards examples={examplesIn(category, page.slug)} />
+		</section>
+	))
+}
+
+<style>
+	h2 a {
+		color: inherit;
+		text-decoration: none;
+	}
+	h2 a:hover {
+		color: var(--sl-color-accent-high);
+		text-decoration: underline;
+	}
+</style>

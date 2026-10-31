@@ -1,0 +1,267 @@
+---
+title: "Theming and color"
+description: "Palettes, light and dark mode as a Readable, named colors, color operations and colormaps."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+
+Every default color in sophistry is a token read from the active theme. No component hardcodes a hex. Swap the palette and every shape, axis, chart and 3D mesh restyles at once, and any individual prop (`stroke`, `color`, `gridColor`, ...) still overrides its own default.
+
+The default palette is **Catppuccin**: Mocha when the page is dark, Latte when it is light.
+
+<Example name="basic/ThemeColors" />
+
+## Palettes and themes
+
+A **palette** is a set of semantic tokens with a `light` and a `dark` variant. A **theme** is a palette resolved for one mode, plus three sizing defaults (`strokeWidth`, `fontFamily`, `fontSize`). Both are plain data, and the theming API lives on `@sophistry/core/themes` (also re-exported from the root entry).
+
+A scene's active theme is `scene.theme`, a `Readable<Theme>` that follows the stage's `theme`, `palette` and `mode` and, when none pins a mode, the page's colour mode. Every node sees it as `themeContext`, which is how the built-ins restyle. In a component, bind a prop to it with `derive`, so a palette or mode change restyles the shape with no framework work:
+
+```tsx
+import { derive } from "@sophistry/core";
+import { Circle, Stage, useScene } from "@sophistry/solidjs";
+
+function Dotted() {
+  const theme = useScene().theme;
+  return <Circle radius={1} stroke={derive(theme, (theme) => theme.palette.series[0])} />;
+}
+
+export const Scene = () => (
+  <Stage units={6}>
+    <Dotted />
+  </Stage>
+);
+```
+
+`useTheme()` is the shortcut when you need the theme in Solid itself (DOM beside the stage, a `<Show>`): it returns an accessor of the same theme inside a stage, and of the default palette in the page's mode outside one. A prop written as `stroke={theme().palette.accent}` works too, through a Solid effect per change. Like every scene-bound hook, call `useScene()` in a component rendered *inside* the `<Stage>`. In a vanilla scene, read `scene.theme.peek()` or bind `derive(scene.theme, ...)` the same way; in your own [composite](/guides/extending/#a-custom-composite), `ctx.theme` reruns `update` when the theme changes.
+
+| Token | What reads it |
+| --- | --- |
+| `background`, `foreground` | Canvas ground; default strokes and text |
+| `muted` | Tick labels, captions |
+| `accent` | `Dot`, `Circle`, 3D meshes: a shape with nothing else said |
+| `series` | Bars, slices, lines, cycled in order |
+| `grid`, `border` | Plane and polar grids; frames |
+| `highlight` | `indicate`'s flash |
+| `axes` | `x`/`y`/`z` hues of a 3D frame |
+| `ramp` | `Imshow`, `Pcolormesh`, `Hist2D`, `HexBin` |
+| `surface`, `positive`, `negative`, `warning`, `info` | Available to your own scenes |
+
+## Choosing a palette on a stage
+
+`<Stage>` takes three theming props, all reactive (`createScene` takes the same three options, and `scene.setTheme({ palette, mode, theme })` changes them later):
+
+```tsx
+<Stage palette="catppuccin" />        // the one built-in name, and the default
+<Stage palette={brand} />             // a palette is a value, not a name
+<Stage palette={brand} mode="light" /> // pinned to a mode
+<Stage theme={myTheme} />             // a fully built theme, used as-is
+```
+
+With no `mode`, a stage follows the page's mode (see below). Because `palette` is a plain prop, you can drive it from a signal and the whole scene restyles: one theme change marks the style stage of every node, and nothing else is recomputed. Tap a swatch:
+
+<Example name="basic/PaletteSwitcher" />
+
+## Defining a palette
+
+`definePalette` needs only `background`, `foreground` and `accent` for each mode you supply; the rest is derived. Neutrals (`muted`, `surface`, `grid`, `border`) blend your own ground and ink, and the status and axis hues fall back to Catppuccin's for the same mode.
+
+```tsx
+import { catppuccin, definePalette } from "@sophistry/core/themes";
+import { Stage } from "@sophistry/solidjs";
+
+export const brand = definePalette({
+  name: "brand",
+  dark: { background: "#0b1020", foreground: "#e8ecf8", accent: "#ff6b6b" },
+  light: {
+    background: "#fbfbfd",
+    foreground: "#1d2233",
+    accent: "#d6336c",
+    series: [catppuccin.latte.blue, catppuccin.latte.peach],
+  },
+});
+
+export const Scene = () => <Stage palette={brand} units={8} />;
+```
+
+Supply just one of `dark` or `light` and it is used for both. `catppuccin.mocha` and `catppuccin.latte` export the raw swatches to build on. There is no registry and no global default to set: a custom palette is passed where it is used, which is why two libraries can never collide over a name. The built-ins live in the frozen `palettes` map (`PaletteName` is the closed union of its keys), and `PaletteSpec` is `Palette | PaletteName`.
+
+## Light and dark mode
+
+A stored preference (`"system"`, `"light"` or `"dark"`) resolves to a concrete mode. The mode lives on `<html data-mode>`, and that attribute is the single source of truth. Core watches it and exposes it as a **`Readable`**, `colorModeReadable`, which is what a scene with no `mode` follows: the canvas repaints the moment the page flips, whoever flipped it. **Dark is the default** with no storage, no JS or no `matchMedia`. `prefers-color-scheme` is read only by the pre-paint script and `installColorMode`, never by a scene.
+
+| API | Does |
+| --- | --- |
+| `colorModeReadable` | `"light"` or `"dark"` as a `Readable`, following the page: bind to it, `derive` from it, or `subscribe` |
+| `modePreferenceReadable` | `"system"`, `"light"` or `"dark"` as a `Readable` |
+| `colorMode()`, `modePreference()` | Their current values (a plain read, `peek()`) |
+| `setModePreference(pref, options?)` | Stores it, sets `data-mode`/`data-pref`, syncs `<meta name="theme-color">` |
+| `cycleModePreference(options?)` | `system`, `light`, `dark`, then `system` again; for one toggle button |
+| `installColorMode(options?)` | Applies the stored preference and follows OS changes; returns a disposer |
+| `themeInitScript(options?)` | A string for an inline blocking `<head>` script |
+| `paletteCss(palette?, { prefix })` | A stylesheet of `--c-*` variables for `:root` and `[data-mode="light"]` |
+| `resolveTheme({ theme?, palette?, mode? })` | The `Theme` those resolve to now (mode defaults to the page's) |
+
+The options object is `{ storageKey?, palette? }` on the setters and `installColorMode` (`storageKey` defaults to `"theme-pref"`), plus `fallback` on `themeInitScript` (the preference when nothing is stored, default `"dark"`).
+
+### No flash on first paint
+
+Inline `themeInitScript()` in `<head>` so the mode is set before the first paint. It also keeps `theme-color` in sync and follows OS changes. Both it and `paletteCss()` are generated from the palette you pass, so the page's CSS variables can never drift from what the canvas paints.
+
+<Tabs>
+  <TabItem label="SSR / static HTML">
+```ts nocheck
+import { paletteCss, themeInitScript } from "@sophistry/core/themes";
+import { brand } from "./brand";
+
+export const head = `
+<meta name="theme-color" content="#0b1020">
+<script>${themeInitScript({ palette: brand, fallback: "system" })}</script>
+<style>${paletteCss(brand)}</style>
+`;
+```
+  </TabItem>
+  <TabItem label="Client-only">
+```ts nocheck
+import { installColorMode } from "@sophistry/core/themes";
+import { brand } from "./brand";
+
+// Runs after first paint; prefer the script where you can.
+installColorMode({ storageKey: "my-theme", palette: brand });
+```
+  </TabItem>
+</Tabs>
+
+`installColorMode` remembers both options, so a later `cycleModePreference()` keeps your storage key and your palette's `theme-color` without repeating them. A strict CSP needs a nonce or hash for the inline script. If your site already has its own theme toggle, you don't need these at all: just keep `<html data-mode>` in sync with it. This docs site does exactly that, mirroring Starlight's `data-theme` onto `data-mode`, and every live example follows.
+
+A toggle button inside your own app shows the preference with `useTrackValue` (DOM text is what it is for):
+
+```tsx
+import { cycleModePreference, modePreferenceReadable } from "@sophistry/core/themes";
+import { useTrackValue } from "@sophistry/solidjs";
+
+export function ThemeToggle() {
+  const preference = useTrackValue(modePreferenceReadable);
+  return (
+    <button type="button" onClick={() => cycleModePreference()}>
+      theme: {preference()}
+    </button>
+  );
+}
+```
+
+Without a framework, `modePreferenceReadable.subscribe(() => render(modePreference()))` does the same.
+
+## Named colors
+
+Manim's palette is exported as plain CSS hex strings: `WHITE`, `BLACK`, `GREY_A` to `GREY_E` (`GREY` is `GREY_C`; there is no `GRAY`), `RED`, `MAROON`, `ORANGE`, `GOLD`, `YELLOW`, `GREEN`, `TEAL`, `BLUE`, `PURPLE`, `PINK`, plus a `namedColors` lookup keyed by camelCase name. `BLUE === "#58C4DD"`.
+
+Because they are strings, every prop that takes a CSS color (`fill`, `stroke`, `color`, `colors`, gradient stops, chart colors, palette seeds and so on) takes them directly, and so does `style={{ color: BLUE }}`. They compare with `===`, serialize to JSON, and every color operation below accepts them. Pass one to `parseColor` when you need the `{ r, g, b, a }` object:
+
+```tsx
+import { BLUE } from "@sophistry/core/color";
+import { Circle, Stage } from "@sophistry/solidjs";
+
+export const Scene = () => (
+  <Stage units={6}>
+    <Circle radius={1.5} stroke={BLUE} />
+  </Stage>
+);
+```
+
+For colors that should follow the theme, prefer the tokens above.
+
+## Color operations
+
+Everyday operations are on the root entry and on `@sophistry/core/color`. Each returns a `Color`, which any color prop accepts as is; `toCss` turns a `Color` (or passes a string through) into a CSS string when you need that (the examples below use it to show the result).
+
+```ts
+import { darken, lighten, mixColor, parseColor, toCss, withAlpha } from "@sophistry/core/color";
+
+parseColor("rebeccapurple");            // hex, rgb(), hsl() or a CSS name; never throws
+toCss(withAlpha("#58c4dd", 0.4));       // only the alpha changes
+toCss(lighten("#58c4dd", 0.3));         // mixes toward white in OKLCH
+toCss(darken("#58c4dd", 0.3));          // mixes toward black in OKLCH
+toCss(mixColor("red", "blue", 0.5));    // default { colorSpace: "rgb" }
+```
+
+`parseColor` never throws: an unparsable string falls back to an opaque mid-grey, so a typo in `fill` renders as "something is wrong" rather than crashing the tree. `lighten`/`darken` default to OKLCH because that keeps a lightened color looking like the same hue instead of washing out toward grey.
+
+## The `/color` toolkit
+
+Everything else lives on `@sophistry/core/color`, a leaf module that depends on nothing else inside the package (the root entry re-exports it):
+
+- **Spaces:** `rgbToHsl`/`hslToRgb`, `rgbToHsv`/`hsvToRgb`, `rgbToOklch`/`oklchToRgb`. The OKLCH port follows Bjorn Ottosson's matrices.
+- **Interpolation:** `colorInterpolator(a, b, { colorSpace })` returns a sampler from `t` to a `Color`. Use it instead of `mixColor(a, b, t, { colorSpace })` when you sample one pair repeatedly (an animation loop): it parses and converts the endpoints once. `colorSpace` is `"rgb"` (default), `"hsl"` or `"oklch"`; hue spaces take the short way round the circle.
+- **Other:** `shadeColor`, `tryParseColor`, `FALLBACK_COLOR`, and `randomColor(seed, options?)`. `randomColor` is deterministic: it hashes the seed instead of reading `Math.random`, so a scene that colors nodes randomly renders the same picture every run and in every test.
+
+### Why OKLCH
+
+A straight line between two saturated colors in RGB dips through a muddy grey-brown in the middle. OKLCH is perceptually even: it sweeps hue at roughly constant lightness instead. Use it for ramps and for animated colour changes between hues far apart on the wheel.
+
+<Example name="basic/OklchBlend" />
+
+Animating a color track takes the same option. Bind the track itself as the prop:
+
+```tsx
+import { colorTo, track } from "@sophistry/core";
+import { Circle, usePlayer } from "@sophistry/solidjs";
+import { onSettled } from "solid-js";
+
+export function Warming() {
+  const fill = track("#3b82f6");
+  const player = usePlayer();
+  onSettled(() => void player.play(colorTo(fill, "#facc15", { colorSpace: "oklch", duration: 2 })));
+  return <Circle radius={1.5} fill={fill} />;
+}
+```
+
+## Colormaps and ramps
+
+`colorRamp(stops, { colorSpace })` turns a list of CSS colors into a `(t) => string` sampler over `[0, 1]`, clamped at both ends. `sampleRamp` is the one-shot form. A ramp is the usual source for [`strokeAlong`](/guides/shapes-and-styling/#fills-strokes-and-gradients) and for `ramp` props.
+
+```ts
+import { colorRamp } from "@sophistry/core/color";
+
+const heat = colorRamp(["#000000", "#ff0000", "#ffff00"], { colorSpace: "oklch" });
+heat(0.5); // "rgba(255, 0, 0, 1)"
+```
+
+`resolveColormap(name | fn)` adds named maps on top. Nine ship, seeded from published control points:
+
+- **Sequential**, for a magnitude with no natural zero: `viridis` (the default), `magma`, `plasma`, `inferno`, `cividis`, `turbo`.
+- **Diverging**, for a signed quantity (both cross a near-neutral midpoint): `coolwarm`, `rdbu`.
+- `grey`.
+
+All of them interpolate in OKLCH, so steps look even. A `ramp` prop (on `Imshow`, `Heatmap`, `ContourF`, `VectorField`, `Colorbar`, ...) accepts a colormap name, a stop list, or any function:
+
+```tsx
+import { colorRamp, resolveColormap } from "@sophistry/core/color";
+
+resolveColormap("viridis")(0.5);               // a CSS color string
+const mine = colorRamp(["#0b1020", "#ff6b6b"]); // a custom colormap is just a function
+// <Imshow ramp={mine} ... />
+```
+
+`rampMin`, `rampMax` and `rampMidpoint` pin the values that map to the ends and the middle of the ramp (a diverging map wants `rampMidpoint={0}`), and `rampScale` maps values through a non-linear scale first.
+
+A custom colormap is passed as a value, never registered. See [Extending](/guides/extending/#custom-easings-interpolators-and-layouts).
+
+## Chart colours
+
+Charts follow the same rules as everything else ([naming conventions](/start/concepts/#naming-conventions)): a single-hue chart takes `color`, a multi-series one cycles through `colors` (default `palette.series`), and a continuous encoding takes `ramp`. A `series` channel on `<Chart>` maps to colours with `color={{ range }}`; see [Charts](/guides/charts/).
+
+## Gradients
+
+Gradients are a property of a shape's `fill` or `stroke`, not of the theme. See [Fills, strokes and gradients](/guides/shapes-and-styling/#fills-strokes-and-gradients).
+
+<Aside type="tip">
+Binding `derive(scene.theme, (theme) => theme.palette.series[i])` keeps your own shapes in step with whatever palette and mode the page is in, at no per-change framework cost. Hardcode a hex only when the color is part of the meaning, such as a named Manim color.
+</Aside>
+
+## Next steps
+
+- [Shapes and styling](/guides/shapes-and-styling/): the `fill`, `stroke` and gradient props these colors feed.
+- [Charts](/guides/charts/): series colours and ramps in use.
+- [Recipe: embedding in your site](/recipes/embedding/): syncing the mode with your page.

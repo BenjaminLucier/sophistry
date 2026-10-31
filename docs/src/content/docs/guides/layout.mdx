@@ -1,0 +1,234 @@
+---
+title: "Layout and bounds"
+description: "Scene units, nodes as handles and their measured bounds, and the placement helpers: nextTo, alignTo, arrange, toEdge."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+Manim mutates a retained mobject (`circle.next_to(square, UP)`). sophistry's nodes are retained too, but positioning stays a pure function over boxes: you ask a node where it is (`node.bounds()`), a helper computes a delta, and you hand it back through the node's `place` prop. Because `place` is the only thing a helper's answer fits, a layout can never feed back into the size it measured.
+
+This guide shows how to place shapes relative to each other, the frame, and a whole group of siblings.
+
+<Example name="basic/LabelledDiagram" />
+
+## Scene units and the frame
+
+Layout works in [scene units](/start/concepts/#scene-units-y-up-and-the-frame), y up. `scene.frame` is the visible box in those units, as a readable that follows resizes (`useScene().frame` in a component). Pin things against it with `toEdge` and `toCorner`:
+
+```tsx
+import { derive, toCorner, UL } from "@sophistry/core";
+import { Label, Stage, useScene } from "@sophistry/solidjs";
+
+function Title() {
+  const scene = useScene();
+  return (
+    <Label
+      text="Top left"
+      ref={(title) => {
+        const size = title.localBounds(); // `place` never changes it, so measure once
+        title.set("place", derive(scene.frame, (frame) => toCorner(size, frame, UL, { margin: 0.4 })));
+      }}
+    />
+  );
+}
+
+export const Scene = () => (
+  <Stage units={10}>
+    <Title />
+  </Stage>
+);
+```
+
+`useScene()` needs the stage's context, so call it in a child of `<Stage>`, as above. Without a framework the same is `title.set("place", derive(scene.frame, ...))` on the node `label.create(...)` returned.
+
+## Handles and bounds
+
+**The node is the handle.** A component returns its node and `ref={(node) => ...}` receives it; in the core, `create` returns it. Every node measures itself in the stage's scene units:
+
+```tsx
+import { Circle, Label, Stage } from "@sophistry/solidjs";
+
+export function Measured() {
+  return (
+    <Stage units={8}>
+      <Circle radius={1.5} ref={(circle) => console.log(circle.width())} />
+      <Label text="width: 3.0" y={-2.4} />
+    </Stage>
+  );
+}
+```
+
+| Member | Meaning |
+| --- | --- |
+| `bounds()` | The box **after** the node's own `place`/`x`/`y`/`rotation`/`scale`, where it appears. |
+| `localBounds()` | The box **before** those props: how big the node is and where it sat before anyone moved it. |
+| `center()` | Center of `bounds()`. |
+| `pointAt(direction)` | A point on the `bounds()` box: `UP` is the top edge's midpoint, `UR` the top-right corner, `{ x: 0, y: 0 }` the center. |
+| `width()`, `height()` | Size of `bounds()`; `0` when the node has no points. |
+
+Boxes are measured on demand: a call brings the node (and its parents) up to date first, so a box read right after a write is already right, and they come out in the **stage's** scene units however many groups sit in between. They are `null` when a node has no points to bound.
+
+A box is a value, not a subscription. To keep a placement in step with something that moves, `derive` it from what moves it: `node.readable("center")` is a readable of any node prop (including one bound to a track). See [Following a moving target](#following-a-moving-target).
+
+The split between the two boxes is what keeps layout from eating its own tail. A node placed with `nextTo` gets its `place` from a box, and `place` feeds only the node's local transform. So the thing being placed reads its own `localBounds()` (which `place` can't change), and the thing it is placed *against* is read through `bounds()`.
+
+## Placement helpers
+
+Each helper takes boxes and returns a `Placement`, a translation in scene units that you give to `place`. They follow Manim's vocabulary:
+
+| Helper | What it does |
+| --- | --- |
+| `nextTo(self, target, direction, { gap, align })` | Put `self` beside `target`, with a gap. `align` flushes an edge on the other axis. |
+| `alignTo(self, target, direction)` | Flush one edge with `target`'s; only the named axis moves. |
+| `centerAt(self, point)` | Center `self` on a point. |
+| `toEdge(self, frame, direction, { margin })` | Pin against an edge of `frame`, inset by `margin`. |
+| `toCorner(self, frame, direction, { margin })` | Same with a diagonal direction (`UL`, `UR`, `DL`, `DR`). |
+| `arrange(items, direction, { gap, center })` | A row (or column) of items, equal gaps. One placement per item. |
+| `arrangeInGrid(items, { columns, rows, gap, columnGap, rowGap, center })` | Row-major grid; columns and rows size to their widest and tallest member. |
+
+The direction constants are `UP`, `DOWN`, `LEFT`, `RIGHT`, the diagonals `UL`, `UR`, `DL`, `DR`, and `ORIGIN`.
+
+Spacing has three names, used the same way everywhere (each defaults to `DEFAULT_GAP`, 0.25):
+
+- `gap`: the space **between** two separate things (`nextTo`, `arrange`, a brace and its target).
+- `padding`: the space **inside** a surround (`surround`, `SurroundingRectangle`, `LabeledDot`).
+- `margin`: the inset **from a frame edge** (`toEdge`, `toCorner`, `Title`).
+
+Combine placements with `shiftBy(placement, { x, y })`, `sumShifts(a, b)`, `onlyX(p)` and `onlyY(p)`. `x` and `y` stay plain numbers for hand-written positions and simply add to `place`.
+
+```tsx
+import type { SceneNode } from "@sophistry/core";
+import { nextTo, UP } from "@sophistry/core";
+import { Circle, Label, Stage } from "@sophistry/solidjs";
+
+export function Captioned() {
+  let circle!: SceneNode;
+  return (
+    <Stage units={8}>
+      <Circle ref={(node) => (circle = node)} radius={1.5} />
+      <Label
+        text="unit circle"
+        ref={(caption) => caption.set("place", nextTo(caption.localBounds(), circle.bounds(), UP))}
+      />
+    </Stage>
+  );
+}
+```
+
+The circle's `ref` runs first because it comes first in the tree. The same in the core:
+
+```ts
+import { circle, createScene, label, nextTo, UP } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8 });
+const ring = scene.add(circle.create({ radius: 1.5 }));
+const caption = scene.add(label.create({ text: "unit circle" }));
+caption.set("place", nextTo(caption.localBounds(), ring.bounds(), UP));
+```
+
+`arrange` takes one box per item and returns one placement per item, so it fits a handful of siblings collected through their `ref`s (measure them once they all exist, in `onSettled`):
+
+<Example name="basic/LabelsAndPositioning" />
+
+## Why `Placement` only fits `place`
+
+`center`, `from`/`to` and `points` are what `localBounds()` measures, so feeding a placement back into them would make a shape's input depend on its own output, a loop that never settles. A `Placement` is therefore opaque: it fits `place` and nothing else, and the mistake is a compile error.
+
+**Another node's `Bounds` can feed geometry props**, though. That's how the arrows in the diagram above find their ends (`arrow.update({ from: box.pointAt(RIGHT) })`) and how a `SurroundingRectangle` follows its target: the box belongs to something else, so there is no loop.
+
+## Following a moving target
+
+A placement computed once stays put. When the target moves (its `center` is a track an animation or a drag writes), derive the placement from the target's prop. The node pulls it in the commit, measures the target there, and the caption moves in the same frame:
+
+```ts
+import { createScene, derive, dot, label, nextTo, trackPoint, UR } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 10 });
+const position = trackPoint(0, 0);
+const point = scene.add(dot.create({ center: position }));
+const caption = scene.add(label.create({ text: "P" }));
+const size = caption.localBounds();
+caption.set("place", derive(point.readable("center"), () => nextTo(size, point.bounds(), UR)));
+position.set({ x: 2, y: 1 }); // the caption follows
+```
+
+Measure the placed node's own `localBounds()` outside the `derive`, as above: it does not depend on `place`, and reading a node from inside its own binding is a loop. Often a derived position is simpler still: `label.create({ x: derive(position, (p) => p.x), y: derive(position, (p) => p.y + 0.5) })`. The [dragging example](/gallery/vanilla/#DragAndEvents) does that.
+
+## Bounds algebra
+
+The pure box helpers come from `@sophistry/core`:
+
+```ts
+import type { Bounds } from "@sophistry/core";
+import { boundsCenter, padBounds, unionBounds } from "@sophistry/core";
+
+export function framed(a: Bounds, b: Bounds) {
+  const both = unionBounds(a, b); // skips null/undefined entries
+  if (!both) return null;
+  const padded = padBounds(both, 0.3); // grow by 0.3 on every side
+  return { box: padded, centre: boundsCenter(padded) };
+}
+```
+
+The rest of the set is `boundsWidth`, `boundsHeight`, `boundsFromCenter(center, width, height)` and `pointOn(bounds, direction)`.
+
+`surround(target, { padding })` is the padded box that Manim's `SurroundingRectangle` is made of. It answers with a `Bounds` (not a `Placement`), so it goes into another shape's geometry:
+
+```ts
+import { boundsCenter, boundsHeight, boundsWidth, circle, createScene, rect, surround } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8 });
+const ring = scene.add(circle.create({ radius: 1, x: 1 }));
+const box = surround(ring.bounds(), { padding: 0.3 });
+if (box) {
+  scene.add(rect.create({ center: boundsCenter(box), width: boundsWidth(box), height: boundsHeight(box) }));
+}
+```
+
+Usually you want a matcher instead: `SurroundingRectangle`, `BackgroundRectangle`, `Cross` and `Underline` take the node itself as `target` and follow it; see [Shapes and styling](/guides/shapes-and-styling/#matchers).
+
+## Items that change slots
+
+`nextTo` and `arrange` place things by measured size. When a *collection* of items changes order (a sort, a queue, a heap) the question is different: which key sits in which slot, and how does an item get to its new one? `createSlots` owns just that. You give it keys and a `slot index -> point` layout (`rowSlots`, `gridSlots`, `circleSlots`, or your own function), and it gives each item a `position` track (plus `opacity` and `scale`), so identity survives reordering.
+
+```tsx
+import { createSlots, rowSlots } from "@sophistry/core";
+import { Rect, Stage } from "@sophistry/solidjs";
+import { For } from "solid-js";
+
+const slots = createSlots(["a", "b", "c"], { layout: rowSlots({ spacing: 1.5 }) });
+// Seekable animation: a and c trade slots over half a second.
+export const swap = slots.plan().swap("a", "c");
+
+export const Row = () => (
+  <Stage units={8}>
+    <For each={slots.items.peek()}>
+      {(item) => <Rect center={item.position} width={1} height={1} />}
+    </For>
+  </Stage>
+);
+```
+
+`slots.items` and `slots.order` are readables; the items list only changes on `insert` and `remove`.
+
+Operations (`swap`, `move`, `permute`, `rotate`, `insert`, `remove`) return ordinary animations, so they compose and scrub like any other. The motion is a function you supply (an eased straight move by default, `arcMotion` for arcs), and `commit: "start" | "end"` decides when a reordering flips `slots.order`. See [an algorithm visualizer](/recipes/algorithm-visualizer/) for planning, scrubbing and the model in depth.
+
+## Pitfalls
+
+- **Nodes that don't exist yet.** A `ref` runs when its component creates the node, in tree order, so a sibling earlier in the tree cannot read a later one in its own `ref`. Measure in `onSettled` (or in the later node's `ref`). Every helper tolerates missing boxes (`null`, `undefined`) and answers with a zero shift.
+- **Bounds mix units inside transformed groups.** Node boxes are in the stage's scene units, but `place`, `x`, `y` and geometry props are stated in the units of the enclosing `<Group>`. Inside a plain translated group that is the same thing; inside a scaled or rotated group the units differ, so convert (with the inverse of the group's matrix) before mixing them. A box is also always axis-aligned in stage units, so measuring something in a rotated group gives its upright bounding box, not a tilted frame.
+- **Matcher depth.** A matcher is an ordinary sibling, so nothing ties its depth to what it wraps. `BackgroundRectangle` defaults to `zIndex: -1`; if the covered shape has an explicit `zIndex`, sort them by hand. See [paint order](/guides/shapes-and-styling/#paint-order-and-zindex).
+- **Two `nextTo`s on one axis** summed with `sumShifts` give neither of them. Use `onlyX`/`onlyY` to take one axis from each.
+- **Don't put a placement in a geometry prop.** TypeScript will stop you; use `place`.
+
+<Aside type="tip">
+Reading `localBounds()` of the node you're placing and `bounds()` of the one you're placing against is the whole rule. If you keep that straight, layouts compose without cycles.
+</Aside>
+
+## Next steps
+
+- [Shapes and styling](/guides/shapes-and-styling/) for the `place`, `x`, `y`, `rotation` and `scale` props and `<Group>`.
+- [Coordinate systems](/guides/coordinate-systems/) for placing things by data value instead.
+- [Extending](/guides/extending/) to make a custom shape that measures and places like the built-ins.
+- [An algorithm visualizer](/recipes/algorithm-visualizer/) for items that change slots.

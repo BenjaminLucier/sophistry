@@ -1,0 +1,83 @@
+---
+import { galleryHref, getExample } from "../../lib/examples";
+import { Thumb } from "./Thumb.tsx";
+
+const names = [
+	"animation/MorphShapes",
+	"maths/FourierSquareWave",
+	"plotting/PolarRose",
+	"three-d/HelixCurve",
+	"interaction/RingDrag",
+	"maths/EulerIdentity",
+];
+const items = names.map((name) => {
+	const e = getExample(name);
+	return { name, title: e.meta.title, href: galleryHref(e) };
+});
+---
+
+<ul class="thumbs">
+	{
+		items.map((item) => (
+			<li>
+				<a class="thumb" href={item.href}>
+					<span class="stage" aria-hidden="true">
+						<Thumb client:only="solid2" name={item.name} />
+					</span>
+					<span class="label">{item.title}</span>
+				</a>
+			</li>
+		))
+	}
+</ul>
+
+<style>
+	.thumbs {
+		list-style: none;
+		padding: 0;
+		margin: 1.5rem 0;
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+	}
+	@media (min-width: 50rem) {
+		.thumbs {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+	.thumbs li {
+		margin: 0;
+	}
+	.thumb {
+		display: block;
+		border: 1px solid var(--sophistry-frame);
+		border-radius: var(--sophistry-radius);
+		background: var(--sophistry-surface);
+		overflow: hidden;
+		text-decoration: none;
+		color: var(--sl-color-white);
+		transition: border-color 0.15s, transform 0.15s;
+	}
+	.thumb:hover {
+		border-color: var(--sl-color-accent);
+		transform: translateY(-2px);
+	}
+	.stage {
+		display: block;
+		aspect-ratio: 16 / 10;
+		overflow: hidden;
+		/* Thumbnails are links: clicks go to the gallery, not the canvas. */
+		pointer-events: none;
+	}
+	.label {
+		display: block;
+		padding: 0.55rem 0.8rem;
+		font-size: var(--sl-text-sm);
+		font-weight: 600;
+		border-top: 1px solid var(--sophistry-frame);
+	}
+	@media (prefers-reduced-motion: reduce) {
+		.thumb { transition: none; }
+		.thumb:hover { transform: none; }
+	}
+</style>

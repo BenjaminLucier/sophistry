@@ -1,0 +1,68 @@
+{
+	"name": "@sophistry/3d",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"description": "3D scenes for Sophistry: cameras, meshes, polyhedra and orbit controls, painted on Canvas2D.",
+	"keywords": [
+		"3d",
+		"canvas",
+		"visualization",
+		"animation"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/3d"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./definitions": "./src/entries/definitions.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./definitions": {
+				"types": "./dist/entries/definitions.d.ts",
+				"default": "./dist/entries/definitions.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"wgpu-matrix": "^3.4.2"
+	},
+	"peerDependencies": {
+		"@sophistry/core": "workspace:^"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@sophistry/core": "workspace:*",
+		"happy-dom": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	}
+}

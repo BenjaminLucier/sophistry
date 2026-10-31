@@ -1,0 +1,32 @@
+{
+	// The API reference's program (starlight-typedoc in astro.config.mjs): the
+	// public entries of every @sophistry package, compiled together.
+	// Solid JSX for the .tsx files; the React package's two .tsx files carry
+	// React JSX, so the reference skips type-error checking (the packages
+	// typecheck themselves) instead of failing on them.
+	"extends": "../tsconfig.base.json",
+	"compilerOptions": {
+		"noEmit": true,
+		"incremental": false,
+		"jsx": "preserve",
+		"jsxImportSource": "@solidjs/web",
+		"noUnusedLocals": false,
+		"noUnusedParameters": false
+	},
+	"include": [
+		"../packages/core/src",
+		"../packages/text/src",
+		"../packages/charts/src",
+		"../packages/3d/src",
+		"../packages/solidjs/src",
+		"../packages/react/src"
+	],
+	"exclude": [
+		"../packages/*/src/**/*.test.ts",
+		"../packages/*/src/**/*.test.tsx",
+		"../packages/*/src/**/*.bench.ts",
+		"../packages/*/src/test",
+		"../packages/*/src/test-*.ts",
+		"../packages/*/src/**/test-*.ts"
+	]
+}

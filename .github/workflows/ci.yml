@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm lint
+      # The e2e job's container tag must match the installed @playwright/test.
+      - run: pnpm check:playwright
+      - run: pnpm typecheck
+      # `-r` covers every package, including core, text, charts, 3d, solidjs,
+      # react and codegen.
+      - run: pnpm test
+      # Generated bindings (solidjs, react) match the packages' definitions,
+      # and the docs' framework examples compile against the bindings.
+      - run: pnpm codegen:check
+      - run: pnpm --filter @sophistry/codegen check:examples
+      - run: pnpm --filter @sophistry/core check:examples
+      - run: pnpm --filter @sophistry/docs typecheck
+      - run: pnpm --filter @sophistry/core build
+      - run: pnpm --filter @sophistry/docs build
+      - run: pnpm --filter @sophistry/docs check:links
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm smoke:consumer
+
+  e2e:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    # The gallery baselines (e2e/__screenshots__/gallery, tracked in git) are
+    # rendered in this image, browsers included, so CI must run in it too. Keep
+    # the tag equal to the @playwright/test version in package.json:
+    # `pnpm check:playwright` (the check job) fails when they differ, and
+    # `pnpm test:e2e:update` (scripts/e2e-visual.mjs) derives its image from
+    # that version. The image's browsers are preinstalled (PLAYWRIGHT_BROWSERS_PATH
+    # is set in it), so nothing is downloaded or cached for them here.
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.1-noble
+      options: --ipc=host
+    env:
+      # Compare every gallery example with its baseline (see CONTRIBUTING.md).
+      E2E_VISUAL: "1"
+    steps:
+      - uses: actions/checkout@v4
+      # pnpm from package.json's packageManager, then the .nvmrc Node in front
+      # of the image's own; the pnpm store is cached by setup-node.
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # Capture mode (docs/src/components/capture.ts) is compiled in only with
+      # this; the deployed docs leave it out, and the gallery needs it.
+      - run: pnpm --filter @sophistry/docs build
+        env:
+          PUBLIC_SOPHISTRY_CAPTURE: "1"
+      - run: pnpm exec playwright test
+      # On a visual failure the report holds each example's expected, actual
+      # and diff images.
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: playwright-report
+          path: |
+            e2e/report
+            e2e/test-results
+          retention-days: 7

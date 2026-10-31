@@ -1,0 +1,16 @@
+---
+title: Sequencing and timelines
+description: "sequence, parallel and lagged, scrubbable timelines and chapters, shared tracks and custom animations."
+---
+
+import Gallery from "../../../../components/Gallery.astro";
+import { CardGrid, LinkCard } from "@astrojs/starlight/components";
+
+Combining animations and controlling them once they run. `Sequencing` shows `sequence`, `parallel` and `lagged`; the `Scrub*` examples drive a `timeline()` from a slider; `CustomAnimationLeaf` writes an animation from scratch.
+
+<CardGrid>
+  <LinkCard title="Timelines" href="/guides/timelines/" description="Seek, scrub, pause and reduced motion." />
+  <LinkCard title="Scrub slider recipe" href="/recipes/scrub-slider/" description="Wire a range input to a timeline." />
+</CardGrid>
+
+<Gallery category="animation" page="sequencing-and-timelines" />

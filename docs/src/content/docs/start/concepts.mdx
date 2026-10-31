@@ -1,0 +1,284 @@
+---
+title: "Core concepts"
+description: "The mental model: a retained scene graph of nodes made from definitions, dirty stages, tracks and derive, the phased frame loop, scene units, context, and how the Solid and React bindings map onto it."
+---
+
+import { Aside } from "@astrojs/starlight/components";
+import Example from "../../../components/Example.astro";
+
+A handful of ideas explain most of sophistry. Read this page once and the rest of the guides will feel predictable. Each section is short; [Architecture](/project/architecture/) has the depth.
+
+The core, `@sophistry/core`, is plain TypeScript. The Solid and React bindings are a thin, generated layer over it, so everything on this page holds whichever way you write scenes. Samples show the core API, with the JSX equivalent where it helps.
+
+## The stage
+
+A **scene** is a canvas plus the tree of nodes painted into it. `createScene` makes one in a host element; `<Stage>` does the same from JSX. The scene owns the canvas, the renderer, the pointer driver and the accessibility mirror.
+
+```ts
+import { circle, createScene, label } from "@sophistry/core";
+
+const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 10 });
+scene.add(circle.create({ radius: 1.5 }));
+scene.add(label.create({ text: "hello", y: -2.2 }));
+```
+
+```tsx
+import { Circle, Label, Stage } from "@sophistry/solidjs";
+
+export function Hello() {
+  return (
+    <Stage units={10}>
+      <Circle radius={1.5} />
+      <Label text="hello" y={-2.2} />
+    </Stage>
+  );
+}
+```
+
+The options you reach for most (the same names on `createScene` and as `<Stage>` props):
+
+| option | meaning |
+|---|---|
+| `units` | scene units across the full width (default 16); larger zooms out |
+| `center` | the scene point shown in the middle (default the origin) |
+| `aspect` | width divided by height (default 16/9); the stage fills its container's width |
+| `palette`, `mode`, `theme` | colours; see [Context: theme and clock](#context-theme-and-clock) |
+| `background` | `"theme"`, `"transparent"` or a colour |
+| `clock` | the [clock](#clocks) the scene's animations run on |
+| `pauseWhenHidden` | skip painting and pause the scene's own clock while scrolled out of view (default `true`) |
+
+`units` and `center` take a track, so a view can zoom and pan (`scene.setView(...)` does it imperatively). For several views of one scene (split screen, picture-in-picture) see [Cameras](/guides/cameras/).
+
+## Scene units, y-up and the frame
+
+Scene code works in **units**, never pixels. `units: 8` means eight units span the canvas's width. Height follows the aspect ratio, so at 16:9 the visible area is 8 by 4.5 units. **y points up**, and the origin sits at `center`.
+
+Strokes, font sizes and dash patterns are in units too, so a scene is identical at any canvas size and device pixel ratio.
+
+<Example name="basic/SceneUnitsFrame" />
+
+`scene.frame` is the visible box in scene units (`{ minX, minY, maxX, maxY }`) as a track-like value, so you can pin things to edges and corners and follow resizes; in a component, read it through `useScene().frame`. Pass `yUp: false` if you prefer the canvas convention, where y grows downward.
+
+## The scene graph
+
+The scene is a **retained tree of nodes**. A node is created once and lives until it is disposed; changing it is a write to one of its props, never a re-render.
+
+```ts
+import { circle, createScene, group, track } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8 });
+const ring = scene.add(circle.create({ radius: 1, stroke: "#89b4fa" }));
+
+ring.set("radius", 2);                          // write one prop
+ring.update({ fill: "#89b4fa", fillOpacity: 0.2 }); // write several
+ring.get("radius");                             // 2
+
+const radius = track(2);
+ring.set("radius", radius);                     // a Readable binds: the node follows it
+radius.set(3);                                  // ...and recomputes in the next frame
+
+const arm = scene.add(group.create({ rotation: 0.3 }));  // a container
+arm.add(circle.create({ center: { x: 2, y: 0 }, radius: 0.3 }));
+
+ring.on("tap", () => ring.set("fill", "tomato")); // events; returns its unsubscribe
+ring.bounds();                                  // its box in scene units, measured lazily
+ring.dispose();                                 // removes it and drops its bindings
+```
+
+- **`set(key, value)`** stores a value, or **binds** when the value is a `Readable` (a track or a `derive`). There is no other kind of reactivity: a node never reads anything it was not given.
+- **Containers** (the root, `group`, composites) have `children`, `add`, `remove` and `setChildren`, which reconciles by identity and disposes what it drops.
+- **The node is the handle.** `bounds()`, `localBounds()`, `center()`, `pointAt(direction)`, `width()` and `height()` measure it; layout helpers take those boxes. See [Layout](/guides/layout/).
+- **Order** is tree order plus `zIndex`; see [Paint order](/guides/shapes-and-styling/#paint-order-and-zindex).
+
+## Definitions and descriptors
+
+Every node kind is a **definition**: a lowercase value such as `circle`, `label` or `axes`, with `create(props)` and a `descriptor` that says, for each prop:
+
+- its **default**;
+- which **stage bits** a write invalidates (below);
+- whether it is **`instanceable`**, so [instancing](#instancing-and-path-batches) may drive it per item;
+- its **kind**: a `value`, an `event` handler (`onTap`, ...), or `children`.
+
+```ts
+import { circle } from "@sophistry/core";
+
+circle.name;                         // "Circle"
+circle.descriptor.radius;            // { invalidates: Invalidate.GEOMETRY, instanceable: true }
+circle.descriptor.center;            // { invalidates: Invalidate.TRANSFORM, instanceable: true }
+```
+
+The descriptor is the single source for updates, instancing, types, the API docs and the bindings: codegen reads it to write `<Circle>`. Your own definitions work the same way. `defineShape` takes a descriptor and a `geometry` function, and the result is as first-class as `circle`:
+
+<Example name="vanilla/CustomShape" />
+
+`defineComposite` builds a node from other nodes (a chart, a coordinate system); [Extending](/guides/extending/) covers both.
+
+## Dirty stages
+
+A shape caches a short pipeline: **geometry** (its outline) → **transform** (where it sits) → **style** (paints, widths, dashes) → **spec** (the draw record the renderer paints). A prop write ORs its stage bits into the node's dirty mask, and the next commit reruns only those stages. That is why descriptors matter:
+
+| a write to... | invalidates | reruns |
+|---|---|---|
+| `radius`, `points`, `text` | `Invalidate.GEOMETRY` | the outline, then the spec |
+| `center`, `x`, `rotation`, `place` | `Invalidate.TRANSFORM` | a matrix; the outline keeps its identity |
+| `stroke`, `fill`, `opacity` | `Invalidate.STYLE` | the style, then the spec |
+| `progress`, `zIndex`, `visible` | `Invalidate.SPEC` | only the spec assembly |
+
+Results keep their identity when their inputs did not change, and the renderer's caches key on identity, so moving a shape a thousand times never rebuilds its path. Containers add `Invalidate.SPACE` (the coordinate space handed to children) and composites `Invalidate.UPDATE`. See [Stages and dirty bits](/project/architecture/#stages-and-dirty-bits).
+
+## Tracks: signals are the single source of truth
+
+A **track** is a small observable value: `peek()` reads it, `set(value)` writes it, `subscribe(onStale)` listens. `derive` computes from one or more readables, and `watch` runs a side effect when one changes.
+
+```ts
+import { derive, track, trackPoint, watch } from "@sophistry/core";
+
+const radius = track(1);
+const position = trackPoint(2, 0);              // a track of { x, y }
+const area = derive(radius, (r) => Math.PI * r * r);
+const label = derive([radius, position], (r, p) => `r = ${r} at ${p.x}, ${p.y}`);
+
+radius.set(2);
+area.peek();                                    // 12.57: computed now, on demand
+const stop = watch(area, (value) => console.log(value)); // runs in the frame's commit
+stop();
+```
+
+The model is **push-stale, pull-value**:
+
+- `set` only tells subscribers "this may have changed"; nothing is computed then.
+- A value is computed when it is read with `peek()`, at most once per change. So a diamond (two derives of one track feeding a third) never sees a half-updated state, and three writes in one frame cost one recompute.
+- `derive` subscribes to its sources only while something subscribes to it, so a derived value nobody reads costs nothing and leaks nothing. There is no global graph, no owner and no `flush`.
+
+<Example name="vanilla/TracksAndDerive" />
+
+Because a node binds to whatever readable it is given, the thing that writes a track does not matter. Dragging, a tween, a slider, a scroll listener and your own store can all write the same track; the shape does not know or care which one did:
+
+<Example name="animation/OneTrackManyDrivers" />
+
+Animations are not tied to `track` itself. They drive any **animatable** (an object with `peek()` and `set()`), so a property of a plain object works too; see [Animating signals and stores](/guides/animation/#animating-signals-and-stores).
+
+## Animations are seekable descriptions
+
+`draw`, `fadeIn`, `moveTo`, `valueTo` and friends build **animations** that walk tracks from A to B over time. They know nothing about canvases or nodes. An animation is a lazy value with a known `duration` and a `seek(t)` method; nothing runs until a runner samples it against a clock. That is why the same value can be played, paused or scrubbed:
+
+```ts
+import { createScene, draw, fadeOut, sequence, track } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8 });
+const drawn = track(0);
+const opacity = track(1);
+
+await scene.play(draw(drawn, { duration: 1.5 })); // resolves "done" or "aborted"; never rejects
+const tl = scene.timeline(sequence(draw(drawn), fadeOut(opacity)));
+tl.seek(0.5); // jump half a second in; every track takes its value for that moment
+tl.seek(0);   // and back, restoring start values
+void tl.play();
+```
+
+`scene.play` and `scene.timeline` run on the scene's clock; in a component, `usePlayer()` returns the same pair bound to the enclosing stage and aborts its runs when the component goes away. Composites (`sequence`, `parallel`, `lagged`, `repeat`, `forever`) sample at absolute time, so they are frame-exact. See [Animation](/guides/animation/) and [Timelines](/guides/timelines/).
+
+**Springs** come in two forms. `springTo(target, to, spring)` is a seekable animation like any other (its duration is the settle time). `follow(target, source, spring)` is live: the target chases a moving source on the clock and keeps its velocity when the source changes.
+
+<Example name="vanilla/Springs" />
+
+<Aside type="tip">
+In Solid, start scripts from `onSettled(...)` (Solid 2's after-mount hook) or an event handler, not in a component body. In React, start them in an effect.
+</Aside>
+
+## The frame loop
+
+One shared `requestAnimationFrame` loop drives every clock, scene and renderer on the page, and sleeps when nothing needs a frame. Each frame runs three phases in order:
+
+1. **tick**: clocks advance; animations sampled on them write tracks (which only mark their subscribers stale);
+2. **commit**: each scene pulls its stale bindings and reruns its dirty nodes' stages; `watch` callbacks run here;
+3. **paint**: renderers draw what the commit produced.
+
+So a write and the paint it causes land in the same frame, and work is proportional to what changed: a still scene costs nothing per frame. The same holds for writes from outside the loop (a pointer event, a fetch): they mark, and the next frame pulls. See [The frame loop and the renderer](/project/architecture/#the-frame-loop-and-the-renderer).
+
+## Clocks
+
+Time comes from a **clock**. By default every scene shares `defaultClock`. A clock can be paused and has a speed; its `time`, `paused` and `speed` are readables:
+
+```ts
+import { circle, createClock, createScene } from "@sophistry/core";
+
+const clock = createClock();
+const scene = createScene({ host: document.body, units: 8, clock });
+scene.add(circle.create({ radius: 1 }));
+
+clock.pause();
+clock.setSpeed(0.25); // slow motion
+clock.advance(2);     // step by hand, even while paused
+```
+
+A clock also carries the reduced-motion setting: by default it follows the user's `prefers-reduced-motion`, and under it `play` jumps to the end state instead of animating (see [Reduced motion](/guides/timelines/#reduced-motion)). Give a scene its own clock when scenes need independent pause and speed, or when you want to control playback from outside the stage (as in [the tutorial's timeline step](/start/first-scene/)). Inside a stage, `useClock()` reads the enclosing clock.
+
+## Instancing and path batches
+
+A node per item is the right default, and cheap enough for thousands. For many items of one kind that need no individuality (scatter points, particles, grid cells), `instances(definition, { data, key, channels, shared, transition })` draws all of them with **one node**: per-item values live in typed arrays, only `instanceable` props may vary per item, and a data change is reconciled by key with tweened or sprung transitions. Click the stage to re-lay 4,000 dots:
+
+<Example name="vanilla/Instancing" />
+
+When the items are distinct outlines (wedges, ribbons, areas, arrows of a field), a **path batch** (`pathBatch.create({ items })`) draws them all from one node. Charts are built on both, so they batch by default.
+
+<Example name="vanilla/PathBatch" />
+
+## Context: theme and clock
+
+Some values flow **down the tree**: containers `provide` them and descendants read the nearest one (`node.context(key)`). The root provides the theme, the clock, the reduced-motion flag and the frame; a chart provides its scales to the marks inside it. You can make your own keys with `createContextKey`.
+
+The **theme** is a palette plus sizing defaults, each with a light and a dark variant. A scene follows `<html data-mode="light|dark">` on its own and picks Catppuccin by default. Any explicit prop (`stroke`, `color`, ...) overrides its theme default; for a colour that should follow the theme, bind a `derive` of `scene.theme`:
+
+```ts
+import { circle, createScene, derive } from "@sophistry/core";
+
+const scene = createScene({ host: document.body, units: 8, palette: "catppuccin" });
+const accent = derive(scene.theme, (theme) => theme.palette.series[0]);
+scene.add(circle.create({ radius: 2, stroke: accent })); // repaints when the mode flips
+```
+
+In components, `useScene().theme` is the same readable, and `useTheme()` returns its value for Solid or React logic. Define your own palette with `definePalette` and pass it as `palette`. See [Theming and colour](/guides/theming-and-color/).
+
+## How the bindings map onto this
+
+Each binding is a thin layer over the API above. Every component is generated from a definition (`export const Circle = wrap(circle)`), so the two always agree on names and props.
+
+| in JSX (Solid or React) | in the core |
+|---|---|
+| `<Stage units={10}>` | `createScene({ host, units: 10 })` |
+| `<Circle radius={2} />` | `scene.add(circle.create({ radius: 2 }))`, once |
+| a changed prop (`radius={size()}` in Solid, a re-render in React) | `node.set("radius", value)` for that key only |
+| a track as a prop (`radius={radius}`) | `node.set("radius", radius)`: a binding; no framework work per frame |
+| children | `container.setChildren([...])`, reconciled by identity |
+| `ref={(node) => ...}` | the node itself |
+| `onTap={...}` | an event prop, the same as `node.on("tap", ...)` |
+| `usePlayer()` | `scene.play` / `scene.timeline`, aborted on unmount |
+| `useScene()`, `useClock()`, `useTheme()` | `scene`, `scene.clock`, `scene.theme` |
+| `useTrackValue(track)` | `track.subscribe` + `peek`, for DOM text and framework logic |
+
+In Solid a component body runs once and makes its node; in React each element is one host fiber over one node, and a re-render only `set`s the props that changed. Either way, the rule is the same: **pass the track itself** for anything that animates, and keep framework state for things the user changes. [Bindings](/guides/bindings/) has the details.
+
+## Naming conventions
+
+Props follow a few rules, so a name you guess is usually right.
+
+- **Names are spelled out**: `center`, `radius`, `cornerRadius`, `function`. Single letters are coordinates only (`x`, `y`, `z`, `t`).
+- **Definitions are lowercase values, components PascalCase**: `circle.create(...)` in the core, `<Circle>` in a binding.
+- **Colour**: geometry takes `stroke` and `fill`; text and single-hue marks take `color`; a cycled categorical list is `colors`; a continuous colour map is `ramp`. See [Theming and colour](/guides/theming-and-color/).
+- **A part toggles by its bare name**: `grid`, `legend`, `tip`, `labels`, `ticks`, `numbers`. Each takes `true`/`false` or an options object. `visible={false}` hides the whole component.
+- **`label` is the text; `labels` draws them.** Part settings are prefixed by the part: `numberFontSize`, `labelGap`, `tipLength`.
+- **Spacing**: `gap` between separate things, `padding` inside a surround, `margin` from a frame edge, `spacing` centre-to-centre pitch, `lineHeight` a multiple of the font size.
+- **`tip` is always an arrowhead**; the hover box is `tooltip`.
+- **`orientation`** is `"vertical"` or `"horizontal"`; vertical marks grow along y.
+- **Paint order is `zIndex`**; `z` is only ever a coordinate.
+- **Functions**: `createX` makes a stateful object (`createScene`, `createClock`, `createSlots`), `defineX` makes a definition, `useX` is a binding hook, a bare noun (`track`, `linearGradient`) is a plain value.
+- **Time is in seconds** everywhere: `duration`, `delay`, `lag`.
+
+## Next steps
+
+- [Your first scene](/start/first-scene/): put these ideas to work
+- [Shapes and styling](/guides/shapes-and-styling/)
+- [Animation](/guides/animation/) and [Timelines](/guides/timelines/)
+- [Interaction](/guides/interaction/)
+- [Architecture](/project/architecture/): the same model, in depth

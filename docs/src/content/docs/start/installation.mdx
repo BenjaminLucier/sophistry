@@ -1,0 +1,199 @@
+---
+title: "Installation"
+description: "Install @sophistry/core with the Solid or React binding (or on its own), add the text, charts and 3D packages you need, and configure TypeScript and Vite."
+---
+
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+
+sophistry is a framework-free TypeScript core plus thin, generated bindings. You always install `@sophistry/core`; add a binding if you write scenes as components, and a feature package for each of LaTeX, charts and 3D you use. This page covers which packages to pick, their peer dependencies, and the TypeScript and Vite setup.
+
+## Packages
+
+| package | what it adds | depends on |
+|---|---|---|
+| `@sophistry/core` | the scene graph, every 2D definition (`circle`, `label`, `axes`, ...), `createScene`, tracks, animations, springs, instancing, interaction, themes | nothing but a few d3 modules and `wgpu-matrix` |
+| `@sophistry/solidjs` | `<Stage>`, a component per definition (`<Circle>`), hooks (`usePlayer`, `useScene`, ...) for Solid 2 | peers: `core`, `solid-js`, `@solidjs/web` |
+| `@sophistry/react` | the same for React 19, through a custom reconciler | peers: `core`, `react` |
+| `@sophistry/text` | LaTeX as geometry: `mathTex`, `mathTransform`, `createLatex` | peer: `core`; bundles KaTeX and opentype.js |
+| `@sophistry/charts` | bar, line, scatter, pie, heatmap and the other charts, with data channels | peer: `core` (and `3d` for the `/3d` subpath) |
+| `@sophistry/3d` | `camera3D`, 3D primitives and surfaces, `orbitControls3D` | peer: `core` |
+
+The core never imports a UI framework, so the bindings are small: every component is generated from a core definition (`export const Circle = wrap(circle)`), and a feature package's components appear in the binding as soon as the package is installed.
+
+## Install
+
+<Tabs syncKey="framework">
+  <TabItem label="Solid">
+    Solid 2 is a release candidate; pin the exact versions this release is tested against (`2.0.0-rc.14`, and `@solidjs/vite-plugin` at `3.0.0-next.49`).
+
+    ```sh
+    pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.14 @solidjs/web@2.0.0-rc.14
+    pnpm add -D vite @solidjs/vite-plugin@3.0.0-next.49 typescript
+    ```
+
+    Pass the exact versions. A plain `^2.0.0` range does not match release candidates, so without a pin your package manager may resolve Solid 1 (the `latest` tag) and the build fails in confusing ways.
+  </TabItem>
+  <TabItem label="React">
+    ```sh
+    pnpm add @sophistry/core @sophistry/react react react-dom
+    pnpm add -D vite @vitejs/plugin-react typescript
+    ```
+
+    The binding needs React 19.3 or later (`react-reconciler` 0.34 comes with it).
+  </TabItem>
+  <TabItem label="No framework">
+    ```sh
+    pnpm add @sophistry/core
+    ```
+
+    That is the whole library: `createScene({ host })` mounts a scene in any element, and every definition is created with `definition.create(props)`. See [the first scene without a framework](/start/first-scene/#the-same-scene-without-a-framework).
+  </TabItem>
+</Tabs>
+
+Then add the feature packages you use, with any package manager:
+
+```sh
+pnpm add @sophistry/text     # MathTex, MathTransform
+pnpm add @sophistry/charts   # BarChart, LineChart, ...
+pnpm add @sophistry/3d       # Camera3D, Surface3D, ... (and 3D charts)
+```
+
+Their components come from the binding's matching subpath, so a scene that uses no charts never loads chart code:
+
+| feature | core-level import | Solid components | React components |
+|---|---|---|---|
+| 2D shapes, labels, coordinates | `@sophistry/core` | `@sophistry/solidjs` | `@sophistry/react` |
+| LaTeX | `@sophistry/text` | `@sophistry/solidjs/text` | `@sophistry/react/text` |
+| charts | `@sophistry/charts` | `@sophistry/solidjs/charts` | `@sophistry/react/charts` |
+| 3D charts | `@sophistry/charts/3d` | `@sophistry/solidjs/charts/3d` | `@sophistry/react/charts/3d` |
+| 3D | `@sophistry/3d` | `@sophistry/solidjs/3d` | `@sophistry/react/3d` |
+
+The bindings list `text`, `charts` and `3d` as optional peer dependencies: install the ones whose subpath you import. `@sophistry/charts/3d` additionally needs `@sophistry/3d`.
+
+<Aside type="caution" title="Pre-1.0, and Solid 2 is a release candidate">
+The API may still change between releases, and the Solid binding follows Solid 2's own changes until it is stable. See [Stability](/project/stability/) for the policy.
+</Aside>
+
+## TypeScript
+
+`moduleResolution: "bundler"` matters for every setup: each package ships declarations per entry point through its `exports` map.
+
+<Tabs syncKey="framework">
+  <TabItem label="Solid">
+    Solid compiles JSX itself, so TypeScript leaves it alone and takes its types from `@solidjs/web` (not `solid-js`, as in Solid 1):
+
+    ```json
+    {
+      "compilerOptions": {
+        "target": "es2023",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "preserve",
+        "jsxImportSource": "@solidjs/web",
+        "strict": true,
+        "skipLibCheck": true,
+        "types": ["vite/client"]
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem label="React">
+    ```json
+    {
+      "compilerOptions": {
+        "target": "es2023",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "jsx": "react-jsx",
+        "strict": true,
+        "skipLibCheck": true,
+        "types": ["vite/client"]
+      }
+    }
+    ```
+  </TabItem>
+  <TabItem label="No framework">
+    Any `strict` configuration with `"moduleResolution": "bundler"` and the DOM library works; there is no JSX.
+  </TabItem>
+</Tabs>
+
+## Vite with start mode (recommended)
+
+For Solid, `@solidjs/vite-plugin` has a **start mode** that owns the entries, the dev server and the build, so a whole app is a config file and an `App` component. (Start mode replaces SolidStart, which is retired; see [the Solid 2.0 RC announcement](https://www.solidjs.com/blog/solid-2-0-rc-the-big-reveal).)
+
+```ts nocheck
+// vite.config.ts
+import solid from "@solidjs/vite-plugin";
+import { defineConfig } from "vite";
+
+export default defineConfig({
+  plugins: [solid({ start: true })],
+  resolve: { dedupe: ["solid-js", "@solidjs/web"] },
+});
+```
+
+```tsx
+// src/App.tsx: the whole app; no index.html or entry file needed
+import { Circle, Stage } from "@sophistry/solidjs";
+
+export default function App() {
+  return (
+    <Stage units={8}>
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+```
+
+`start: true` alone is client mode: `vite build` emits a static `dist/client` for any static host. Keep `resolve.dedupe`: two copies of Solid (common in monorepos and with linked packages) break context lookups such as `useScene` silently.
+
+For React, the usual `@vitejs/plugin-react` setup works unchanged; the same scene is:
+
+```tsx nocheck
+// src/App.tsx
+import { Circle, Stage } from "@sophistry/react";
+
+export default function App() {
+  return (
+    <Stage units={8}>
+      <Circle radius={2} />
+    </Stage>
+  );
+}
+```
+
+Without a framework there is nothing to configure beyond a plain Vite (or any bundler) project; see [the first scene without a framework](/start/first-scene/#the-same-scene-without-a-framework).
+
+## Other setups
+
+Server rendering, plain Vite with your own `index.html`, and Astro islands are covered in [Embedding in your site](/recipes/embedding/). The core renders nothing on the server (there is no canvas there); a stage mounts on the client.
+
+## Entry points
+
+Every package is `sideEffects: false`, and each heavy dependency is reachable only through its own package or subpath, so an app that never imports one never bundles it.
+
+| import | contents |
+|---|---|
+| `@sophistry/core` | scenes, definitions, tracks, animations, springs, instancing, layout, interaction, the extension API (`defineShape`, `defineComposite`, ...) |
+| `@sophistry/core/geometry` | pure path, arc, transform, scale/tick, morph, field and graph-layout maths |
+| `@sophistry/core/color` | colour spaces, interpolation, random colours, colormaps and ramps (everyday `mixColor`, `lighten`, `parseColor`, ... stay on the root) |
+| `@sophistry/core/themes` | palettes and theme building blocks |
+| `@sophistry/core/internal` | renderer, bake and registry plumbing for extension packages; **unstable** |
+| `@sophistry/text` | `mathTex`, `mathTransform`, `createLatex` |
+| `@sophistry/charts`, `/3d` | chart definitions, `chartHandle`, data channels; 3D charts |
+| `@sophistry/3d` | `camera3D`, 3D primitives, `orbitControls3D` |
+| `@sophistry/solidjs`, `@sophistry/react` | `Stage`, `MultiStage`, `Camera`, components for core, hooks; subpaths `/text`, `/charts`, `/charts/3d`, `/3d` |
+
+## Bundle size
+
+The core is the bulk of a typical app; the bindings add little, since each component is one line over a core definition. npm dependencies (`d3-*`, `wgpu-matrix`, `katex`, `opentype.js`) are bundled by your app as its imports reach them.
+
+`@sophistry/text` is the heavy one: KaTeX and opentype.js together are several hundred kB minified (opentype.js is itself loaded lazily, on the first font parse). KaTeX's fonts are separate files fetched per face as formulas need them. Import it only in scenes that render formulas; a dynamic `import("@sophistry/solidjs/text")` keeps it out of the initial load (see [Math and LaTeX](/guides/math-and-latex/#lazy-loading-the-text-entry-point)).
+
+To measure your own app, build it and inspect the output with your bundler's analyser.
+
+## Next steps
+
+- [Your first scene](/start/first-scene/): build and animate a small scene
+- [Core concepts](/start/concepts/): scenes, definitions, tracks and the frame loop
+- [Stability](/project/stability/): what to expect from a pre-1.0 library

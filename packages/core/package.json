@@ -1,0 +1,98 @@
+{
+	"name": "@sophistry/core",
+	"version": "0.0.1",
+	"type": "module",
+	"license": "MIT",
+	"description": "Framework-free animation and visualization engine: scenes, tweens, geometry, themes and a Canvas2D renderer. Pair it with a binding such as @sophistry/solidjs or @sophistry/react.",
+	"keywords": [
+		"animation",
+		"manim",
+		"canvas",
+		"canvas2d",
+		"visualization",
+		"tween",
+		"scene-graph",
+		"explorable"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/core"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./geometry": "./src/entries/geometry.ts",
+		"./color": "./src/entries/color.ts",
+		"./themes": "./src/entries/themes.ts",
+		"./internal": "./src/entries/internal.ts",
+		"./definitions": "./src/entries/definitions.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./geometry": {
+				"types": "./dist/entries/geometry.d.ts",
+				"default": "./dist/entries/geometry.js"
+			},
+			"./color": {
+				"types": "./dist/entries/color.d.ts",
+				"default": "./dist/entries/color.js"
+			},
+			"./themes": {
+				"types": "./dist/entries/themes.d.ts",
+				"default": "./dist/entries/themes.js"
+			},
+			"./internal": {
+				"types": "./dist/entries/internal.d.ts",
+				"default": "./dist/entries/internal.js"
+			},
+			"./definitions": {
+				"types": "./dist/entries/definitions.d.ts",
+				"default": "./dist/entries/definitions.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"test:watch": "vitest",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"d3-color": "^3.1.0",
+		"d3-ease": "^3.0.1",
+		"d3-interpolate": "^3.0.1",
+		"d3-scale": "^4.0.2",
+		"wgpu-matrix": "^3.4.2"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@types/d3-color": "catalog:",
+		"@types/d3-ease": "catalog:",
+		"@types/d3-interpolate": "catalog:",
+		"@types/d3-scale": "catalog:",
+		"@vitest/coverage-v8": "catalog:",
+		"happy-dom": "catalog:",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	}
+}

@@ -1,0 +1,181 @@
+---
+title: Bindings and codegen
+description: "How the Solid and React components are generated from core definitions, what a component does at runtime, the hooks, and how to add a framework."
+---
+
+import { Aside, Tabs, TabItem } from "@astrojs/starlight/components";
+
+sophistry's core (`@sophistry/core` and the feature packages) is plain TypeScript with no framework in it. A scene is a retained graph of nodes made from **definitions** (`circle`, `axes`, `barChart`, `camera3D`, ...), and you can build one with `createScene` and `circle.create({...})` alone. The framework packages are thin layers on top:
+
+| Package | Subpaths | Components from |
+| --- | --- | --- |
+| `@sophistry/solidjs` | `.`, `/text`, `/charts`, `/charts/3d`, `/3d` | core, text, charts, 3D charts, 3d |
+| `@sophistry/react` | the same | the same |
+
+Each subpath re-exports one generated file, and every component in it is one line:
+
+```ts nocheck
+// packages/solidjs/src/generated/core.gen.ts (generated; do not edit)
+export const Circle = wrap(circle);
+/** Props of {@link Circle}. */
+export type CircleProps = ComponentProps<typeof circle>;
+```
+
+So the component catalogue is never written by hand, the Solid and React catalogues can never drift apart, and a component's prop types, defaults and docs come straight from the definition's descriptor. Besides the components, each binding hand-writes only `wrap`, `<Stage>`, `<MultiStage>`, `<Camera>` and a few hooks.
+
+## The same scene in Solid and React
+
+A disc that grows when tapped, with its radius shown in the page. The scene code is the same in both; only the hooks' return shapes and the JSX runtime differ.
+
+<Tabs syncKey="binding">
+<TabItem label="Solid">
+```tsx
+import { type Track, valueTo } from "@sophistry/core";
+import { Circle, Stage, usePlayer, useTrack, useTrackValue } from "@sophistry/solidjs";
+
+function Ball(props: { radius: Track<number> }) {
+  // Inside <Stage>: runs on the stage's clock, aborted on unmount.
+  const player = usePlayer();
+  const grow = () =>
+    void player.play(valueTo(props.radius, (from) => (from > 1.5 ? 1 : 2), { duration: 0.6 }));
+  return <Circle radius={props.radius} fill="tomato" onTap={grow} />;
+}
+
+export function Pulse() {
+  const radius = useTrack(1);
+  const shown = useTrackValue(radius); // an accessor, for DOM text only
+  return (
+    <>
+      <Stage units={8}>
+        <Ball radius={radius} />
+      </Stage>
+      <p>radius {shown().toFixed(2)}</p>
+    </>
+  );
+}
+```
+</TabItem>
+<TabItem label="React">
+```tsx nocheck
+import { type Track, valueTo } from "@sophistry/core";
+import { Circle, Stage, usePlayer, useTrack, useTrackValue } from "@sophistry/react";
+
+function Ball({ radius }: { radius: Track<number> }) {
+  // Inside <Stage>: runs on the stage's clock, aborted on unmount.
+  const player = usePlayer();
+  const grow = () =>
+    void player.play(valueTo(radius, (from) => (from > 1.5 ? 1 : 2), { duration: 0.6 }));
+  return <Circle radius={radius} fill="tomato" onTap={grow} />;
+}
+
+export function Pulse() {
+  const radius = useTrack(1);
+  const shown = useTrackValue(radius); // re-renders Pulse: for DOM text only
+  return (
+    <>
+      <Stage units={8}>
+        <Ball radius={radius} />
+      </Stage>
+      <p>radius {shown.toFixed(2)}</p>
+    </>
+  );
+}
+```
+</TabItem>
+</Tabs>
+
+In both, the 0.6 s animation writes `radius` about 36 times, and neither framework runs any code for those writes except the `<p>` readout: the circle is bound to the track in core. The site does not mount React, so React samples on these pages are code only; the React binding's own tests cover them.
+
+## What a component does
+
+A component is not a DOM component, and nothing re-renders a tree. Each component makes **one retained scene node** and core owns it from then on.
+
+**Solid.** The component body runs once. It calls the definition's `create` with the props present at creation, sets up one render effect per prop (so a changed Solid prop becomes one `node.set(key, value)`), and **returns the node itself**. Parents (a `<Stage>`, a `<Group>`, a chart) collect their children's nodes with Solid's `children()` and hand them to core with `setChildren`, or to the definition's `children` prop. `onCleanup` disposes the node. Contexts the page provides above the stage flow through to components inside it untouched.
+
+**React.** `wrap(definition)` returns a host element type of a custom reconciler (`react-reconciler`), so `<Circle radius={1} />` is one host fiber and nothing else: no wrapper component, no hooks, no effect. React creates the node with `definition.create(props)`, and on a re-render `commitUpdate` calls `node.set` only for the keys whose value changed (`Object.is`). Children route through the definition's `children` prop, written once per parent per commit, or through `add`/`remove`. A Track write never involves React at all: zero renders per write. The stage renders its scene with a second reconciler root, and an [`its-fine`](https://github.com/pmndrs/its-fine) bridge carries the app's React contexts (router, theme, your own) into it, so components inside `<Stage>` read them as usual.
+
+In both bindings `ref` receives the node, which is the handle: `node.bounds()`, `node.pointAt(t)`, `node.set(...)`, a chart's `chartHandle(node)`, a coordinate system's `coordsOf(node)`. `ref` on `<Stage>` receives the `Scene`.
+
+## Readables as props
+
+Every prop accepts a plain value or a `Readable` (a `track`, a `derive`, a node's `readable(key)`, `scene.frame`). A `Readable` **binds in core**: an animation writes the track, the node pulls it at the next commit, and no framework code runs per frame.
+
+```tsx
+import { derive, track } from "@sophistry/core";
+import { Circle, Line, Stage } from "@sophistry/solidjs";
+
+const angle = track(0);
+const tip = derive(angle, (angle) => ({ x: 2 * Math.cos(angle), y: 2 * Math.sin(angle) }));
+
+export const Hand = () => (
+  <Stage units={8}>
+    <Circle radius={2} />
+    <Line from={{ x: 0, y: 0 }} to={tip} />
+  </Stage>
+);
+```
+
+The rule is the same in both bindings: **pass the `Readable` itself** for anything that animates. A framework value works too (`radius={size()}` in Solid, `radius={size}` from React state), but then every change runs framework code and a `set`: right for state that changes on user input, wasteful for sixty writes a second. Read a track's value into the framework (`useTrackValue`) only for DOM text or for logic that must run there.
+
+## Hooks
+
+Both bindings export the same hooks. Call them in a component body; the scene-bound ones (`useScene`, `usePlayer`, `useClock`, `useTheme`) find the enclosing `<Stage>`, so call them in a component rendered **inside** it.
+
+| Hook | Returns |
+| --- | --- |
+| `useScene()` | The enclosing `Scene`: `scene.frame`, `scene.theme`, `scene.pointer`, `scene.addCamera(...)`, `scene.play(...)`. Throws outside a stage. |
+| `useClock()` | The stage's clock (else `defaultClock`), for a playback readout or `{ clock }` on a run started elsewhere. |
+| `useTrack(initial)` | A `track`. In Solid the same as `track(initial)` (a body runs once); in React it keeps one track across renders. |
+| `useTrackValue(readable)` | The current value for the framework: a Solid accessor, or a React value that re-renders the component on change. |
+| `usePlayer()` | `{ play, timeline, clock, signal }` bound to the stage's clock and reduced motion, aborted when the component unmounts. |
+| `useMovablePoint(initial, options?)` | `{ position, props }`: a point track plus `draggable` props to spread on the handle. |
+| `useTheme()` | The active theme (the stage's, else the default palette in the page's mode): a Solid accessor, or a React value. For a scene prop that follows the theme, bind `derive(useScene().theme, ...)` instead. |
+
+The `/3d` subpaths add `useOrbitControls3D`, and both bindings export `<PanZoom>`/`usePanZoom` and the camera layouts `<SplitScreen>`, `<PictureInPicture>` and `<QuadView>`. In Solid, start animations in `onSettled(...)`; in React, in an effect or an event handler.
+
+## `<Stage>`, `<MultiStage>` and `<Camera>`
+
+`<Stage>` makes a scene with `createScene` and mounts it in a `<div>`. It takes the scene options as props:
+
+- **Reactive:** `units`, `center`, `yUp` (a `Readable` for `units` or `center` binds, so a track zooms or pans with no framework work), `theme`, `palette`, `mode`, `background`, `style`, and the two class props.
+- **Read once, at creation:** `aspect`, `clock`, `reducedMotion`, `reducedMotionTransition`, `pauseWhenHidden`.
+- **`class`** (Solid) or **`className`** (React) styles the outer `<div>`; **`boxClass`** replaces the default classes of the scene's box inside it (`"w-full overflow-hidden rounded-xl"`). Width, aspect ratio and overflow are inline either way, so styling never breaks sizing.
+
+`<MultiStage>` is the same component, named for scenes viewed through several `<Camera>`s. Each `<Camera>` is one view of the scene (a viewport rectangle plus what it looks at); a camera that omits `units`, `center` or `yUp` inherits the stage's. **Cameras paint in JSX order**, later over earlier: the component returns an empty anchor node that sits in the scene tree where the `<Camera>` is, so a camera shown later by a conditional still paints in its place. Put cameras directly in the stage or a plain `<Group>`. See [Cameras](/guides/cameras/).
+
+## Codegen
+
+The generated files are written by `@sophistry/codegen`, a private workspace package:
+
+```sh
+pnpm --filter @sophistry/codegen generate   # writes the files
+pnpm --filter @sophistry/codegen check      # writes nothing, exits 1 when any file is stale
+```
+
+How it works:
+
+1. **Each source package exposes `./definitions`**: a frozen record of every definition its main entry exports, keyed by export name (`@sophistry/core/definitions`, `@sophistry/text/definitions`, `@sophistry/charts/definitions`, `@sophistry/charts/3d/definitions`, `@sophistry/3d/definitions`). Nothing is listed by hand: the record is collected from the entry's exports, so a definition is picked up as soon as it is exported.
+2. **Codegen reads those records** (`sourcePackages` in `packages/codegen/src/targets.ts`) and writes `packages/{solidjs,react}/src/generated/<package>.gen.ts`: `export const <Name> = wrap(<definition>)` plus `<Name>Props` for each. The component name is the definition's `name`.
+3. **Collisions fail loudly.** Two definitions with one name, or a definition taking a name the binding reserves for its hand-written exports (`Stage`, `Camera`, `UsePlayerResult`, ...), stop the run. Fix it with an explicit entry in `renames` in `targets.ts`, by package and export name: `{ "@sophistry/core": { camera: "CameraNode" } }`.
+4. **CI runs `check`**, so a definition added, renamed or removed without regenerating fails the build. Commit the generated files.
+
+To ship components from a new package of definitions: export the definitions from its main entry, add a `./definitions` subpath (copy `packages/core/src/entries/definitions.ts`), add it to `sourcePackages`, give each binding a subpath entry that re-exports the new generated file, and run `generate`. For a definition used in one app, skip codegen and write the one line yourself: `const Spiral = wrap(spiral)`. See [Extending](/guides/extending/#from-definition-to-component).
+
+## Adding a framework
+
+A binding is small because core does the work. To add one (Vue, Svelte, Lit, ...):
+
+1. **Write `wrap(definition)`** for the framework: make the node with `definition.create(props)` once, forward changed props with `node.set(key, value)` (a `Readable` is passed through untouched, so it binds in core), place children through the definition's `children`-kind prop or the container's `setChildren`/`add`/`remove`, hand the node to `ref`, and dispose it on unmount. The descriptor (`definition.descriptor`) says which props are events (`kind: "event"`) and which take children (`kind: "children"`).
+2. **Write `<Stage>`** over `createScene({ host, ... })`, providing the scene to descendants through the framework's context, plus `<Camera>` over `scene.addCamera({ anchor })`.
+3. **Write the hooks** over the scene: `usePlayer` wraps `scene.play`/`scene.timeline` with an abort signal tied to the component's lifetime; `useTrackValue` subscribes to a `Readable` and pulls with `peek()`.
+4. **Register it** in `bindings` in `packages/codegen/src/targets.ts` (npm name, folder, the names its hand-written entry reserves), so `generate` writes its `src/generated/*.gen.ts` files importing `wrap` and `ComponentProps` from `../wrap`.
+
+<Aside type="tip">
+`packages/solidjs/src/wrap.ts` and `packages/react/src/wrap.ts` are the two reference implementations, a few hundred lines each including types. Start from whichever framework model is closer to yours: fine-grained (Solid) or render-and-reconcile (React).
+</Aside>
+
+## Next steps
+
+- [Concepts](/start/concepts/): the scene graph, tracks and the commit.
+- [Extending](/guides/extending/): writing the definitions that become components.
+- [Architecture](/project/architecture/): the frame loop and the spec boundary underneath.

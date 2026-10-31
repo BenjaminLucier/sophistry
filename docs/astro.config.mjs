@@ -1,0 +1,312 @@
+import starlight from "@astrojs/starlight";
+import { defineConfig } from "astro/config";
+import starlightTypeDoc, { typeDocSidebarGroup } from "starlight-typedoc";
+import solid2 from "./src/integrations/solid2/index.ts";
+
+// Starlight keeps its light/dark choice on `<html data-theme>`; sophistry's
+// <Stage> follows `<html data-mode>`. This blocking script mirrors the former
+// onto the latter, before first paint and on every later toggle, so the
+// visualizations always match the page.
+const syncMode = `(function(){var d=document.documentElement;function s(){d.dataset.mode=d.dataset.theme==="light"?"light":"dark"}s();new MutationObserver(s).observe(d,{attributes:true,attributeFilter:["data-theme"]})})();`;
+
+// Served from the custom domain sophistry.dev (see public/CNAME), so no `base`.
+export default defineConfig({
+	site: "https://sophistry.dev",
+	redirects: {
+		"/guides/getting-started": "/start/first-scene/",
+	},
+	integrations: [
+		starlight({
+			title: "sophistry",
+			description:
+				"Controllable Manim-for-the-web: a framework-free animation and visualization core, with SolidJS and React bindings, painted on Canvas2D.",
+			logo: {
+				light: "./public/logo-light.svg",
+				dark: "./public/logo-dark.svg",
+				alt: "",
+			},
+			favicon: "/favicon.svg",
+			customCss: ["./src/styles/theme.css"],
+			components: {
+				Hero: "./src/components/Hero.astro",
+				Banner: "./src/components/Banner.astro",
+			},
+			head: [
+				{ tag: "script", content: syncMode },
+				{
+					tag: "meta",
+					attrs: {
+						property: "og:image",
+						content: "https://sophistry.dev/og.png",
+					},
+				},
+				{ tag: "meta", attrs: { property: "og:image:width", content: "1200" } },
+				{ tag: "meta", attrs: { property: "og:image:height", content: "630" } },
+				{
+					tag: "meta",
+					attrs: {
+						property: "og:image:alt",
+						content:
+							"sophistry: controllable Manim-for-the-web, with a purple epicycle mark.",
+					},
+				},
+				{
+					tag: "meta",
+					attrs: { name: "twitter:card", content: "summary_large_image" },
+				},
+				{
+					tag: "meta",
+					attrs: {
+						name: "twitter:image",
+						content: "https://sophistry.dev/og.png",
+					},
+				},
+				{ tag: "meta", attrs: { name: "theme-color", content: "#1e1e2e" } },
+			],
+			social: [
+				{
+					icon: "github",
+					label: "GitHub",
+					href: "https://github.com/BenjaminLucier/sophistry",
+				},
+			],
+			sidebar: [
+				{
+					label: "Start",
+					items: [
+						"start/why",
+						"start/installation",
+						"start/first-scene",
+						"start/concepts",
+					],
+				},
+				{
+					label: "Essentials",
+					items: [
+						"guides/shapes-and-styling",
+						"guides/layout",
+						"guides/animation",
+						"guides/animation-presets",
+						"guides/timelines",
+						"guides/interaction",
+						"guides/instancing",
+					],
+				},
+				{
+					label: "Plotting",
+					items: [
+						"guides/coordinate-systems",
+						"guides/fields-and-graphs",
+						"guides/charts",
+						"guides/chart-animation",
+					],
+				},
+				{
+					label: "More guides",
+					items: [
+						"guides/math-and-latex",
+						"guides/cameras",
+						"guides/3d",
+						"guides/theming-and-color",
+						"guides/accessibility",
+						"guides/extending",
+						"guides/bindings",
+					],
+				},
+				{
+					label: "Recipes",
+					items: [
+						"recipes/scrub-slider",
+						"recipes/scroll-driven",
+						"recipes/algorithm-visualizer",
+						"recipes/step-through-lesson",
+						"recipes/embedding",
+						"recipes/export-stills",
+					],
+				},
+				{ label: "Coming from Manim", items: ["manim/migration"] },
+				{
+					label: "Gallery",
+					items: [
+						{ label: "Overview", slug: "gallery" },
+						"gallery/basic",
+						{
+							label: "Animations",
+							collapsed: true,
+							items: [
+								{ label: "Overview", slug: "gallery/animation" },
+								"gallery/animation/tweens-and-effects",
+								"gallery/animation/sequencing-and-timelines",
+							],
+						},
+						{
+							label: "Plotting and charts",
+							collapsed: true,
+							items: [
+								{ label: "Overview", slug: "gallery/plotting" },
+								"gallery/plotting/function-graphs",
+								"gallery/plotting/bars-and-parts",
+								"gallery/plotting/lines-and-areas",
+								"gallery/plotting/scatter-and-distributions",
+								"gallery/plotting/facets-and-linked-views",
+								"gallery/plotting/heatmaps-and-contours",
+								"gallery/plotting/hierarchies-and-networks",
+								"gallery/plotting/chart-transitions",
+							],
+						},
+						{
+							label: "Interaction",
+							collapsed: true,
+							items: [
+								{ label: "Overview", slug: "gallery/interaction" },
+								"gallery/interaction/dragging-and-input",
+								"gallery/interaction/cameras-and-zoom",
+							],
+						},
+						"gallery/maths",
+						"gallery/three-d",
+						"gallery/advanced",
+						"gallery/vanilla",
+					],
+				},
+				{
+					label: "Reference",
+					items: [
+						"reference/chart-catalogue",
+						// Generated by starlight-typedoc (plugin options below).
+						typeDocSidebarGroup,
+					],
+				},
+				{
+					label: "Project",
+					items: [
+						"project/architecture",
+						"project/performance",
+						"project/stability",
+						"project/roadmap",
+						"project/changelog",
+					],
+				},
+			],
+			// The API reference is generated from the source's JSDoc comments into
+			// `src/content/docs/api/` (gitignored) and wired into the sidebar here.
+			plugins: [
+				starlightTypeDoc({
+					// Every public entry of the @sophistry packages (not
+					// `core/internal`, the unstable plumbing for extension packages,
+					// nor the `definitions` records codegen reads). React's subpath
+					// entries are left out: they re-export the same generated
+					// components as the Solid ones, whose pages document the props.
+					entryPoints: [
+						"../packages/core/src/index.ts",
+						"../packages/core/src/entries/geometry.ts",
+						"../packages/core/src/entries/color.ts",
+						"../packages/core/src/entries/themes.ts",
+						"../packages/text/src/index.ts",
+						"../packages/charts/src/index.ts",
+						"../packages/charts/src/3d/index.ts",
+						"../packages/3d/src/index.ts",
+						"../packages/solidjs/src/index.ts",
+						"../packages/solidjs/src/entries/text.ts",
+						"../packages/solidjs/src/entries/charts.ts",
+						"../packages/solidjs/src/entries/charts3d.ts",
+						"../packages/solidjs/src/entries/3d.ts",
+						"../packages/react/src/index.ts",
+					],
+					tsconfig: "./tsconfig.typedoc.json",
+					output: "api",
+					pagination: true,
+					sidebar: { label: "API reference", collapsed: true },
+					typeDoc: {
+						name: "sophistry",
+						// The React entry's .tsx files use React JSX in a Solid-JSX
+						// program (tsconfig.typedoc.json); each package typechecks
+						// itself.
+						skipErrorChecking: true,
+						readme: "./src/api-landing.md",
+						includeVersion: true,
+						excludePrivate: true,
+						excludeProtected: true,
+						excludeInternal: true,
+						// Group each entry point's page by the `@category` tags in the
+						// source (rather than by declaration kind) and order the sections
+						// from "what you reach for first" to "plumbing".
+						categorizeByGroup: false,
+						defaultCategory: "Re-exports",
+						categoryOrder: [
+							// @sophistry/core (and the bindings' shared sections)
+							"Stage & cameras",
+							"Bindings",
+							"Scene graph",
+							"Shapes",
+							"Text & numbers",
+							"Coordinate systems & graphs",
+							"Layout",
+							"Instancing",
+							"Animation presets",
+							"Animation composition & timelines",
+							"Springs",
+							"Tracks & clocks",
+							"Reactivity",
+							"Easing",
+							"Interaction",
+							"Accessibility",
+							"Theming",
+							"Colour",
+							"Export",
+							"Value types",
+							"Extending",
+							"Cameras",
+							"Interaction plumbing",
+							"Scene registry & specs",
+							"Baking",
+							"Renderer & paint",
+							"Interpolators",
+							// charts
+							"Charts",
+							"Channels",
+							"Transforms",
+							// 3d
+							"Camera",
+							"Primitives",
+							"Plots",
+							"Controls",
+							"Math & helpers",
+							// text
+							"Components",
+							"Fonts",
+							"Measuring & outlines",
+							"Morphing & matching",
+							// core/geometry
+							"Paths",
+							"Scales & ticks",
+							"Fields",
+							"Graph layouts",
+							"Interpolation",
+							"Bounds & hit math",
+							// core/color
+							"Conversion",
+							"Ops",
+							"Colormaps & ramps",
+							"*",
+							"Re-exports",
+						],
+						// Deliberately unexported helper types that appear in signatures.
+						intentionallyNotExported: ["Vec2", '"opentype.js".Font'],
+					},
+				}),
+			],
+		}),
+		// `ssr: true` compiles the server bundle with SSR codegen (no DOM calls at
+		// module scope) and the client with hydratable code, which renders fresh
+		// when there are no hydration markers — exactly what `client:only` islands
+		// need. Without it, client-codegen `template()` calls throw during prerender.
+		solid2({ ssr: true }),
+	],
+	vite: {
+		resolve: {
+			// One copy of Solid across the library, the islands and the docs.
+			dedupe: ["solid-js", "@solidjs/web"],
+		},
+	},
+});
