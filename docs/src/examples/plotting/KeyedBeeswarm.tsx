@@ -8,17 +8,6 @@ export const meta = {
 	title: "Keyed beeswarm update",
 	description:
 		"Week 1 to week 6 of a trial on one blend track: participants who drop out shrink away, everyone else slides from their place in the first swarm to their place in the second (both ends packed), then a new arm's band opens and its dots grow in.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Beeswarm",
-		"okabeIto",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 /** A participant's own spread around their arm's mean, the same every week. */

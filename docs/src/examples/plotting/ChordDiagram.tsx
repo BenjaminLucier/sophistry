@@ -7,7 +7,6 @@ export const meta = {
 	title: "Chord diagram",
 	description:
 		"Migration between four regions: the ring sweeps round like a pie, then each chord fades in, as wide at each end as the flow leaving it.",
-	uses: ["Stage", "Chord", "track", "draw", "usePlayer"],
 };
 
 const moves = [

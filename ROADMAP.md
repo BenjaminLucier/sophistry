@@ -5,7 +5,7 @@ open work is tracked in the repository's issues. Priorities shift
 with what people actually build, so treat the order within a section as a
 guide, not a promise.
 
-sophistry is pre-1.0 and unreleased. The core is framework-free TypeScript;
+sophistry is pre-1.0. The core is framework-free TypeScript;
 the Solid binding is built on the **Solid 2.0 release candidate** and the React
 binding on React 19. See the
 [stability policy](https://sophistry.dev/project/stability/).

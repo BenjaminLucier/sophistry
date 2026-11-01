@@ -22,22 +22,6 @@ export const meta = {
 	title: "Scrubbable explainer with chapters",
 	description:
 		"A four-step explainer on one timeline. Chapter buttons sit at offsets computed from each step's duration; the slider and the buttons both just call seek.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Label",
-		"usePlayer",
-		"useTrackValue",
-		"sequence",
-		"draw",
-		"fadeIn",
-		"moveAlong",
-		"track",
-		"trackPoint",
-		"derive",
-		"circlePolyline",
-	],
 };
 
 const ORBIT = circlePolyline(0, 0, 2);

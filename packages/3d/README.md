@@ -24,4 +24,4 @@ From JSX use the components in [`@sophistry/solidjs/3d`](../solidjs) or `@sophis
 
 ## Links
 
-[Documentation](https://sophistry.dev) · [API reference](https://sophistry.dev/api/modules/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/3d) · MIT
+[Documentation](https://sophistry.dev) · [API](https://sophistry.dev/reference/api/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/3d) · MIT

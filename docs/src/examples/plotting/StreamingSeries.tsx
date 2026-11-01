@@ -7,15 +7,6 @@ export const meta = {
 	title: "Streaming series",
 	description:
 		"New samples arrive off-screen right and the x domain slides left under a clip; the leaving tick fades out. Everything is a function of one time track, so it scrubs.",
-	uses: [
-		"Stage",
-		"Chart",
-		"LinePlot",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 const WINDOW = 10;

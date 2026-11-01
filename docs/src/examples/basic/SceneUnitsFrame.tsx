@@ -7,7 +7,6 @@ export const meta = {
 	title: "Scene units and the frame",
 	description:
 		"A unit grid with y pointing up, the origin at the center, and the visible frame read back from useScene().frame: units={8} at 16:9 spans x from -4 to 4 and y from -2.25 to 2.25.",
-	uses: ["Stage", "Line", "Dot", "Label", "useScene", "derive"],
 };
 
 const XS = [-4, -3, -2, -1, 0, 1, 2, 3, 4];

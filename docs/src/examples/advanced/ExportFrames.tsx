@@ -7,17 +7,6 @@ export const meta = {
 	title: "Export an image sequence",
 	description:
 		"exportFrames seeks a timeline to exact instants, paints each one synchronously and encodes the canvas. The thumbnails are real exported frames.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"track",
-		"derive",
-		"rotateTo",
-		"usePlayer",
-		"useScene",
-		"exportFrames",
-	],
 };
 
 interface Thumb {

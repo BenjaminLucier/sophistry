@@ -12,16 +12,6 @@ export const meta = {
 	title: "Paragraphs, lists and titles",
 	description:
 		"A title with its rule, a paragraph wrapped to a measure and a bulleted list, each written in a line or an item at a time.",
-	uses: [
-		"Stage",
-		"Title",
-		"Paragraph",
-		"BulletedList",
-		"track",
-		"valueTo",
-		"lagged",
-		"usePlayer",
-	],
 };
 
 export default function TextBlocks() {

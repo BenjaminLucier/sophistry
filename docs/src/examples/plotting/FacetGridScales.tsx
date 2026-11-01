@@ -8,7 +8,6 @@ export const meta = {
 	title: "Facet grid with x shared down each column",
 	description:
 		'scales={{ x: "column" }} gives each travel mode its own distance axis, shared by the rows below it (ggplot\'s facet_grid with scales = "free_x"), and space="free" sizes each column by its range, so a kilometre is one length across the grid. Time stays shared.',
-	uses: ["Stage", "Facet", "scatter", "track", "draw", "usePlayer"],
 };
 
 const hash = (n: number) => Math.abs(Math.sin(n * 78.233) * 43758.5453) % 1;

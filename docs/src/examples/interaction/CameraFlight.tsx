@@ -21,21 +21,6 @@ export const meta = {
 	title: "Animating the camera",
 	description:
 		"A stage's units and center are ordinary tracks, so moveTo and valueTo fly the camera between landmarks. Nothing is rebuilt: the same scene repaints through a new view.",
-	uses: [
-		"Stage",
-		"NumberPlane",
-		"Dot",
-		"Label",
-		"track",
-		"trackPoint",
-		"moveTo",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useTheme",
-	],
 };
 
 const LANDMARKS = [

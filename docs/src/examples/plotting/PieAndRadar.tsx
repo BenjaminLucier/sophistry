@@ -7,15 +7,6 @@ export const meta = {
 	title: "Pie and radar charts",
 	description:
 		"A doughnut chart and a two-series radar chart, both built from plain data and revealed together: the doughnut's slices open together from 12 o'clock, each pushed round by the ones before, while the radar's polygons grow out of the centre. ariaLabel gives each slice an accessible name.",
-	uses: [
-		"Stage",
-		"Label",
-		"PieChart",
-		"RadarChart",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const share = [

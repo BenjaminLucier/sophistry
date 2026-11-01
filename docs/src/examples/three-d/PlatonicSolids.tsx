@@ -14,19 +14,6 @@ export const meta = {
 	title: "The platonic solids",
 	description:
 		"All five regular solids side by side, outlined so their faces read. Drag to orbit.",
-	uses: [
-		"Stage",
-		"track",
-		"derive",
-		"useScene",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Tetrahedron3D",
-		"Cube3D",
-		"Octahedron3D",
-		"Icosahedron3D",
-		"Dodecahedron3D",
-	],
 };
 
 const at = (x: number) => ({ x, y: 0, z: 0 });

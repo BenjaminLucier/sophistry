@@ -6,7 +6,6 @@ export const meta = {
 	title: "Zoomable circle packing",
 	description:
 		"Tap a circle to zoom into it and the background to zoom out, along d3's smooth zoom path. The chart is controlled: createDrillDown holds the focus and tweens it, and the same focus drives the breadcrumb trail, so both scrub together.",
-	uses: ["Stage", "CirclePack", "Breadcrumbs", "createDrillDown", "useScene"],
 };
 
 type Item = { name: string; n?: number; children?: Item[] };

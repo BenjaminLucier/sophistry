@@ -7,7 +7,6 @@ export const meta = {
 	title: "Tap to drill into a treemap",
 	description:
 		"Tap a tile to zoom into its folder, tap a crumb above to zoom back out; Tab and Enter do the same. The zoom is a tween of the chart's focus, so it is exactly the scrubbable drill-down transition, and under reduced motion it dissolves instead.",
-	uses: ["Stage", "Treemap", "track", "draw", "usePlayer"],
 };
 
 type Item = { name: string; kb?: number; children?: Item[] };

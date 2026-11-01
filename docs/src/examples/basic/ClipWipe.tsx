@@ -6,17 +6,6 @@ export const meta = {
 	title: "Clipping a group",
 	description:
 		"A <Group clip> paints its children only inside a region. Here the clip's right edge follows a track, wiping a coloured copy over a grey one.",
-	uses: [
-		"Stage",
-		"Group",
-		"Circle",
-		"Line",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"usePlayer",
-	],
 };
 
 const dots = Array.from({ length: 35 }, (_, i) => ({

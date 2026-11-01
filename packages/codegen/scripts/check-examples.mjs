@@ -3,7 +3,7 @@
 // (its own imports from "@sophistry/core[/geometry|/color|/themes]",
 // "@sophistry/text", "@sophistry/charts[/3d]", "@sophistry/3d",
 // "@sophistry/solidjs[/...]" or "@sophistry/react[/...]"), so what
-// the API reference shows is code a reader can paste and compile.
+// an editor shows on hover is code a reader can paste and compile.
 //
 //   node scripts/check-examples.mjs [path-substring ...]
 //

@@ -7,7 +7,6 @@ export const meta = {
 	title: "Parallel coordinates",
 	description:
 		"Four car measurements side by side: each car is a line across the axes, drawn left to right once the axes are in.",
-	uses: ["Stage", "ParallelCoordinates", "track", "draw", "usePlayer"],
 };
 
 const cars = [

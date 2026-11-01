@@ -2,7 +2,7 @@
 
 Every file here is a live, typechecked example shown on the docs site under
 `/gallery/<category>/` (or one of its sub-pages): the running canvas, the file's source (with a copy
-button), and links to the API it uses.
+button).
 
 ## File format
 
@@ -17,7 +17,6 @@ import { Circle, Stage } from "@sophistry/solidjs";
 export const meta = {
 	title: "Short title",
 	description: "One sentence on what it shows.",
-	uses: ["Stage", "Circle"], // exported API names; each must have an API page
 };
 
 export default function Name() {
@@ -37,7 +36,7 @@ host element and returns its cleanup.
 import type { Clock } from "@sophistry/core";
 import { circle, createScene } from "@sophistry/core";
 
-export const meta = { title: "...", description: "...", uses: ["createScene", "circle"] };
+export const meta = { title: "...", description: "..." };
 
 export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	const scene = createScene({ host, clock, units: 8 });
@@ -77,8 +76,6 @@ displayed source.
   `<Stage>` and `usePlayer` pick up from the island's `<ClockProvider>`. Start them
   in `onSettled(...)`, never in the component body. Loop gently or end in a
   good resting state; the Replay button remounts the example.
-- `uses` must list real exports. An unknown name fails the docs build (it would
-  be a dead link) and the test.
 
 ## Adding one
 

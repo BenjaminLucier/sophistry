@@ -16,18 +16,6 @@ export const meta = {
 	title: "A first scene, no framework",
 	description:
 		"createScene, a few definitions and two tracks: draw a ring, then move a point along it, from plain TypeScript.",
-	uses: [
-		"createScene",
-		"circle",
-		"line",
-		"dot",
-		"label",
-		"track",
-		"trackPoint",
-		"draw",
-		"moveTo",
-		"sequence",
-	],
 };
 
 /** Builds the scene in `host`, on `clock`; returns its cleanup. */

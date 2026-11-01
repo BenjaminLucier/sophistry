@@ -11,14 +11,6 @@ export const meta = {
 	title: "Surface plot",
 	description:
 		"A rippling surface y = f(x, z) sampled from a function of two parameters; drag to orbit around it.",
-	uses: [
-		"Stage",
-		"track",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Axes3D",
-		"SurfacePlot3D",
-	],
 };
 
 function Ripple() {

@@ -20,8 +20,7 @@
 			"!e2e/test-results",
 			"!test-results",
 			"!playwright-report",
-			"!e2e/report",
-			"!docs/src/content/docs/api"
+			"!e2e/report"
 		]
 	},
 	"formatter": {

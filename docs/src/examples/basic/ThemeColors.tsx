@@ -6,7 +6,6 @@ export const meta = {
 	title: "Theme colors",
 	description:
 		"Every default color comes from the active theme; these swatches read its palette tokens and follow the site's light and dark mode.",
-	uses: ["Stage", "Circle", "Label", "useScene", "derive"],
 };
 
 const TOKENS = [

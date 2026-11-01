@@ -7,7 +7,6 @@ export const meta = {
 	title: "Scatter with marginal densities",
 	description:
 		"A joint plot: two groups in a scatter, with each variable's density along its edge, the right-hand one a vertical density, values up y. The marginals follow the scatter's scales, so the curves line up with the points, and they are normalised together, so each curve's area is its group's share and the larger group stands taller.",
-	uses: ["Stage", "JointPlot", "track", "draw", "usePlayer"],
 };
 
 // Two blobs from a deterministic sine hash.

@@ -5,17 +5,6 @@ export const meta = {
 	title: "Keyboard-accessible dragging",
 	description:
 		"Every draggable is also a tab stop. Tab to the dot, then use the arrow keys to move it by 0.5 units (hold Shift for 0.1), or Escape to cancel a drag in progress.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Dot",
-		"Label",
-		"draggable",
-		"toBounds",
-		"trackPoint",
-		"derive",
-		"useTheme",
-	],
 };
 
 export default function KeyboardAccessible() {

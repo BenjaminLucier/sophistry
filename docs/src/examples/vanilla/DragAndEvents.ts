@@ -13,15 +13,6 @@ export const meta = {
 	title: "Dragging and node events",
 	description:
 		"draggable() makes a handle write a point track; a line and a caption follow it, and node.on() listens for hover and taps.",
-	uses: [
-		"createScene",
-		"draggable",
-		"trackPoint",
-		"derive",
-		"circle",
-		"line",
-		"label",
-	],
 };
 
 export default function mount(host: HTMLElement, clock?: Clock): () => void {

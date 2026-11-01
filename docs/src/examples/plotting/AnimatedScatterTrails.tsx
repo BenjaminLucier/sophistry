@@ -7,16 +7,6 @@ export const meta = {
 	title: "Animated scatter with trails",
 	description:
 		"Time as an encoding, Gapminder-style: one marker per country at the moment `at`, sized by population (area ∝ value, the `size` channel) and interpolated between decades, with a trail of the path it took. The axes fit every decade, so they hold still while time plays.",
-	uses: [
-		"Stage",
-		"Label",
-		"Chart",
-		"Scatter",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 const DECADES = [1960, 1970, 1980, 1990, 2000, 2010, 2020];

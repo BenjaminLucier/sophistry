@@ -13,18 +13,6 @@ export const meta = {
 	title: "Squaring the complex plane",
 	description:
 		"A grid of lines is sent through z ↦ z²: straight lines bend into parabolas, and right angles stay right angles.",
-	uses: [
-		"Stage",
-		"Path",
-		"Line",
-		"track",
-		"applyComplexFunction",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-		"derive",
-	],
 };
 
 /** Horizontal and vertical lines over 0.3 ≤ x ≤ 1.5, −0.6 ≤ y ≤ 0.6. */

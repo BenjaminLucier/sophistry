@@ -5,7 +5,6 @@ export const meta = {
 	title: "Instancing: thousands of dots, one node",
 	description:
 		"instances() draws 4,000 circles as one node with per-item channels; changing its data tweens every dot to a new layout with a stagger.",
-	uses: ["createScene", "instances", "circle", "label"],
 };
 
 interface Item {

@@ -5,17 +5,6 @@ export const meta = {
 	title: "Drag constraints",
 	description:
 		"Three dots with three rules: one moves freely, one is pinned to a circle, and one snaps to a grid of 0.5 units.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Label",
-		"draggable",
-		"onCircle",
-		"snapToGrid",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 export default function DragConstraints() {

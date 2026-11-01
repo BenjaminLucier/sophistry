@@ -7,14 +7,6 @@ export const meta = {
 	title: "3D bar chart",
 	description:
 		"A 3 by 3 grid of bars whose heights come from one array; each box is anchored at its corner and rises along y.",
-	uses: [
-		"Stage",
-		"track",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Axes3D",
-		"BarChart3D",
-	],
 };
 
 const HEIGHTS = [1, 2, 1.5, 2.5, 3, 2, 1, 1.8, 0.8];

@@ -30,4 +30,4 @@ Use the components in [`@sophistry/solidjs/charts`](../solidjs) or `@sophistry/r
 
 ## Links
 
-[Documentation](https://sophistry.dev) · [API reference](https://sophistry.dev/api/modules/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/charts) · MIT
+[Documentation](https://sophistry.dev) · [API](https://sophistry.dev/reference/api/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/charts) · MIT

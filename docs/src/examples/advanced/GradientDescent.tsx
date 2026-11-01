@@ -22,21 +22,6 @@ export const meta = {
 	title: "Gradient descent",
 	description:
 		"A point rolls down the contours of f(x, y) = (x^2 + 6y^2) / 2, zig-zagging across the narrow valley and leaving a trail.",
-	uses: [
-		"Stage",
-		"Axes",
-		"Contour",
-		"Path",
-		"AnnotationDot",
-		"coordsReadable",
-		"derive",
-		"track",
-		"trackPoint",
-		"moveTo",
-		"usePlayer",
-		"hold",
-		"GOLD",
-	],
 };
 
 const START = { x: -2.6, y: 1.2 };

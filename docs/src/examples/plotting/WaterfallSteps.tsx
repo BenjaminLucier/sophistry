@@ -7,7 +7,6 @@ export const meta = {
 	title: "Waterfall",
 	description:
 		"How a starting figure became a final one: each change grows from where the last left off.",
-	uses: ["Stage", "Waterfall", "track", "draw", "usePlayer"],
 };
 
 const quarter = [

@@ -7,16 +7,6 @@ export const meta = {
 	title: "Line morph in data space",
 	description:
 		"Each line morphs on one shared x grid, so values move vertically and a line that gains data grows at its end; the old forecast fades out, the new series sweeps in, and the axes rescale with them.",
-	uses: [
-		"Stage",
-		"Chart",
-		"LinePlot",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const wave = (n: number, f: (x: number) => number) =>

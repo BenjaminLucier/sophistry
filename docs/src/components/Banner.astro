@@ -1,26 +1,32 @@
 ---
 // Replaces Starlight's Banner: keeps per-page `banner` frontmatter working and
-// adds a small, dismissible pre-1.0 / Solid 2.0 RC notice to every page.
+// adds a prominent early-release warning to every page. Dismissing it lasts
+// until the next version, so each release shows it again.
+import { version } from "../../../packages/core/package.json";
+
 const { banner } = Astro.locals.starlightRoute.entry.data;
 ---
 
-<div class="rc-notice" id="rc-notice" data-pagefind-ignore>
+<div class="release-notice" id="release-notice" data-version={version} data-pagefind-ignore>
 	<p>
-		<strong>Pre-1.0.</strong> sophistry is built on Solid 2.0, still a release
-		candidate; APIs may change. <a href="/project/stability/">Stability and versioning</a>
+		<strong>⚠ Early release: v{version}.</strong>
+		sophistry is not ready for production use. Until 1.0, any minor release
+		may break the API; expect missing features and bugs too.
+		<a href="/project/stability/">Stability and versioning</a>
 	</p>
 	<button type="button" class="dismiss" aria-label="Dismiss notice">×</button>
 </div>
 <script is:inline>
 	(function () {
-		var el = document.getElementById("rc-notice");
+		var el = document.getElementById("release-notice");
+		var key = "sophistry-notice-dismissed";
 		try {
-			if (localStorage.getItem("sophistry-rc-dismissed") === "1") el.hidden = true;
+			if (localStorage.getItem(key) === el.dataset.version) el.hidden = true;
 		} catch (e) {}
 		el.querySelector(".dismiss").addEventListener("click", function () {
 			el.hidden = true;
 			try {
-				localStorage.setItem("sophistry-rc-dismissed", "1");
+				localStorage.setItem(key, el.dataset.version);
 			} catch (e) {}
 		});
 	})();
@@ -28,36 +34,43 @@ const { banner } = Astro.locals.starlightRoute.entry.data;
 {banner && <div class="sl-banner" data-pagefind-ignore set:html={banner.content} />}
 
 <style>
-	.rc-notice {
+	.release-notice {
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		gap: 0.75rem;
-		padding: 0.4rem 1rem;
-		background: var(--sl-color-accent-low);
-		color: var(--sl-color-white);
-		font-size: var(--sl-text-xs);
-		line-height: 1.3;
+		gap: 1rem;
+		padding: 0.75rem 1rem;
+		background: var(--sl-color-orange-low);
+		color: var(--sl-color-orange-high);
+		font-size: var(--sl-text-sm);
+		line-height: 1.45;
 		text-align: center;
-		border-bottom: 1px solid var(--sophistry-frame);
+		border-bottom: 2px solid var(--sl-color-orange);
 	}
-	.rc-notice[hidden] {
+	.release-notice[hidden] {
 		display: none;
 	}
-	.rc-notice p {
+	.release-notice p {
 		margin: 0;
+		max-width: 60rem;
 	}
-	.rc-notice a {
-		color: var(--sl-color-accent-high);
+	.release-notice strong {
+		font-size: var(--sl-text-base);
+		margin-inline-end: 0.25rem;
+	}
+	.release-notice a {
+		color: inherit;
 		font-weight: 600;
+		text-decoration: underline;
 		white-space: nowrap;
 	}
 	.dismiss {
 		appearance: none;
+		flex: none;
 		border: 0;
 		background: none;
 		color: inherit;
-		font-size: 1.1rem;
+		font-size: 1.25rem;
 		line-height: 1;
 		padding: 0.15rem 0.4rem;
 		cursor: pointer;

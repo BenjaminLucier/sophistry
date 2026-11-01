@@ -12,16 +12,6 @@ export const meta = {
 	title: "One reveal front",
 	description:
 		'reveal="x" sweeps a single clip edge across the plot, so the band, the line and its markers enter together, at a constant rate along x.',
-	uses: [
-		"Stage",
-		"Chart",
-		"FillBetween",
-		"LinePlot",
-		"Scatter",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const runs = [3.1, 4.2, 3.8, 5.6, 6.1, 5.4, 7.2, 7.9, 7.1, 8.6].map((y, x) => ({

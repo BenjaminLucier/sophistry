@@ -25,23 +25,6 @@ export const meta = {
 	title: "A tracker and a dot on a graph",
 	description:
 		"Manim's ValueTracker plus always_redraw, as a track() and derive(): a dot rides y = sin x while its x readout updates.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"Dot",
-		"Line",
-		"Label",
-		"track",
-		"derive",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"coordsOf",
-		"useScene",
-	],
 };
 
 function Tracker() {

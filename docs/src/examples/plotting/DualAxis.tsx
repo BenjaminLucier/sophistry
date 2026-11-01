@@ -13,17 +13,6 @@ export const meta = {
 	title: "Two y axes",
 	description:
 		"Rainfall as bars on the left axis and temperature as a line on a secondary axis on the right. Layers inside SecondaryY share the month axis and the reveal but fit their own scale, aligned with alignTicks so its ticks sit on the left axis's grid lines, and the frame makes room for the right-hand numbers inside its width.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Bars",
-		"LinePlot",
-		"Scatter",
-		"SecondaryY",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];

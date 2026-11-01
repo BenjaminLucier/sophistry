@@ -7,7 +7,6 @@ export const meta = {
 	title: "Mosaic (Marimekko) chart",
 	description:
 		"Sales by region × product: each column is as wide as its region's share of the market, split by product mix, so every tile's area is its sales. Region names fade in first, then the columns grow left to right.",
-	uses: ["Stage", "Mosaic", "track", "draw", "usePlayer"],
 };
 
 const regions = {

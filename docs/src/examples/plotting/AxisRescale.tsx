@@ -7,18 +7,6 @@ export const meta = {
 	title: "Animated axis rescale",
 	description:
 		"One track drives the y domain and the data together, shared by the axis, the grid and the marks: the values grow tenfold as the axis rescales under them, so the points barely move while the numbers change. Ticks on both ends slide, the rest cross-fade, and labels that would crowd fade out as they close up.",
-	uses: [
-		"Stage",
-		"Chart",
-		"LinePlot",
-		"Scatter",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const before = [2, 6, 4, 8, 5];

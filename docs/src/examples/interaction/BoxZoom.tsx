@@ -15,21 +15,6 @@ export const meta = {
 	title: "Drag a box to zoom",
 	description:
 		"Drag a rectangle over the plot to zoom into it (a thin one zooms one axis), hold Shift to pan instead, Backspace to step back out, and 0 or a double tap to reset; Escape mid-drag cancels. The toolbar in the corner switches between panning and box zoom and resets, and each button is a tab stop. The x axis is logarithmic: zooms and the bounds work in decades. The wheel over the plot zooms the chart, and anywhere else it zooms the stage's own PanZoom camera.",
-	uses: [
-		"Stage",
-		"PanZoom",
-		"Chart",
-		"ChartZoom",
-		"Scatter",
-		"track",
-		"trackPoint",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 /** A deterministic scatter: income on a log scale against a score. */

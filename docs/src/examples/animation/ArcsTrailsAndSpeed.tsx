@@ -20,20 +20,6 @@ export const meta = {
 	title: "Arcs, trails and changing speed",
 	description:
 		"Two dots swap places along half-circle arcs instead of straight lines, slowing right down as they pass each other, and each leaves a fading trail.",
-	uses: [
-		"Stage",
-		"Dot",
-		"TracedPath",
-		"trackPoint",
-		"derive",
-		"moveTo",
-		"changeSpeed",
-		"parallel",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-	],
 };
 
 const LEFT = { x: -3, y: 0 };

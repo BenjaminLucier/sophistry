@@ -8,7 +8,6 @@ export const meta = {
 	title: "Small multiples with shared scales",
 	description:
 		"One panel per island from a single long-format table. The panels share both scales, so the clusters compare across the row, and only the outer panels write numbers; the species colours come from one scale with one legend. Every frame draws first, then the panels fill left to right.",
-	uses: ["Stage", "Facet", "scatter", "okabeIto", "track", "draw", "usePlayer"],
 };
 
 // Deterministic jitter around each species' centre, so the gallery is stable.

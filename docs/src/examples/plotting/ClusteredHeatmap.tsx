@@ -7,7 +7,6 @@ export const meta = {
 	title: "Clustered heatmap",
 	description:
 		"Hours of use per app and weekday, clustered both ways by average linkage: similar apps and similar days move next to each other, and each dendrogram replays its merges, closest first, as the cells fade in.",
-	uses: ["Stage", "Heatmap", "track", "draw", "usePlayer"],
 };
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

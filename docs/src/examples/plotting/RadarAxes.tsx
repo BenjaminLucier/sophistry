@@ -7,16 +7,6 @@ export const meta = {
 	title: "Radar with a changing axis set",
 	description:
 		"Two phones rated on five axes, then on a new set of five. Axes are matched by name: Weight and Price fold away, every polygon's corner on them flattening into its edge, the shared axes turn to their new places, then Camera and Repair unfold. The polygons blend axis by axis on the same track.",
-	uses: [
-		"Stage",
-		"RadarChart",
-		"track",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const axes = ["Battery", "Screen", "Weight", "Speed", "Price"];

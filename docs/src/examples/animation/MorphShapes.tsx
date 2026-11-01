@@ -10,17 +10,6 @@ import { onSettled } from "solid-js";
 export const meta = {
 	title: "Morph shapes",
 	description: "A circle morphs into a square, a star, and back again.",
-	uses: [
-		"Stage",
-		"Polygon",
-		"track",
-		"morph",
-		"usePlayer",
-		"hold",
-		"circlePolyline",
-		"rectPolyline",
-		"starPolygon",
-	],
 };
 
 const CIRCLE = circlePolyline(0, 0, 2);

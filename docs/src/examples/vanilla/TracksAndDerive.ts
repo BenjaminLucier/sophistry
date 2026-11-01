@@ -17,19 +17,6 @@ export const meta = {
 	title: "Tracks, derive and watch",
 	description:
 		"One track drives a dot, a radius, an arc and a caption through derive; watch mirrors it into the page once per frame.",
-	uses: [
-		"createScene",
-		"track",
-		"derive",
-		"watch",
-		"forever",
-		"valueTo",
-		"circle",
-		"line",
-		"arc",
-		"dot",
-		"label",
-	],
 };
 
 const RADIUS = 2.4;

@@ -22,22 +22,6 @@ export const meta = {
 	title: "Emphasis effects",
 	description:
 		"Four ways to draw the eye in turn: indicate swells a dot, wiggle shakes a square, flash sends out a ring, circumscribe boxes a label.",
-	uses: [
-		"Stage",
-		"Dot",
-		"Square",
-		"Circle",
-		"Rect",
-		"Label",
-		"track",
-		"indicate",
-		"wiggle",
-		"flash",
-		"circumscribe",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 export default function EmphasisEffects() {

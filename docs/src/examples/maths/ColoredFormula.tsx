@@ -13,18 +13,6 @@ export const meta = {
 	title: "Coloring parts of a formula",
 	description:
 		"createLatex hands back every glyph as its own part, so each one can get its own color. Here the unknown x is picked out from the rest of the equation.",
-	uses: [
-		"Stage",
-		"Path",
-		"createLatex",
-		"writePhase",
-		"useScene",
-		"useTrackValue",
-		"track",
-		"derive",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const fontSize = 0.9;

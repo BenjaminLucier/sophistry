@@ -8,7 +8,6 @@ export const meta = {
 	title: "Facet panels sized by their categories",
 	description:
 		'Each department has its own teams, so the x axes are independent; space="free" makes each panel as wide as its number of bars, so every bar is the same width and the panels read as one row of bars. The value axis is shared.',
-	uses: ["Stage", "Facet", "bars", "track", "draw", "usePlayer"],
 };
 
 const teams: [string, [string, number][]][] = [

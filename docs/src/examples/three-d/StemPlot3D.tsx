@@ -7,14 +7,6 @@ export const meta = {
 	title: "3D stem plot",
 	description:
 		"Points on a circle with drop lines falling along y to the floor, each stem as tall as its y value.",
-	uses: [
-		"Stage",
-		"track",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Axes3D",
-		"Stem3D",
-	],
 };
 
 const ANGLES = Array.from({ length: 16 }, (_, i) => (i * Math.PI) / 8);

@@ -23,23 +23,6 @@ export const meta = {
 	title: "Fade and grow",
 	description:
 		"Three shapes enter in different ways: fading in, growing from their center, and spinning in from nothing.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Square",
-		"Polygon",
-		"Label",
-		"track",
-		"fadeIn",
-		"fadeOut",
-		"growFromCenter",
-		"shrinkToCenter",
-		"spinInFromNothing",
-		"starPolygon",
-		"parallel",
-		"hold",
-		"usePlayer",
-	],
 };
 
 export default function FadeAndGrow() {

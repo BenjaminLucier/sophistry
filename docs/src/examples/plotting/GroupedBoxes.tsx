@@ -7,7 +7,6 @@ export const meta = {
 	title: "Grouped box plots",
 	description:
 		"Box plots split by a series, seaborn's hue: the boxes sharing a dose stand side by side in its slot, and a dodged strip of the raw readings sits over each box. One colour scale and one legend serve both.",
-	uses: ["Stage", "BoxPlot", "Strip", "track", "draw", "usePlayer"],
 };
 
 const doses = ["low", "mid", "high"];

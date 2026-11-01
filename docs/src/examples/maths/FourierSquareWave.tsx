@@ -12,16 +12,6 @@ export const meta = {
 	title: "Fourier square wave",
 	description:
 		"Adding odd sine harmonics one at a time turns a plain sine wave into a square wave.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 /** Partial Fourier sum of a square wave: (4/pi) * sum of sin((2k-1)x) / (2k-1). */

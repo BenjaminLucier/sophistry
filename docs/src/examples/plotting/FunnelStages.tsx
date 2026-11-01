@@ -7,7 +7,6 @@ export const meta = {
 	title: "Funnel",
 	description:
 		"Stages of a process, top-down: each widens out from the centre, the loss between them shaded.",
-	uses: ["Stage", "Funnel", "track", "draw", "usePlayer"],
 };
 
 const signups = [

@@ -5,7 +5,6 @@ export const meta = {
 	title: "Annotated heatmap",
 	description:
 		"Categorical rows and columns, a colormap, and each value written in a colour that reads on its cell.",
-	uses: ["Stage", "Heatmap"],
 };
 
 const days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];

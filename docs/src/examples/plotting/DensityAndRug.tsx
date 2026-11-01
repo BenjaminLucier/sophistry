@@ -7,7 +7,6 @@ export const meta = {
 	title: "Density with a rug",
 	description:
 		"One kernel density estimate per series (morning and evening waits, from one long-format sample), both sweeping in along x behind one front, with the raw sample as a rug of ticks standing on the axis, in the same series colours, drawn in value order.",
-	uses: ["Stage", "Chart", "Density", "Rug", "track", "draw", "usePlayer"],
 };
 
 // Two overlapping clusters, from a deterministic sine hash.

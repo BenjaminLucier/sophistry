@@ -13,17 +13,6 @@ export const meta = {
 	title: "Vector with components",
 	description:
 		"A Vector grows out of the origin of a NumberPlane, then dashed lines drop to the axes to show its x and y components.",
-	uses: [
-		"Stage",
-		"NumberPlane",
-		"Vector",
-		"DashedLine",
-		"Label",
-		"track",
-		"derive",
-		"draw",
-		"usePlayer",
-	],
 };
 
 export default function VectorArrow() {

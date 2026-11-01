@@ -13,19 +13,6 @@ export const meta = {
 	title: "Breadth-first traversal",
 	description:
 		"A BFS over a small graph. The visit order is computed once; a single step counter drives which vertices and edges are lit.",
-	uses: [
-		"Stage",
-		"NetworkGraph",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-		"edgeKey",
-	],
 };
 
 const vertices = ["a", "b", "c", "d", "e", "f", "g"];

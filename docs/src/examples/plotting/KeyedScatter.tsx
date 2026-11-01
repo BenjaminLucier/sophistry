@@ -8,17 +8,6 @@ export const meta = {
 	title: "Keyed scatter update",
 	description:
 		"One blend track joins two datasets by key: Lima shrinks away where it stood, the fitted y axis grows, matched cities move in data space, then Oslo grows in. Played forward, then scrubbed back.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Scatter",
-		"okabeIto",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const before = [

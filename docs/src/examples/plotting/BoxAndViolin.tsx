@@ -7,15 +7,6 @@ export const meta = {
 	title: "Box and violin plots",
 	description:
 		"The same three samples summarised two ways: quartile boxes that open out of their medians, and kernel-density violins that widen out of their centre lines.",
-	uses: [
-		"Stage",
-		"Label",
-		"BoxPlot",
-		"ViolinPlot",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 // Deterministic, roughly bell-shaped samples: sums of a few sine-hash "uniforms".

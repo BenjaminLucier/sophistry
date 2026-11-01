@@ -7,16 +7,6 @@ export const meta = {
 	title: "Treemap transition that keeps its rows",
 	description:
 		'The values reorder, so a fresh squarify would re-row the tiles and slide them across each other. tile="resquarify" lays the new values out in the old rows instead: every tile keeps its neighbours and every frame is a clean tiling, at the cost of the end not being the plain squarified layout.',
-	uses: [
-		"Stage",
-		"Treemap",
-		"track",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 type Item = { name: string; k?: number; children?: Item[] };

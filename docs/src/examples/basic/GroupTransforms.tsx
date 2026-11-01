@@ -13,17 +13,6 @@ export const meta = {
 	title: "Group transforms",
 	description:
 		"A Group moves, rotates and scales everything inside it at once; here two scaled copies of a small figure turn together.",
-	uses: [
-		"Stage",
-		"Group",
-		"Square",
-		"Circle",
-		"Line",
-		"track",
-		"valueTo",
-		"usePlayer",
-		"hold",
-	],
 };
 
 function Figure() {

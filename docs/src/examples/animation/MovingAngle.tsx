@@ -6,19 +6,6 @@ export const meta = {
 	title: "Moving angle",
 	description:
 		"One ray swings around a fixed one while an Angle arc and a Label readout follow it, all driven by a single tracked number.",
-	uses: [
-		"Stage",
-		"Line",
-		"Dot",
-		"Angle",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"forever",
-		"usePlayer",
-	],
 };
 
 const VERTEX = { x: -1.75, y: -1.5 };

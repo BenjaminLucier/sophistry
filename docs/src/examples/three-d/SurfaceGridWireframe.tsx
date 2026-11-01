@@ -7,15 +7,6 @@ export const meta = {
 	title: "Surface from coordinate grids",
 	description:
 		"A saddle z = x^2 - y^2 given as three matrices (xs, ys, zs, like numpy's meshgrid), drawn as shaded quads with a wireframe on top. viewHeight sets how large the scene projects.",
-	uses: [
-		"Stage",
-		"track",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Grid3D",
-		"SurfaceGrid3D",
-		"Wireframe3D",
-	],
 };
 
 const axis = Array.from({ length: 21 }, (_, i) => -2 + i * 0.2);

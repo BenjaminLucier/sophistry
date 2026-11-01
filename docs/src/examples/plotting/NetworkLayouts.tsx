@@ -6,7 +6,6 @@ export const meta = {
 	title: "Network layouts",
 	description:
 		"One set of vertices and edges placed three ways by changing only the layout prop.",
-	uses: ["Stage", "NetworkGraph", "Label", "track", "draw", "usePlayer"],
 };
 
 const vertices = [1, 2, 3, 4, 5, 6];

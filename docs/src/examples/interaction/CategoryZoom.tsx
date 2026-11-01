@@ -14,20 +14,6 @@ export const meta = {
 	title: "Zooming a category axis",
 	description:
 		"The top chart is a window onto twelve of thirty-six months. Scroll over it to zoom, drag to pan, or Tab to it and use the arrows and + and -: drags, pinches and keys settle on whole months, and the names leaving the window fade. The overview's brush reads the same two tracks; scroll over the brush to grow or shrink it.",
-	uses: [
-		"Stage",
-		"Chart",
-		"ChartZoom",
-		"RangeBrush",
-		"Bars",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const NAMES = [

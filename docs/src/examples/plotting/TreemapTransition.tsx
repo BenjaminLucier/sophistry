@@ -7,16 +7,6 @@ export const meta = {
 	title: "Treemap data transition",
 	description:
 		"One budget, two years. Tiles are matched by their path of names: the team that was cut fades out, the others resize into place, the new team fades in. One blend track drives it, so it scrubs. Data order and an order-keeping tile keep every frame a clean tiling.",
-	uses: [
-		"Stage",
-		"Treemap",
-		"track",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 type Item = { name: string; k?: number; children?: Item[] };

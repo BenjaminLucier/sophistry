@@ -20,20 +20,6 @@ export const meta = {
 	title: "One track, many drivers",
 	description:
 		"The same x track is written by dragging the knob, by a tween from the button, and by a slider. Nothing is wired together: they all just write the track.",
-	uses: [
-		"Stage",
-		"Line",
-		"Dot",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-		"useScene",
-		"useTrackValue",
-		"draggable",
-		"scalarParam",
-	],
 };
 
 const FROM = { x: -3, y: 0 };

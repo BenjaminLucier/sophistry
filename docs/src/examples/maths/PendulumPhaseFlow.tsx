@@ -13,19 +13,6 @@ export const meta = {
 	title: "A pendulum's phase flow",
 	description:
 		"A disc of starting states flows along a pendulum's phase portrait: near the bottom it circles round, and it stretches into a thin arc as the swings drift out of step.",
-	uses: [
-		"Stage",
-		"StreamLines",
-		"Path",
-		"track",
-		"derive",
-		"phaseFlow",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-		"circlePolyline",
-	],
 };
 
 /** Angle along x, angular velocity along y. */

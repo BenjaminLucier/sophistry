@@ -8,7 +8,6 @@ export const meta = {
 	title: "Pair plot",
 	description:
 		"Every pair of three measurements against each other, each measurement's density on the diagonal. Panels in a column share x and panels in a row share y, so a flower lines up across the matrix; only the bottom row and left column write numbers and names.",
-	uses: ["Stage", "PairPlot", "okabeIto", "track", "draw", "usePlayer"],
 };
 
 const hash = (n: number) => Math.abs((Math.sin(n * 78.233) * 43758.5453) % 1);

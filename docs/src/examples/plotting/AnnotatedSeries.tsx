@@ -14,18 +14,6 @@ export const meta = {
 	title: "Annotated series",
 	description:
 		"Marks layered in one chart: a shaded span, a target rule, the series, labelled points with tooltips.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Rects",
-		"RuleY",
-		"LinePlot",
-		"Scatter",
-		"Labels",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const sales = [3.1, 3.6, 4.2, 3.4, 2.6, 2.9, 4.4, 5.1, 5.6, 6.2];

@@ -12,15 +12,6 @@ export const meta = {
 	title: "Polar rose",
 	description:
 		"Trace the curve r = 3 cos 5θ on a polar grid by sweeping θ from 0 to π.",
-	uses: [
-		"Stage",
-		"PolarPlane",
-		"ParametricGraph",
-		"Label",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const rose = (theta: number) => {

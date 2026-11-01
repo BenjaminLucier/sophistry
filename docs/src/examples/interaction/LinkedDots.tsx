@@ -5,16 +5,6 @@ export const meta = {
 	title: "Linked dots",
 	description:
 		"Drag any corner of the triangle. The outline and the area readout are derived from the three dragged points, so they update on every move.",
-	uses: [
-		"Stage",
-		"Polygon",
-		"Dot",
-		"Label",
-		"draggable",
-		"trackPoint",
-		"derive",
-		"useTheme",
-	],
 };
 
 export default function LinkedDots() {

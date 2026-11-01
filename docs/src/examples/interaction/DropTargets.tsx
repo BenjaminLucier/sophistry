@@ -6,16 +6,6 @@ export const meta = {
 	title: "Drop targets",
 	description:
 		"Drag the token onto either box. Each box lights up while the token is over it, and the choice is reported when you let go.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Circle",
-		"Label",
-		"draggable",
-		"dropTarget",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 export default function DropTargets() {

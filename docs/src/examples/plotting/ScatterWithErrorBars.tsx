@@ -7,7 +7,6 @@ export const meta = {
 	title: "Scatter with error bars",
 	description:
 		"Measurements as points with a symmetric error bar on each: every point fades in where it stands and its bar grows out of it, left to right.",
-	uses: ["Stage", "Axes", "Scatter", "ErrorBar", "track", "draw", "usePlayer"],
 };
 
 const measurements = [

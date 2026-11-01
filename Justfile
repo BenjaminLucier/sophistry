@@ -64,7 +64,7 @@ examples:
 
 # build every published package to packages/*/dist
 build-lib:
-    pnpm --filter @sophistry/core --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build
+    pnpm build
 
 # run tests with coverage
 coverage:
@@ -118,7 +118,7 @@ ci-install:
 
 # nuke build output and caches, keeping node_modules
 clean-build:
-    rm -rf packages/*/dist packages/*/coverage docs/dist docs/.astro apps/*/dist docs/src/content/docs/api
+    rm -rf packages/*/dist packages/*/coverage docs/dist docs/.astro apps/*/dist
 
 # remove node_modules and build output
 clean:

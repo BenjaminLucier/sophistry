@@ -7,15 +7,6 @@ export const meta = {
 	title: "Robust LOESS smooth",
 	description:
 		"A local regression with its 95% band, through a noisy daily series with a few bad readings. The plain smooth bends toward the outliers and its band balloons; robustness iterations re-weight them away.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Regression",
-		"Scatter",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const readings = Array.from({ length: 60 }, (_, day) => {

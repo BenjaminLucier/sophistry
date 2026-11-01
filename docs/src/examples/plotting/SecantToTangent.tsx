@@ -13,17 +13,6 @@ export const meta = {
 	title: "Secant to tangent",
 	description:
 		"Shrink dx toward zero and the secant line through two points turns into the tangent.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"SecantSlopeGroup",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 const f = (x: number) => (x * x) / 6;

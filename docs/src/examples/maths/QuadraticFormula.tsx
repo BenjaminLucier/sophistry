@@ -8,7 +8,6 @@ export const meta = {
 	title: "Quadratic formula",
 	description:
 		"An equation and its solution are written out one after the other with write().",
-	uses: ["Stage", "MathTex", "track", "write", "usePlayer"],
 };
 
 export default function QuadraticFormula() {

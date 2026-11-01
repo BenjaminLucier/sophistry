@@ -14,18 +14,6 @@ export const meta = {
 	title: "Area under a curve",
 	description:
 		"Riemann rectangles are stacked ever more thinly until they fill the area under the curve.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"AreaUnderGraph",
-		"RiemannRectangles",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 const f = (x: number) => (x * x) / 6;

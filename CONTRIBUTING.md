@@ -128,11 +128,11 @@ In short:
     throws), a bare noun is a plain value, `resolveX` turns a spec into a value.
     No `makeX`/`buildX`. Time is in seconds.
 
-While the package is unreleased, renames are hard renames: no aliases.
+Until 1.0, renames are hard renames: no aliases.
 
 ### JSDoc
 
-The API reference is generated from JSDoc, so write it for users:
+JSDoc is the API reference users read in their editor, so write it for them:
 
 - **Props**: one sentence in the user's terms, plus a `@default` tag. Units only
   when they are not scene units. At most one more line for a non-obvious
@@ -178,8 +178,9 @@ provenance.
 
 ## Docs and examples
 
-- The docs site is Astro + Starlight in `docs/`. The API reference under
-  `docs/src/content/docs/api/` is generated from JSDoc and gitignored.
+- The docs site is Astro + Starlight in `docs/`. It has no generated API
+  reference: signatures and props reach users through the packages' types and
+  JSDoc.
 - Gallery examples are typechecked modules in
   `docs/src/examples/<category>/<Name>.tsx`; `pnpm typecheck` compiles them and
   `pnpm test` mounts every one. See

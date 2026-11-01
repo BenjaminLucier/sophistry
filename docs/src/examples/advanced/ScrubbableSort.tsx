@@ -21,24 +21,6 @@ export const meta = {
 	title: "Scrubbable bubble sort",
 	description:
 		"A sort recorded as one timeline: bars keep their identity in a slots model, every compare and swap is an animation, so you can play, pause, step and scrub the whole run in either direction.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Label",
-		"createClock",
-		"timeline",
-		"sequence",
-		"parallel",
-		"createSlots",
-		"arcMotion",
-		"rowSlots",
-		"colorTo",
-		"indicate",
-		"track",
-		"derive",
-		"useTrackValue",
-		"resolveTheme",
-	],
 };
 
 const VALUES = [5, 2, 7, 3, 8, 1, 6, 4];

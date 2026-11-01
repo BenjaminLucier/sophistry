@@ -14,18 +14,6 @@ export const meta = {
 	title: "Linear transformation",
 	description:
 		"A shear matrix warps the plane and a unit square, while the basis vectors show where each column of the matrix lands.",
-	uses: [
-		"Stage",
-		"NumberPlane",
-		"LinearTransform",
-		"BasisVectors",
-		"Polygon",
-		"linearMap",
-		"track",
-		"valueTo",
-		"usePlayer",
-		"hold",
-	],
 };
 
 const SHEAR = linearMap([

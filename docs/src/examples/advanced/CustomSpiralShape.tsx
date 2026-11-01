@@ -14,17 +14,6 @@ export const meta = {
 	title: "A custom shape: Spiral",
 	description:
 		"A new primitive in a dozen lines. defineShape takes the props and a geometry function, so it gets styling, transforms, gradients, draw() and paint order like any built-in; wrap() makes it a component.",
-	uses: [
-		"Stage",
-		"defineShape",
-		"shapeProps",
-		"wrap",
-		"draw",
-		"usePlayer",
-		"track",
-		"derive",
-		"useScene",
-	],
 };
 
 interface SpiralProps extends ShapeProps {

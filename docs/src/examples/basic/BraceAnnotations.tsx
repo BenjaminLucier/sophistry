@@ -7,18 +7,6 @@ export const meta = {
 	title: "Braces",
 	description:
 		"Braces measure a rectangle's sides and a triangle's hypotenuse, each with a label at its tip, drawn in one after another.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Polygon",
-		"Brace",
-		"DOWN",
-		"RIGHT",
-		"track",
-		"draw",
-		"lagged",
-		"usePlayer",
-	],
 };
 
 const A = { x: 1.5, y: -1.5 };

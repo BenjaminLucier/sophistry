@@ -8,7 +8,6 @@
 export interface ExampleMeta {
 	title: string;
 	description: string;
-	uses: string[];
 }
 
 /** Gallery categories, in display order. `dir` is the folder under `src/examples`. */
@@ -98,14 +97,9 @@ function entryFor(key: string): ExampleEntry {
 	const name = key.replace(/^\.\.\/examples\//, "").replace(/\.tsx?$/, "");
 	const [category = "", id = ""] = name.split("/");
 	const meta = parseMeta(sources[key] ?? "") as ExampleMeta | undefined;
-	if (
-		!meta?.title ||
-		!meta.description ||
-		!Array.isArray(meta.uses) ||
-		meta.uses.length === 0
-	) {
+	if (!meta?.title || !meta.description) {
 		throw new Error(
-			`Example "${name}" must export meta = { title, description, uses: [...] } (all non-empty).`,
+			`Example "${name}" must export meta = { title, description } (both non-empty).`,
 		);
 	}
 	const lang = key.endsWith(".tsx") ? "tsx" : "ts";

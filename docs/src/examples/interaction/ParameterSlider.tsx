@@ -13,19 +13,6 @@ export const meta = {
 	title: "A slider that drives a graph",
 	description:
 		"Drag the knob along a line to change the frequency of a sine wave. scalarParam turns the pointer position into a number, and the graph reads that number.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"Line",
-		"Dot",
-		"Label",
-		"draggable",
-		"scalarParam",
-		"track",
-		"derive",
-		"useTheme",
-	],
 };
 
 export default function ParameterSlider() {

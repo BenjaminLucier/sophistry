@@ -7,7 +7,6 @@ export const meta = {
 	title: "Grouped and stacked bars",
 	description:
 		"One long-format table, two layouts of one bar mark: series colours the regions through the chart's scale and legend, the dodge layout puts them side by side in each quarter, the stack layout piles them up. The stack grows as one, so every frame is a true stacked chart.",
-	uses: ["Stage", "Label", "Chart", "Bars", "track", "draw", "usePlayer"],
 };
 
 const sales = ["Q1", "Q2", "Q3", "Q4"].flatMap((quarter, q) =>

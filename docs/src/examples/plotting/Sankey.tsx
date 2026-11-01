@@ -7,7 +7,6 @@ export const meta = {
 	title: "Sankey diagram",
 	description:
 		"Energy flowing from sources to uses: nodes appear column by column, then the flows draw left to right.",
-	uses: ["Stage", "Sankey", "track", "draw", "usePlayer"],
 };
 
 const flows = [

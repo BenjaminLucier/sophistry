@@ -6,15 +6,6 @@ export const meta = {
 	title: "Log-scale axes",
 	description:
 		"A log y axis turns exponential growth into a straight line, with ticks on each decade. The graph plots through the same scale as the axis.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"track",
-		"draw",
-		"sequence",
-		"usePlayer",
-	],
 };
 
 export default function LogScaleAxes() {

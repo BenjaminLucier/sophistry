@@ -37,4 +37,4 @@ Subpaths `/text`, `/charts`, `/charts/3d` and `/3d` hold the components of the m
 
 ## Links
 
-[Documentation](https://sophistry.dev) · [API reference](https://sophistry.dev/api/modules/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/solidjs) · MIT
+[Documentation](https://sophistry.dev) · [API](https://sophistry.dev/reference/api/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/solidjs) · MIT

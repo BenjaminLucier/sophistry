@@ -8,7 +8,6 @@ export const meta = {
 	title: "A row × column facet grid",
 	description:
 		"One table split two ways: years down the rows, islands across the columns. Each row's year is written once in the right margin and each island once over the top row, the panels share both scales, and one legend runs along the top.",
-	uses: ["Stage", "Facet", "scatter", "okabeIto", "track", "draw", "usePlayer"],
 };
 
 // Deterministic jitter around each species' centre, so the gallery is stable.

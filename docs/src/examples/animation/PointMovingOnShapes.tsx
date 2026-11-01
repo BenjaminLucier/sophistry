@@ -7,17 +7,6 @@ export const meta = {
 	title: "Point moving on a shape",
 	description:
 		"A dot travels around a circle at constant speed by following the circle's outline with moveAlong.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Line",
-		"trackPoint",
-		"circlePolyline",
-		"moveAlong",
-		"forever",
-		"usePlayer",
-	],
 };
 
 const RING = circlePolyline(0, 0, 2.2);

@@ -7,17 +7,6 @@ export const meta = {
 	title: "Bars into a scatter",
 	description:
 		"One blend track turns a bar chart into a scatter plot: the bars shrink away, the category axis cross-fades into a number line, and the dots on the bars' tops slide to their new places in scene units while the y axis glides to the new axis's zero. Played forward, then back.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Bars",
-		"Scatter",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const countries = [

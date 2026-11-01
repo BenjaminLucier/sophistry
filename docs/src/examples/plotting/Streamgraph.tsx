@@ -7,7 +7,6 @@ export const meta = {
 	title: "Streamgraph",
 	description:
 		'StackPlot with offset="wiggle" and order="insideOut": the layers float around a centre line chosen to keep them as level as possible, and the whole stream grows out of it. The week axis sits at the bottom edge (xAxis position) rather than through the stream, and series names the bands for the legend.',
-	uses: ["Stage", "Chart", "StackPlot", "track", "draw", "usePlayer"],
 };
 
 // Five smooth bumps peaking at different weeks.

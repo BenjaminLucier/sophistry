@@ -7,17 +7,6 @@ export const meta = {
 	title: "Camera motion",
 	description:
 		"The camera eye is derived from an angle track, so a plain rotateBy() loop turns the camera around the scene.",
-	uses: [
-		"Stage",
-		"track",
-		"derive",
-		"rotateBy",
-		"usePlayer",
-		"Camera3D",
-		"Axes3D",
-		"Cube3D",
-		"Sphere3D",
-	],
 };
 
 export default function CameraMotion() {

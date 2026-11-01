@@ -8,17 +8,6 @@ export const meta = {
 	title: "Bar chart race",
 	description:
 		"Values interpolate between yearly keyframes, ranks come from the interpolated values, and each overtake slides on its own short ease. The category axis follows the ranks through its `slot`, so names ride with their bars, and only the top five are shown: whoever drops out slides under the last place and out of view.",
-	uses: [
-		"Stage",
-		"Label",
-		"Chart",
-		"Bars",
-		"rankRace",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 const NAMES = ["Ada", "Basil", "Cleo", "Dara", "Esme", "Farid", "Greta"];

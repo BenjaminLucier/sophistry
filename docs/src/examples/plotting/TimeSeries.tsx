@@ -5,7 +5,6 @@ export const meta = {
 	title: "Time series",
 	description:
 		"Native Dates make a UTC time axis that ticks on month boundaries and writes dates.",
-	uses: ["Stage", "Chart", "LinePlot", "FillBetween"],
 };
 
 const months = [

@@ -26,4 +26,4 @@ From JSX use `<MathTex>` in [`@sophistry/solidjs/text`](../solidjs). The KaTeX f
 
 ## Links
 
-[Documentation](https://sophistry.dev) · [API reference](https://sophistry.dev/api/modules/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/text) · MIT
+[Documentation](https://sophistry.dev) · [API](https://sophistry.dev/reference/api/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/text) · MIT

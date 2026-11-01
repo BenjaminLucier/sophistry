@@ -8,15 +8,6 @@ export const meta = {
 	title: "Keyed box plot update",
 	description:
 		"One blend track joins two years of trial arms by name: placebo closes into its median, the fitted axis grows, the matched arms' quartiles and whiskers move in data units, then a new arm opens. Played forward, then scrubbed back.",
-	uses: [
-		"Stage",
-		"BoxPlot",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 // A deterministic "uniform" in [0, 1): the fractional part of a sine hash.

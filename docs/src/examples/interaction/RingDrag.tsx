@@ -12,17 +12,6 @@ export const meta = {
 	title: "Drag along a ring",
 	description:
 		"A dot constrained to a circle, draggable with the pointer or the arrow keys.",
-	uses: [
-		"Stage",
-		"Circle",
-		"LabeledDot",
-		"Label",
-		"InteractionGroup",
-		"draggable",
-		"onCircle",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 export default function RingDrag() {

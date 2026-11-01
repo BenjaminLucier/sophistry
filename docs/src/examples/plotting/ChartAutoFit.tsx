@@ -7,7 +7,6 @@ export const meta = {
 	title: "A chart that fits itself",
 	description:
 		"<Chart> ranges its axes from the layers inside it, then draws the frame before the data.",
-	uses: ["Stage", "Chart", "LinePlot", "Scatter", "track", "draw", "usePlayer"],
 };
 
 const runs = [

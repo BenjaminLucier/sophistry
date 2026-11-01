@@ -7,16 +7,6 @@ export const meta = {
 	title: "Stacked area morph",
 	description:
 		"Each end is stacked on its own and every band's two edges morph together on one shared x grid, so each frame is still a stack: a leaving band shrinks and the bands above settle onto it, a new one grows in its place.",
-	uses: [
-		"Stage",
-		"Chart",
-		"StackPlot",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const rows = (source: string, f: (week: number) => number, weeks = 9) =>

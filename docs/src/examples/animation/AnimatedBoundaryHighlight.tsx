@@ -5,7 +5,6 @@ export const meta = {
 	title: "Animated boundary",
 	description:
 		"A stroke keeps running round a box, a new colour each cycle, while the last one thins away underneath: ambient emphasis that needs no animation.",
-	uses: ["Stage", "Label", "AnimatedBoundary", "rectPolyline"],
 };
 
 export default function AnimatedBoundaryHighlight() {

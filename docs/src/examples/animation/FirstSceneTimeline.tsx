@@ -23,22 +23,6 @@ export const meta = {
 	title: "First scene: scrub it with a timeline",
 	description:
 		"Step four of the first-scene tutorial: the whole script becomes a timeline you can seek with a slider, backwards as well as forwards.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Line",
-		"Arc",
-		"Dot",
-		"Label",
-		"track",
-		"derive",
-		"draw",
-		"valueTo",
-		"sequence",
-		"usePlayer",
-		"useScene",
-		"useTrackValue",
-	],
 };
 
 const RADIUS = 2.4;

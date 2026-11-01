@@ -7,16 +7,6 @@ export const meta = {
 	title: "Sorting bars with slots",
 	description:
 		"A slots model owns the order; the chart's band axis reads each category's slot through `slot`, so bars and their names slide together. Each sort is one seekable `permute`, staggered.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Bars",
-		"createSlots",
-		"derive",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const fruit = [

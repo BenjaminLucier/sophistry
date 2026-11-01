@@ -6,7 +6,6 @@ import { onSettled } from "solid-js";
 export const meta = {
 	title: "Bar chart reveal",
 	description: "A bar chart whose bars grow in as draw() drives its progress.",
-	uses: ["Stage", "BarChart", "track", "draw", "usePlayer"],
 };
 
 export default function BarChartReveal() {

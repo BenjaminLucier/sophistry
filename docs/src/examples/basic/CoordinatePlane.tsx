@@ -12,14 +12,6 @@ export const meta = {
 	title: "Coordinate plane",
 	description:
 		"Axes map data coordinates to scene units: plot a function inside them, and use coordsToPoint() to place a point at (2, 4).",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"LabeledDot",
-		"DashedLine",
-		"coordsOf",
-	],
 };
 
 export default function CoordinatePlane() {

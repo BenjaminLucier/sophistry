@@ -12,17 +12,6 @@ export const meta = {
 	title: "Picture-in-picture",
 	description:
 		"One scene seen through two cameras. Drag the dot in the main view and the magnified inset follows it.",
-	uses: [
-		"MultiStage",
-		"PictureInPicture",
-		"NumberPlane",
-		"Dot",
-		"Label",
-		"draggable",
-		"toBounds",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 export default function PictureInPictureViews() {

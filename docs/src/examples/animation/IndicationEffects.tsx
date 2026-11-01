@@ -26,26 +26,6 @@ export const meta = {
 	title: "Indication effects",
 	description:
 		"Four more ways to point at something: a spotlight closes in, a dot blinks, a flash runs along a curve, and a wave ripples through a bar.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Path",
-		"Label",
-		"track",
-		"derive",
-		"focusOn",
-		"blink",
-		"showPassingFlash",
-		"passingFlash",
-		"applyWave",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-		"measure",
-		"rectPolyline",
-	],
 };
 
 const curve: Polyline = Array.from({ length: 41 }, (_, i) => {

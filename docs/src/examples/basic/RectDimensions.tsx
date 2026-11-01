@@ -6,18 +6,6 @@ export const meta = {
 	title: "Dimension annotation",
 	description:
 		"A double-headed arrow and a live readout measure the width of a rectangle as it stretches and shrinks.",
-	uses: [
-		"Stage",
-		"Rect",
-		"DoubleArrow",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 export default function RectDimensions() {

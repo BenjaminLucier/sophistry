@@ -22,22 +22,6 @@ export const meta = {
 	title: "Gradients and strokes",
 	description:
 		"A lit sphere, a sheen that sweeps across a card, a dashed line and a stroke whose color follows the curve.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Rect",
-		"Path",
-		"DashedLine",
-		"Label",
-		"radialGradient",
-		"sheen",
-		"colorRamp",
-		"valueTo",
-		"usePlayer",
-		"track",
-		"derive",
-		"useScene",
-	],
 };
 
 const wave = Array.from({ length: 60 }, (_, i) => ({

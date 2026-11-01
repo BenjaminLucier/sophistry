@@ -14,16 +14,6 @@ export const meta = {
 	title: "Springs: springTo and follow",
 	description:
 		"springTo is a seekable spring animation with an overshoot; follow keeps a second point chasing the first, live, preserving its velocity.",
-	uses: [
-		"createScene",
-		"springTo",
-		"follow",
-		"sequence",
-		"track",
-		"trackPoint",
-		"circle",
-		"label",
-	],
 };
 
 export default function mount(host: HTMLElement, clock?: Clock): () => void {

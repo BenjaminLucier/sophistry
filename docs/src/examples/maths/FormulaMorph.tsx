@@ -8,15 +8,6 @@ export const meta = {
 	title: "Formula morph",
 	description:
 		"Symbols shared by two equations glide to their new places while the rest fade, so completing the square reads as algebra.",
-	uses: [
-		"Stage",
-		"Label",
-		"MathTransform",
-		"track",
-		"valueTo",
-		"usePlayer",
-		"hold",
-	],
 };
 
 export default function FormulaMorph() {

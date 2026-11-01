@@ -7,7 +7,6 @@ export const meta = {
 	title: "Treemap",
 	description:
 		"A squarified treemap of a source tree: tiles fade in folder by folder, coloured by top-level folder.",
-	uses: ["Stage", "Treemap", "track", "draw", "usePlayer"],
 };
 
 type Node = { name: string; lines?: number; children?: Node[] };

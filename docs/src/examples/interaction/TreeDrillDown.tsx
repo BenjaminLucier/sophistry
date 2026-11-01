@@ -7,7 +7,6 @@ export const meta = {
 	title: "Tap to zoom into a tree",
 	description:
 		"Tap a node to spread its subtree over the chart, tap it again (or the back arrow, or a crumb) to zoom out; Tab and Enter do the same. Deep trails collapse their middle into an ellipsis that climbs back up.",
-	uses: ["Stage", "Tree", "track", "draw", "usePlayer"],
 };
 
 type Item = { name: string; children?: Item[] };

@@ -20,20 +20,6 @@ export const meta = {
 	title: "A scrubbable timeline",
 	description:
 		"One script, three steps. player.timeline() runs it and exposes seek, time and playing, so a button and a range slider can pause, resume and scrub it in either direction.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"usePlayer",
-		"useTrackValue",
-		"sequence",
-		"draw",
-		"moveTo",
-		"scaleTo",
-		"track",
-		"trackPoint",
-		"derive",
-	],
 };
 
 export default function ScrubbableTimeline() {

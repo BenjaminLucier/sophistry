@@ -8,7 +8,6 @@ export const meta = {
 	title: "Euler's identity",
 	description:
 		"LaTeX is geometry: two formulas are written out stroke by stroke.",
-	uses: ["Stage", "MathTex", "track", "draw", "usePlayer"],
 };
 
 export default function EulerIdentity() {

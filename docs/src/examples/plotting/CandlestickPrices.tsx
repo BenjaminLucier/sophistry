@@ -7,7 +7,6 @@ export const meta = {
 	title: "Candlesticks",
 	description:
 		"Prices on a time axis (inferred from Dates): each wick draws low to high, then the body grows from the open to the close.",
-	uses: ["Stage", "Chart", "Candlestick", "track", "draw", "usePlayer"],
 };
 
 // A deterministic random walk, one candle per day.

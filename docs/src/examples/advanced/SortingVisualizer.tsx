@@ -20,20 +20,6 @@ export const meta = {
 	title: "Sorting visualizer",
 	description:
 		"Bars bubble-sort themselves: a slots model keeps each bar's identity, each swap is one plan.swapAt() played with an await, and the compared pair is highlighted.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Label",
-		"createSlots",
-		"rowSlots",
-		"arcMotion",
-		"track",
-		"derive",
-		"useTrackValue",
-		"GOLD",
-		"usePlayer",
-		"hold",
-	],
 };
 
 const VALUES = [5, 2, 7, 3, 8, 1, 6, 4];

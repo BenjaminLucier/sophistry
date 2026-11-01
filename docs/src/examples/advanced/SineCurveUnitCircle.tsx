@@ -6,19 +6,6 @@ export const meta = {
 	title: "Sine curve from the unit circle",
 	description:
 		"A point circles a unit circle while its height is traced out as a sine wave to the right.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Line",
-		"Plot",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-		"hold",
-		"GOLD",
-	],
 };
 
 const R = 1.5;

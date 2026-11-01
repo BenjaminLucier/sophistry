@@ -6,7 +6,6 @@ export const meta = {
 	title: "RGB versus OKLCH blends",
 	description:
 		"The same blue-to-yellow blend in two color spaces. RGB sags through a muddy gray in the middle; OKLCH keeps its lightness and sweeps the hue.",
-	uses: ["Stage", "Rect", "Label", "mixColor", "toCss", "useScene", "derive"],
 };
 
 const FROM = "#2563eb";

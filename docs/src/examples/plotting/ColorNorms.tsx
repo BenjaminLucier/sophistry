@@ -7,7 +7,6 @@ export const meta = {
 	title: "Log and diverging colour norms",
 	description:
 		"A field spanning four decades on a log norm, and temperature anomalies on a diverging norm centred on zero, each with a colour bar that follows its norm.",
-	uses: ["Stage", "Chart", "Imshow", "Heatmap", "track", "draw", "usePlayer"],
 };
 
 // A peak over a floor: 1 at the edges to 10,000 at the centre.

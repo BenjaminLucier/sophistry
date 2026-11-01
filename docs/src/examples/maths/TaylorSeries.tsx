@@ -7,15 +7,6 @@ export const meta = {
 	title: "Taylor series",
 	description:
 		"Polynomial approximations of sin x of degree 1, 3, 5 and 7 are drawn in turn, each hugging the curve for longer.",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"MathTex",
-		"track",
-		"write",
-		"usePlayer",
-	],
 };
 
 /** The Taylor polynomial of sin x with terms up to x^degree. */

@@ -13,16 +13,6 @@ export const meta = {
 	title: "Shapes gallery",
 	description:
 		"The basic shapes, each styled with stroke, fill and opacity; colors come from the active theme.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Rect",
-		"Polygon",
-		"Star",
-		"Arrow",
-		"useScene",
-		"derive",
-	],
 };
 
 function Shapes() {

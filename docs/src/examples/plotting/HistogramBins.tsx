@@ -7,16 +7,6 @@ export const meta = {
 	title: "Histogram bins",
 	description:
 		"The same 120 samples regrouped into more and more bins, from coarse to fine.",
-	uses: [
-		"Stage",
-		"Axes",
-		"Label",
-		"Histogram",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-	],
 };
 
 // 120 bell-shaped samples in [0, 6]: each is the sum of six uniform numbers from a tiny generator.

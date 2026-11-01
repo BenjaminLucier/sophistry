@@ -12,16 +12,6 @@ export const meta = {
 	title: "Line and area curves",
 	description:
 		"The same readings drawn three ways: a monotone curve (smooth, but never overshooting a reading) over a monotone band, a straight polyline, and a step-after line that holds each value until the next. Curves are native Béziers, and the reveal cuts them along x without straightening them.",
-	uses: [
-		"Stage",
-		"Chart",
-		"LinePlot",
-		"FillBetween",
-		"Scatter",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const readings = [3, 3.2, 7.5, 8, 4, 4.2, 6.8, 2.5, 3, 6].map(

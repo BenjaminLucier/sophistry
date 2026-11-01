@@ -20,20 +20,6 @@ export const meta = {
 	title: "Comparing easings",
 	description:
 		"Five dots cover the same distance in the same time, each with a different easing curve, so you can see how the curves feel.",
-	uses: [
-		"Stage",
-		"Dot",
-		"Label",
-		"Line",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-	],
 };
 
 const EASINGS = [

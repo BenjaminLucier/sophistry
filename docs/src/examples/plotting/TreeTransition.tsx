@@ -7,16 +7,6 @@ export const meta = {
 	title: "Tree data transition",
 	description:
 		"A reorganisation as a node-link tree. Nodes are matched by their path of names: the team that was wound up draws back into its parent, the rest slide to their new places with their links following, then the new teams grow out of theirs. One blend track drives it, so it scrubs.",
-	uses: [
-		"Stage",
-		"Tree",
-		"track",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 type Unit = { name: string; children?: Unit[] };

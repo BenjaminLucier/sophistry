@@ -14,18 +14,6 @@ export const meta = {
 	title: "First scene: shapes and labels",
 	description:
 		"Step one of the first-scene tutorial: a ring, a radius, an angle arc and a dot, with a label placed next to the dot by its measured bounds.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Line",
-		"Arc",
-		"Dot",
-		"Label",
-		"nextTo",
-		"UR",
-		"useScene",
-		"derive",
-	],
 };
 
 const R = 2.4;

@@ -7,15 +7,6 @@ export const meta = {
 	title: "Keyed pie morph",
 	description:
 		"One blend track joins two years of browser share by name: IE's slice closes and its neighbours take the room, the shares change in data space, then Edge opens where the new year has it. Every frame is a whole pie.",
-	uses: [
-		"Stage",
-		"PieChart",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const before = [

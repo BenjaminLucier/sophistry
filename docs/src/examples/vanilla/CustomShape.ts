@@ -15,17 +15,6 @@ export const meta = {
 	title: "A custom shape with defineShape",
 	description:
 		"defineShape turns a props descriptor and a geometry function into a definition like circle; the new rose shape is created, drawn and animated.",
-	uses: [
-		"defineShape",
-		"shapeProps",
-		"Stage",
-		"createScene",
-		"track",
-		"draw",
-		"valueTo",
-		"parallel",
-		"sequence",
-	],
 };
 
 interface RoseProps extends ShapeProps {

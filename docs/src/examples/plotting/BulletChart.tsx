@@ -7,7 +7,6 @@ export const meta = {
 	title: "Bullet chart",
 	description:
 		"Stephen Few's bullet graph: four KPIs against their targets over poor / fair / good bands, each on its own scale. The bands fade in first, then each bar grows from zero and its target marker draws in.",
-	uses: ["Stage", "Bullet", "track", "draw", "usePlayer"],
 };
 
 const kpis = [

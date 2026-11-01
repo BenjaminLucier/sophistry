@@ -15,20 +15,6 @@ export const meta = {
 	title: "Brushing categories on a band axis",
 	description:
 		"On a category axis the brush snaps to whole bars, and an arrow key moves it one bar. brushedCategories turns its two tracks into the months it covers, which the chart below breaks down by product.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Bars",
-		"RangeBrush",
-		"brushedCategories",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const months = [

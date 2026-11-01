@@ -7,17 +7,6 @@ export const meta = {
 	title: "Sunburst drill-down",
 	description:
 		"Zooming into one branch of a sunburst and back out: the focus is a transition between two nodes driven by one track, so the zoom scrubs like any other animation. The chosen branch becomes the centre and its children open out round the whole turn.",
-	uses: [
-		"Stage",
-		"Sunburst",
-		"track",
-		"derive",
-		"draw",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 type Item = { name: string; kb?: number; children?: Item[] };

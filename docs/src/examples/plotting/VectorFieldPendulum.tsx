@@ -6,7 +6,6 @@ export const meta = {
 	title: "Vector field",
 	description:
 		"The phase portrait of a pendulum as arrows colored by their length.",
-	uses: ["Stage", "Axes", "VectorField", "track", "draw", "usePlayer"],
 };
 
 export default function VectorFieldPendulum() {

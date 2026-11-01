@@ -22,21 +22,6 @@ export const meta = {
 	title: "Manim's rate functions",
 	description:
 		"Six dots make the same trip with Manim's rate functions: a running start, slow into the end, two smooth halves, lingering, exponential decay, and a smooth move squished into the second half.",
-	uses: [
-		"Stage",
-		"Dot",
-		"Label",
-		"Line",
-		"track",
-		"derive",
-		"valueTo",
-		"squish",
-		"parallel",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"useScene",
-	],
 };
 
 const CURVES: { name: string; easing: Easing }[] = [

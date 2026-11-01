@@ -13,17 +13,6 @@ export const meta = {
 	title: "Pan and zoom",
 	description:
 		"Scroll to zoom about the cursor and drag empty space to pan. PanZoom writes the same units and center tracks that the Stage reads.",
-	uses: [
-		"Stage",
-		"PanZoom",
-		"NumberPlane",
-		"Circle",
-		"Dot",
-		"Label",
-		"track",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 export default function PanZoomPlane() {

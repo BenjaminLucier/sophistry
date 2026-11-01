@@ -7,7 +7,6 @@ export const meta = {
 	title: "Value labels in stacked bars",
 	description:
 		"labels={{ position: \"inside\", total: true }} centres each segment's value in it, in whichever of dark and light text reads on its fill, and writes each stack's total past its end. Labels count up and grow in with their segments; one too small for its segment (the 1 in Q2) is left out.",
-	uses: ["Stage", "Chart", "Bars", "track", "draw", "usePlayer"],
 };
 
 const sales = ["Q1", "Q2", "Q3", "Q4"].flatMap((quarter, q) =>

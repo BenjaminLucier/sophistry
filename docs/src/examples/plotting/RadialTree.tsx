@@ -7,7 +7,6 @@ export const meta = {
 	title: "Radial dendrogram",
 	description:
 		"A small family of languages as a radial cluster tree: the root in the centre, every language on the outer ring, links growing out level by level.",
-	uses: ["Stage", "Tree", "track", "draw", "usePlayer"],
 };
 
 type Lang = { name: string; children?: Lang[] };

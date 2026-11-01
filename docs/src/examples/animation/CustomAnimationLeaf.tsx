@@ -14,18 +14,6 @@ export const meta = {
 	title: "A custom animation leaf",
 	description:
 		"animation({...}) builds a seekable leaf from begin and seek. This one makes a counter tick in whole numbers while a built-in valueTo slides the dot, and both obey scrubbing and composites.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"animation",
-		"sequence",
-		"parallel",
-		"valueTo",
-		"usePlayer",
-		"track",
-		"derive",
-	],
 };
 
 /** Counts `value` up by `amount` in whole steps, relative to where it starts. */

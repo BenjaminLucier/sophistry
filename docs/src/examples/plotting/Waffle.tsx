@@ -7,7 +7,6 @@ export const meta = {
 	title: "Waffle chart",
 	description:
 		"A 10 × 10 waffle where each cell is one percent, filling from the bottom-left like a container. Counts use largest-remainder rounding, so they always add up to 100.",
-	uses: ["Stage", "Waffle", "track", "draw", "usePlayer"],
 };
 
 const commute = [

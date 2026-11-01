@@ -6,19 +6,6 @@ export const meta = {
 	title: "Fourier epicycles",
 	description:
 		"Four circles chained end to end, each spinning at its own rate; the tip of the last arm traces a rounded square.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Path",
-		"Plot",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-		"hold",
-		"GOLD",
-	],
 };
 
 // Frequency n spins n times per revolution; radius 2.3 / n^2 shrinks fast.

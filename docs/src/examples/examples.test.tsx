@@ -1,46 +1,16 @@
 import { render } from "@solidjs/web";
-import * as three from "@sophistry/3d";
-import * as charts from "@sophistry/charts";
-import * as charts3d from "@sophistry/charts/3d";
-import * as core from "@sophistry/core";
-import * as color from "@sophistry/core/color";
-import * as geometry from "@sophistry/core/geometry";
-import * as themes from "@sophistry/core/themes";
-import * as solid from "@sophistry/solidjs";
-import * as solidThree from "@sophistry/solidjs/3d";
-import * as solidCharts from "@sophistry/solidjs/charts";
-import * as solidCharts3d from "@sophistry/solidjs/charts/3d";
-import * as solidText from "@sophistry/solidjs/text";
-import * as text from "@sophistry/text";
 import { beforeAll, describe, expect, it } from "vitest";
 import { CATEGORIES, examplesIn, SUBGALLERIES } from "../lib/examples";
 
 interface ExampleModule {
 	/** A Solid component (`.tsx`), or a framework-free `mount(host)` (`.ts`). */
 	default: (host?: HTMLElement) => unknown;
-	meta?: { title: string; description: string; uses: string[] };
+	meta?: { title: string; description: string };
 }
 
 const modules = import.meta.glob<ExampleModule>("./*/*.{ts,tsx}", {
 	eager: true,
 });
-const exported = new Set(
-	[
-		core,
-		color,
-		geometry,
-		themes,
-		text,
-		charts,
-		charts3d,
-		three,
-		solid,
-		solidText,
-		solidCharts,
-		solidCharts3d,
-		solidThree,
-	].flatMap((entry) => Object.keys(entry)),
-);
 const categories: string[] = CATEGORIES.map((c) => c.dir);
 
 /** happy-dom's canvas has no 2D context; hand out a recording-free no-op one. */
@@ -89,15 +59,11 @@ describe("gallery examples", () => {
 				expect(id).toMatch(/^[A-Z][A-Za-z0-9]*$/);
 			});
 
-			it("has well-formed meta whose `uses` are real exports", () => {
+			it("has well-formed meta", () => {
 				const { meta } = mod;
 				expect(meta, "missing `export const meta`").toBeDefined();
 				expect(meta?.title.trim()).toBeTruthy();
 				expect(meta?.description.trim()).toBeTruthy();
-				expect(meta?.uses.length).toBeGreaterThan(0);
-				for (const use of meta?.uses ?? []) {
-					expect(exported.has(use), `"${use}" is not exported`).toBe(true);
-				}
 			});
 
 			it("mounts without throwing", () => {

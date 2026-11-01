@@ -13,19 +13,6 @@ export const meta = {
 	title: "Animated numbers",
 	description:
 		"An Integer, a DecimalNumber and a Variable count up and back down with valueTo; digits keep fixed-width columns so nothing jitters.",
-	uses: [
-		"Stage",
-		"Integer",
-		"DecimalNumber",
-		"Variable",
-		"Label",
-		"track",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 export default function AnimatedNumbers() {

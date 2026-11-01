@@ -13,18 +13,6 @@ export const meta = {
 	title: "Write and unwrite",
 	description:
 		"Three outlines are drawn one after another with write, held for a moment, then erased in reverse order with unwrite.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Square",
-		"Polygon",
-		"Label",
-		"track",
-		"write",
-		"unwrite",
-		"hold",
-		"usePlayer",
-	],
 };
 
 export default function WriteAndErase() {

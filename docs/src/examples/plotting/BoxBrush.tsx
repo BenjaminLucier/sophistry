@@ -14,19 +14,6 @@ export const meta = {
 	title: "Brushing a box on both axes",
 	description:
 		"A two-dimensional brush on the left selects a box of the cloud and the chart on the right zooms to it. Drag the box, an edge or a corner, or Tab to it and use the arrow keys; the four tracks it writes are the right chart's ranges, animated here.",
-	uses: [
-		"Stage",
-		"Chart",
-		"RangeBrush",
-		"Scatter",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const hash = (n: number) => Math.abs(Math.sin(n * 12.9898) * 43758.5453) % 1;

@@ -20,21 +20,6 @@ export const meta = {
 	title: "Brushing linked charts",
 	description:
 		"An overview with a draggable range brush drives two detail charts linked on x. The brush writes two tracks and the link reads them, so dragging it, using the arrow keys, or animating the tracks (as here) zooms both details together, and scrubbing the timeline replays it.",
-	uses: [
-		"Stage",
-		"Chart",
-		"ChartLink",
-		"RangeBrush",
-		"LinePlot",
-		"Rects",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const days = Array.from({ length: 90 }, (_, t) => ({

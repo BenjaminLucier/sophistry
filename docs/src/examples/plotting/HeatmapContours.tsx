@@ -7,7 +7,6 @@ export const meta = {
 	title: "Heatmap with contours",
 	description:
 		"A grid of values colored as a heatmap, with iso-lines of the same field drawn over it.",
-	uses: ["Stage", "Axes", "Imshow", "Contour", "track", "draw", "usePlayer"],
 };
 
 const x = Array.from({ length: 31 }, (_, i) => -3 + i * 0.2);

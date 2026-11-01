@@ -13,15 +13,6 @@ export const meta = {
 	title: "PathBatch: many outlines, one node",
 	description:
 		"A field of 600 arrowheads, each its own outline and colour, drawn by one pathBatch node whose items derive from a single phase track.",
-	uses: [
-		"createScene",
-		"pathBatch",
-		"derive",
-		"track",
-		"forever",
-		"valueTo",
-		"label",
-	],
 };
 
 /** An arrowhead at `(x, y)` pointing along `angle`. */

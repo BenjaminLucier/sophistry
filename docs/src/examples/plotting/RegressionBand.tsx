@@ -7,15 +7,6 @@ export const meta = {
 	title: "Regression with a confidence band",
 	description:
 		"One least-squares fit per series, each with the 95% band of its mean, narrowest at the centre of its data. The series channel splits the fits and colours fits and points alike, keyed by one legend; every line and band sweeps in along x behind one front.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Regression",
-		"Scatter",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const students = Array.from({ length: 24 }, (_, i) => {

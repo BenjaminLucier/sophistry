@@ -25,4 +25,4 @@ Subpaths: `/geometry`, `/color`, `/themes` (pure helpers) and the unstable `/int
 
 ## Links
 
-[Documentation](https://sophistry.dev) · [API reference](https://sophistry.dev/api/modules/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/core) · MIT
+[Documentation](https://sophistry.dev) · [API](https://sophistry.dev/reference/api/) · [Source](https://github.com/BenjaminLucier/sophistry/tree/main/packages/core) · MIT

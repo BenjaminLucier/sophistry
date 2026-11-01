@@ -7,7 +7,6 @@ export const meta = {
 	title: "Ridgeline",
 	description:
 		'One Density over long-format rows, with series="month" and row: each month\'s curve stands on its own row of a band y axis and rises into the one above, so the shift in the distribution month by month reads as a landscape. The month axis stands at the left edge, clear of the curves, though the temperatures cross zero, and reveal="x" uncovers every ridge behind one shared front.',
-	uses: ["Stage", "Chart", "Density", "track", "draw", "usePlayer"],
 };
 
 const months = ["Jan", "Mar", "May", "Jul", "Sep", "Nov"];

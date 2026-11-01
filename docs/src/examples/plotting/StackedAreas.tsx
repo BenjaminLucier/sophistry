@@ -7,7 +7,6 @@ export const meta = {
 	title: "Stacked areas",
 	description:
 		"Wide-format rows (one object per x) become stacked bands: y takes one channel per band, mixing keys and functions, and series names them, so the bands take the chart's colours and legend.",
-	uses: ["Stage", "Chart", "StackPlot", "track", "draw", "usePlayer"],
 };
 
 const rows = Array.from({ length: 13 }, (_, month) => ({

@@ -9,7 +9,7 @@ painted on Canvas2D, with bindings for SolidJS and React.
 
 [Documentation](https://sophistry.dev) ·
 [Gallery](https://sophistry.dev/gallery/) ·
-[API reference](https://sophistry.dev/api/modules/) ·
+[API](https://sophistry.dev/reference/api/) ·
 [Roadmap](ROADMAP.md) ·
 [Contributing](CONTRIBUTING.md)
 
@@ -109,7 +109,8 @@ islands; see [embedding](https://sophistry.dev/recipes/embedding/).
 
 ## Status
 
-Pre-1.0 and on the Solid 2.0 release candidate. In `0.x`, a minor version may
+Pre-1.0. The core depends on no UI framework; the Solid binding is on the
+Solid 2.0 release candidate. In `0.x`, a minor version may
 contain breaking changes and a patch version is fixes only; `/internal` has no
 stability guarantee. Details: [stability](https://sophistry.dev/project/stability/),
 [roadmap](ROADMAP.md), [changelog](https://sophistry.dev/project/changelog/).

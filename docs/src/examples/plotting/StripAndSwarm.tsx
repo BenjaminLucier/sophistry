@@ -7,16 +7,6 @@ export const meta = {
 	title: "Strip plot and beeswarm",
 	description:
 		"Every observation as a dot, coloured by cohort through the chart's series scale and legend. A strip plot spreads them by seeded jitter (the same on every frame); a beeswarm packs them so none overlap. Dots appear in place, low values first.",
-	uses: [
-		"Stage",
-		"Label",
-		"Chart",
-		"Strip",
-		"Beeswarm",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const arms = ["placebo", "low dose", "high dose"];

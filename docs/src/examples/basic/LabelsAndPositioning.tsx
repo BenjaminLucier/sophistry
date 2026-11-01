@@ -7,17 +7,6 @@ export const meta = {
 	title: "Labels and positioning",
 	description:
 		"Line three shapes up with arrange(), then hang a caption beneath one with nextTo(), using each shape's measured bounds.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Square",
-		"Star",
-		"Label",
-		"arrange",
-		"nextTo",
-		"RIGHT",
-		"DOWN",
-	],
 };
 
 /** Any node with a `place` prop: shapes and labels. */

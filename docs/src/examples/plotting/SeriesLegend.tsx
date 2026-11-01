@@ -8,16 +8,6 @@ export const meta = {
 	title: "Series and a generated legend",
 	description:
 		"One long-format dataset split by series: a line and markers per city, one colour per city from the chart's scale, and a legend that arrives after the data it explains.",
-	uses: [
-		"Stage",
-		"Chart",
-		"LinePlot",
-		"Scatter",
-		"okabeIto",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const normals: Record<string, number[]> = {

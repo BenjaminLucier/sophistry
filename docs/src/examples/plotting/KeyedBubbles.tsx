@@ -8,17 +8,6 @@ export const meta = {
 	title: "Keyed bubbles with a staggered entrance",
 	description:
 		"Bubbles sized by population through the `size` channel (area ∝ value), keyed by the frame's size legend, blend to a later year by key: Lima shrinks away, the others move and resize, then three new cities grow in one after another, left to right (`enterStagger`). Only the entrance is staggered; the moves stay together, so they are easy to follow.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Scatter",
-		"okabeIto",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const before = [

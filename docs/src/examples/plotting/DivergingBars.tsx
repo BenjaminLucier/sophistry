@@ -7,7 +7,6 @@ export const meta = {
 	title: "Diverging stacked bars",
 	description:
 		'A Likert chart from long-format rows: series="answer" with layout="stack" sends negative values down from zero and positive values up, so disagreement and agreement grow apart from one centre line, and the chart\'s colour scale gives the legend in answer order. The question axis stands at the left edge, clear of the bars, and a zero line marks the baseline they grow from.',
-	uses: ["Stage", "Chart", "Bars", "track", "draw", "usePlayer"],
 };
 
 const answers = ["strongly disagree", "disagree", "agree", "strongly agree"];

@@ -8,17 +8,6 @@ export const meta = {
 	title: "Matching shapes",
 	description:
 		"A square and a circle become a larger circle and a long bar. TransformMatchingShapes pairs each shape with the one it most resembles, so nothing crosses over.",
-	uses: [
-		"Stage",
-		"TransformMatchingShapes",
-		"track",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-		"circlePolyline",
-		"rectPolyline",
-	],
 };
 
 const FROM: ShapePart[] = [

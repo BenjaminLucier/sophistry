@@ -7,7 +7,6 @@ export const meta = {
 	title: "Directed chord diagram",
 	description:
 		"Who emails whom: one chord per direction, each as wide at both ends as its flow, ending in an arrowhead on the team it reaches. A team that only receives still gets its arc.",
-	uses: ["Stage", "Chord", "track", "draw", "usePlayer"],
 };
 
 const mail = [

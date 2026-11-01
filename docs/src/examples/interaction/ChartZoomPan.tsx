@@ -19,20 +19,6 @@ export const meta = {
 	title: "Zoom a chart with the wheel, a pinch or the keys",
 	description:
 		"Scroll over the top chart to zoom about the cursor, drag it to pan, pinch on a touch screen, or Tab to it and use + and -, the arrows, and 0 to reset. The zoom writes two tracks and the overview's brush reads the same two, so it follows the zoom, and dragging the brush moves it.",
-	uses: [
-		"Stage",
-		"Chart",
-		"ChartZoom",
-		"RangeBrush",
-		"LinePlot",
-		"track",
-		"derive",
-		"valueTo",
-		"parallel",
-		"sequence",
-		"draw",
-		"usePlayer",
-	],
 };
 
 const last = 239;

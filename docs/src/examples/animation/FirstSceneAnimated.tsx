@@ -15,21 +15,6 @@ export const meta = {
 	title: "First scene: animate with a player",
 	description:
 		"Step two of the first-scene tutorial: tracks drive the ring, the radius and the angle, and usePlayer runs the script on the stage clock.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Line",
-		"Arc",
-		"Dot",
-		"Label",
-		"track",
-		"derive",
-		"draw",
-		"valueTo",
-		"sequence",
-		"usePlayer",
-		"useScene",
-	],
 };
 
 const RADIUS = 2.4;

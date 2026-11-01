@@ -7,7 +7,6 @@ export const meta = {
 	title: "Horizontal bars",
 	description:
 		"<Bars> on a categorical y axis: names laid out top-down, bars growing from zero one after another, values counting up. Hover a bar.",
-	uses: ["Stage", "Chart", "Bars", "track", "draw", "usePlayer"],
 };
 
 const langs = [

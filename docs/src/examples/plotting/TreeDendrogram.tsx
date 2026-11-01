@@ -7,7 +7,6 @@ export const meta = {
 	title: "Dendrogram",
 	description:
 		"A cluster dendrogram of a small taxonomy: elbow links grow out of the root one level at a time, leaves aligned on the right.",
-	uses: ["Stage", "Tree", "track", "draw", "usePlayer"],
 };
 
 type Taxon = { name: string; children?: Taxon[] };

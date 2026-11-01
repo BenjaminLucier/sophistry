@@ -13,18 +13,6 @@ export const meta = {
 	title: "Complex multiplication",
 	description:
 		"Multiplying z by 1 + i turns it by 45 degrees and stretches it by the square root of 2, which is the argument and modulus of 1 + i.",
-	uses: [
-		"Stage",
-		"ComplexPlane",
-		"Vector",
-		"LabeledDot",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"usePlayer",
-		"hold",
-	],
 };
 
 // z = 1 + 0.5i is multiplied by w = 1 + i, whose modulus is sqrt(2) and

@@ -12,15 +12,6 @@ export const meta = {
 	title: "Orbit a 3D scene",
 	description:
 		"Drag to orbit a cube and a sphere; the camera eye is a plain track.",
-	uses: [
-		"Stage",
-		"track",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Axes3D",
-		"Cube3D",
-		"Sphere3D",
-	],
 };
 
 function Scene() {

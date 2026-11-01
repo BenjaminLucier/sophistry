@@ -3,7 +3,7 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"description": "Sophistry — a controllable Manim-for-the-web animation and visualization toolkit for SolidJS.",
+	"description": "Sophistry — a controllable Manim-for-the-web animation and visualization toolkit: a framework-free core with SolidJS and React bindings.",
 	"packageManager": "pnpm@12.10.1",
 	"engines": {
 		"node": ">=24"
@@ -11,6 +11,7 @@
 	"scripts": {
 		"typecheck": "pnpm -r typecheck",
 		"test": "pnpm -r --workspace-concurrency=1 test",
+		"codegen": "pnpm --filter @sophistry/codegen generate",
 		"codegen:check": "pnpm --filter @sophistry/codegen check",
 		"lint": "biome check",
 		"test:e2e": "PUBLIC_SOPHISTRY_CAPTURE=1 pnpm --filter @sophistry/docs build && playwright test",
@@ -20,7 +21,8 @@
 		"format": "biome check --write",
 		"changeset": "changeset",
 		"version": "changeset version",
-		"release": "pnpm --filter @sophistry/core --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build && changeset publish",
+		"build": "pnpm --filter @sophistry/core --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build",
+		"release": "pnpm build && changeset publish",
 		"smoke:consumer": "node scripts/consumer-smoke.mjs",
 		"check:playwright": "node scripts/check-playwright-image.mjs"
 	},

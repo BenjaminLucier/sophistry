@@ -7,7 +7,6 @@ export const meta = {
 	title: "Sunburst",
 	description:
 		"A sunburst of a monthly budget, revealed by one clockwise sweep from 12 o'clock.",
-	uses: ["Stage", "Sunburst", "track", "draw", "usePlayer"],
 };
 
 type Item = { name: string; cost?: number; children?: Item[] };

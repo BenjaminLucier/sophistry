@@ -6,17 +6,6 @@ export const meta = {
 	title: "Unit circle",
 	description:
 		"Draw a circle with draw(), then send a dot around it with moveTo().",
-	uses: [
-		"Stage",
-		"Circle",
-		"Dot",
-		"Label",
-		"track",
-		"trackPoint",
-		"draw",
-		"moveTo",
-		"usePlayer",
-	],
 };
 
 export default function UnitCircle() {

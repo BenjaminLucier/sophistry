@@ -12,16 +12,6 @@ export const meta = {
 	title: "Helix curve",
 	description:
 		"A parametric 3D curve drawn in by draw(); drag to orbit around the helix.",
-	uses: [
-		"Stage",
-		"track",
-		"draw",
-		"usePlayer",
-		"Camera3D",
-		"useOrbitControls3D",
-		"Axes3D",
-		"Curve3D",
-	],
 };
 
 function Helix() {

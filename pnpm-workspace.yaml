@@ -27,10 +27,7 @@ catalog:
   filesystem-routing: ^0.4.0
   happy-dom: ^20.11.2
   solid-js: 2.0.0-rc.14
-  starlight-typedoc: ^0.23.1
   tailwindcss: ^4.3.3
-  typedoc: ^0.28.20
-  typedoc-plugin-markdown: ^4.13.1
   typescript: ~7.0.2
   vite: ^8.3.4
   vitest: ^4.1.10

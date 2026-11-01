@@ -7,7 +7,6 @@ export const meta = {
 	title: "KPI gauge and radial bars",
 	description:
 		"A gauge with threshold bands and a needle, beside activity rings. Each draws its track first, then sweeps clockwise while the readout counts up.",
-	uses: ["Stage", "Gauge", "RadialBarChart", "track", "draw", "usePlayer"],
 };
 
 const rings = [

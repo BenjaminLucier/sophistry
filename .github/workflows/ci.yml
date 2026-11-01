@@ -35,7 +35,6 @@ jobs:
       # and the docs' framework examples compile against the bindings.
       - run: pnpm codegen:check
       - run: pnpm --filter @sophistry/codegen check:examples
-      - run: pnpm --filter @sophistry/core check:examples
       - run: pnpm --filter @sophistry/docs typecheck
       - run: pnpm --filter @sophistry/core build
       - run: pnpm --filter @sophistry/docs build

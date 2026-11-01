@@ -7,17 +7,6 @@ export const meta = {
 	title: "Export a PNG",
 	description:
 		"The stage's ref hands you the scene. captureFrame encodes scene.canvas as last painted; download the blob.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"track",
-		"derive",
-		"rotateBy",
-		"usePlayer",
-		"useScene",
-		"captureFrame",
-	],
 };
 
 function Orbit() {

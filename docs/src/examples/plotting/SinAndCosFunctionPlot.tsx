@@ -12,17 +12,6 @@ export const meta = {
 	title: "Sine and cosine",
 	description:
 		"Plot two functions on one set of axes and draw them in with draw().",
-	uses: [
-		"Stage",
-		"Axes",
-		"FunctionGraph",
-		"Label",
-		"track",
-		"draw",
-		"usePlayer",
-		"RED",
-		"TEAL",
-	],
 };
 
 export default function SinAndCosFunctionPlot() {

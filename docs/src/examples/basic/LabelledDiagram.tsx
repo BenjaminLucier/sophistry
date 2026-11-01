@@ -30,19 +30,6 @@ export const meta = {
 	title: "A diagram laid out by placement",
 	description:
 		"Three boxes in a row, captions under each, arrows between them, a frame around the lot and a title pinned to the corner. No coordinates are typed by hand.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Label",
-		"Arrow",
-		"SurroundingRectangle",
-		"arrange",
-		"nextTo",
-		"toCorner",
-		"unionBounds",
-		"useScene",
-		"derive",
-	],
 };
 
 const STEPS = ["parse", "transform", "render"];

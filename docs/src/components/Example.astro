@@ -1,6 +1,5 @@
 ---
 import { Code } from "@astrojs/starlight/components";
-import { requireApiUrl } from "../lib/api-links";
 import { getExample } from "../lib/examples";
 import { ExampleIsland } from "./ExampleIsland.tsx";
 
@@ -13,8 +12,6 @@ interface Props {
 const { name, caption } = Astro.props;
 const example = getExample(name);
 const { meta } = example;
-// Throws on any name the generated reference has no page for.
-const uses = meta.uses.map((use) => ({ use, href: requireApiUrl(use, name) }));
 // The stage's aspect ratio, so the placeholder that holds its space before it
 // mounts is the right height. Read from the first <Stage aspect={...}> in the
 // source, or a framework-free example's `createScene({ aspect: ... })`; 16 / 9
@@ -49,17 +46,6 @@ const aspect = aspectMatch
 		lang={example.lang}
 		title={`${example.id}.${example.lang}`}
 	/>
-	<p class="uses">
-		<strong>Uses:</strong>
-		{
-			uses.map(({ use, href }, i) => (
-				<>
-					{i > 0 && ", "}
-					<a href={href}><code>{use}</code></a>
-				</>
-			))
-		}
-	</p>
 </section>
 
 <style>
@@ -72,8 +58,5 @@ const aspect = aspectMatch
 	}
 	.sophistry-example h3 a:hover {
 		text-decoration: underline;
-	}
-	.uses {
-		font-size: var(--sl-text-sm);
 	}
 </style>

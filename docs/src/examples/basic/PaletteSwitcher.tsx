@@ -7,16 +7,6 @@ export const meta = {
 	title: "Palette switcher",
 	description:
 		"Tap a swatch to hand the whole scene a different palette. Shapes, labels and the ground all restyle because they only read theme tokens.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Rect",
-		"Label",
-		"definePalette",
-		"resolvePalette",
-		"useScene",
-		"derive",
-	],
 };
 
 const ocean = definePalette({

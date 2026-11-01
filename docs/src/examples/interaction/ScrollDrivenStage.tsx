@@ -15,20 +15,6 @@ export const meta = {
 	title: "Scroll-driven animation",
 	description:
 		"Scroll the box: its scroll position is the timeline's time. A sticky stage stays pinned while the page behind it moves, and scrolling back rewinds the scene.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"Line",
-		"createClock",
-		"timeline",
-		"sequence",
-		"draw",
-		"moveTo",
-		"track",
-		"trackPoint",
-		"derive",
-	],
 };
 
 export default function ScrollDrivenStage() {

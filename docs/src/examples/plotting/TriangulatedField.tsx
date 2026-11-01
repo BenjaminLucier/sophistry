@@ -7,15 +7,6 @@ export const meta = {
 	title: "Contours from scattered samples",
 	description:
 		"Readings at scattered stations, triangulated: after the frame, the faces fade in as a wave from the top-left while the contour lines draw level by level, lowest first.",
-	uses: [
-		"Stage",
-		"Chart",
-		"Tripcolor",
-		"TriContour",
-		"track",
-		"draw",
-		"usePlayer",
-	],
 };
 
 // 90 stations on a sunflower spiral (no grid), each reading a smooth field.

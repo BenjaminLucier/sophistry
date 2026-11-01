@@ -14,19 +14,6 @@ export const meta = {
 	title: "Sequencing animations",
 	description:
 		"The same three lifts played one after another, all together, and staggered, using sequence, parallel and lagged.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Label",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"parallel",
-		"lagged",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const XS = [-2.5, 0, 2.5];

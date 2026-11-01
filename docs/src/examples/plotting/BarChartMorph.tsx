@@ -7,17 +7,6 @@ export const meta = {
 	title: "Morphing chart data",
 	description:
 		"Charts redraw from their data, so animating the data animates the chart: one blend track mixes two datasets and every bar follows.",
-	uses: [
-		"Stage",
-		"Label",
-		"BarChart",
-		"track",
-		"derive",
-		"valueTo",
-		"sequence",
-		"hold",
-		"usePlayer",
-	],
 };
 
 const before = [3, 7, 4, 9, 6];

@@ -23,23 +23,6 @@ export const meta = {
 	title: "First scene: make it draggable",
 	description:
 		"Step three of the first-scene tutorial: the same theta track that the animation writes is now also written by dragging the dot around the ring.",
-	uses: [
-		"Stage",
-		"Circle",
-		"Line",
-		"Arc",
-		"Dot",
-		"Label",
-		"track",
-		"derive",
-		"draw",
-		"valueTo",
-		"sequence",
-		"usePlayer",
-		"draggable",
-		"angleParam",
-		"useTheme",
-	],
 };
 
 const R = 2.4;

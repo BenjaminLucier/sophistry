@@ -22,22 +22,6 @@ export const meta = {
 	title: "Step-through lesson",
 	description:
 		"Drag the token onto the right answer to unlock Next. Wrong drops bounce back; Tab to a box and press Enter to answer without a pointer.",
-	uses: [
-		"Stage",
-		"Rect",
-		"Circle",
-		"Label",
-		"draggable",
-		"dropTarget",
-		"usePlayer",
-		"fadeIn",
-		"moveTo",
-		"indicate",
-		"sequence",
-		"track",
-		"trackPoint",
-		"useTheme",
-	],
 };
 
 const QUESTIONS = [
