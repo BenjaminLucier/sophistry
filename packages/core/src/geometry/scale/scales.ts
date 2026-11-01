@@ -9,15 +9,15 @@
  */
 
 import { scaleLog, scalePow, scaleSymlog, scaleTime, scaleUtc } from "d3-scale";
-import { createResolver } from "../resolver";
+import { createResolver } from "../resolver.js";
 import {
 	fromWallTime,
 	type TimeZone,
 	toWallTime,
 	wallTimeInstants,
-} from "../time";
-import type { TickFormatter } from "./tick-format";
-import { axisTicks, logTicks } from "./ticks";
+} from "../time.js";
+import type { TickFormatter } from "./tick-format.js";
+import { axisTicks, logTicks } from "./ticks.js";
 
 /**
  * A data range, as in Manim's `x_range`. The step is the major tick spacing.

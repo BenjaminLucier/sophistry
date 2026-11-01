@@ -9,14 +9,14 @@
  * lives here, below both, because `interact/` may not import `render/`.
  */
 
-import type { ArcTable, CurveArcTable } from "./arclength";
+import type { ArcTable, CurveArcTable } from "./arclength.js";
 import {
 	measure,
 	measureCurve,
 	revealedPolylines,
 	sliceCurveAtT,
-} from "./arclength";
-import type { CurvePath, Polyline } from "./types";
+} from "./arclength.js";
+import type { CurvePath, Polyline } from "./types.js";
 
 /** One outline's arc-length tables, in its own units, and their summed length. */
 export interface OutlineReveal<T> {

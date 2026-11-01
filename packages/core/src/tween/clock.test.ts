@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createClock, defaultClock, watchClockVisibility } from "./clock";
-import { isFrameLoopRunning, resetFrameLoop } from "./frame-loop";
+import { createClock, defaultClock, watchClockVisibility } from "./clock.js";
+import { isFrameLoopRunning, resetFrameLoop } from "./frame-loop.js";
 
 // This module is DOM-free in intent but `onTick()` calls `requestAnimationFrame`
 // to drive its own frame loop; the vitest environment here is "node", which has no

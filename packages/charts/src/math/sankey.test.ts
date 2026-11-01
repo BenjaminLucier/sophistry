@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { SankeyLinkInput } from "./sankey";
-import { sankeyLayout, sankeyRibbon } from "./sankey";
+import type { SankeyLinkInput } from "./sankey.js";
+import { sankeyLayout, sankeyRibbon } from "./sankey.js";
 
 const energy: SankeyLinkInput[] = [
 	{ source: "coal", target: "power", value: 4 },

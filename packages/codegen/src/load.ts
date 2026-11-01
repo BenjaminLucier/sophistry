@@ -1,11 +1,12 @@
 /**
  * Loads a package's `definitions` export under plain Node.
  *
- * The workspace packages ship TypeScript source written for bundler
- * resolution (`import { x } from "./scene"`). Node strips the types itself;
- * these hooks add the two resolutions it lacks (a missing `.ts` extension, a
- * directory's `index.ts`) and stub asset imports (`?url`, `?raw`, fonts,
- * styles), which only a bundler understands and no definition needs.
+ * The workspace packages' `exports` point at their TypeScript source, whose
+ * relative imports name the emitted file (`import { x } from "./scene/index.js"`).
+ * Node strips the types itself; these hooks map such a `.js` specifier to the
+ * `.ts` or `.tsx` file beside it, as TypeScript does, and stub asset imports
+ * (`?url`, `?raw`, fonts, styles), which only a bundler understands and no
+ * definition needs.
  */
 
 import { registerHooks } from "node:module";
@@ -30,12 +31,11 @@ export function registerSourceHooks(): void {
 			try {
 				return nextResolve(specifier, context);
 			} catch (error) {
-				if (!specifier.startsWith(".") && !specifier.startsWith("/")) {
-					throw error;
-				}
-				for (const suffix of [".ts", ".tsx", "/index.ts"]) {
+				const relative = specifier.startsWith(".") || specifier.startsWith("/");
+				if (!relative || !specifier.endsWith(".js")) throw error;
+				for (const extension of [".ts", ".tsx"]) {
 					try {
-						return nextResolve(specifier + suffix, context);
+						return nextResolve(specifier.slice(0, -3) + extension, context);
 					} catch {}
 				}
 				throw error;

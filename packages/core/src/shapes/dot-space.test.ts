@@ -5,17 +5,17 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { networkGraph } from "../network/network-graph";
-import { themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import { group } from "../scene/group";
-import { resolveTheme } from "../themes";
-import { labeledDot } from "./dot";
+import { networkGraph } from "../network/network-graph.js";
+import { themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { group } from "../scene/group.js";
+import { resolveTheme } from "../themes/index.js";
+import { labeledDot } from "./dot.js";
 
 const measured = vi.hoisted(() => ({ calls: 0 }));
 
-vi.mock("../spec/metrics", async (importOriginal) => {
-	const original = await importOriginal<typeof import("../spec/metrics")>();
+vi.mock("../spec/metrics.js", async (importOriginal) => {
+	const original = await importOriginal<typeof import("../spec/metrics.js")>();
 	return {
 		...original,
 		labelBox: (...args: Parameters<typeof original.labelBox>) => {

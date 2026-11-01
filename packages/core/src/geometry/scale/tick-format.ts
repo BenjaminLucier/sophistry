@@ -5,9 +5,9 @@
  */
 
 import { scaleLinear } from "d3-scale";
-import { createResolver } from "../resolver";
-import { axisTimeZone, type TimeZone } from "../time";
-import { calendarAxis, type Range, type ScaleSpec } from "./scales";
+import { createResolver } from "../resolver.js";
+import { axisTimeZone, type TimeZone } from "../time.js";
+import { calendarAxis, type Range, type ScaleSpec } from "./scales.js";
 
 /**
  * A tick's text. Without `decimalPlaces` the number is written as short as it

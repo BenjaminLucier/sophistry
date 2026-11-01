@@ -11,16 +11,20 @@
 import type { SceneNode } from "@sophistry/core";
 import type { Polyline } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { ruleX } from "../bars/rules";
-import { bin, group, stack, summarize } from "../bars/transforms";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { channelValues, numberValues, resolveChannel } from "../data/channels";
-import { secondaryY } from "../guides";
-import { rects } from "../points/rects";
-import { scatter } from "../points/scatter";
-import { markItems, mount } from "../test-harness";
+import { ruleX } from "../bars/rules.js";
+import { bin, group, stack, summarize } from "../bars/transforms.js";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import {
+	channelValues,
+	numberValues,
+	resolveChannel,
+} from "../data/channels.js";
+import { secondaryY } from "../guides/index.js";
+import { rects } from "../points/rects.js";
+import { scatter } from "../points/scatter.js";
+import { markItems, mount } from "../test-harness.js";
 
 type View = ReturnType<typeof mount>;
 

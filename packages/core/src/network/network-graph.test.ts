@@ -12,16 +12,16 @@ import type {
 	GraphLayoutOptions,
 	Point,
 	VertexId,
-} from "../geometry";
-import { edgeKey, graphLayouts } from "../geometry";
-import { track } from "../reactive";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { SceneNode } from "../scene/types";
-import { circle } from "../shapes/circle";
-import type { ShapeSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { diGraph, networkGraph, networkHandle } from "./network-graph";
+} from "../geometry/index.js";
+import { edgeKey, graphLayouts } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { SceneNode } from "../scene/types.js";
+import { circle } from "../shapes/circle.js";
+import type { ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { diGraph, networkGraph, networkHandle } from "./network-graph.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

@@ -2,7 +2,7 @@
 
 import type { CurveKind, CurvePath, Point } from "@sophistry/core/geometry";
 import { areaCurvePath, closedCurvePath } from "@sophistry/core/geometry";
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /**
  * One ring per continuous run, returned closed (first point repeated), as

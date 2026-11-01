@@ -3,16 +3,16 @@
  * outline is built about the origin and the centre is the shape's `offset`.
  */
 
-import type { Point, Polyline } from "../geometry";
-import { polylineToCurvePath, rectPolyline } from "../geometry";
-import { Invalidate } from "../scene/context";
+import type { Point, Polyline } from "../geometry/index.js";
+import { polylineToCurvePath, rectPolyline } from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /**
  * Drops a ring's synthetic closing point (first point repeated at the end),

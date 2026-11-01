@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pcolormeshCells } from "./pcolormesh";
+import { pcolormeshCells } from "./pcolormesh.js";
 
 describe("pcolormeshCells", () => {
 	it("uses edge arrays directly when given ncols+1/nrows+1 coordinates", () => {

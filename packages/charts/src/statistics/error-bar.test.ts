@@ -6,14 +6,14 @@
 
 import type { CoordinateSystem } from "@sophistry/core";
 import { describe, expect, it, vi } from "vitest";
-import { bars } from "../bars/bars";
-import { chart, chartHandle } from "../chart";
-import { scatter } from "../points/scatter";
-import { hashRanks } from "../stagger";
-import { markItems, mount } from "../test-harness";
-import { errorBar } from "./error-bar";
-import type { Mounted } from "./test-picture";
-import { items, paint, picture, rounded } from "./test-picture";
+import { bars } from "../bars/bars.js";
+import { chart, chartHandle } from "../chart.js";
+import { scatter } from "../points/scatter.js";
+import { hashRanks } from "../stagger.js";
+import { markItems, mount } from "../test-harness.js";
+import { errorBar } from "./error-bar.js";
+import type { Mounted } from "./test-picture.js";
+import { items, paint, picture, rounded } from "./test-picture.js";
 
 /** The bars and caps: each `line` item's ends, rounded, with its stroke. */
 const segments = (scene: Mounted) =>

@@ -6,31 +6,31 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { arcCurvePath, type Point, type Polyline } from "../geometry";
-import type { ScenePointerEvent } from "../interact/types";
-import { track } from "../reactive";
-import { circle, ellipse } from "../shapes/circle";
-import { dot } from "../shapes/dot";
-import { dashedLine } from "../shapes/line";
-import type { MarksSpec, ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import type { Clock } from "../tween/clock";
-import { createClock } from "../tween/clock";
+import { arcCurvePath, type Point, type Polyline } from "../geometry/index.js";
+import type { ScenePointerEvent } from "../interact/types.js";
+import { track } from "../reactive/index.js";
+import { circle, ellipse } from "../shapes/circle.js";
+import { dot } from "../shapes/dot.js";
+import { dashedLine } from "../shapes/line.js";
+import type { MarksSpec, ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import type { Clock } from "../tween/clock.js";
+import { createClock } from "../tween/clock.js";
 import {
 	clockContext,
 	Invalidate,
 	reducedMotionContext,
 	themeContext,
-} from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import { instances } from "./instances";
+} from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import { instances } from "./instances.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "./shape";
+} from "./shape.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

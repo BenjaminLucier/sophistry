@@ -26,8 +26,8 @@ import type {
 import { createScene, group } from "@sophistry/core";
 import { DEFAULT_BOX_CLASS } from "@sophistry/core/internal";
 import { children, createRenderEffect, onCleanup, untrack } from "solid-js";
-import { currentClock, SceneContext, useScene } from "./context";
-import { childNodes } from "./nodes";
+import { currentClock, SceneContext, useScene } from "./context.js";
+import { childNodes } from "./nodes.js";
 
 /**
  * Props for {@link Stage} (and {@link MultiStage}).

@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { VectorFn } from "./field";
-import { fieldJitter, rk4Step, streamline, streamlineBothWays } from "./field";
-import type { Bounds, Point } from "./path/types";
+import type { VectorFn } from "./field.js";
+import {
+	fieldJitter,
+	rk4Step,
+	streamline,
+	streamlineBothWays,
+} from "./field.js";
+import type { Bounds, Point } from "./path/types.js";
 
 function expectPointClose(a: Point, b: Point, digits = 6) {
 	expect(a.x).toBeCloseTo(b.x, digits);

@@ -15,31 +15,31 @@
  * @packageDocumentation
  */
 
-export type { BarSlotBox3D } from "./3d/bar3d";
-export { bar3dSlots } from "./3d/bar3d";
-export type { QuiverOptions, QuiverVector3 } from "./3d/quiver3d";
-export { quiverVectors } from "./3d/quiver3d";
-export type { ScatterPoint3 } from "./3d/scatter3d";
-export { scatterPoints3 } from "./3d/scatter3d";
-export type { Stem3DOptions, StemPoint3 } from "./3d/stem3d";
-export { stemPoints3 } from "./3d/stem3d";
-export type { SurfaceGrid, SurfaceGridFace } from "./3d/surfaceGrid3d";
-export { surfaceGridFaces, surfaceGridWireframe } from "./3d/surfaceGrid3d";
-export { trisurfaceFaces } from "./3d/trisurface";
-export type { VoxelFace } from "./3d/voxels";
-export { voxelFaces } from "./3d/voxels";
+export type { BarSlotBox3D } from "./3d/bar3d.js";
+export { bar3dSlots } from "./3d/bar3d.js";
+export type { QuiverOptions, QuiverVector3 } from "./3d/quiver3d.js";
+export { quiverVectors } from "./3d/quiver3d.js";
+export type { ScatterPoint3 } from "./3d/scatter3d.js";
+export { scatterPoints3 } from "./3d/scatter3d.js";
+export type { Stem3DOptions, StemPoint3 } from "./3d/stem3d.js";
+export { stemPoints3 } from "./3d/stem3d.js";
+export type { SurfaceGrid, SurfaceGridFace } from "./3d/surfaceGrid3d.js";
+export { surfaceGridFaces, surfaceGridWireframe } from "./3d/surfaceGrid3d.js";
+export { trisurfaceFaces } from "./3d/trisurface.js";
+export type { VoxelFace } from "./3d/voxels.js";
+export { voxelFaces } from "./3d/voxels.js";
 export type {
 	NormalizeBasis,
 	Reducer,
 	ReducerName,
 	RollingOptions,
-} from "./aggregate";
-export { normalizeValues, reduceValues, rollingValues } from "./aggregate";
-export type { BarSlotBox } from "./bar";
-export { barSlot, DEFAULT_BAR_WIDTH } from "./bar";
-export type { BarbGlyph, BarbGlyphOptions } from "./barbs";
-export { barbGlyph } from "./barbs";
-export type { BarLabelSize, StackTotal } from "./barLabels";
+} from "./aggregate.js";
+export { normalizeValues, reduceValues, rollingValues } from "./aggregate.js";
+export type { BarSlotBox } from "./bar.js";
+export { barSlot, DEFAULT_BAR_WIDTH } from "./bar.js";
+export type { BarbGlyph, BarbGlyphOptions } from "./barbs.js";
+export { barbGlyph } from "./barbs.js";
+export type { BarLabelSize, StackTotal } from "./barLabels.js";
 export {
 	barLabelValues,
 	decimalsOf,
@@ -47,32 +47,32 @@ export {
 	insideLabelFit,
 	mixBarLabelValues,
 	stackTotals,
-} from "./barLabels";
-export type { BoxplotOptions, BoxplotStats } from "./boxplot";
-export { boxplotStats, DEFAULT_WHISKER_SCALE } from "./boxplot";
+} from "./barLabels.js";
+export type { BoxplotOptions, BoxplotStats } from "./boxplot.js";
+export { boxplotStats, DEFAULT_WHISKER_SCALE } from "./boxplot.js";
 export type {
 	BreadcrumbBack,
 	BreadcrumbItem,
 	BreadcrumbLayoutOptions,
 	HierarchyPathSpec,
 	WeightedPath,
-} from "./breadcrumbs";
+} from "./breadcrumbs.js";
 export {
 	breadcrumbLayout,
 	flattenPathSpec,
 	isPathTransition,
 	samePath,
-} from "./breadcrumbs";
-export type { BubbleRadii, BubbleRadiusOptions } from "./bubble";
-export { bubbleLegendValues, bubbleRadiusScale } from "./bubble";
+} from "./breadcrumbs.js";
+export type { BubbleRadii, BubbleRadiusOptions } from "./bubble.js";
+export { bubbleLegendValues, bubbleRadiusScale } from "./bubble.js";
 export type {
 	BulletBand,
 	BulletDomainOptions,
 	BulletRowGeometry,
 	BulletRowOptions,
 	BulletSpan,
-} from "./bullet";
-export { bulletDomain, bulletRow } from "./bullet";
+} from "./bullet.js";
+export { bulletDomain, bulletRow } from "./bullet.js";
 export type {
 	ChordEnd,
 	ChordGroup,
@@ -80,32 +80,37 @@ export type {
 	ChordLink,
 	ChordOptions,
 	ChordRibbonOptions,
-} from "./chord";
-export { chordLayout, chordRibbon } from "./chord";
+} from "./chord.js";
+export { chordLayout, chordRibbon } from "./chord.js";
 export type {
 	ClusterLinkage,
 	ClusterMetric,
 	ClusterNode,
 	ClusterOptions,
 	ClusterTree,
-} from "./cluster";
-export { clusterRows, distanceMatrix, leafOrder, linkageTree } from "./cluster";
-export type { ContourLine } from "./contour";
-export { contourLines } from "./contour";
-export type { ContourBand } from "./contourf";
-export { contourBands } from "./contourf";
-export type { BeeswarmOptions } from "./dodge";
-export { beeswarmOffsets, dodgeSpan } from "./dodge";
-export type { EcdfOptions, EcdfSteps } from "./ecdf";
+} from "./cluster.js";
+export {
+	clusterRows,
+	distanceMatrix,
+	leafOrder,
+	linkageTree,
+} from "./cluster.js";
+export type { ContourLine } from "./contour.js";
+export { contourLines } from "./contour.js";
+export type { ContourBand } from "./contourf.js";
+export { contourBands } from "./contourf.js";
+export type { BeeswarmOptions } from "./dodge.js";
+export { beeswarmOffsets, dodgeSpan } from "./dodge.js";
+export type { EcdfOptions, EcdfSteps } from "./ecdf.js";
 export {
 	DEFAULT_ECDF_PAD_FALLBACK,
 	DEFAULT_ECDF_PAD_FRACTION,
 	ecdfSteps,
-} from "./ecdf";
-export type { ErrorBarPoint, ErrorSpec } from "./errorbar";
-export { errorBarPoints } from "./errorbar";
-export type { EventPlotOptions, EventRow } from "./eventplot";
-export { eventPlotRows } from "./eventplot";
+} from "./ecdf.js";
+export type { ErrorBarPoint, ErrorSpec } from "./errorbar.js";
+export { errorBarPoints } from "./errorbar.js";
+export type { EventPlotOptions, EventRow } from "./eventplot.js";
+export { eventPlotRows } from "./eventplot.js";
 export type {
 	FacetCell,
 	FacetGrid,
@@ -113,11 +118,11 @@ export type {
 	FacetSlot,
 	FacetSlots,
 	SideRoom,
-} from "./facet";
-export { facetGrid, facetSlots, outerEdge, panelProgress } from "./facet";
-export type { FillBetweenRings } from "./fillBetween";
-export { fillBetweenCurve, fillBetweenRings } from "./fillBetween";
-export type { GaugeBandSpan } from "./gauge";
+} from "./facet.js";
+export { facetGrid, facetSlots, outerEdge, panelProgress } from "./facet.js";
+export type { FillBetweenRings } from "./fillBetween.js";
+export { fillBetweenCurve, fillBetweenRings } from "./fillBetween.js";
+export type { GaugeBandSpan } from "./gauge.js";
 export {
 	GAUGE_END_ANGLE,
 	GAUGE_START_ANGLE,
@@ -125,9 +130,9 @@ export {
 	gaugeBandIndex,
 	gaugeBands,
 	gaugeFraction,
-} from "./gauge";
-export type { HexBinCell } from "./hexbin";
-export { hexbin } from "./hexbin";
+} from "./gauge.js";
+export type { HexBinCell } from "./hexbin.js";
+export { hexbin } from "./hexbin.js";
 export type {
 	HierarchyCircle,
 	HierarchyNodeInfo,
@@ -139,30 +144,33 @@ export type {
 	TreemapRow,
 	TreemapRows,
 	TreemapTile,
-} from "./hierarchy";
+} from "./hierarchy.js";
 export {
 	packLayout,
 	partitionLayout,
 	treemapLayout,
 	treemapRows,
-} from "./hierarchy";
-export type { HierarchyJoinInfo, HierarchyJoinOptions } from "./hierarchyJoin";
-export { hierarchyJoin, hierarchyKeys } from "./hierarchyJoin";
-export type { HistogramBins, HistogramOptions } from "./histogram";
-export { DEFAULT_BIN_COUNT, histogramBins } from "./histogram";
-export type { Histogram2D, Histogram2DOptions } from "./histogram2d";
-export { histogram2d } from "./histogram2d";
-export type { ImshowCell, ImshowOptions, ImshowResult } from "./imshow";
-export { imshowCells } from "./imshow";
-export type { JitterOptions } from "./jitter";
-export { jitterOffsets } from "./jitter";
+} from "./hierarchy.js";
+export type {
+	HierarchyJoinInfo,
+	HierarchyJoinOptions,
+} from "./hierarchyJoin.js";
+export { hierarchyJoin, hierarchyKeys } from "./hierarchyJoin.js";
+export type { HistogramBins, HistogramOptions } from "./histogram.js";
+export { DEFAULT_BIN_COUNT, histogramBins } from "./histogram.js";
+export type { Histogram2D, Histogram2DOptions } from "./histogram2d.js";
+export { histogram2d } from "./histogram2d.js";
+export type { ImshowCell, ImshowOptions, ImshowResult } from "./imshow.js";
+export { imshowCells } from "./imshow.js";
+export type { JitterOptions } from "./jitter.js";
+export { jitterOffsets } from "./jitter.js";
 export type {
 	JoinStageOptions,
 	JoinStages,
 	JoinStaging,
 	KeyedJoin,
 	StageWindow,
-} from "./join";
+} from "./join.js";
 export {
 	joinStages,
 	keyedJoin,
@@ -171,15 +179,15 @@ export {
 	rescaleWindow,
 	stageProgress,
 	staggeredStageProgress,
-} from "./join";
+} from "./join.js";
 export type {
 	KeyframeSpan,
 	RaceEntry,
 	RaceOptions,
 	RaceTimeline,
 	RaceView,
-} from "./keyframes";
-export { keyframeAt, raceTimeline, trailPolyline } from "./keyframes";
+} from "./keyframes.js";
+export { keyframeAt, raceTimeline, trailPolyline } from "./keyframes.js";
 export type {
 	LegendItemLayout,
 	LegendLayout,
@@ -187,23 +195,23 @@ export type {
 	SizeLegendItemLayout,
 	SizeLegendLayout,
 	SizeLegendLayoutOptions,
-} from "./legend";
-export { legendLayout, sizeLegendLayout } from "./legend";
+} from "./legend.js";
+export { legendLayout, sizeLegendLayout } from "./legend.js";
 export {
 	DECIMATION_MIN_PER_COLUMN,
 	dataRuns,
 	decimateRun,
 	isNonDecreasingX,
 	sameRuns,
-} from "./line";
-export type { AreaPoint, StepFunction } from "./morph";
+} from "./line.js";
+export type { AreaPoint, StepFunction } from "./morph.js";
 export {
 	morphArea,
 	morphAreaRuns,
 	morphPolyline,
 	morphRuns,
 	morphSteps,
-} from "./morph";
+} from "./morph.js";
 export type {
 	MosaicColumn,
 	MosaicInput,
@@ -211,9 +219,9 @@ export type {
 	MosaicLayout,
 	MosaicOptions,
 	MosaicRect,
-} from "./mosaic";
-export { mosaicLayout } from "./mosaic";
-export type { OrdinalColorScale, OrdinalColorScaleOptions } from "./ordinal";
+} from "./mosaic.js";
+export { mosaicLayout } from "./mosaic.js";
+export type { OrdinalColorScale, OrdinalColorScaleOptions } from "./ordinal.js";
 export {
 	datumKeys,
 	observable10,
@@ -221,12 +229,17 @@ export {
 	ordinalColorScale,
 	tableau10,
 	uniqueKeys,
-} from "./ordinal";
-export type { ParallelLine } from "./parallel";
-export { parallelAxisX, parallelLines } from "./parallel";
-export type { PcolormeshCell, PcolormeshResult } from "./pcolormesh";
-export { pcolormeshCells } from "./pcolormesh";
-export type { PieOptions, PieSlice, RingSlice, SweepWedgeOptions } from "./pie";
+} from "./ordinal.js";
+export type { ParallelLine } from "./parallel.js";
+export { parallelAxisX, parallelLines } from "./parallel.js";
+export type { PcolormeshCell, PcolormeshResult } from "./pcolormesh.js";
+export { pcolormeshCells } from "./pcolormesh.js";
+export type {
+	PieOptions,
+	PieSlice,
+	RingSlice,
+	SweepWedgeOptions,
+} from "./pie.js";
 export {
 	pieGrow,
 	pieSlices,
@@ -235,42 +248,42 @@ export {
 	ringOrder,
 	sweepShare,
 	sweepWedge,
-} from "./pie";
-export type { PolarAreaOptions, PolarAreaSlice } from "./polarArea";
-export { polarAreaSlices } from "./polarArea";
+} from "./pie.js";
+export type { PolarAreaOptions, PolarAreaSlice } from "./polarArea.js";
+export { polarAreaSlices } from "./polarArea.js";
 export type {
 	RadarAxisFrame,
 	RadarAxisFrameOptions,
 	RadarOptions,
 	RadarVertex,
-} from "./radar";
+} from "./radar.js";
 export {
 	assertRadarShape,
 	radarAxisFrames,
 	radarFramePolygon,
 	radarLabelOffset,
 	radarVertices,
-} from "./radar";
+} from "./radar.js";
 export type {
 	AlignedRangeOptions,
 	AutoRangeOptions,
 	FitRangeOptions,
-} from "./range";
-export { alignedRange, autoRange, fitRange } from "./range";
+} from "./range.js";
+export { alignedRange, autoRange, fitRange } from "./range.js";
 export type {
 	LoessBandOptions,
 	LoessOptions,
 	MeanInterval,
 	RegressionOptions,
 	RegressionPoint,
-} from "./regression";
+} from "./regression.js";
 export {
 	loess,
 	loessBand,
 	meanInterval,
 	regression,
 	studentT,
-} from "./regression";
+} from "./regression.js";
 export {
 	clipPolylineToX,
 	clipRingToX,
@@ -279,7 +292,7 @@ export {
 	revealPolylinesAlongX,
 	revealRingsAlongX,
 	xExtent,
-} from "./reveal";
+} from "./reveal.js";
 export type {
 	SankeyAlign,
 	SankeyId,
@@ -289,32 +302,32 @@ export type {
 	SankeyNode,
 	SankeyOptions,
 	SankeyRibbonOptions,
-} from "./sankey";
-export { sankeyLayout, sankeyRibbon } from "./sankey";
-export type { ScatterPoint } from "./scatter";
-export { scatterPoints } from "./scatter";
-export { binIndex } from "./shared/binning";
-export type { GridCell, GridResult } from "./shared/gridCells";
-export { gridNcols } from "./shared/gridCells";
-export { dataExtent } from "./shared/gridExtent";
-export type { PolarSweepOptions } from "./shared/polar";
-export { resolvePolarSweep } from "./shared/polar";
+} from "./sankey.js";
+export { sankeyLayout, sankeyRibbon } from "./sankey.js";
+export type { ScatterPoint } from "./scatter.js";
+export { scatterPoints } from "./scatter.js";
+export { binIndex } from "./shared/binning.js";
+export type { GridCell, GridResult } from "./shared/gridCells.js";
+export { gridNcols } from "./shared/gridCells.js";
+export { dataExtent } from "./shared/gridExtent.js";
+export type { PolarSweepOptions } from "./shared/polar.js";
+export { resolvePolarSweep } from "./shared/polar.js";
 export type {
 	StackColumnsOptions,
 	StackColumnsResult,
 	StackItem,
 	StackOffset,
 	StackOrder,
-} from "./stack";
-export { stackColumns, stackOrder } from "./stack";
-export type { StackedBand, StackPlotOptions } from "./stackplot";
-export { stackedBands } from "./stackplot";
-export type { StairsPolyline } from "./stairs";
-export { stairsPolyline } from "./stairs";
-export type { StemOptions, StemPoint } from "./stem";
-export { stemPoints } from "./stem";
-export type { SymbolName } from "./symbol";
-export { SYMBOLS, symbolPolygon } from "./symbol";
+} from "./stack.js";
+export { stackColumns, stackOrder } from "./stack.js";
+export type { StackedBand, StackPlotOptions } from "./stackplot.js";
+export { stackedBands } from "./stackplot.js";
+export type { StairsPolyline } from "./stairs.js";
+export { stairsPolyline } from "./stairs.js";
+export type { StemOptions, StemPoint } from "./stem.js";
+export { stemPoints } from "./stem.js";
+export type { SymbolName } from "./symbol.js";
+export { SYMBOLS, symbolPolygon } from "./symbol.js";
 export type {
 	RadialTreeLinkOptions,
 	TreeLayoutKind,
@@ -322,30 +335,30 @@ export type {
 	TreeLinkOptions,
 	TreeLinkShape,
 	TreeNode,
-} from "./tree";
+} from "./tree.js";
 export {
 	hierarchyTreeLayout,
 	radialTreeLink,
 	radialTreePoint,
 	treeLink,
-} from "./tree";
+} from "./tree.js";
 export type {
 	TriangleIndices,
 	TriangulationOptions,
 	TripcolorFace,
-} from "./tricontour";
+} from "./tricontour.js";
 export {
 	triangulate,
 	tricontourBands,
 	tricontourLines,
 	tripcolorFaces,
-} from "./tricontour";
+} from "./tricontour.js";
 export type {
 	GaussianKdeOptions,
 	KdePoint,
 	ViolinProfile,
 	ViolinRingOptions,
-} from "./violin";
+} from "./violin.js";
 export {
 	blendViolinProfiles,
 	DEFAULT_SAMPLES,
@@ -354,8 +367,8 @@ export {
 	violinProfile,
 	violinProfileRing,
 	violinRing,
-} from "./violin";
-export type { WaffleCell, WaffleOptions } from "./waffle";
-export { largestRemainder, waffleCells } from "./waffle";
-export type { WaterfallStep } from "./waterfall";
-export { waterfallSteps } from "./waterfall";
+} from "./violin.js";
+export type { WaffleCell, WaffleOptions } from "./waffle.js";
+export { largestRemainder, waffleCells } from "./waffle.js";
+export type { WaterfallStep } from "./waterfall.js";
+export { waterfallSteps } from "./waterfall.js";

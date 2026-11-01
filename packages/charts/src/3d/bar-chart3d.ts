@@ -5,18 +5,22 @@ import { prism3D } from "@sophistry/3d";
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
-import type { ColorChannel, Quantity } from "../data/channels";
-import { colorResolver, numberValues, resolveQuantity } from "../data/channels";
-import type { BarSlotBox3D } from "../math/3d/bar3d";
-import { bar3dSlots } from "../math/3d/bar3d";
-import type { AnyDatum } from "../props";
+import type { ColorChannel, Quantity } from "../data/channels.js";
+import {
+	colorResolver,
+	numberValues,
+	resolveQuantity,
+} from "../data/channels.js";
+import type { BarSlotBox3D } from "../math/3d/bar3d.js";
+import { bar3dSlots } from "../math/3d/bar3d.js";
+import type { AnyDatum } from "../props.js";
 import {
 	dataChanged,
 	forwardAll,
 	forwardChanged,
 	forwardedEntries,
 	setPoint3,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Plots */
 export interface BarChart3DProps<T = unknown>

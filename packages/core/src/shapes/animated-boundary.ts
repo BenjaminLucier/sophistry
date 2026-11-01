@@ -7,24 +7,24 @@
  * reruns only those and no `update`.
  */
 
-import type { ColorInput } from "../color";
-import type { Polyline } from "../geometry";
-import { derive, type Track, track } from "../reactive";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { type ShapeProps, shapeProps } from "../scene/shape";
-import type { PropsDescriptor } from "../scene/types";
-import type { Theme } from "../themes/types";
-import type { Easing } from "../tween/easing";
-import { resolveEasing } from "../tween/easing";
+import type { ColorInput } from "../color/index.js";
+import type { Polyline } from "../geometry/index.js";
+import { derive, type Track, track } from "../reactive/index.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { type ShapeProps, shapeProps } from "../scene/shape.js";
+import type { PropsDescriptor } from "../scene/types.js";
+import type { Theme } from "../themes/types.js";
+import type { Easing } from "../tween/easing.js";
+import { resolveEasing } from "../tween/easing.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
 	rawProp,
-} from "./forward";
-import { path } from "./path";
-import { timeOf } from "./traced-path";
+} from "./forward.js";
+import { path } from "./path.js";
+import { timeOf } from "./traced-path.js";
 
 /** @category Shapes */
 export interface AnimatedBoundaryProps

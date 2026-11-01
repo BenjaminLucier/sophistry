@@ -23,30 +23,30 @@ import type { BandKey } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
 import type { Placement } from "@sophistry/core/internal";
 import { anchoredLabelProps, clamp01 } from "@sophistry/core/internal";
-import { positionOf } from "../band";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import { positionOf } from "../band.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	indexOf,
 	resolveChannel,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { AxisExtent } from "../frame/types";
-import type { JoinEnd } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { AxisExtent } from "../frame/types.js";
+import type { JoinEnd } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	keyRanks,
 	layerTransition,
-} from "../join";
-import { blendCss } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { staggered } from "../stagger";
-import { keyedMemo, mix } from "../util";
+} from "../join.js";
+import { blendCss } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import { keyedMemo, mix } from "../util.js";
 
 const DEFAULT_FONT_SIZE = 0.26;
 /** Clears a default marker (radius 0.09) with room to spare. */

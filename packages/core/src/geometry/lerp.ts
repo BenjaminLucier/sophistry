@@ -5,8 +5,8 @@
  * `lerpPoint3` imports only the `Point3` type from `geometry3d/`.
  */
 
-import type { Point3 } from "../geometry3d/mat";
-import type { CurvePath, Point, Polyline } from "./path/types";
+import type { Point3 } from "../geometry3d/mat.js";
+import type { CurvePath, Point, Polyline } from "./path/types.js";
 
 /**
  * Linear interpolation: `t` of the way from `a` to `b`. The one formula

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { fillBetweenRings } from "./fillBetween";
+import { fillBetweenRings } from "./fillBetween.js";
 
 describe("fillBetweenRings", () => {
 	it("builds one closed ring from upper then reversed lower, first point repeated", () => {

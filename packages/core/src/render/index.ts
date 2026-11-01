@@ -6,11 +6,11 @@
  * accessibility mirror.
  */
 
-export * from "./a11y";
-export * from "./camera";
-export * from "./camera-gesture";
-export * from "./canvas-renderer";
-export * from "./layer-cache";
-export * from "./paint";
-export * from "./paint-items";
-export * from "./pointer";
+export * from "./a11y.js";
+export * from "./camera.js";
+export * from "./camera-gesture.js";
+export * from "./canvas-renderer.js";
+export * from "./layer-cache.js";
+export * from "./paint.js";
+export * from "./paint-items.js";
+export * from "./pointer.js";

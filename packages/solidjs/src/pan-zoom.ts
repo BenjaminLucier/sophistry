@@ -7,7 +7,7 @@ import type { JSX } from "@solidjs/web";
 import type { PanZoomController, PanZoomSceneOptions } from "@sophistry/core";
 import { panZoom } from "@sophistry/core";
 import { onCleanup } from "solid-js";
-import { useScene } from "./context";
+import { useScene } from "./context.js";
 
 /**
  * Options for {@link usePanZoom}: core's `PanZoomSceneOptions`.

@@ -5,8 +5,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { ImageSpec, MarksSpec, StrokeStyle } from "../spec/types";
-import { pickMark, pickPixel } from "./pick-items";
+import type { ImageSpec, MarksSpec, StrokeStyle } from "../spec/types.js";
+import { pickMark, pickPixel } from "./pick-items.js";
 
 const style: StrokeStyle = {
 	stroke: "none",

@@ -9,20 +9,20 @@
  * own units, so dragging inside a rotated group tracks the pointer exactly.
  */
 
-import type { Point } from "../geometry";
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
-import type { Animatable } from "../tween/target";
-import type { ConstraintSpec, DragContext } from "./constrain";
-import { resolveConstraint } from "./constrain";
-import { pointParam } from "./param";
-import { DEFAULT_SLOP } from "./slop";
+import type { Point } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
+import type { Animatable } from "../tween/target.js";
+import type { ConstraintSpec, DragContext } from "./constrain.js";
+import { resolveConstraint } from "./constrain.js";
+import { pointParam } from "./param.js";
+import { DEFAULT_SLOP } from "./slop.js";
 import type {
 	DragBehaviour,
 	KeyboardBehaviour,
 	PointerEvents,
 	ScenePointerEvent,
-} from "./types";
+} from "./types.js";
 
 /**
  * The projection a drag is parameterised on: pointer → value, value → point.

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stitchSegments } from "./stitch";
+import { stitchSegments } from "./stitch.js";
 
 describe("stitchSegments", () => {
 	it("joins an open chain from a free end, whatever order the segments come in", () => {

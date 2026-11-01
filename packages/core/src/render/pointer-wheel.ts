@@ -6,17 +6,17 @@
  * design.
  */
 
-import type { Point } from "../geometry";
-import { applyToPoint, invert } from "../geometry/transform";
-import { hitTest } from "../interact/hit";
+import type { Point } from "../geometry/index.js";
+import { applyToPoint, invert } from "../geometry/transform.js";
+import { hitTest } from "../interact/hit.js";
 import type {
 	PointerDriverOptions,
 	SceneWheelEvent,
 	SceneWheelListener,
 	WheelListenerOptions,
-} from "./pointer";
-import type { EventContext, PointerCore } from "./pointer-core";
-import type { PointerPresence } from "./pointer-presence";
+} from "./pointer.js";
+import type { EventContext, PointerCore } from "./pointer-core.js";
+import type { PointerPresence } from "./pointer-presence.js";
 
 /** The scene-level half of wheel routing, for one driver. */
 export interface WheelRouter {

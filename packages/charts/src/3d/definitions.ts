@@ -6,14 +6,14 @@
  * the 2D definitions record decides when to pull the `3d` peer in.
  */
 
-import { barChart3D } from "./bar-chart3d";
-import { quiver3D } from "./quiver3d";
-import { scatter3D } from "./scatter3d";
-import { stem3D } from "./stem3d";
-import { surfaceGrid3D } from "./surface-grid3d";
-import { triSurface3D } from "./tri-surface3d";
-import { voxels3D } from "./voxels3d";
-import { wireframe3D } from "./wireframe3d";
+import { barChart3D } from "./bar-chart3d.js";
+import { quiver3D } from "./quiver3d.js";
+import { scatter3D } from "./scatter3d.js";
+import { stem3D } from "./stem3d.js";
+import { surfaceGrid3D } from "./surface-grid3d.js";
+import { triSurface3D } from "./tri-surface3d.js";
+import { voxels3D } from "./voxels3d.js";
+import { wireframe3D } from "./wireframe3d.js";
 
 /**
  * Every 3D chart definition, by export name.

@@ -43,11 +43,11 @@
  * only the passes those channels feed.
  */
 
-import { toCss, tryParseColor } from "../color/parse";
-import type { Color } from "../color/types";
-import type { EasingFunction } from "../tween/easing";
-import type { SpringSpec, SpringState } from "../tween/spring";
-import { springAt } from "../tween/spring";
+import { toCss, tryParseColor } from "../color/parse.js";
+import type { Color } from "../color/types.js";
+import type { EasingFunction } from "../tween/easing.js";
+import type { SpringSpec, SpringState } from "../tween/spring.js";
+import { springAt } from "../tween/spring.js";
 
 /**
  * How a channel's values are stored: `number` (one float), `point` (two),

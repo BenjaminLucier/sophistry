@@ -15,10 +15,10 @@ import type { Readable } from "@sophistry/core";
 import { isReadable } from "@sophistry/core";
 import type { Polyline } from "@sophistry/core/geometry";
 import { boundsOf } from "@sophistry/core/geometry";
-import type { MeasureOptions } from "./measure";
-import type { LatexOutline } from "./outline";
-import { latexOutline } from "./outline";
-import type { PlacedLatex } from "./placed";
+import type { MeasureOptions } from "./measure.js";
+import type { LatexOutline } from "./outline.js";
+import { latexOutline } from "./outline.js";
+import type { PlacedLatex } from "./placed.js";
 
 /**
  * Typesetting options shared by `mathTex`, `mathTransform` and

@@ -16,12 +16,18 @@ import {
 	quadraticToCubic,
 	rightAngleMarkPolyline,
 	sectorCurvePath,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
-import { angle, elbow, resolveAngleAnchor, rightAngle } from "./angle";
-import { annularSector, annulus, arc, arcBetweenPoints, sector } from "./arc";
-import { cubicBezier, quadraticBezier } from "./bezier";
-import { expectBaked, manualGraph, shapeSpec } from "./test-graph";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
+import { angle, elbow, resolveAngleAnchor, rightAngle } from "./angle.js";
+import {
+	annularSector,
+	annulus,
+	arc,
+	arcBetweenPoints,
+	sector,
+} from "./arc.js";
+import { cubicBezier, quadraticBezier } from "./bezier.js";
+import { expectBaked, manualGraph, shapeSpec } from "./test-graph.js";
 
 describe("arc family", () => {
 	it("describes its props as outline inputs", () => {

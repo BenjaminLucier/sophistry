@@ -1,10 +1,10 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { moveBy, valueTo } from "./move";
-import { forever, sequence } from "./sequence";
-import { changeSpeed } from "./speed";
-import { timeline } from "./timeline";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { moveBy, valueTo } from "./move.js";
+import { forever, sequence } from "./sequence.js";
+import { changeSpeed } from "./speed.js";
+import { timeline } from "./timeline.js";
 
 beforeEach(() => {
 	vi.stubGlobal("requestAnimationFrame", () => 0);

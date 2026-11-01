@@ -10,8 +10,8 @@
 
 import type { ScenePointerEvent } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
-import type { TooltipContent, TooltipState } from "./tooltip";
-import { tooltipLabel } from "./tooltip";
+import type { TooltipContent, TooltipState } from "./tooltip.js";
+import { tooltipLabel } from "./tooltip.js";
 
 /**
  * Hover and tap handlers showing item `event.item`'s tooltip.

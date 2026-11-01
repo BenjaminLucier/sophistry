@@ -7,11 +7,11 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import type { Polyline } from "../geometry";
-import { derive, track } from "../reactive";
-import { circle, rect } from "../shapes";
-import { bake, derivePolylines, plainShapeSpec } from "../spec/bake";
-import { linearGradient } from "../spec/gradient";
+import type { Polyline } from "../geometry/index.js";
+import { derive, track } from "../reactive/index.js";
+import { circle, rect } from "../shapes/index.js";
+import { bake, derivePolylines, plainShapeSpec } from "../spec/bake.js";
+import { linearGradient } from "../spec/gradient.js";
 import {
 	DOWN,
 	LEFT,
@@ -21,17 +21,17 @@ import {
 	shiftBy,
 	UP,
 	UR,
-} from "../spec/layout";
-import type { DrawSpec, ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
+} from "../spec/layout.js";
+import type { DrawSpec, ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
 import {
 	boundsOfPolylines,
 	defineShape,
 	type ShapeProps,
 	shapeProps,
-} from "./shape";
+} from "./shape.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

@@ -1,16 +1,16 @@
 import { describe, expect, it } from "vitest";
-import type { CurvePath, Point, Polyline } from "../geometry";
-import { lineSegment } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { CurvePath, Point, Polyline } from "../geometry/index.js";
+import { lineSegment } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	compose,
 	fromTranslationRotationScale,
 	IDENTITY,
 	rotate,
 	translate,
-} from "../geometry/transform";
-import { resolveTheme } from "../themes";
-import type { ShapeGeometry } from "./bake";
+} from "../geometry/transform.js";
+import { resolveTheme } from "../themes/index.js";
+import type { ShapeGeometry } from "./bake.js";
 import {
 	bake,
 	bakeCurvePaths,
@@ -23,9 +23,9 @@ import {
 	bakeTextSpec,
 	bakeTextStyle,
 	derivePolylines,
-} from "./bake";
-import { linearGradient } from "./gradient";
-import type { ShapeSpec } from "./types";
+} from "./bake.js";
+import { linearGradient } from "./gradient.js";
+import type { ShapeSpec } from "./types.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

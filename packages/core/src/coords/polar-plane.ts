@@ -3,8 +3,8 @@
  * over an ordinary cartesian mapping.
  */
 
-import type { ColorInput } from "../color";
-import type { Point, Range } from "../geometry";
+import type { ColorInput } from "../color/index.js";
+import type { Point, Range } from "../geometry/index.js";
 import {
 	formatTick,
 	polarPoint,
@@ -12,26 +12,26 @@ import {
 	tickStep,
 	tickValues,
 	wrapAngle,
-} from "../geometry";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { measuresText } from "../scene/fonts";
-import { label } from "../scene/text";
-import type { SceneNode } from "../scene/types";
-import { circle } from "../shapes/circle";
-import { line } from "../shapes/line";
-import { ORIGIN } from "../spec/layout";
-import type { AxisOptions } from "./axes";
-import { fullOptions } from "./axes";
-import { anchoredLabelProps } from "./axis-labels";
-import type { CoordinateSystem } from "./coords";
+} from "../geometry/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { measuresText } from "../scene/fonts.js";
+import { label } from "../scene/text.js";
+import type { SceneNode } from "../scene/types.js";
+import { circle } from "../shapes/circle.js";
+import { line } from "../shapes/line.js";
+import { ORIGIN } from "../spec/layout.js";
+import type { AxisOptions } from "./axes.js";
+import { fullOptions } from "./axes.js";
+import { anchoredLabelProps } from "./axis-labels.js";
+import type { CoordinateSystem } from "./coords.js";
 import {
 	coordsOf,
 	createCartesianCoords,
 	createPhases,
 	publishCoords,
-} from "./coords";
+} from "./coords.js";
 import {
 	DEFAULT_GRID_OPACITY,
 	DEFAULT_GRID_STROKE_WIDTH,
@@ -39,9 +39,9 @@ import {
 	sameRange,
 	stablePoint,
 	thin,
-} from "./grid-lines";
-import type { NumberLineProps } from "./number-line";
-import { numberLine } from "./number-line";
+} from "./grid-lines.js";
+import type { NumberLineProps } from "./number-line.js";
+import { numberLine } from "./number-line.js";
 
 // Every azimuth here is a fraction of `TAU`, one full turn, never of 360.
 

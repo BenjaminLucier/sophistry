@@ -38,30 +38,30 @@ function loadFont(nextAdvance: number): void {
 }
 
 let modules: {
-	metrics: typeof import("../spec/metrics");
-	context: typeof import("../scene/context");
-	graph: typeof import("../scene/graph");
-	text: typeof import("../scene/text");
-	composite: typeof import("../scene/composite");
-	fonts: typeof import("../scene/fonts");
-	circle: typeof import("../shapes/circle");
-	themes: typeof import("../themes");
-	decimal: typeof import("./decimal-number");
-	paragraph: typeof import("./paragraph");
+	metrics: typeof import("../spec/metrics.js");
+	context: typeof import("../scene/context.js");
+	graph: typeof import("../scene/graph.js");
+	text: typeof import("../scene/text.js");
+	composite: typeof import("../scene/composite.js");
+	fonts: typeof import("../scene/fonts.js");
+	circle: typeof import("../shapes/circle.js");
+	themes: typeof import("../themes/index.js");
+	decimal: typeof import("./decimal-number.js");
+	paragraph: typeof import("./paragraph.js");
 };
 
 beforeAll(async () => {
 	modules = {
-		metrics: await import("../spec/metrics"),
-		context: await import("../scene/context"),
-		graph: await import("../scene/graph"),
-		text: await import("../scene/text"),
-		composite: await import("../scene/composite"),
-		fonts: await import("../scene/fonts"),
-		circle: await import("../shapes/circle"),
-		themes: await import("../themes"),
-		decimal: await import("./decimal-number"),
-		paragraph: await import("./paragraph"),
+		metrics: await import("../spec/metrics.js"),
+		context: await import("../scene/context.js"),
+		graph: await import("../scene/graph.js"),
+		text: await import("../scene/text.js"),
+		composite: await import("../scene/composite.js"),
+		fonts: await import("../scene/fonts.js"),
+		circle: await import("../shapes/circle.js"),
+		themes: await import("../themes/index.js"),
+		decimal: await import("./decimal-number.js"),
+		paragraph: await import("./paragraph.js"),
 	};
 });
 

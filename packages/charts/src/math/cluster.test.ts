@@ -1,7 +1,12 @@
 import { describe, expect, it } from "vitest";
-import type { ClusterNode } from "./cluster";
-import { clusterRows, distanceMatrix, leafOrder, linkageTree } from "./cluster";
-import { hierarchyTreeLayout } from "./tree";
+import type { ClusterNode } from "./cluster.js";
+import {
+	clusterRows,
+	distanceMatrix,
+	leafOrder,
+	linkageTree,
+} from "./cluster.js";
+import { hierarchyTreeLayout } from "./tree.js";
 
 /** Merge heights, root first, depth-first. */
 const heights = (node: ClusterNode | null): number[] =>

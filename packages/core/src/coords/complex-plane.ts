@@ -3,24 +3,24 @@
  * `numberPlane` speaking in `{ re, im }`.
  */
 
-import type { Point } from "../geometry";
-import { formatTick } from "../geometry";
-import type { Complex } from "../geometry/complex";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { SceneNode } from "../scene/types";
-import type { AxisOptions } from "./axes";
-import type { CoordinateSystem } from "./coords";
-import { coordsOf, publishCoords } from "./coords";
-import type { NumberPlaneProps, NumberPlaneState } from "./number-plane";
+import type { Complex } from "../geometry/complex.js";
+import type { Point } from "../geometry/index.js";
+import { formatTick } from "../geometry/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type { SceneNode } from "../scene/types.js";
+import type { AxisOptions } from "./axes.js";
+import type { CoordinateSystem } from "./coords.js";
+import { coordsOf, publishCoords } from "./coords.js";
+import type { NumberPlaneProps, NumberPlaneState } from "./number-plane.js";
 import {
 	createNumberPlaneState,
 	numberPlaneLayout,
 	numberPlaneProps,
-} from "./number-plane";
+} from "./number-plane.js";
 
-export type { Complex } from "../geometry/complex";
+export type { Complex } from "../geometry/complex.js";
 
 /**
  * The coordinate system a {@link complexPlane} publishes: `coordsToPoint`/`pointToCoords` plus complex-number conversions.

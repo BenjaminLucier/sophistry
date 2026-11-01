@@ -5,9 +5,9 @@
  * `minSpeed`.
  */
 
-import { boundsContain } from "./bounds";
-import { isFinitePoint } from "./num";
-import type { Bounds, Point, Polyline } from "./path/types";
+import { boundsContain } from "./bounds.js";
+import { isFinitePoint } from "./num.js";
+import type { Bounds, Point, Polyline } from "./path/types.js";
 
 /**
  * A vector field: the vector at a point, in the caller's own coordinates.

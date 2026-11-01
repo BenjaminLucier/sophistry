@@ -4,7 +4,7 @@
  * while it runs.
  */
 
-import { type Range, resolveScale, type ScaleSpec } from "./scales";
+import { type Range, resolveScale, type ScaleSpec } from "./scales.js";
 
 /**
  * A range on its way from one value to another: what an axis shows at blend

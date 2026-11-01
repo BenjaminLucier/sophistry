@@ -1,0 +1,12 @@
+{
+	// The published packages (packages/*). They resolve imports the way Node
+	// does, so relative imports carry their `.js` extension and the emitted
+	// declarations resolve under every consumer's module resolution, not only
+	// `bundler`. The docs and apps keep tsconfig.base.json's bundler mode.
+	"extends": "./tsconfig.base.json",
+	"compilerOptions": {
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"allowImportingTsExtensions": false
+	}
+}

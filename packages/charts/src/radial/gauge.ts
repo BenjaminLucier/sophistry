@@ -37,10 +37,10 @@ import {
 	gaugeBandIndex,
 	gaugeBands,
 	gaugeFraction,
-} from "../math/gauge";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipHandlers, tooltipText } from "../tooltip";
-import { createOwnTooltip, NO_SWEEP, wedgeItem } from "./shared";
+} from "../math/gauge.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipHandlers, tooltipText } from "../tooltip.js";
+import { createOwnTooltip, NO_SWEEP, wedgeItem } from "./shared.js";
 
 /** Share of `progress` spent drawing the track and bands before the value. */
 const FRAME_SHARE = 0.3;

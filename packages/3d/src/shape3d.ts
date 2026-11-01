@@ -71,9 +71,9 @@ import {
 import type { InteractionHandlers } from "@sophistry/core/internal";
 import { ANY_CONTEXT, BaseContainer } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import { type Camera3DValue, camera3DContext } from "./context";
-import type { DepthItem, DepthSource } from "./depth-sort";
-import type { Shape3DProps } from "./props3d";
+import { type Camera3DValue, camera3DContext } from "./context.js";
+import type { DepthItem, DepthSource } from "./depth-sort.js";
+import type { Shape3DProps } from "./props3d.js";
 
 /**
  * One 2D shape a 3D primitive draws: a face, a disc, a polyline.

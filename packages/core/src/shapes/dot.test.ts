@@ -13,19 +13,19 @@ import {
 	parseColor,
 	RED as RED_HEX,
 	toCss,
-} from "../color";
-import { arcCurvePath, boundsOf, centerOf } from "../geometry";
-import { Invalidate, themeContext } from "../scene/context";
-import { label } from "../scene/text";
+} from "../color/index.js";
+import { arcCurvePath, boundsOf, centerOf } from "../geometry/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { label } from "../scene/text.js";
 import {
 	flatColor,
 	isGradientSpec,
 	linearGradient,
 	resolvePaint,
-} from "../spec/gradient";
-import { NO_SHIFT, shiftBy } from "../spec/layout";
-import type { TextSpec } from "../spec/types";
-import { colorRamp, definePalette, resolveTheme } from "../themes";
+} from "../spec/gradient.js";
+import { NO_SHIFT, shiftBy } from "../spec/layout.js";
+import type { TextSpec } from "../spec/types.js";
+import { colorRamp, definePalette, resolveTheme } from "../themes/index.js";
 import {
 	annotationDot,
 	dot,
@@ -33,9 +33,9 @@ import {
 	type LabeledDotProps,
 	labeledDot,
 	labeledDotRadius,
-} from "./dot";
-import { line } from "./line";
-import { rect } from "./rect";
+} from "./dot.js";
+import { line } from "./line.js";
+import { rect } from "./rect.js";
 import {
 	darkTheme,
 	expectBaked,
@@ -43,7 +43,7 @@ import {
 	shapeSpec,
 	shapeSpecsOf,
 	textSpecsOf,
-} from "./test-graph";
+} from "./test-graph.js";
 
 describe("dot", () => {
 	it("is a circle of 0.09 about its centre, filled and ringed in its colour", () => {

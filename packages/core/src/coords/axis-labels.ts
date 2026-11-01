@@ -4,14 +4,14 @@
  * the room its numbers take. Internal — not in the barrel.
  */
 
-import type { ColorInput } from "../color";
+import type { ColorInput } from "../color/index.js";
 import type {
 	Bounds,
 	Matrix,
 	Point,
 	Range,
 	RangeTransition,
-} from "../geometry";
+} from "../geometry/index.js";
 import {
 	applyToPoint,
 	axisTicks,
@@ -21,12 +21,12 @@ import {
 	resolveTickFormatter,
 	tickFormatters,
 	tickStep,
-} from "../geometry";
-import type { TextHalo } from "../scene/text";
-import type { Placement, Vec2 } from "../spec/layout";
-import { boundsFromCenter, nextTo, readDelta } from "../spec/layout";
-import { measureLabel } from "../spec/metrics";
-import type { NumberLineProps } from "./number-line";
+} from "../geometry/index.js";
+import type { TextHalo } from "../scene/text.js";
+import type { Placement, Vec2 } from "../spec/layout.js";
+import { boundsFromCenter, nextTo, readDelta } from "../spec/layout.js";
+import { measureLabel } from "../spec/metrics.js";
+import type { NumberLineProps } from "./number-line.js";
 
 /** Half-length of a major tick — it straddles the line, as Manim's does. */
 export const DEFAULT_TICK_SIZE = 0.1;

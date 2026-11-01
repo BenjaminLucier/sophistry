@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Point } from "./path/types";
+import type { Point } from "./path/types.js";
 import {
 	arcPolyline,
 	arrowHead,
@@ -11,7 +11,7 @@ import {
 	rectPolyline,
 	regularPolygon,
 	segmentsForRadius,
-} from "./shapes";
+} from "./shapes.js";
 
 function expectPointClose(a: Point, b: Point, digits = 6) {
 	expect(a.x).toBeCloseTo(b.x, digits);

@@ -7,13 +7,13 @@
  */
 
 import type { BandKey } from "@sophistry/core/geometry";
-import type { ChartLayer } from "./context";
-import type { Channel, DateSink } from "./data/channels";
-import { channelValues } from "./data/channels";
-import type { ColorExtent, LegendMark } from "./frame/types";
-import type { OrdinalColorScale } from "./math/ordinal";
-import { datumKeys, uniqueKeys } from "./math/ordinal";
-import { shallowEqual } from "./util";
+import type { ChartLayer } from "./context.js";
+import type { Channel, DateSink } from "./data/channels.js";
+import { channelValues } from "./data/channels.js";
+import type { ColorExtent, LegendMark } from "./frame/types.js";
+import type { OrdinalColorScale } from "./math/ordinal.js";
+import { datumKeys, uniqueKeys } from "./math/ordinal.js";
+import { shallowEqual } from "./util.js";
 
 /** The one group of a grouped mark drawn without a `series`. */
 export const WHOLE = Symbol("whole");

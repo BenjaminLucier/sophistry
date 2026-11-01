@@ -18,39 +18,39 @@
  * its identity.
  */
 
-import { cssColor } from "../color/parse";
-import type { Bounds, CurvePath, Point, Polyline } from "../geometry";
-import { boundsOf, centerOf } from "../geometry/bounds";
-import type { Matrix } from "../geometry/transform";
+import { cssColor } from "../color/parse.js";
+import { boundsOf, centerOf } from "../geometry/bounds.js";
+import type { Bounds, CurvePath, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToCurvePath,
 	IDENTITY,
 	scaleFactorOf,
 	translate,
-} from "../geometry/transform";
-import { bakeStrokeStyle, flattenCurves } from "../spec/bake";
-import type { PaintSpec } from "../spec/gradient";
-import { isGradientSpec } from "../spec/gradient";
+} from "../geometry/transform.js";
+import { bakeStrokeStyle, flattenCurves } from "../spec/bake.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { isGradientSpec } from "../spec/gradient.js";
 import type {
 	ClipRegion,
 	MarkOutline,
 	MarkShape,
 	MarksSpec,
 	StrokeStyle,
-} from "../spec/types";
-import type { Theme } from "../themes/types";
-import { Invalidate, themeContext } from "./context";
-import type { MarksProps } from "./marks";
-import { marksProps } from "./marks";
-import { ANY_CONTEXT, BaseNode, memo } from "./node";
-import { definePrimitive } from "./primitive";
+} from "../spec/types.js";
+import type { Theme } from "../themes/types.js";
+import { Invalidate, themeContext } from "./context.js";
+import type { MarksProps } from "./marks.js";
+import { marksProps } from "./marks.js";
+import { ANY_CONTEXT, BaseNode, memo } from "./node.js";
+import { definePrimitive } from "./primitive.js";
 import type {
 	ContextKey,
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /**
  * One item of a path batch: an outline in the batch's own units, and

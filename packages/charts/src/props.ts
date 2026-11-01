@@ -6,8 +6,8 @@
  */
 
 import type { BandKey } from "@sophistry/core/geometry";
-import type { Channel } from "./data/channels";
-import type { JoinStaging } from "./math/join";
+import type { Channel } from "./data/channels.js";
+import type { JoinStaging } from "./math/join.js";
 
 /**
  * Order for `stagger` and `enterStagger`: `"position"` follows the mark's own

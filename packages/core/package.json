@@ -73,16 +73,16 @@
 		"build": "vite build && tsc -p tsconfig.build.json"
 	},
 	"dependencies": {
+		"@types/d3-ease": "catalog:",
 		"d3-color": "^3.1.0",
 		"d3-ease": "^3.0.1",
-		"d3-interpolate": "^3.0.1",
+		"d3-interpolate": "catalog:",
 		"d3-scale": "^4.0.2",
 		"wgpu-matrix": "^3.4.2"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@types/d3-color": "catalog:",
-		"@types/d3-ease": "catalog:",
 		"@types/d3-interpolate": "catalog:",
 		"@types/d3-scale": "catalog:",
 		"@vitest/coverage-v8": "catalog:",

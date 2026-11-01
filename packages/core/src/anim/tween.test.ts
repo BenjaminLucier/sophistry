@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { createClock } from "../tween/clock";
-import { tween, wait } from "./tween";
+import { createClock } from "../tween/clock.js";
+import { tween, wait } from "./tween.js";
 
 // `onTick()` calls `requestAnimationFrame` to start its own frame loop even
 // though every test here drives time by hand via `clock.advance()` — see the

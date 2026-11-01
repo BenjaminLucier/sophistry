@@ -6,29 +6,29 @@
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { BandKey } from "@sophistry/core/geometry";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	numberValues,
-} from "../data/channels";
-import { createGroupJoin, layerTransition, transitionColor } from "../join";
-import type { EcdfSteps } from "../math/ecdf";
-import { ecdfSteps } from "../math/ecdf";
-import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props";
-import type { Category, GroupKey } from "../series";
-import { createSeries, groupIndices } from "../series";
-import { keyedMemo } from "../util";
-import { groupColors } from "./shared";
-import type { StepLineStyleProps, StepLines } from "./stairs";
+} from "../data/channels.js";
+import { createGroupJoin, layerTransition, transitionColor } from "../join.js";
+import type { EcdfSteps } from "../math/ecdf.js";
+import { ecdfSteps } from "../math/ecdf.js";
+import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props.js";
+import type { Category, GroupKey } from "../series.js";
+import { createSeries, groupIndices } from "../series.js";
+import { keyedMemo } from "../util.js";
+import { groupColors } from "./shared.js";
+import type { StepLineStyleProps, StepLines } from "./stairs.js";
 import {
 	createStepLines,
 	drawStepLines,
 	stepLineStyleDescriptor,
-} from "./stairs";
+} from "./stairs.js";
 
 /**
  * Props of {@link ecdf}: `value` defaults to the datum when `data` is

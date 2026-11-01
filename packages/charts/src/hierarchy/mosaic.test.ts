@@ -5,9 +5,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import { mosaic } from "./mosaic";
-import type { Scene } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import { mosaic } from "./mosaic.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	boxOfItem,
 	items,
@@ -15,7 +15,7 @@ import {
 	mountChart,
 	opaque,
 	texts,
-} from "./test-helpers";
+} from "./test-helpers.js";
 
 type Sale = { region: string; product: string; units: number };
 

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { implicitCurve } from "./implicit";
-import type { Point } from "./path/types";
+import { implicitCurve } from "./implicit.js";
+import type { Point } from "./path/types.js";
 
 /** Twice the signed area: positive for a counter-clockwise loop. */
 function signedArea(points: Point[]): number {

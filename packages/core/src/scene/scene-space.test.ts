@@ -9,21 +9,21 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Bounds } from "../geometry";
-import { linearMap } from "../geometry/transform";
-import { derive, track } from "../reactive";
-import { circle, rect } from "../shapes";
-import { linearGradient, radialGradient } from "../spec/gradient";
-import type { DrawSpec, ShapeSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { defineComposite } from "./composite";
-import { BaseContainer } from "./container";
-import { frameContext, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import { definePrimitive } from "./primitive";
-import { label } from "./text";
-import type { SceneNode, Space } from "./types";
+import type { Bounds } from "../geometry/index.js";
+import { linearMap } from "../geometry/transform.js";
+import { derive, track } from "../reactive/index.js";
+import { circle, rect } from "../shapes/index.js";
+import { linearGradient, radialGradient } from "../spec/gradient.js";
+import type { DrawSpec, ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { defineComposite } from "./composite.js";
+import { BaseContainer } from "./container.js";
+import { frameContext, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import { definePrimitive } from "./primitive.js";
+import { label } from "./text.js";
+import type { SceneNode, Space } from "./types.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

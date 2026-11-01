@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { alignedRange, autoRange, fitRange } from "./range";
+import { alignedRange, autoRange, fitRange } from "./range.js";
 
 describe("autoRange", () => {
 	it("always includes zero", () => {

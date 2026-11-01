@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { parseColor } from "../color";
-import type { ColormapName } from "./colormap";
-import { colormapStops, colormaps, resolveColormap } from "./colormap";
+import { parseColor } from "../color/index.js";
+import type { ColormapName } from "./colormap.js";
+import { colormapStops, colormaps, resolveColormap } from "./colormap.js";
 
 /** Loosens a hex-vs-`rgba()` comparison to "close enough to be the same
  * colour" — `colorRamp` always emits `rgba(...)`, and `t = 0`/`t = 1` should

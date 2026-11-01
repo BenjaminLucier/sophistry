@@ -2,7 +2,7 @@
 
 import type { SceneNode } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
-import { markItems } from "../test-harness";
+import { markItems } from "../test-harness.js";
 
 /** A batched rect, decoded: its box, fill, stroke and effective opacity. */
 export interface DrawnBox {

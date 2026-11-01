@@ -20,9 +20,9 @@
  */
 
 import { afterEach, describe, expect, it } from "vitest";
-import type { CurvePath, Polyline } from "../geometry";
-import { lineSegment } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { CurvePath, Polyline } from "../geometry/index.js";
+import { lineSegment } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import type {
 	ClipRegion,
 	LinearGradientPaint,
@@ -30,15 +30,15 @@ import type {
 	StrokeStyle,
 	TextSpec,
 	TextStyle,
-} from "../spec/types";
-import type { Theme } from "../themes";
-import { resolveTheme } from "../themes";
-import type { CameraView } from "./camera";
-import { createCanvasRenderer, paintSpecs } from "./canvas-renderer";
-import type { PaintCache } from "./paint";
-import { createPaintCache } from "./paint";
-import type { PaintHost } from "./test-host";
-import { createPaintHost } from "./test-host";
+} from "../spec/types.js";
+import type { Theme } from "../themes/index.js";
+import { resolveTheme } from "../themes/index.js";
+import type { CameraView } from "./camera.js";
+import { createCanvasRenderer, paintSpecs } from "./canvas-renderer.js";
+import type { PaintCache } from "./paint.js";
+import { createPaintCache } from "./paint.js";
+import type { PaintHost } from "./test-host.js";
+import { createPaintHost } from "./test-host.js";
 
 type Call = { op: string; args: unknown[] };
 

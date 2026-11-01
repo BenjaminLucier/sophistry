@@ -11,21 +11,21 @@
  * `pointer-presence`, `pointer-gestures` + `pointer-drop`, `pointer-wheel`.
  */
 
-import type { Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint, invert } from "../geometry/transform";
-import { isYUp } from "../geometry/view-matrix";
-import type { ScenePointer } from "../interact/pointer";
-import type { InteractionRegistry } from "../interact/registry";
-import type { Sink } from "../interact/types";
-import type { Readable } from "../reactive";
-import type { DrawSpec } from "../spec/types";
-import { requestFrame } from "../tween/frame-loop";
-import type { CameraView } from "./camera";
-import { createPointerCore } from "./pointer-core";
-import { createGestureMachine } from "./pointer-gestures";
-import { createPointerPresence } from "./pointer-presence";
-import { createWheelRouter } from "./pointer-wheel";
+import type { Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { applyToPoint, invert } from "../geometry/transform.js";
+import { isYUp } from "../geometry/view-matrix.js";
+import type { ScenePointer } from "../interact/pointer.js";
+import type { InteractionRegistry } from "../interact/registry.js";
+import type { Sink } from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import type { DrawSpec } from "../spec/types.js";
+import { requestFrame } from "../tween/frame-loop.js";
+import type { CameraView } from "./camera.js";
+import { createPointerCore } from "./pointer-core.js";
+import { createGestureMachine } from "./pointer-gestures.js";
+import { createPointerPresence } from "./pointer-presence.js";
+import { createWheelRouter } from "./pointer-wheel.js";
 
 /**
  * A gesture that landed on no node, or on one that declined it.

@@ -7,10 +7,10 @@
 import type { Point } from "@sophistry/core/geometry";
 import type { ShapeSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { bubbleLegendValues } from "../math/bubble";
-import { sizeLegendLayout } from "../math/legend";
-import { mount } from "../test-harness";
-import type { SizeKey } from "./size-legend";
+import { bubbleLegendValues } from "../math/bubble.js";
+import { sizeLegendLayout } from "../math/legend.js";
+import { mount } from "../test-harness.js";
+import type { SizeKey } from "./size-legend.js";
 import {
 	flowSizeKeys,
 	measureSizeKeyExtents,
@@ -21,7 +21,7 @@ import {
 	sizeKeyOffsets,
 	sizeKeyStack,
 	sizeLegend,
-} from "./size-legend";
+} from "./size-legend.js";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 const circleOf = (spec: ShapeSpec) => {

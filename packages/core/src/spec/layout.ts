@@ -9,7 +9,6 @@
  * a sibling's `ref` may not have fired on the first pass. y is up.
  */
 
-import type { Bounds, Point } from "../geometry";
 import {
 	centerOf as boundsCenter,
 	boundsFromCenter,
@@ -18,7 +17,8 @@ import {
 	padBounds,
 	pointOnBounds as pointOn,
 	unionBounds,
-} from "../geometry/bounds";
+} from "../geometry/bounds.js";
+import type { Bounds, Point } from "../geometry/index.js";
 
 /** A direction, as a unit vector. Same shape as a `Point`, different intent. */
 export type Vec2 = Point;
@@ -195,7 +195,7 @@ export {
 	padBounds,
 	pointOnBounds as pointOn,
 	unionBounds,
-} from "../geometry/bounds";
+} from "../geometry/bounds.js";
 
 /** Translates a box. Internal: callers outside deal in deltas, not boxes. */
 function shiftBounds(bounds: Bounds, delta: Point): Bounds {

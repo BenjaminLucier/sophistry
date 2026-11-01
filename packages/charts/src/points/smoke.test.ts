@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { markItems, mount } from "../test-harness";
+import { chart } from "../chart.js";
+import { markItems, mount } from "../test-harness.js";
 import {
 	beeswarm,
 	eventPlot,
@@ -14,7 +14,7 @@ import {
 	tickX,
 	tickY,
 	vectors,
-} from ".";
+} from "./index.js";
 
 describe("point marks smoke", () => {
 	const rows = [

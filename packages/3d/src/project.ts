@@ -8,7 +8,7 @@ import type { Point } from "@sophistry/core/geometry";
 import { lerpPoint3 } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
 import { createProjected } from "@sophistry/core/internal";
-import type { Camera3DValue } from "./context";
+import type { Camera3DValue } from "./context.js";
 
 /** Depth a clipped near-plane point is nudged to — see `clipSegment`. */
 const NEAR = 1e-3;

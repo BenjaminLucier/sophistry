@@ -12,11 +12,11 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { fromTranslationRotationScale, IDENTITY } from "../geometry";
-import { readDelta } from "../spec/layout";
-import { anchoredLabelPlace, toLocalBounds } from "./axis-labels";
-import { numberLine } from "./number-line";
-import { mount } from "./test-scene";
+import { fromTranslationRotationScale, IDENTITY } from "../geometry/index.js";
+import { readDelta } from "../spec/layout.js";
+import { anchoredLabelPlace, toLocalBounds } from "./axis-labels.js";
+import { numberLine } from "./number-line.js";
+import { mount } from "./test-scene.js";
 
 const SIZE = 64; // `measureLabel` measures at a fixed reference size.
 const fakeContext = {

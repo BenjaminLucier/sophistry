@@ -24,7 +24,7 @@ import {
 	torus3D,
 	vector3D,
 } from "@sophistry/3d";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * `axes3D` from `@sophistry/3d` as a component.

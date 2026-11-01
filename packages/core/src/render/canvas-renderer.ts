@@ -22,34 +22,38 @@ import type {
 	CurveArcTable,
 	CurvePath,
 	Polyline,
-} from "../geometry";
+} from "../geometry/index.js";
 import {
 	measure,
 	measureCurve,
 	revealedPolylines,
 	sliceBetween,
 	sliceCurveBetween,
-} from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint, IDENTITY, scaleFactorOf } from "../geometry/transform";
-import { isYUp } from "../geometry/view-matrix";
-import { writePhase } from "../geometry/write-phase";
-import { boundsOfNodes } from "../interact/hit";
-import { itemBox } from "../interact/item-order";
-import { textRotation } from "../spec/bake";
+} from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import {
+	applyToPoint,
+	IDENTITY,
+	scaleFactorOf,
+} from "../geometry/transform.js";
+import { isYUp } from "../geometry/view-matrix.js";
+import { writePhase } from "../geometry/write-phase.js";
+import { boundsOfNodes } from "../interact/hit.js";
+import { itemBox } from "../interact/item-order.js";
+import { textRotation } from "../spec/bake.js";
 import type {
 	ClipRegion,
 	DrawSpec,
 	ShapeSpec,
 	StrokeStyle,
 	TextSpec,
-} from "../spec/types";
-import { resolveTheme } from "../themes/theme";
-import type { Theme } from "../themes/types";
-import type { CameraView } from "./camera";
-import { cameraMatrix, viewportBox } from "./camera";
-import { createLayerCache } from "./layer-cache";
-import type { PaintCache, PathTarget } from "./paint";
+} from "../spec/types.js";
+import { resolveTheme } from "../themes/theme.js";
+import type { Theme } from "../themes/types.js";
+import type { CameraView } from "./camera.js";
+import { cameraMatrix, viewportBox } from "./camera.js";
+import { createLayerCache } from "./layer-cache.js";
+import type { PaintCache, PathTarget } from "./paint.js";
 import {
 	applyStrokeStyle,
 	createPaintCache,
@@ -61,8 +65,8 @@ import {
 	ringsPath2D,
 	tracePath,
 	tracePolyline,
-} from "./paint";
-import type { DeviceRect } from "./paint-items";
+} from "./paint.js";
+import type { DeviceRect } from "./paint-items.js";
 import {
 	drawImageSpec,
 	drawMarks,
@@ -70,7 +74,7 @@ import {
 	revealedCurves,
 	splatMarks,
 	visibleBox,
-} from "./paint-items";
+} from "./paint-items.js";
 
 /**
  * Options for {@link createCanvasRenderer}: the canvas and the state the first

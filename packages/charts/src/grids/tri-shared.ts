@@ -5,10 +5,10 @@
  */
 
 import { clamp01 } from "@sophistry/core/internal";
-import type { Channel, DateSink } from "../data/channels";
-import { numberValues } from "../data/channels";
-import type { TriangleIndices } from "../math/tricontour";
-import { staggered } from "../stagger";
+import type { Channel, DateSink } from "../data/channels.js";
+import { numberValues } from "../data/channels.js";
+import type { TriangleIndices } from "../math/tricontour.js";
+import { staggered } from "../stagger.js";
 
 /**
  * Props every tri-chart shares: one datum per point with its position and

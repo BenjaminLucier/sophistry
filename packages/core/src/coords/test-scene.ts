@@ -3,12 +3,12 @@
  * and readers over its frame. Not exported from the barrel.
  */
 
-import type { Point } from "../geometry";
-import { themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { SceneNode } from "../scene/types";
-import type { MarksSpec, ShapeSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
+import type { Point } from "../geometry/index.js";
+import { themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { SceneNode } from "../scene/types.js";
+import type { MarksSpec, ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
 
 export const theme = resolveTheme({ mode: "dark" });
 

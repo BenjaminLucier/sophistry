@@ -5,15 +5,15 @@
  */
 
 import { expect } from "vitest";
-import { clockContext, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { SceneNode } from "../scene/types";
-import type { ShapeGeometry, StrokeStyleInput } from "../spec/bake";
-import { bake, plainShapeSpec } from "../spec/bake";
-import type { DrawSpec, ShapeSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import type { Theme } from "../themes/types";
-import { type Clock, createClock } from "../tween/clock";
+import { clockContext, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { SceneNode } from "../scene/types.js";
+import type { ShapeGeometry, StrokeStyleInput } from "../spec/bake.js";
+import { bake, plainShapeSpec } from "../spec/bake.js";
+import type { DrawSpec, ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import type { Theme } from "../themes/types.js";
+import { type Clock, createClock } from "../tween/clock.js";
 
 export const darkTheme = resolveTheme({ mode: "dark" });
 

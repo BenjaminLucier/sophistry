@@ -10,12 +10,12 @@ import { createClock, track } from "@sophistry/core";
 import { act, cleanup, render } from "@testing-library/react";
 import { createRef } from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { type DomHarness, installDom } from "../test-dom";
-import { BarsExample } from "./bars";
-import { createRecorder } from "./normalize";
-import { ShapesExample } from "./shapes";
-import barsRecording from "./specs/bars.json";
-import shapesRecording from "./specs/shapes.json";
+import { type DomHarness, installDom } from "../test-dom.js";
+import { BarsExample } from "./bars.js";
+import { createRecorder } from "./normalize.js";
+import { ShapesExample } from "./shapes.js";
+import barsRecording from "./specs/bars.json" with { type: "json" };
+import shapesRecording from "./specs/shapes.json" with { type: "json" };
 
 /** The times the shapes example is recorded at, in seconds (as on the Solid side). */
 const SHAPES_TIMES = [0, 0.75, 1.5, 2.25, 4, 6.5];

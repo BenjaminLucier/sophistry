@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stackedBands } from "./stackplot";
+import { stackedBands } from "./stackplot.js";
 
 describe("stackedBands", () => {
 	it("stacks series atop a shared baseline", () => {

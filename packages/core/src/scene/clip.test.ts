@@ -7,15 +7,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { rect } from "../shapes";
-import { type ClipShape, clipBounds } from "../spec/clip";
-import type { ShapeSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import { label } from "./text";
+import { track } from "../reactive/index.js";
+import { rect } from "../shapes/index.js";
+import { type ClipShape, clipBounds } from "../spec/clip.js";
+import type { ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import { label } from "./text.js";
 
 const unit = { minX: 0, minY: 0, maxX: 1, maxY: 1 };
 

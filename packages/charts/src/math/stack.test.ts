@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { StackItem } from "./stack";
-import { stackColumns, stackOrder } from "./stack";
+import type { StackItem } from "./stack.js";
+import { stackColumns, stackOrder } from "./stack.js";
 
 /** Columns from a [series][column] matrix, every series present everywhere. */
 const matrix = (values: number[][]): StackItem[][] =>

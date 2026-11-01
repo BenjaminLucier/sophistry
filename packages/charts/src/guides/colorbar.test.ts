@@ -5,8 +5,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { mount, theme } from "../test-harness";
-import { colorbar, colorbarWidth } from "./colorbar";
+import { mount, theme } from "../test-harness.js";
+import { colorbar, colorbarWidth } from "./colorbar.js";
 
 const fontFamily = theme.defaults.fontFamily;
 

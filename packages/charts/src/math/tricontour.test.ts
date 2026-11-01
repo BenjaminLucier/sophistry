@@ -4,7 +4,7 @@ import {
 	tricontourBands,
 	tricontourLines,
 	tripcolorFaces,
-} from "./tricontour";
+} from "./tricontour.js";
 
 /** Twice the signed area of a triangle given as points. */
 const signedArea = (p: { x: number; y: number }[]) =>

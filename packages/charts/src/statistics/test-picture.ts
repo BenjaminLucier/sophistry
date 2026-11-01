@@ -7,8 +7,8 @@
 import { parseColor, toCss } from "@sophistry/core/color";
 import type { Polyline } from "@sophistry/core/geometry";
 import type { MarksSpec } from "@sophistry/core/internal";
-import type { MarkItem } from "../test-harness";
-import { markItems, type mount } from "../test-harness";
+import type { MarkItem } from "../test-harness.js";
+import { markItems, type mount } from "../test-harness.js";
 
 export type Mounted = ReturnType<typeof mount>;
 

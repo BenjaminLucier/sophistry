@@ -24,32 +24,32 @@ import type { BandKey, Bounds } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
 import { resolveColorRamp } from "@sophistry/core/internal";
 import type { Colormap } from "@sophistry/core/themes";
-import { bandSpan } from "../band";
-import type { MarkTransition } from "../batch";
-import type { ColorNorm, RampScaleProps } from "../color-norm";
-import { colorNorm, rampOf } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, DateSink } from "../data/channels";
+import { bandSpan } from "../band.js";
+import type { MarkTransition } from "../batch.js";
+import type { ColorNorm, RampScaleProps } from "../color-norm.js";
+import { colorNorm, rampOf } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, DateSink } from "../data/channels.js";
 import {
 	dateSinkContext,
 	numberValues,
 	resolveChannel,
 	resolveColor,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { RampExtent } from "../frame/types";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { JoinEnd } from "../join";
-import { createKeyedData, joinFrames, layerTransition } from "../join";
-import { blendCss, mixBounds, readableOn } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import type { CellItem, CellRects } from "./cell-rects";
-import { boxPlacement, createCellRects } from "./cell-rects";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { RampExtent } from "../frame/types.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { JoinEnd } from "../join.js";
+import { createKeyedData, joinFrames, layerTransition } from "../join.js";
+import { blendCss, mixBounds, readableOn } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import type { CellItem, CellRects } from "./cell-rects.js";
+import { boxPlacement, createCellRects } from "./cell-rects.js";
 
 const DEFAULT_INSET = 0.03;
 const DEFAULT_LABEL_FONT_SIZE = 0.22;

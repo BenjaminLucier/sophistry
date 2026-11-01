@@ -6,8 +6,8 @@
 
 import type { PropsDescriptor } from "@sophistry/core";
 import { Invalidate } from "@sophistry/core";
-import { DRILL_PROP_KEYS } from "./drill";
-import { HIERARCHY_PROP_KEYS } from "./shared";
+import { DRILL_PROP_KEYS } from "./drill.js";
+import { HIERARCHY_PROP_KEYS } from "./shared.js";
 
 /**
  * A hierarchy chart's props descriptor: the shared keys and `own`, each

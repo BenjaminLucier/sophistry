@@ -4,12 +4,12 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { linearGradient } from "../spec/gradient";
-import type { ImageSpec, MarksSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
+import { linearGradient } from "../spec/gradient.js";
+import type { ImageSpec, MarksSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
 import {
 	bakeMarks,
 	defineImage,
@@ -18,7 +18,7 @@ import {
 	imageProps,
 	type MarksProps,
 	marksProps,
-} from "./marks";
+} from "./marks.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

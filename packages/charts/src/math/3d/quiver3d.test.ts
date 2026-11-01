@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { quiverVectors } from "./quiver3d";
+import { quiverVectors } from "./quiver3d.js";
 
 describe("quiverVectors", () => {
 	it("builds an origin/vector pair per index, scaled by 1 by default", () => {

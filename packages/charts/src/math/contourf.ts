@@ -6,7 +6,7 @@
  */
 
 import type { Point } from "@sophistry/core/geometry";
-import { resolveLevels as resolveLevelsShared } from "./shared/gridExtent";
+import { resolveLevels as resolveLevelsShared } from "./shared/gridExtent.js";
 
 /**
  * A clip vertex: a point plus the field value at it.

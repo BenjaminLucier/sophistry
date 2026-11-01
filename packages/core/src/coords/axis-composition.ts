@@ -14,15 +14,15 @@ import type {
 	ScaleTicks,
 	TimeZone,
 	WeightedTick,
-} from "../geometry";
+} from "../geometry/index.js";
 import {
 	axisTicks,
 	isRangeTransition,
 	resolveScale,
 	transitionTicks,
-} from "../geometry";
-import { clamp01 } from "../geometry/num";
-import type { AxisOptions } from "./axes";
+} from "../geometry/index.js";
+import { clamp01 } from "../geometry/num.js";
+import type { AxisOptions } from "./axes.js";
 
 /** The y axis's default exclusion, one array for good, so it never reads as a changed prop. */
 export const ORIGIN_ONLY: number[] = [0];

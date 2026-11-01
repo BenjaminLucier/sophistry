@@ -10,10 +10,10 @@
  * composites) hands its own space through untouched and forwards changes.
  */
 
-import type { Bounds } from "../geometry";
-import { unionBounds } from "../geometry/bounds";
-import type { SceneGraph } from "./graph";
-import { ANY_CONTEXT, BaseNode } from "./node";
+import { unionBounds } from "../geometry/bounds.js";
+import type { Bounds } from "../geometry/index.js";
+import type { SceneGraph } from "./graph.js";
+import { ANY_CONTEXT, BaseNode } from "./node.js";
 import type {
 	ContainerNode,
 	ContextKey,
@@ -21,7 +21,7 @@ import type {
 	PropDescriptor,
 	SceneNode,
 	Space,
-} from "./types";
+} from "./types.js";
 
 /** Bumped by every `setChildren`; see there. */
 let reconcileEpoch = 0;

@@ -5,13 +5,13 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { arcCurvePath, ellipseCurvePath } from "../geometry";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import { bake, plainShapeSpec } from "../spec/bake";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { circle, ellipse } from "./circle";
+import { arcCurvePath, ellipseCurvePath } from "../geometry/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { bake, plainShapeSpec } from "../spec/bake.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { circle, ellipse } from "./circle.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

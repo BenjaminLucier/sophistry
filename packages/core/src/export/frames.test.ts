@@ -10,17 +10,17 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { valueTo } from "../anim/move";
-import { timeline } from "../anim/timeline";
-import type { Track } from "../reactive";
-import { track } from "../reactive";
-import type { Scene } from "../scene/scene";
-import { createScene } from "../scene/scene";
-import type { DomHarness } from "../scene/test-dom";
-import { installDom, mountPoint } from "../scene/test-dom";
-import { rect } from "../shapes/rect";
-import { createClock } from "../tween/clock";
-import { captureFrame, exportFrames, renderFrames } from "./frames";
+import { valueTo } from "../anim/move.js";
+import { timeline } from "../anim/timeline.js";
+import type { Track } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
+import type { Scene } from "../scene/scene.js";
+import { createScene } from "../scene/scene.js";
+import type { DomHarness } from "../scene/test-dom.js";
+import { installDom, mountPoint } from "../scene/test-dom.js";
+import { rect } from "../shapes/rect.js";
+import { createClock } from "../tween/clock.js";
+import { captureFrame, exportFrames, renderFrames } from "./frames.js";
 
 const linear = { easing: "linear" } as const;
 

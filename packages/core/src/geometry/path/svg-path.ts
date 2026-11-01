@@ -9,14 +9,14 @@ import {
 	flattenCubicPolyline,
 	lineSegment,
 	quadraticToCubic,
-} from "./cubic";
+} from "./cubic.js";
 import type {
 	CurvePath,
 	CurveSegment,
 	Point,
 	Polyline,
 	Subpath,
-} from "./types";
+} from "./types.js";
 
 const NUMBER = /-?\d*\.?\d+(?:[eE][-+]?\d+)?/;
 

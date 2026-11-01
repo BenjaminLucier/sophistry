@@ -94,8 +94,8 @@ const REACHES: Record<string, Set<string>> = Object.fromEntries(
 
 /**
  * The top-level directory of a src-relative path, or `"(root)"` for a file at
- * the top. An import of a directory's barrel (`"../reactive"`) resolves to the
- * bare directory name, which counts as that directory.
+ * the top. An import of a directory's barrel (`"../reactive/index.js"`) resolves
+ * into that directory, which counts as its layer.
  */
 function layerOf(path: string): string {
 	const parts = path.split("/");
@@ -185,8 +185,8 @@ describe("layering", () => {
 		const targets = [
 			...(files.get("themes/mode.ts") ?? "").matchAll(IMPORT),
 		].map((match) => match[1] ?? match[2]);
-		expect(targets).toContain("../reactive");
-		expect(targets).toContain("./palette");
+		expect(targets).toContain("../reactive/index.js");
+		expect(targets).toContain("./palette.js");
 	});
 
 	it("knows every directory in the tree", () => {
@@ -223,11 +223,11 @@ describe("layering", () => {
 	it("the canonical lerp lives in geometry/, not tween/", () => {
 		const path = files.get("geometry/path/cubic.ts");
 		expect(path).toMatch(
-			/import\s*\{\s*lerpPoint\s*\}\s*from\s*["']\.\.\/lerp["']/,
+			/import\s*\{\s*lerpPoint\s*\}\s*from\s*["']\.\.\/lerp\.js["']/,
 		);
 		expect(path).not.toMatch(/function lerpPoint\(/);
 		expect(files.get("geometry/transform.ts")).toMatch(
-			/import\s*\{\s*lerp\s*\}\s*from\s*["']\.\/lerp["']/,
+			/import\s*\{\s*lerp\s*\}\s*from\s*["']\.\/lerp\.js["']/,
 		);
 	});
 });

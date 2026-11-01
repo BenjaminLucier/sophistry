@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { lerpMatrix } from "../geometry/transform";
-import type { InterpolatorName } from "./interpolators";
+import { lerpMatrix } from "../geometry/transform.js";
+import type { InterpolatorName } from "./interpolators.js";
 import {
 	auto,
 	cssColorInterpolator,
@@ -12,7 +12,7 @@ import {
 	pointInterpolator,
 	polylineInterpolator,
 	resolveInterpolator,
-} from "./interpolators";
+} from "./interpolators.js";
 
 describe("resolveInterpolator", () => {
 	it("resolves a name to the registered interpolator", () => {

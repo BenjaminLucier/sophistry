@@ -35,18 +35,18 @@ import {
 	valueTo,
 } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
-import type { HierarchyPathSpec } from "../math/breadcrumbs";
-import { isPathTransition, samePath } from "../math/breadcrumbs";
-import type { HierarchyNodeInfo } from "../math/hierarchy";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipLabel, tooltipText } from "../tooltip";
-import type { HierarchyFocusSpec, ResolvedFocus } from "./shared";
+import type { HierarchyPathSpec } from "../math/breadcrumbs.js";
+import { isPathTransition, samePath } from "../math/breadcrumbs.js";
+import type { HierarchyNodeInfo } from "../math/hierarchy.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipLabel, tooltipText } from "../tooltip.js";
+import type { HierarchyFocusSpec, ResolvedFocus } from "./shared.js";
 import {
 	drillTarget,
 	findFocus,
 	hierarchyTooltipText,
 	isZooming,
-} from "./shared";
+} from "./shared.js";
 
 /** Default length of a drill-down zoom, in seconds. */
 const DEFAULT_DURATION = 0.75;

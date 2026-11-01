@@ -1,7 +1,7 @@
 /** Line plots from discrete data, split into continuous runs at non-finite pairs (a gap, not a spike). */
 
 import type { Point } from "@sophistry/core/geometry";
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /**
  * Parallel `x`/`y` arrays split into runs, breaking at non-finite pairs.

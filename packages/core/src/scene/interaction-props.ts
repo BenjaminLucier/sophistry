@@ -9,9 +9,9 @@
  * record (`Invalidate.INTERACTION`), never its geometry, style or spec.
  */
 
-import type { InteractionProps } from "../interact/types";
-import { Invalidate } from "./context";
-import type { PropDescriptor, PropsDescriptor } from "./types";
+import type { InteractionProps } from "../interact/types.js";
+import { Invalidate } from "./context.js";
+import type { PropDescriptor, PropsDescriptor } from "./types.js";
 
 /** A handler prop: passed through to the interaction record. */
 const handler: PropDescriptor<never> = Object.freeze({

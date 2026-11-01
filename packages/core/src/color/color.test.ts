@@ -16,7 +16,7 @@ import {
 	toCss,
 	tryParseColor,
 	withAlpha,
-} from ".";
+} from "./index.js";
 
 describe("parseColor", () => {
 	it("parses 6-digit hex", () => {

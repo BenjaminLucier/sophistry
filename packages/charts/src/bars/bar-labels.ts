@@ -17,11 +17,11 @@ import type {
 import { formatTick, resolveTickFormatter } from "@sophistry/core/geometry";
 import { measureLabel } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import type { Channel, ChannelFn } from "../data/channels";
-import { resolveChannel } from "../data/channels";
-import { decimalsOf, insideLabelFit } from "../math/barLabels";
-import { readableOn } from "../mix";
-import { besidePlace, labelStyle } from "./shared";
+import type { Channel, ChannelFn } from "../data/channels.js";
+import { resolveChannel } from "../data/channels.js";
+import { decimalsOf, insideLabelFit } from "../math/barLabels.js";
+import { readableOn } from "../mix.js";
+import { besidePlace, labelStyle } from "./shared.js";
 
 const DEFAULT_LABEL_FONT_SIZE = 0.24;
 const DEFAULT_LABEL_OFFSET = 0.08;

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { imshowCells } from "./imshow";
+import { imshowCells } from "./imshow.js";
 
 describe("imshowCells", () => {
 	it("lays a 2x2 grid onto the default extent [0, ncols, 0, nrows]", () => {

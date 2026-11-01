@@ -1,11 +1,11 @@
 /** `rankRace`: a bar chart race from long-format rows. */
 
 import type { BandKey } from "@sophistry/core/geometry";
-import type { Channel } from "../data/channels";
-import { channelValues, numberValues } from "../data/channels";
-import type { RaceOptions, RaceTimeline } from "../math/keyframes";
-import { raceTimeline } from "../math/keyframes";
-import { uniqueKeys } from "../math/ordinal";
+import type { Channel } from "../data/channels.js";
+import { channelValues, numberValues } from "../data/channels.js";
+import type { RaceOptions, RaceTimeline } from "../math/keyframes.js";
+import { raceTimeline } from "../math/keyframes.js";
+import { uniqueKeys } from "../math/ordinal.js";
 
 /**
  * Options for {@link rankRace}.

@@ -5,8 +5,8 @@
  * `setTransform` per camera, so view changes never rebuild a spec.
  */
 
-import type { Bounds, CurvePath, Point, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { Bounds, CurvePath, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 
 /**
  * One colour at one position along a gradient, `offset` in 0..1.

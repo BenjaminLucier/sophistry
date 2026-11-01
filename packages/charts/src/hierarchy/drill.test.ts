@@ -19,16 +19,20 @@ import {
 	track,
 } from "@sophistry/core";
 import { describe, expect, it, vi } from "vitest";
-import { partitionLayout, treemapLayout, treemapRows } from "../math/hierarchy";
-import { mount } from "../test-harness";
-import { breadcrumbs } from "./breadcrumbs";
-import { circlePack } from "./circle-pack";
-import type { DrillDown } from "./drill";
-import { createDrillDown } from "./drill";
-import { icicle } from "./icicle";
-import { drillTarget } from "./shared";
-import { sunburst } from "./sunburst";
-import type { Scene } from "./test-helpers";
+import {
+	partitionLayout,
+	treemapLayout,
+	treemapRows,
+} from "../math/hierarchy.js";
+import { mount } from "../test-harness.js";
+import { breadcrumbs } from "./breadcrumbs.js";
+import { circlePack } from "./circle-pack.js";
+import type { DrillDown } from "./drill.js";
+import { createDrillDown } from "./drill.js";
+import { icicle } from "./icicle.js";
+import { drillTarget } from "./shared.js";
+import { sunburst } from "./sunburst.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	boxes,
 	descendants,
@@ -37,14 +41,14 @@ import {
 	mountChart,
 	press,
 	texts,
-} from "./test-helpers";
-import { tree as treeChart } from "./tree";
-import { treemap } from "./treemap";
+} from "./test-helpers.js";
+import { tree as treeChart } from "./tree.js";
+import { treemap } from "./treemap.js";
 
 /** Counts the treemap layout calls, to check a blend scrub lays out nothing. */
 const calls = vi.hoisted(() => ({ rows: 0, layout: 0 }));
-vi.mock("../math/hierarchy", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("../math/hierarchy")>();
+vi.mock("../math/hierarchy.js", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("../math/hierarchy.js")>();
 	return {
 		...actual,
 		treemapRows: ((...args: Parameters<typeof actual.treemapRows>) => {

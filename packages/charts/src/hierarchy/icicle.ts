@@ -12,25 +12,25 @@ import type { CompositeContext, RectProps, SceneNode } from "@sophistry/core";
 import { defineComposite, rect } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { RequiredUnless } from "../data/channels";
-import type { HierarchyRect } from "../math/hierarchy";
-import { partitionLayout } from "../math/hierarchy";
-import { readableOn } from "../mix";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { HierarchyDrillProps } from "./drill";
-import type { HierarchyChart } from "./frame";
-import { createHierarchyChart } from "./frame";
-import type { KeyedLabel } from "./labels";
-import { createLabelMeasure, labelList } from "./labels";
-import { hierarchyPropsDescriptor } from "./props";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { RequiredUnless } from "../data/channels.js";
+import type { HierarchyRect } from "../math/hierarchy.js";
+import { partitionLayout } from "../math/hierarchy.js";
+import { readableOn } from "../mix.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { HierarchyDrillProps } from "./drill.js";
+import type { HierarchyChart } from "./frame.js";
+import { createHierarchyChart } from "./frame.js";
+import type { KeyedLabel } from "./labels.js";
+import { createLabelMeasure, labelList } from "./labels.js";
+import { hierarchyPropsDescriptor } from "./props.js";
 import type {
 	HierarchyChartBaseProps,
 	HierarchyFocusSpec,
 	HierarchyTransitionProps,
-} from "./shared";
+} from "./shared.js";
 import {
 	HIERARCHY_LABEL_FONT_SIZE,
 	hierarchyOptionDeps,
@@ -39,7 +39,7 @@ import {
 	presenceOf,
 	RECT_FIELDS,
 	throughView,
-} from "./shared";
+} from "./shared.js";
 
 const DEFAULT_INSET = 0.01;
 const DEFAULT_STAGGER = 0.5;

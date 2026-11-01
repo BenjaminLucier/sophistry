@@ -47,8 +47,8 @@ import {
 	measureLabel,
 	resolveColorRamp,
 } from "@sophistry/core/internal";
-import { keyedMemo } from "../util";
-import { write } from "./nodes";
+import { keyedMemo } from "../util.js";
+import { write } from "./nodes.js";
 
 const DEFAULT_LENGTH = 3;
 const DEFAULT_THICKNESS = 0.22;

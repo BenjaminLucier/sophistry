@@ -6,12 +6,12 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { defineComposite } from "../scene/composite";
-import { circle } from "../shapes/circle";
-import { requireCoords } from "./coords";
-import type { PolarCoordinateSystem } from "./polar-plane";
-import { piMultipleLabel, polarCoordsOf, polarPlane } from "./polar-plane";
-import { mount } from "./test-scene";
+import { defineComposite } from "../scene/composite.js";
+import { circle } from "../shapes/circle.js";
+import { requireCoords } from "./coords.js";
+import type { PolarCoordinateSystem } from "./polar-plane.js";
+import { piMultipleLabel, polarCoordsOf, polarPlane } from "./polar-plane.js";
+import { mount } from "./test-scene.js";
 
 describe("piMultipleLabel", () => {
 	it("reduces the fraction and keeps the sign in front", () => {

@@ -7,12 +7,16 @@
 
 import { describe, expect, it, vi } from "vitest";
 
-vi.mock("./measure", () => ({
+vi.mock("./measure.js", () => ({
 	HOST_FONT_SIZE: 100,
 	measureLatex: vi.fn(() => new Promise(() => {})),
 }));
 
-import { latexOutline, OUTLINE_CACHE_LIMIT, outlineCacheSize } from "./outline";
+import {
+	latexOutline,
+	OUTLINE_CACHE_LIMIT,
+	outlineCacheSize,
+} from "./outline.js";
 
 describe("latexOutline cache", () => {
 	it("shares one promise per formula", () => {

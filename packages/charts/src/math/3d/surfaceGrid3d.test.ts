@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { surfaceGridFaces, surfaceGridWireframe } from "./surfaceGrid3d";
+import { surfaceGridFaces, surfaceGridWireframe } from "./surfaceGrid3d.js";
 
 function grid(
 	nrows: number,

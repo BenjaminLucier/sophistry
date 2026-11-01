@@ -3,16 +3,16 @@
  * layout is shared with `complexPlane`.
  */
 
-import type { ColorInput } from "../color";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { PropsDescriptor, SceneNode } from "../scene/types";
-import type { AxesProps, AxesState } from "./axes";
-import { axesLayout, axesProps, createAxesState } from "./axes";
-import type { CoordinateSystem } from "./coords";
-import { publishCoords } from "./coords";
-import type { WeightedGridLines } from "./grid-lines";
+import type { ColorInput } from "../color/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type { PropsDescriptor, SceneNode } from "../scene/types.js";
+import type { AxesProps, AxesState } from "./axes.js";
+import { axesLayout, axesProps, createAxesState } from "./axes.js";
+import type { CoordinateSystem } from "./coords.js";
+import { publishCoords } from "./coords.js";
+import type { WeightedGridLines } from "./grid-lines.js";
 import {
 	createGridLines,
 	DEFAULT_GRID_OPACITY,
@@ -20,7 +20,7 @@ import {
 	DEFAULT_GRID_Z_INDEX,
 	DEFAULT_MINOR_GRID_OPACITY,
 	gridLineNodes,
-} from "./grid-lines";
+} from "./grid-lines.js";
 
 /**
  * Props for {@link numberPlane}: everything {@link AxesProps} takes, plus grid styling.

@@ -4,15 +4,15 @@
  * tangents and normals, even resampling, and the signed ring area.
  */
 
-import { lerpPoint } from "../lerp";
-import { clamp01 } from "../num";
+import { lerpPoint } from "../lerp.js";
+import { clamp01 } from "../num.js";
 import {
 	cubicArcLength,
 	cubicDirectionAt,
 	lineSegment,
 	splitCubicAt,
-} from "./cubic";
-import type { CurvePath, CurveSegment, Point, Polyline } from "./types";
+} from "./cubic.js";
+import type { CurvePath, CurveSegment, Point, Polyline } from "./types.js";
 
 /**
  * Cumulative arc-length table over a polyline. Built once per drawn shape and

@@ -15,23 +15,23 @@ import type { ColorInput } from "@sophistry/core/color";
 import { shadeColor, toCss } from "@sophistry/core/color";
 import type { Point3 } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import type { Camera3DValue } from "./context";
-import type { MeshFace, MeshLight } from "./mesh-math";
+import type { Camera3DValue } from "./context.js";
+import type { MeshFace, MeshLight } from "./mesh-math.js";
 import {
 	cross3,
 	dot3,
 	isFrontFacing,
 	normalize3,
 	subtract3,
-} from "./mesh-math";
-import type { ProjectedPoint } from "./project";
-import { depthZ, projectPoint } from "./project";
-import type { Shape3DProps } from "./props3d";
-import { shape3DProps } from "./props3d";
-import type { ProjectedPiece, Shape3DOptions } from "./shape3d";
-import { defineShape3D } from "./shape3d";
+} from "./mesh-math.js";
+import type { ProjectedPoint } from "./project.js";
+import { depthZ, projectPoint } from "./project.js";
+import type { Shape3DProps } from "./props3d.js";
+import { shape3DProps } from "./props3d.js";
+import type { ProjectedPiece, Shape3DOptions } from "./shape3d.js";
+import { defineShape3D } from "./shape3d.js";
 
-export type { MeshFace, MeshLight } from "./mesh-math";
+export type { MeshFace, MeshLight } from "./mesh-math.js";
 
 const DEFAULT_AMBIENT = 0.35;
 const DEFAULT_DIFFUSE = 0.75;

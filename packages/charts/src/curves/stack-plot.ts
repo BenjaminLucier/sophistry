@@ -24,9 +24,9 @@ import {
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, CurveKind, Point } from "@sophistry/core/geometry";
 import { finiteOrZero } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink, PositionValue } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink, PositionValue } from "../data/channels.js";
 import {
 	channelValues,
 	colorResolver,
@@ -34,26 +34,26 @@ import {
 	identity,
 	indexOf,
 	numberValues,
-} from "../data/channels";
-import type { EndSpace, Mapper } from "../end-space";
-import { endSpace, sceneAreaRuns } from "../end-space";
-import type { JoinEnd } from "../join";
-import { createGroupJoin, layerTransition } from "../join";
-import { fillBetweenCurve, fillBetweenRings } from "../math/fillBetween";
-import type { JoinStaging } from "../math/join";
-import type { AreaPoint } from "../math/morph";
-import { morphAreaRuns } from "../math/morph";
-import { uniqueKeys } from "../math/ordinal";
-import { revealClipAlongX } from "../math/reveal";
-import type { StackOffset, StackOrder } from "../math/stack";
-import { stackOrder } from "../math/stack";
-import { stackedBands } from "../math/stackplot";
-import { blendCss } from "../mix";
-import type { AnyDatum, StackReveal, TransitionProps } from "../props";
-import { groupIndices, WHOLE } from "../series";
-import { keyedMemo, shallowEqual } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch } from "./shared";
+} from "../data/channels.js";
+import type { EndSpace, Mapper } from "../end-space.js";
+import { endSpace, sceneAreaRuns } from "../end-space.js";
+import type { JoinEnd } from "../join.js";
+import { createGroupJoin, layerTransition } from "../join.js";
+import { fillBetweenCurve, fillBetweenRings } from "../math/fillBetween.js";
+import type { JoinStaging } from "../math/join.js";
+import type { AreaPoint } from "../math/morph.js";
+import { morphAreaRuns } from "../math/morph.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import { revealClipAlongX } from "../math/reveal.js";
+import type { StackOffset, StackOrder } from "../math/stack.js";
+import { stackOrder } from "../math/stack.js";
+import { stackedBands } from "../math/stackplot.js";
+import { blendCss } from "../mix.js";
+import type { AnyDatum, StackReveal, TransitionProps } from "../props.js";
+import { groupIndices, WHOLE } from "../series.js";
+import { keyedMemo, shallowEqual } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch } from "./shared.js";
 
 const DEFAULT_FILL_OPACITY = 0.85;
 

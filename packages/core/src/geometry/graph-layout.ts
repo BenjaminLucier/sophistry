@@ -12,10 +12,10 @@
  * spanning forest.
  */
 
-import { boundsOf } from "./bounds";
-import { fieldJitter } from "./field";
-import type { Point } from "./path/types";
-import { createResolver } from "./resolver";
+import { boundsOf } from "./bounds.js";
+import { fieldJitter } from "./field.js";
+import type { Point } from "./path/types.js";
+import { createResolver } from "./resolver.js";
 
 /**
  * Whatever the caller identifies a vertex by. Compared with `===`.

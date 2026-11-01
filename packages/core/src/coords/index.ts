@@ -3,21 +3,25 @@
  * they publish.
  */
 
-export type { AxesProps, AxisOptions } from "./axes";
-export { axes } from "./axes";
+export type { AxesProps, AxisOptions } from "./axes.js";
+export { axes } from "./axes.js";
 export type {
 	Complex,
 	ComplexCoordinateSystem,
 	ComplexPlaneProps,
-} from "./complex-plane";
-export { complexCoordsOf, complexPlane, imaginaryTick } from "./complex-plane";
+} from "./complex-plane.js";
+export {
+	complexCoordsOf,
+	complexPlane,
+	imaginaryTick,
+} from "./complex-plane.js";
 export type {
 	AxisPosition,
 	CartesianOptions,
 	CoordinateSystem,
 	XAxisPosition,
 	YAxisPosition,
-} from "./coords";
+} from "./coords.js";
 export {
 	axisPositionValue,
 	coordsContext,
@@ -30,28 +34,28 @@ export {
 	publishCoords,
 	requireCoords,
 	UNDER_AXES_Z_INDEX,
-} from "./coords";
+} from "./coords.js";
 export type {
 	CurveSampling,
 	FunctionGraphHandle,
 	FunctionGraphProps,
 	ParametricGraphProps,
 	PolarGraphProps,
-} from "./function-graph";
+} from "./function-graph.js";
 export {
 	functionGraph,
 	graphHandle,
 	parametricGraph,
 	polarGraph,
 	sampleRuns,
-} from "./function-graph";
+} from "./function-graph.js";
 export type {
 	AreaUnderGraphProps,
 	LineToGraphProps,
 	RiemannRectanglesProps,
 	SecantSlopeGroupProps,
 	TangentToGraphProps,
-} from "./graph-annotations";
+} from "./graph-annotations.js";
 export {
 	angleOfTangent,
 	areaUnderGraph,
@@ -62,31 +66,31 @@ export {
 	slopeOfSecant,
 	tangentToGraph,
 	verticalLineToGraph,
-} from "./graph-annotations";
-export type { ImplicitFunctionProps } from "./implicit-function";
-export { implicitFunction } from "./implicit-function";
+} from "./graph-annotations.js";
+export type { ImplicitFunctionProps } from "./implicit-function.js";
+export { implicitFunction } from "./implicit-function.js";
 export type {
 	BasisVectorsProps,
 	LinearTransformProps,
-} from "./linear-transform";
+} from "./linear-transform.js";
 export {
 	basisVectors,
 	LinearTransformNode,
 	linearTransform,
 	transformDeterminant,
-} from "./linear-transform";
-export type { NumberLineProps, UnitIntervalProps } from "./number-line";
-export { numberLine, unitInterval } from "./number-line";
-export type { NumberPlaneProps } from "./number-plane";
-export { numberPlane } from "./number-plane";
+} from "./linear-transform.js";
+export type { NumberLineProps, UnitIntervalProps } from "./number-line.js";
+export { numberLine, unitInterval } from "./number-line.js";
+export type { NumberPlaneProps } from "./number-plane.js";
+export { numberPlane } from "./number-plane.js";
 export type {
 	AzimuthUnits,
 	PolarCoordinateSystem,
 	PolarPlaneProps,
-} from "./polar-plane";
-export { piMultipleLabel, polarCoordsOf, polarPlane } from "./polar-plane";
-export type { TangentLineProps } from "./tangent";
-export { tangentLine } from "./tangent";
+} from "./polar-plane.js";
+export { piMultipleLabel, polarCoordsOf, polarPlane } from "./polar-plane.js";
+export type { TangentLineProps } from "./tangent.js";
+export { tangentLine } from "./tangent.js";
 export type {
 	FieldEngine,
 	FieldEnvironment,
@@ -94,10 +98,10 @@ export type {
 	StreamLinesProps,
 	VectorFieldHandle,
 	VectorFieldProps,
-} from "./vector-field";
+} from "./vector-field.js";
 export {
 	createFieldEngine,
 	fieldHandle,
 	streamLines,
 	vectorField,
-} from "./vector-field";
+} from "./vector-field.js";

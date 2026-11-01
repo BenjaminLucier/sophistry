@@ -9,10 +9,10 @@ import type {
 	SceneNode,
 } from "@sophistry/core";
 import { group as groupNode } from "@sophistry/core";
-import { chart } from "../chart";
-import type { SideRoom } from "../math/facet";
-import type { ChartGroup, ChartGroupScope } from "./chart-group";
-import { chartGroupContext } from "./chart-group";
+import { chart } from "../chart.js";
+import type { SideRoom } from "../math/facet.js";
+import type { ChartGroup, ChartGroupScope } from "./chart-group.js";
+import { chartGroupContext } from "./chart-group.js";
 
 /** A panel's nodes: the wrapper providing its scope, and its chart. */
 export interface PanelNodes {

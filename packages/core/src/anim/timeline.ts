@@ -10,14 +10,14 @@
  * `clock.advance(10)` fast-forwards a nested script.
  */
 
-import type { Readable } from "../reactive";
-import { isReadable, track } from "../reactive";
-import type { Clock } from "../tween/clock";
-import { defaultClock } from "../tween/clock";
-import type { ReducedMotion } from "../tween/reduced-motion";
-import { resolveReducedMotion } from "../tween/reduced-motion";
-import type { Animation } from "./animation";
-import { compose, EPSILON, restTime, sampleTime } from "./animation";
+import type { Readable } from "../reactive/index.js";
+import { isReadable, track } from "../reactive/index.js";
+import type { Clock } from "../tween/clock.js";
+import { defaultClock } from "../tween/clock.js";
+import type { ReducedMotion } from "../tween/reduced-motion.js";
+import { resolveReducedMotion } from "../tween/reduced-motion.js";
+import type { Animation } from "./animation.js";
+import { compose, EPSILON, restTime, sampleTime } from "./animation.js";
 
 /**
  * Runs `fn` on a later macrotask without `setTimeout`: timers are clamped to

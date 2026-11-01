@@ -7,22 +7,26 @@
  * Internal — not in the barrel. Owned by `coords/`; `charts` imports it.
  */
 
-import type { ColorInput } from "../color";
+import type { ColorInput } from "../color/index.js";
 import type {
 	Bounds,
 	Point,
 	Range,
 	RangeTransition,
 	WeightedTick,
-} from "../geometry";
-import { isRangeTransition, spacedTicks, transitionTicks } from "../geometry";
-import type { Readable } from "../reactive";
-import type { CompositeContext } from "../scene/composite";
-import { instances } from "../scene/instances";
-import type { SceneNode } from "../scene/types";
-import { line } from "../shapes/line";
-import type { AxisTickSource } from "./axis-composition";
-import { axisTicksAt } from "./axis-composition";
+} from "../geometry/index.js";
+import {
+	isRangeTransition,
+	spacedTicks,
+	transitionTicks,
+} from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { instances } from "../scene/instances.js";
+import type { SceneNode } from "../scene/types.js";
+import { line } from "../shapes/line.js";
+import type { AxisTickSource } from "./axis-composition.js";
+import { axisTicksAt } from "./axis-composition.js";
 
 /** Spacing, in scene units, at which a grid line fading in or out mid-rescale is gone (whole at twice it). */
 const GRID_MIN_GAP = 0.15;

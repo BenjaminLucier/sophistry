@@ -5,8 +5,8 @@
  * (its canonical home, see that file's module doc).
  */
 
-import { lerpPoint } from "../lerp";
-import type { CurveSegment, Point, Polyline } from "./types";
+import { lerpPoint } from "../lerp.js";
+import type { CurveSegment, Point, Polyline } from "./types.js";
 
 /**
  * A `CurveSegment` that traces the straight line from `from` to `to` exactly

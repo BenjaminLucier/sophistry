@@ -11,9 +11,9 @@
  *   `setModePreference` / `cycleModePreference`.
  */
 
-import { type Readable, type Track, track } from "../reactive";
-import { resolvePalette } from "./palette";
-import type { ColorMode, ModePreference, PaletteSpec } from "./types";
+import { type Readable, type Track, track } from "../reactive/index.js";
+import { resolvePalette } from "./palette.js";
+import type { ColorMode, ModePreference, PaletteSpec } from "./types.js";
 
 /** Default `localStorage` key the mode preference is stored under. */
 const MODE_STORAGE_KEY = "theme-pref";

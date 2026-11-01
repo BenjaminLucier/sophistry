@@ -1,7 +1,7 @@
 /** `stem(x, y)` — a drop line and a marker for each finite `(x, y)` pair. */
 
 import type { Point } from "@sophistry/core/geometry";
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /** @category Math */
 export interface StemPoint {

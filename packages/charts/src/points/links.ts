@@ -15,26 +15,26 @@ import type {
 import { arrow, defineComposite, Invalidate, line } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
-import { positionOf } from "../band";
-import type { BatchedMark } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import { positionOf } from "../band.js";
+import type { BatchedMark } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import type { ChartFrame } from "../frame/types";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo } from "../util";
-import type { SegmentItem } from "./segment-marks";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
+} from "../data/channels.js";
+import type { ChartFrame } from "../frame/types.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo } from "../util.js";
+import type { SegmentItem } from "./segment-marks.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
 
 const DEFAULT_TIP_LENGTH = 0.18;
 

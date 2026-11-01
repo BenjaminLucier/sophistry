@@ -1,7 +1,7 @@
 /** Hexagonal binning: finite `(x, y)` pairs counted into a pointy-top hex grid. */
 
 import type { Point } from "@sophistry/core/geometry";
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /**
  * One occupied hex: its centre in data units, and how many points landed in it.

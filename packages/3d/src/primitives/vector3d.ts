@@ -8,11 +8,11 @@ import { Invalidate } from "@sophistry/core";
 import type { Polyline } from "@sophistry/core/geometry";
 import { arrowHeadAt, closePolyline } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
-import { clipSegment, depthZ, projectPoint, projectScale } from "../project";
-import type { Shape3DProps } from "../props3d";
-import { shape3DProps } from "../props3d";
-import type { ProjectedPiece } from "../shape3d";
-import { defineShape3D } from "../shape3d";
+import { clipSegment, depthZ, projectPoint, projectScale } from "../project.js";
+import type { Shape3DProps } from "../props3d.js";
+import { shape3DProps } from "../props3d.js";
+import type { ProjectedPiece } from "../shape3d.js";
+import { defineShape3D } from "../shape3d.js";
 
 /** @category Primitives */
 export interface Vector3DProps extends Shape3DProps {

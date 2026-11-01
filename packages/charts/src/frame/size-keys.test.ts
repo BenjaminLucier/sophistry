@@ -17,15 +17,15 @@
 import type { SceneNode } from "@sophistry/core";
 import type { ShapeSpec } from "@sophistry/core/internal";
 import { describe, expect, it, vi } from "vitest";
-import { chart, chartHandle } from "../chart";
-import * as sizeLegendModule from "../guides/size-legend";
-import { bubbleLegendValues, bubbleRadiusScale } from "../math/bubble";
-import { scatter } from "../points/scatter";
-import { markItems, mount, probe } from "../test-harness";
-import type { ChartProps } from "./types";
+import { chart, chartHandle } from "../chart.js";
+import * as sizeLegendModule from "../guides/size-legend.js";
+import { bubbleLegendValues, bubbleRadiusScale } from "../math/bubble.js";
+import { scatter } from "../points/scatter.js";
+import { markItems, mount, probe } from "../test-harness.js";
+import type { ChartProps } from "./types.js";
 
-vi.mock("../guides/size-legend", async (original) => {
-	const actual = await original<typeof import("../guides/size-legend")>();
+vi.mock("../guides/size-legend.js", async (original) => {
+	const actual = await original<typeof import("../guides/size-legend.js")>();
 	return {
 		...actual,
 		measureSizeKeyExtents: vi.fn(actual.measureSizeKeyExtents),

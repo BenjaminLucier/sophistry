@@ -9,20 +9,23 @@
  * (a shape ignores `yUp`) reruns nothing.
  */
 
-import type { Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { compose, fromTranslationRotationScale } from "../geometry/transform";
-import type { ClipShape } from "../spec/clip";
-import { nestClip } from "../spec/clip";
-import type { Placement } from "../spec/layout";
-import { readDelta } from "../spec/layout";
-import { BaseContainer } from "./container";
-import { Invalidate } from "./context";
-import { memo, ROOT_SPACE } from "./node";
-import { definePrimitive } from "./primitive";
-import { lastMatrix } from "./shape";
-import type { InvalidateBits, SceneNode, Space } from "./types";
-import { SpaceChange } from "./types";
+import type { Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import {
+	compose,
+	fromTranslationRotationScale,
+} from "../geometry/transform.js";
+import type { ClipShape } from "../spec/clip.js";
+import { nestClip } from "../spec/clip.js";
+import type { Placement } from "../spec/layout.js";
+import { readDelta } from "../spec/layout.js";
+import { BaseContainer } from "./container.js";
+import { Invalidate } from "./context.js";
+import { memo, ROOT_SPACE } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import { lastMatrix } from "./shape.js";
+import type { InvalidateBits, SceneNode, Space } from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /** @category Shapes */
 export interface GroupProps {

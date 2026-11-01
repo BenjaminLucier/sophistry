@@ -12,13 +12,9 @@
  * `MathTex.tsx` take it from there.
  */
 
-// The asset declarations travel with the imports that need them, so a
-// package compiling this source (the bindings) needs no copy of them.
-/// <reference path="./assets.d.ts" />
-import "katex/dist/katex.css";
 import katex from "katex";
-import type { FaceName } from "./fonts";
-import { ensureWebFonts, loadFace, resolveFace } from "./fonts";
+import type { FaceName } from "./fonts.js";
+import { ensureWebFonts, loadFace, resolveFace } from "./fonts.js";
 
 /**
  * An axis-aligned rectangle in pixels, y growing downward.
@@ -272,12 +268,32 @@ interface TextRun {
 	clip: PixelRect | null;
 }
 
+let stylesheetChecked = false;
+
+/**
+ * KaTeX lays formulas out with its stylesheet, which the application imports
+ * once (`import "katex/dist/katex.css"`). Without it every position read back
+ * is wrong, so the first formula checks for it: the stylesheet sets `.katex`'s
+ * font to KaTeX_Main.
+ */
+function checkStylesheet(host: HTMLElement): void {
+	if (stylesheetChecked) return;
+	stylesheetChecked = true;
+	const typeset = host.querySelector(".katex");
+	if (typeset && !getComputedStyle(typeset).fontFamily.includes("KaTeX_Main")) {
+		console.warn(
+			'@sophistry/text: KaTeX\'s stylesheet is not loaded, so formulas are laid out wrong. Import it once in your app: import "katex/dist/katex.css";',
+		);
+	}
+}
+
 /**
  * Typesets `tex` in a hidden DOM host and reads its layout back as pixels.
  *
  * Async because the answer is wrong until the KaTeX webfonts are in: a span
  * measured in a fallback face reports that face's advances, and every position
- * downstream of it inherits the error. Requires a browser DOM. This is the
+ * downstream of it inherits the error. Requires a browser DOM with KaTeX's
+ * stylesheet loaded (`import "katex/dist/katex.css"`). This is the
  * low-level step under {@link outlineLatex}; most code wants `MathTex` or
  * `createLatex` instead. Parse errors do not throw (KaTeX renders the source in
  * its error colour).
@@ -303,6 +319,7 @@ export async function measureLatex(
 			output: "html",
 			throwOnError: false,
 		});
+		checkStylesheet(host);
 
 		const root = host.querySelector<HTMLElement>(".katex-html") ?? host;
 		const rootBox = root.getBoundingClientRect();

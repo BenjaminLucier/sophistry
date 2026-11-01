@@ -11,15 +11,15 @@
  * order is `order`.
  */
 
-import type { Point } from "../geometry";
-import type { Readable, Track } from "../reactive";
-import { derive, track } from "../reactive";
-import type { Easing } from "../tween";
-import { resolveInterpolator } from "../tween";
-import type { Animation } from "./animation";
-import { animation } from "./animation";
-import { lagged, parallel, sequence } from "./sequence";
-import { driveProgress, driveTrack } from "./types";
+import type { Point } from "../geometry/index.js";
+import type { Readable, Track } from "../reactive/index.js";
+import { derive, track } from "../reactive/index.js";
+import type { Easing } from "../tween/index.js";
+import { resolveInterpolator } from "../tween/index.js";
+import type { Animation } from "./animation.js";
+import { animation } from "./animation.js";
+import { lagged, parallel, sequence } from "./sequence.js";
+import { driveProgress, driveTrack } from "./types.js";
 
 /**
  * Maps a slot index to a point in scene units.

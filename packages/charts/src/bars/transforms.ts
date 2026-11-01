@@ -9,26 +9,26 @@
  */
 
 import type { BandKey } from "@sophistry/core/geometry";
-import type { Channel, PositionValue } from "../data/channels";
-import { identity, indexOf, resolveChannel } from "../data/channels";
+import type { Channel, PositionValue } from "../data/channels.js";
+import { identity, indexOf, resolveChannel } from "../data/channels.js";
 import type {
 	NormalizeBasis,
 	Reducer,
 	RollingOptions,
-} from "../math/aggregate";
+} from "../math/aggregate.js";
 import {
 	normalizeValues,
 	reduceValues,
 	rollingValues,
-} from "../math/aggregate";
-import { dodgeSpan } from "../math/dodge";
-import type { HistogramOptions } from "../math/histogram";
-import { histogramBins } from "../math/histogram";
-import { jitterOffsets } from "../math/jitter";
-import { meanInterval } from "../math/regression";
-import { binIndex } from "../math/shared/binning";
-import type { StackItem, StackOffset } from "../math/stack";
-import { stackColumns } from "../math/stack";
+} from "../math/aggregate.js";
+import { dodgeSpan } from "../math/dodge.js";
+import type { HistogramOptions } from "../math/histogram.js";
+import { histogramBins } from "../math/histogram.js";
+import { jitterOffsets } from "../math/jitter.js";
+import { meanInterval } from "../math/regression.js";
+import { binIndex } from "../math/shared/binning.js";
+import type { StackItem, StackOffset } from "../math/stack.js";
+import { stackColumns } from "../math/stack.js";
 
 /** Reads a numeric channel (`Date`s as epoch milliseconds); anything not a number is `NaN`. */
 function numberReader<T, V extends PositionValue = PositionValue>(

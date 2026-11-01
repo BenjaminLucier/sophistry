@@ -8,12 +8,12 @@
 import { Invalidate } from "@sophistry/core";
 import type { Point, Polyline } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
-import type { ProjectedPoint } from "../project";
-import { clipSegment, depthZ, projectPoint, projectScale } from "../project";
-import type { Shape3DProps } from "../props3d";
-import { shape3DProps } from "../props3d";
-import type { ProjectedPiece } from "../shape3d";
-import { defineShape3D } from "../shape3d";
+import type { ProjectedPoint } from "../project.js";
+import { clipSegment, depthZ, projectPoint, projectScale } from "../project.js";
+import type { Shape3DProps } from "../props3d.js";
+import { shape3DProps } from "../props3d.js";
+import type { ProjectedPiece } from "../shape3d.js";
+import { defineShape3D } from "../shape3d.js";
 
 /**
  * Which coordinate plane a {@link grid3D} lies in; the normal is the omitted axis.

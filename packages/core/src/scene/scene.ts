@@ -22,57 +22,67 @@
  * server rendering.
  */
 
-import type { Animation } from "../anim/animation";
-import type { PlayContext, PlayResult, Timeline } from "../anim/timeline";
+import type { Animation } from "../anim/animation.js";
+import type { PlayContext, PlayResult, Timeline } from "../anim/timeline.js";
 import {
 	anySignal,
 	timeline as createTimeline,
 	play as playAnimations,
 	splitPlayArguments,
-} from "../anim/timeline";
-import type { ColorInput } from "../color";
-import { cssColor } from "../color";
-import type { Bounds, Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { viewMatrix } from "../geometry/view-matrix";
-import type { ScenePointer } from "../interact/pointer";
-import { createPointerChannel } from "../interact/pointer";
-import type { FocusChannel, InteractionRegistry } from "../interact/registry";
-import type { Readable } from "../reactive";
-import { derive, isReadable, track } from "../reactive";
-import type { FocusItem } from "../render/a11y";
-import { createAccessibilityMirror, focusIds } from "../render/a11y";
-import type { CameraDefaults, CameraView } from "../render/camera";
-import type { Renderer } from "../render/canvas-renderer";
-import { createCanvasRenderer } from "../render/canvas-renderer";
-import type { PointerDriver } from "../render/pointer";
-import { createPointerDriver } from "../render/pointer";
-import type { DrawSpec } from "../spec/types";
-import { colorModeReadable } from "../themes/mode";
-import type { ThemeSpec } from "../themes/theme";
-import { resolveTheme } from "../themes/theme";
-import type { Theme } from "../themes/types";
+} from "../anim/timeline.js";
+import type { ColorInput } from "../color/index.js";
+import { cssColor } from "../color/index.js";
+import type { Bounds, Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { viewMatrix } from "../geometry/view-matrix.js";
+import type { ScenePointer } from "../interact/pointer.js";
+import { createPointerChannel } from "../interact/pointer.js";
+import type {
+	FocusChannel,
+	InteractionRegistry,
+} from "../interact/registry.js";
+import type { Readable } from "../reactive/index.js";
+import { derive, isReadable, track } from "../reactive/index.js";
+import type { FocusItem } from "../render/a11y.js";
+import { createAccessibilityMirror, focusIds } from "../render/a11y.js";
+import type { CameraDefaults, CameraView } from "../render/camera.js";
+import type { Renderer } from "../render/canvas-renderer.js";
+import { createCanvasRenderer } from "../render/canvas-renderer.js";
+import type { PointerDriver } from "../render/pointer.js";
+import { createPointerDriver } from "../render/pointer.js";
+import type { DrawSpec } from "../spec/types.js";
+import { colorModeReadable } from "../themes/mode.js";
+import type { ThemeSpec } from "../themes/theme.js";
+import { resolveTheme } from "../themes/theme.js";
+import type { Theme } from "../themes/types.js";
 import type {
 	Clock,
 	ReducedMotionTransition,
 	VisibilityHandle,
-} from "../tween/clock";
-import { defaultClock, watchClockVisibility } from "../tween/clock";
-import { currentFramePhase, onFrame, requestFrame } from "../tween/frame-loop";
-import type { ReducedMotion } from "../tween/reduced-motion";
-import { prefersReducedMotion } from "../tween/reduced-motion";
-import type { Camera, CameraOptions } from "./cameras";
-import { createCameraList } from "./cameras";
+} from "../tween/clock.js";
+import { defaultClock, watchClockVisibility } from "../tween/clock.js";
+import {
+	currentFramePhase,
+	onFrame,
+	requestFrame,
+} from "../tween/frame-loop.js";
+import type { ReducedMotion } from "../tween/reduced-motion.js";
+import { prefersReducedMotion } from "../tween/reduced-motion.js";
+import type { Camera, CameraOptions } from "./cameras.js";
+import { createCameraList } from "./cameras.js";
 import {
 	clockContext,
 	frameContext,
 	pointerContext,
 	reducedMotionContext,
 	themeContext,
-} from "./context";
-import { SceneGraph } from "./graph";
-import { createFocusChannel, createInteractionRegistry } from "./interaction";
-import type { ContainerNode, SceneNode } from "./types";
+} from "./context.js";
+import { SceneGraph } from "./graph.js";
+import {
+	createFocusChannel,
+	createInteractionRegistry,
+} from "./interaction.js";
+import type { ContainerNode, SceneNode } from "./types.js";
 
 /** Browsers refuse canvases past 16384 px per side (and 268M px² in area). */
 const MAX_CANVAS_SIDE = 16384;

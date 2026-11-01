@@ -12,8 +12,8 @@
  * and not ink.
  */
 
-import type { ColorInput } from "../color";
-import type { Matrix, Point } from "../geometry";
+import type { ColorInput } from "../color/index.js";
+import type { Matrix, Point } from "../geometry/index.js";
 import {
 	about,
 	columnsOf,
@@ -23,18 +23,18 @@ import {
 	IDENTITY,
 	lerpMatrix,
 	scaleFactorOf,
-} from "../geometry";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { BaseContainer } from "../scene/container";
-import { Invalidate } from "../scene/context";
-import { memo, ROOT_SPACE } from "../scene/node";
-import { definePrimitive } from "../scene/primitive";
-import { lastMatrix } from "../scene/shape";
-import { label } from "../scene/text";
-import type { InvalidateBits, SceneNode, Space } from "../scene/types";
-import { SpaceChange } from "../scene/types";
-import { vector } from "../shapes/line";
+} from "../geometry/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { BaseContainer } from "../scene/container.js";
+import { Invalidate } from "../scene/context.js";
+import { memo, ROOT_SPACE } from "../scene/node.js";
+import { definePrimitive } from "../scene/primitive.js";
+import { lastMatrix } from "../scene/shape.js";
+import { label } from "../scene/text.js";
+import type { InvalidateBits, SceneNode, Space } from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
+import { vector } from "../shapes/line.js";
 
 /**
  * Props for {@link linearTransform}. Give either `matrix` or `iHat`/`jHat`.

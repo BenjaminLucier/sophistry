@@ -14,12 +14,17 @@
 import type { ColorRampSpec, CoordinateSystem } from "@sophistry/core";
 import { resolveColorRamp } from "@sophistry/core/internal";
 import type { Colormap, Theme } from "@sophistry/core/themes";
-import type { ColorNorm, RampScaleOptions } from "../color-norm";
-import { colorNorm, rampOf } from "../color-norm";
-import type { ChartLayer } from "../context";
-import type { ChartLayerExtent, RampExtent } from "../frame/types";
-import { gridStagger, readingRanks, reversedAxes, staggered } from "../stagger";
-import { keyedMemo } from "../util";
+import type { ColorNorm, RampScaleOptions } from "../color-norm.js";
+import { colorNorm, rampOf } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import type { ChartLayerExtent, RampExtent } from "../frame/types.js";
+import {
+	gridStagger,
+	readingRanks,
+	reversedAxes,
+	staggered,
+} from "../stagger.js";
+import { keyedMemo } from "../util.js";
 
 /** What {@link createRampCells}'s function takes on each update. */
 export interface RampCellsSpec<C> {

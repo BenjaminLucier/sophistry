@@ -7,9 +7,9 @@
 import type { CoordinateSystem, SceneNode } from "@sophistry/core";
 import { coordsContext, defineComposite, Invalidate } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { stackPlot } from "../curves/stack-plot";
-import { identity } from "../data/channels";
-import { markItems, mount } from "../test-harness";
+import { stackPlot } from "../curves/stack-plot.js";
+import { identity } from "../data/channels.js";
+import { markItems, mount } from "../test-harness.js";
 
 // y range [2, 9] does not contain 0, so the crossing is pinned to 2.
 const coords: CoordinateSystem = {

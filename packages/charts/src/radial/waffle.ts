@@ -27,24 +27,28 @@ import {
 import type { Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
 import { clamp01, cssColor } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	colorResolver,
 	identity,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { WaffleCell } from "../math/waffle";
-import { largestRemainder, waffleCells } from "../math/waffle";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import { textWidth } from "../text-width";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipText } from "../tooltip";
-import { createOwnTooltip } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { WaffleCell } from "../math/waffle.js";
+import { largestRemainder, waffleCells } from "../math/waffle.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import { textWidth } from "../text-width.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipText } from "../tooltip.js";
+import { createOwnTooltip } from "./shared.js";
 
 /** Share of `progress` spent fading in the empty grid before the cells fill. */
 const FRAME_SHARE = 0.15;

@@ -3,13 +3,13 @@
  * `FadeIn(shift=UP)` has an equivalent.
  */
 
-import type { Point } from "../geometry";
-import type { Animatable } from "../tween";
-import { resolveInterpolator } from "../tween";
-import { valueTo } from "./move";
-import { parallel } from "./sequence";
-import type { Animation, AnimOptions } from "./types";
-import { driveTrack } from "./types";
+import type { Point } from "../geometry/index.js";
+import type { Animatable } from "../tween/index.js";
+import { resolveInterpolator } from "../tween/index.js";
+import { valueTo } from "./move.js";
+import { parallel } from "./sequence.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveTrack } from "./types.js";
 
 /** @category Animation presets */
 export interface FadeOptions extends AnimOptions {

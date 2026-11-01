@@ -21,12 +21,12 @@ import {
 } from "@sophistry/core";
 import type { Bounds, Point, Range } from "@sophistry/core/geometry";
 import { mix } from "@sophistry/core/internal";
-import type { JoinStages, StageWindow } from "../math/join";
-import { keyedMemo, shallowEqual, stableValue } from "../util";
-import type { AxisEnds, MergedAxisOptions, ResolvedAxis } from "./fit";
-import { axisNow, sameOptionalPlacement } from "./fit";
-import type { SecondaryFlags } from "./secondary";
-import type { ChartEnd, ChartEnds } from "./types";
+import type { JoinStages, StageWindow } from "../math/join.js";
+import { keyedMemo, shallowEqual, stableValue } from "../util.js";
+import type { AxisEnds, MergedAxisOptions, ResolvedAxis } from "./fit.js";
+import { axisNow, sameOptionalPlacement } from "./fit.js";
+import type { SecondaryFlags } from "./secondary.js";
+import type { ChartEnd, ChartEnds } from "./types.js";
 
 /** How one axis maps, for a coordinate system through it. */
 interface Mapping {

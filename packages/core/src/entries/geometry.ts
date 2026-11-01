@@ -16,7 +16,7 @@
  * @packageDocumentation
  */
 
-export type { AngleArcOptions } from "../geometry/arc";
+export type { AngleArcOptions } from "../geometry/arc.js";
 export {
 	angleArcCurvePath,
 	angleArcPolyline,
@@ -38,17 +38,17 @@ export {
 	segmentsForArc,
 	starInnerRadius,
 	starPolygon,
-} from "../geometry/arc";
-export type { BandKey, BandScale, BandScaleOptions } from "../geometry/band";
+} from "../geometry/arc.js";
+export type { BandKey, BandScale, BandScaleOptions } from "../geometry/band.js";
 export {
 	bandScale,
 	interpolateBandScale,
 	slotBandScale,
-} from "../geometry/band";
-export { boundsOf, centerOf, pointOnBounds } from "../geometry/bounds";
-export type { BraceOptions } from "../geometry/brace";
-export { braceRings, braceSpan, braceTip } from "../geometry/brace";
-export type { ClosedCurveKind, CurveKind } from "../geometry/curves";
+} from "../geometry/band.js";
+export { boundsOf, centerOf, pointOnBounds } from "../geometry/bounds.js";
+export type { BraceOptions } from "../geometry/brace.js";
+export { braceRings, braceSpan, braceTip } from "../geometry/brace.js";
+export type { ClosedCurveKind, CurveKind } from "../geometry/curves.js";
 export {
 	areaCurvePath,
 	clipClosedCurvePathToX,
@@ -56,14 +56,14 @@ export {
 	closedCurvePath,
 	curvePath,
 	reverseCurvePath,
-} from "../geometry/curves";
-export type { StreamlineOptions, VectorFn } from "../geometry/field";
+} from "../geometry/curves.js";
+export type { StreamlineOptions, VectorFn } from "../geometry/field.js";
 export {
 	fieldJitter,
 	rk4Step,
 	streamline,
 	streamlineBothWays,
-} from "../geometry/field";
+} from "../geometry/field.js";
 export type {
 	GraphData,
 	GraphDirection,
@@ -74,7 +74,7 @@ export type {
 	GraphLayoutOptions,
 	GraphLayoutSpec,
 	VertexId,
-} from "../geometry/graph-layout";
+} from "../geometry/graph-layout.js";
 export {
 	circularLayout,
 	edgeKey,
@@ -89,13 +89,13 @@ export {
 	springLayout,
 	springTrajectory,
 	treeLayout,
-} from "../geometry/graph-layout";
+} from "../geometry/graph-layout.js";
 export type {
 	ImplicitCurveOptions,
 	ImplicitCurvePiece,
-} from "../geometry/implicit";
-export { implicitCurve } from "../geometry/implicit";
-export type { PointPath } from "../geometry/lerp";
+} from "../geometry/implicit.js";
+export { implicitCurve } from "../geometry/implicit.js";
+export type { PointPath } from "../geometry/lerp.js";
 export {
 	clamp,
 	lerp,
@@ -104,19 +104,19 @@ export {
 	pathAlongArc,
 	progressIn,
 	remap,
-} from "../geometry/lerp";
+} from "../geometry/lerp.js";
 export type {
 	Correspondence,
 	MorphInterpolator,
 	RingsInterpolator,
-} from "../geometry/morph";
+} from "../geometry/morph.js";
 export {
 	morphCurvePaths,
 	morphPathData,
 	morphPolylines,
 	morphRings,
-} from "../geometry/morph";
-export type { ArcTable, CurveArcTable } from "../geometry/path/arclength";
+} from "../geometry/morph.js";
+export type { ArcTable, CurveArcTable } from "../geometry/path/arclength.js";
 export {
 	measure,
 	measureCurve,
@@ -129,7 +129,7 @@ export {
 	sliceCurveAtT,
 	sliceCurveBetween,
 	tangentAtT,
-} from "../geometry/path/arclength";
+} from "../geometry/path/arclength.js";
 export {
 	arcCubics,
 	cubicArcLength,
@@ -137,8 +137,8 @@ export {
 	lineSegment,
 	quadraticToCubic,
 	splitCubicAt,
-} from "../geometry/path/cubic";
-export type { PathSegment } from "../geometry/path/svg-path";
+} from "../geometry/path/cubic.js";
+export type { PathSegment } from "../geometry/path/svg-path.js";
 export {
 	closePolyline,
 	curvePathToPolyline,
@@ -147,7 +147,7 @@ export {
 	pathDataToCurvePath,
 	polylineToCurvePath,
 	toPathData,
-} from "../geometry/path/svg-path";
+} from "../geometry/path/svg-path.js";
 export type {
 	Bounds,
 	CurvePath,
@@ -155,18 +155,18 @@ export type {
 	Point,
 	Polyline,
 	Subpath,
-} from "../geometry/path/types";
+} from "../geometry/path/types.js";
 export type {
 	RangeTransition,
 	WeightedTick,
-} from "../geometry/scale/range-transition";
+} from "../geometry/scale/range-transition.js";
 export {
 	currentRange,
 	interpolateRange,
 	isRangeTransition,
 	spacedTicks,
 	transitionTicks,
-} from "../geometry/scale/range-transition";
+} from "../geometry/scale/range-transition.js";
 export type {
 	DivergingKind,
 	DivergingScaleOptions,
@@ -176,7 +176,7 @@ export type {
 	ScaleSpec,
 	ScaleTicks,
 	TimeScaleOptions,
-} from "../geometry/scale/scales";
+} from "../geometry/scale/scales.js";
 export {
 	divergingScale,
 	linearScale,
@@ -186,24 +186,24 @@ export {
 	sqrtScale,
 	symlogScale,
 	timeScale,
-} from "../geometry/scale/scales";
+} from "../geometry/scale/scales.js";
 export type {
 	TickFormatContext,
 	TickFormatter,
 	TickFormatterName,
 	TickFormatterSpec,
-} from "../geometry/scale/tick-format";
+} from "../geometry/scale/tick-format.js";
 export {
 	formatSpecifier,
 	formatTick,
 	resolveTickFormatter,
 	tickFormatters,
-} from "../geometry/scale/tick-format";
+} from "../geometry/scale/tick-format.js";
 export type {
 	AxisTickOptions,
 	LogTickOptions,
 	TickOptions,
-} from "../geometry/scale/ticks";
+} from "../geometry/scale/ticks.js";
 export {
 	axisTicks,
 	logTicks,
@@ -211,15 +211,18 @@ export {
 	thinTickLabels,
 	tickStep,
 	tickValues,
-} from "../geometry/scale/ticks";
+} from "../geometry/scale/ticks.js";
 export type {
 	MatchedShapePart,
 	MatchShapesOptions,
 	ShapeMatch,
 	ShapePart,
 	ShapeTransform,
-} from "../geometry/shape-match";
-export { matchShapesByPointCloud, morphShapes } from "../geometry/shape-match";
+} from "../geometry/shape-match.js";
+export {
+	matchShapesByPointCloud,
+	morphShapes,
+} from "../geometry/shape-match.js";
 export {
 	arcPolyline,
 	arrowHead,
@@ -231,7 +234,7 @@ export {
 	rectPolyline,
 	regularPolygon,
 	segmentsForRadius,
-} from "../geometry/shapes";
+} from "../geometry/shapes.js";
 export type {
 	TemporalInstantLike,
 	TemporalPlainDateLike,
@@ -239,16 +242,16 @@ export type {
 	TemporalValue,
 	TimeValue,
 	TimeZone,
-} from "../geometry/time";
+} from "../geometry/time.js";
 export {
 	fromWallTime,
 	timeZoneOffset,
 	toEpochMs,
 	toWallTime,
-} from "../geometry/time";
-export type { TipGeometry, TipShape } from "../geometry/tips";
-export { tipIsClosed, tipPolylines } from "../geometry/tips";
-export type { Matrix } from "../geometry/transform";
+} from "../geometry/time.js";
+export type { TipGeometry, TipShape } from "../geometry/tips.js";
+export { tipIsClosed, tipPolylines } from "../geometry/tips.js";
+export type { Matrix } from "../geometry/transform.js";
 export {
 	about,
 	applyToPoint,
@@ -266,4 +269,4 @@ export {
 	scale,
 	scaleFactorOf,
 	translate,
-} from "../geometry/transform";
+} from "../geometry/transform.js";

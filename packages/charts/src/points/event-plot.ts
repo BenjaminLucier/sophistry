@@ -7,23 +7,23 @@
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	resolveChannel,
-} from "../data/channels";
-import type { EventRow } from "../math/eventplot";
-import { eventPlotRows } from "../math/eventplot";
-import type { AnyDatum } from "../props";
-import { ranks, staggered } from "../stagger";
-import { keyedMemo } from "../util";
-import type { SegmentItem, SegmentMark } from "./segment-marks";
-import { createSegmentMark } from "./segment-marks";
-import { stableShared } from "./shared";
+} from "../data/channels.js";
+import type { EventRow } from "../math/eventplot.js";
+import { eventPlotRows } from "../math/eventplot.js";
+import type { AnyDatum } from "../props.js";
+import { ranks, staggered } from "../stagger.js";
+import { keyedMemo } from "../util.js";
+import type { SegmentItem, SegmentMark } from "./segment-marks.js";
+import { createSegmentMark } from "./segment-marks.js";
+import { stableShared } from "./shared.js";
 
 /**
  * Props of {@link eventPlot}.

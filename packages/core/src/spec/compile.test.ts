@@ -10,15 +10,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { circlePolyline, rectPolyline } from "../geometry/shapes";
-import type { Matrix } from "../geometry/transform";
+import { circlePolyline, rectPolyline } from "../geometry/shapes.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToPolyline,
 	compose,
 	fromTranslationRotationScale,
 	IDENTITY,
-} from "../geometry/transform";
-import { compileFrame } from "./compile";
+} from "../geometry/transform.js";
+import { compileFrame } from "./compile.js";
 import type {
 	DrawSpec,
 	ShapeSpec,
@@ -26,7 +26,7 @@ import type {
 	StrokeStyle,
 	TextSpec,
 	TextStyle,
-} from "./types";
+} from "./types.js";
 
 const defaultStyle: StrokeStyle = {
 	stroke: "#000000",

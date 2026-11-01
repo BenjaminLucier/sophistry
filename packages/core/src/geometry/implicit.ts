@@ -10,8 +10,8 @@
  * or a double root that never changes sign, is not found.
  */
 
-import type { Point } from "./path/types";
-import { stitchSegments } from "./stitch";
+import type { Point } from "./path/types.js";
+import { stitchSegments } from "./stitch.js";
 
 /** Manim's `min_depth`: a 32 × 32 starting grid. */
 const DEFAULT_MIN_DEPTH = 5;

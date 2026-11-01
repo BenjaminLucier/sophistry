@@ -14,17 +14,17 @@ import {
 	Invalidate,
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
-import type { MarkTransition } from "../batch";
-import type { RampScaleProps } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { PcolormeshCell, PcolormeshResult } from "../math/pcolormesh";
-import { pcolormeshCells } from "../math/pcolormesh";
-import { keyedMemo } from "../util";
-import type { CellItem, CellRects } from "./cell-rects";
-import { boxPlacement, cellBox, createCellRects } from "./cell-rects";
-import type { RampCells } from "./ramp-cells";
-import { createRampCells } from "./ramp-cells";
+import type { MarkTransition } from "../batch.js";
+import type { RampScaleProps } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { PcolormeshCell, PcolormeshResult } from "../math/pcolormesh.js";
+import { pcolormeshCells } from "../math/pcolormesh.js";
+import { keyedMemo } from "../util.js";
+import type { CellItem, CellRects } from "./cell-rects.js";
+import { boxPlacement, cellBox, createCellRects } from "./cell-rects.js";
+import type { RampCells } from "./ramp-cells.js";
+import { createRampCells } from "./ramp-cells.js";
 
 /**
  * Props of {@link pcolormesh}.

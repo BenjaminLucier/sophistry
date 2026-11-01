@@ -2,7 +2,7 @@
 
 import type { Range } from "@sophistry/core/geometry";
 import { clamp, niceStep, tickValues } from "@sophistry/core/geometry";
-import { fitRange } from "./range";
+import { fitRange } from "./range.js";
 
 const DEFAULT_TARGET_TICKS = 5;
 

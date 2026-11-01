@@ -15,32 +15,32 @@ import type {
 import { defineComposite, Invalidate, rect } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
-import type { MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import type { MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	resolveChannel,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { ChartFrame } from "../frame/types";
-import type { JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame } from "../frame/types.js";
+import type { JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	keyRanks,
 	layerTransition,
-} from "../join";
-import { blendCss, mixBounds } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
+} from "../join.js";
+import { blendCss, mixBounds } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
 
 const DEFAULT_FILL_OPACITY = 0.35;
 

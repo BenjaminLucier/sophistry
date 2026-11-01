@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { largestRemainder, waffleCells } from "./waffle";
+import { largestRemainder, waffleCells } from "./waffle.js";
 
 const sum = (xs: readonly number[]) => xs.reduce((a, b) => a + b, 0);
 

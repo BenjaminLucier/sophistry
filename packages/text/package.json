@@ -51,16 +51,17 @@
 		"build": "vite build && tsc -p tsconfig.build.json"
 	},
 	"dependencies": {
-		"katex": "^0.18.4",
 		"opentype.js": "^2.0.0"
 	},
 	"peerDependencies": {
-		"@sophistry/core": "workspace:^"
+		"@sophistry/core": "workspace:^",
+		"katex": "catalog:"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@sophistry/core": "workspace:*",
 		"@types/katex": "catalog:",
+		"katex": "catalog:",
 		"happy-dom": "catalog:",
 		"typescript": "catalog:",
 		"vite": "catalog:",

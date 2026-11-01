@@ -23,7 +23,7 @@ describe("font-load invalidation", () => {
 	});
 
 	it("clears the cache and tells subscribers on loadingdone", async () => {
-		const { fontLoads, labelBox } = await import("./metrics");
+		const { fontLoads, labelBox } = await import("./metrics.js");
 		const style = {
 			fontSize: 64,
 			fontFamily: "WebFont",

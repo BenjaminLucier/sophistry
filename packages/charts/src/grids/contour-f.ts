@@ -19,26 +19,26 @@ import {
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import { clamp01 } from "@sophistry/core/internal";
-import type { RampScaleProps } from "../color-norm";
-import { colorNorm, normLevels, rampOf } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { RampExtent } from "../frame/types";
-import type { ContourBand } from "../math/contourf";
-import { contourBands } from "../math/contourf";
-import { dataExtent } from "../math/shared/gridExtent";
-import { staggered } from "../stagger";
-import { keyedMemo } from "../util";
-import type { ContourColors } from "./contour";
-import type { PlacedBand } from "./contour-shared";
+import type { RampScaleProps } from "../color-norm.js";
+import { colorNorm, normLevels, rampOf } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { RampExtent } from "../frame/types.js";
+import type { ContourBand } from "../math/contourf.js";
+import { contourBands } from "../math/contourf.js";
+import { dataExtent } from "../math/shared/gridExtent.js";
+import { staggered } from "../stagger.js";
+import { keyedMemo } from "../util.js";
+import type { ContourColors } from "./contour.js";
+import type { PlacedBand } from "./contour-shared.js";
 import {
 	bandColor,
 	contourRamp,
 	fadeBands,
 	placeBands,
 	revealBands,
-} from "./contour-shared";
-import { levelRanks } from "./tri-shared";
+} from "./contour-shared.js";
+import { levelRanks } from "./tri-shared.js";
 
 const DEFAULT_LEVELS = 8;
 

@@ -8,8 +8,8 @@
  * the key here imports nothing from the scene, so there is no cycle.
  */
 
-import type { InteractionHandlers, PointerEvents } from "../interact/types";
-import type { ContextKey } from "./types";
+import type { InteractionHandlers, PointerEvents } from "../interact/types.js";
+import type { ContextKey } from "./types.js";
 
 /**
  * What a group's members inherit. Functions, read when the registry or the

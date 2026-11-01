@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { resolvePolarSweep, TAU } from "./polar";
+import { resolvePolarSweep, TAU } from "./polar.js";
 
 describe("TAU", () => {
 	it("is one full turn", () => {

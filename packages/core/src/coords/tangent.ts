@@ -7,16 +7,16 @@
  * `to` vocabulary.
  */
 
-import type { ArcTable, Point, Polyline } from "../geometry";
+import type { ArcTable, Point, Polyline } from "../geometry/index.js";
 import {
 	measure,
 	plotPolyline,
 	pointAtT,
 	polylineToCurvePath,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
-import type { ShapeInstanceable, ShapeProps } from "../scene/shape";
-import { defineShape, shapeProps } from "../scene/shape";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
+import type { ShapeInstanceable, ShapeProps } from "../scene/shape.js";
+import { defineShape, shapeProps } from "../scene/shape.js";
 
 /**
  * Half-width of the central difference, as a fraction of the curve's arc

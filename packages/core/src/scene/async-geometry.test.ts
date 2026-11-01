@@ -6,17 +6,17 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { rect } from "../shapes";
-import type { DrawSpec, ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
+import { rect } from "../shapes/index.js";
+import type { DrawSpec, ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeProps,
 	shapeProps,
-} from "./shape";
+} from "./shape.js";
 
 /** A graph that records whether a commit was asked for. */
 function manualGraph() {

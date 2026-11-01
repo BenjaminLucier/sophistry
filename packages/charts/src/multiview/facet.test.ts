@@ -9,11 +9,11 @@
 import { track } from "@sophistry/core";
 import type { Range } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import type { ChartFrame } from "../frame/types";
-import { scatter } from "../points/scatter";
-import { mount, probe } from "../test-harness";
-import type { FacetPanel, FacetProps } from "./facet";
-import { facet } from "./facet";
+import type { ChartFrame } from "../frame/types.js";
+import { scatter } from "../points/scatter.js";
+import { mount, probe } from "../test-harness.js";
+import type { FacetPanel, FacetProps } from "./facet.js";
+import { facet } from "./facet.js";
 
 /** A range's upper end. */
 const top = (range: Range) => Math.max(range[0], range[1]);

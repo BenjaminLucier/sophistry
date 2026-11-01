@@ -19,14 +19,14 @@ import {
 	reverseCurvePath,
 } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { fillBetween } from "./fill-between";
-import { linePlot } from "./line-plot";
-import { stackPlot } from "./stack-plot";
-import type { CurveItem } from "./test-items";
-import { closeCurves, itemsAt } from "./test-items";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { fillBetween } from "./fill-between.js";
+import { linePlot } from "./line-plot.js";
+import { stackPlot } from "./stack-plot.js";
+import type { CurveItem } from "./test-items.js";
+import { closeCurves, itemsAt } from "./test-items.js";
 
 /** The paint order the mark under test is drawn at, so axes are left out. */
 const Z = 7;

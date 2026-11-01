@@ -22,9 +22,9 @@
  * mock context) this does nothing and every frame paints in full.
  */
 
-import type { Matrix } from "../geometry/transform";
-import { compose, invert } from "../geometry/transform";
-import type { DrawSpec } from "../spec/types";
+import type { Matrix } from "../geometry/transform.js";
+import { compose, invert } from "../geometry/transform.js";
+import type { DrawSpec } from "../spec/types.js";
 
 /** A canvas this module can draw into and then draw from. */
 export interface Surface {

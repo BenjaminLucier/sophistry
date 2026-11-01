@@ -8,13 +8,13 @@
 
 import type { PathBatchItem } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount, probe } from "../test-harness";
-import { tooltipContext } from "../tooltip";
-import { linePlot } from "./line-plot";
-import type { CurveItem } from "./test-items";
-import { curveItems, rounded } from "./test-items";
+import type { ChartHandle } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount, probe } from "../test-harness.js";
+import { tooltipContext } from "../tooltip.js";
+import { linePlot } from "./line-plot.js";
+import type { CurveItem } from "./test-items.js";
+import { curveItems, rounded } from "./test-items.js";
 
 const rows = [
 	{ s: "p", x: 0, y: 1 },

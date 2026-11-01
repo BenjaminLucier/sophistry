@@ -19,17 +19,17 @@
  * follows like any bound prop.
  */
 
-import type { ColorInput } from "../color";
-import type { Bounds, Point, Polyline } from "../geometry";
-import { polylineToCurvePath, rectPolyline } from "../geometry";
+import type { ColorInput } from "../color/index.js";
 import {
 	boundsHeight,
 	boundsWidth,
 	centerOf,
 	padBounds,
-} from "../geometry/bounds";
-import { Invalidate } from "../scene/context";
-import { definePrimitive } from "../scene/primitive";
+} from "../geometry/bounds.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import { polylineToCurvePath, rectPolyline } from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
+import { definePrimitive } from "../scene/primitive.js";
 import {
 	type ShapeGeometry,
 	type ShapeInstanceable,
@@ -37,15 +37,15 @@ import {
 	type ShapeOptions,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 import type {
 	DeclaredInstanceable,
 	Definition,
 	PropDescriptor,
 	SceneNode,
-} from "../scene/types";
-import { DEFAULT_GAP } from "../spec/layout";
-import { openRing } from "./rect";
+} from "../scene/types.js";
+import { DEFAULT_GAP } from "../spec/layout.js";
+import { openRing } from "./rect.js";
 
 /** No outline at all: the node takes part, and the renderer skips it. */
 const NOTHING: ShapeGeometry = { polylines: [], closed: false };

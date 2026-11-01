@@ -6,12 +6,12 @@
  * disturbing the scene's resting state.
  */
 
-import { resolveTheme } from "../themes/theme";
-import type { Animatable } from "../tween";
-import { auto, thereAndBack, thereAndBackWithPause } from "../tween";
-import { sequence } from "./sequence";
-import type { Animation, AnimOptions } from "./types";
-import { driveProgress } from "./types";
+import { resolveTheme } from "../themes/theme.js";
+import type { Animatable } from "../tween/index.js";
+import { auto, thereAndBack, thereAndBackWithPause } from "../tween/index.js";
+import { sequence } from "./sequence.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveProgress } from "./types.js";
 
 /** @category Animation presets */
 export interface IndicateOptions extends AnimOptions {

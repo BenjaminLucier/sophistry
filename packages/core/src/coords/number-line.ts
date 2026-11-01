@@ -14,7 +14,7 @@ import type {
 	TimeZone,
 	TipShape,
 	WeightedTick,
-} from "../geometry";
+} from "../geometry/index.js";
 import {
 	axisTicks,
 	currentRange,
@@ -24,27 +24,27 @@ import {
 	thinTickLabels,
 	tickStep,
 	transitionTicks,
-} from "../geometry";
-import type { Readable } from "../reactive";
-import { derive } from "../reactive";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { measuresText } from "../scene/fonts";
-import type { ShapeProps } from "../scene/shape";
-import { shapeProps } from "../scene/shape";
-import type { TextHalo } from "../scene/text";
-import { label } from "../scene/text";
+} from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { derive } from "../reactive/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { measuresText } from "../scene/fonts.js";
+import type { ShapeProps } from "../scene/shape.js";
+import { shapeProps } from "../scene/shape.js";
+import type { TextHalo } from "../scene/text.js";
+import { label } from "../scene/text.js";
 import type {
 	PropDescriptor,
 	PropsDescriptor,
 	SceneNode,
-} from "../scene/types";
-import { arrow, line } from "../shapes/line";
-import { flatColor } from "../spec/gradient";
-import type { Vec2 } from "../spec/layout";
-import { ORIGIN } from "../spec/layout";
-import { measureLabel } from "../spec/metrics";
+} from "../scene/types.js";
+import { arrow, line } from "../shapes/line.js";
+import { flatColor } from "../spec/gradient.js";
+import type { Vec2 } from "../spec/layout.js";
+import { ORIGIN } from "../spec/layout.js";
+import { measureLabel } from "../spec/metrics.js";
 import {
 	anchoredLabelProps,
 	axisFormatter,
@@ -52,10 +52,10 @@ import {
 	DEFAULT_NUMBER_GAP,
 	DEFAULT_TICK_SIZE,
 	numberStyle,
-} from "./axis-labels";
-import type { CoordinateSystem } from "./coords";
-import { createPhases, crossingValue, publishCoords } from "./coords";
-import { sameRange, stablePoint } from "./grid-lines";
+} from "./axis-labels.js";
+import type { CoordinateSystem } from "./coords.js";
+import { createPhases, crossingValue, publishCoords } from "./coords.js";
+import { sameRange, stablePoint } from "./grid-lines.js";
 
 /** Spacing, in scene units, at which a tick fading in or out mid-rescale is gone (whole at twice it). */
 const TICK_MIN_GAP = 0.15;

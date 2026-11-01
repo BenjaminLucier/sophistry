@@ -10,8 +10,8 @@
  * and read with `peek()` later, as everywhere in the core.
  */
 
-import type { Readable } from "../reactive";
-import type { HitCandidate, InteractionRecord } from "./types";
+import type { Readable } from "../reactive/index.js";
+import type { HitCandidate, InteractionRecord } from "./types.js";
 
 /**
  * The interactive nodes of one scene.

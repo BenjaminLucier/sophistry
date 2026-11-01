@@ -1,3 +1,4 @@
+import "katex/dist/katex.css";
 import { render } from "@solidjs/web";
 import {
 	createClock,

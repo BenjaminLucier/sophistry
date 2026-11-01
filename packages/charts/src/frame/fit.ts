@@ -27,18 +27,18 @@ import {
 	resolveScale,
 	slotBandScale,
 } from "@sophistry/core/geometry";
-import type { JoinStages, StageWindow } from "../math/join";
-import { rescaleKind, rescaleWindow } from "../math/join";
-import type { FitRangeOptions } from "../math/range";
-import { alignedRange, fitRange } from "../math/range";
-import { keyedMemo, shallowEqual, stableValue } from "../util";
+import type { JoinStages, StageWindow } from "../math/join.js";
+import { rescaleKind, rescaleWindow } from "../math/join.js";
+import type { FitRangeOptions } from "../math/range.js";
+import { alignedRange, fitRange } from "../math/range.js";
+import { keyedMemo, shallowEqual, stableValue } from "../util.js";
 import type {
 	AxisExtent,
 	ChartLayerExtent,
 	ChartXAxisOptions,
 	ChartYAxisOptions,
 	LayerTransition,
-} from "./types";
+} from "./types.js";
 
 /** One axis's options once `axis` and `xAxis`/`yAxis` are merged. */
 export type MergedAxisOptions = ChartXAxisOptions | ChartYAxisOptions;

@@ -13,34 +13,34 @@ import { defineComposite, Invalidate } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { cssColor } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink, PositionValue } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink, PositionValue } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	indexOf,
 	numberValues,
-} from "../data/channels";
-import type { Mapper } from "../end-space";
-import { endSpace } from "../end-space";
+} from "../data/channels.js";
+import type { Mapper } from "../end-space.js";
+import { endSpace } from "../end-space.js";
 import {
 	createGroupJoin,
 	layerTransition,
 	sweepIn,
 	transitionColor,
-} from "../join";
-import { morphArea } from "../math/morph";
-import type { RegressionPoint } from "../math/regression";
-import { regression as fitRegression, loessBand } from "../math/regression";
-import { revealClipAlongX } from "../math/reveal";
-import type { AnyDatum, SeriesTransitionProps } from "../props";
-import type { Category, GroupKey } from "../series";
-import { createSeries, groupIndices } from "../series";
-import { keyedMemo } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch, groupColors, slotOf } from "./shared";
+} from "../join.js";
+import { morphArea } from "../math/morph.js";
+import type { RegressionPoint } from "../math/regression.js";
+import { regression as fitRegression, loessBand } from "../math/regression.js";
+import { revealClipAlongX } from "../math/reveal.js";
+import type { AnyDatum, SeriesTransitionProps } from "../props.js";
+import type { Category, GroupKey } from "../series.js";
+import { createSeries, groupIndices } from "../series.js";
+import { keyedMemo } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch, groupColors, slotOf } from "./shared.js";
 
 const DEFAULT_BAND_OPACITY = 0.2;
 /** Robustness passes for `robust={true}`. */

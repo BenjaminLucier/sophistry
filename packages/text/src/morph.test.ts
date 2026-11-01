@@ -1,8 +1,8 @@
 import type { Polyline } from "@sophistry/core/geometry";
 import { boundsOf } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { morphLatex } from "./morph";
-import type { PlacedLatex, PlacedPart } from "./placed";
+import { morphLatex } from "./morph.js";
+import type { PlacedLatex, PlacedPart } from "./placed.js";
 
 /** A square "glyph" of side `size` with its lower-left corner at (x, y). */
 function glyph(char: string, x: number, y: number, size = 1): PlacedPart {

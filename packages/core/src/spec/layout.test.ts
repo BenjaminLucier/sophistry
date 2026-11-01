@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { Bounds } from "../geometry";
+import type { Bounds } from "../geometry/index.js";
 import {
 	alignTo,
 	arrange,
@@ -32,7 +32,7 @@ import {
 	UP,
 	UR,
 	unionBounds,
-} from "./layout";
+} from "./layout.js";
 
 function box(minX: number, minY: number, maxX: number, maxY: number): Bounds {
 	return { minX, minY, maxX, maxY };

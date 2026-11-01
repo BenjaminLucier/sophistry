@@ -6,7 +6,7 @@
 import type { Bounds, Placement, Point, Vec2 } from "@sophistry/core";
 import { boundsFromCenter, nextTo } from "@sophistry/core";
 import { measureLabel } from "@sophistry/core/internal";
-import type { TooltipState } from "../tooltip";
+import type { TooltipState } from "../tooltip.js";
 
 /**
  * The string whose ink sets every anchored label's height (as core's axes

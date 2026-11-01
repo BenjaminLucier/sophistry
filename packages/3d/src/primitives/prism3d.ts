@@ -7,8 +7,8 @@
 
 import { Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { boxFaces } from "../box";
-import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh";
+import { boxFaces } from "../box.js";
+import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh.js";
 
 /** @category Primitives */
 export interface Prism3DProps extends Mesh3DProps {

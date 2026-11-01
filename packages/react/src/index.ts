@@ -36,12 +36,12 @@
  * @packageDocumentation
  */
 
-export type { CameraProps } from "./camera";
-export { Camera } from "./camera";
-export type { ClockProviderProps } from "./context";
-export { ClockProvider } from "./context";
-export * from "./generated/core.gen";
-export type { MovablePoint, Player, PlayerOptions } from "./hooks";
+export type { CameraProps } from "./camera.js";
+export { Camera } from "./camera.js";
+export type { ClockProviderProps } from "./context.js";
+export { ClockProvider } from "./context.js";
+export * from "./generated/core.gen.js";
+export type { MovablePoint, Player, PlayerOptions } from "./hooks.js";
 export {
 	useClock,
 	useMovablePoint,
@@ -50,19 +50,19 @@ export {
 	useTheme,
 	useTrack,
 	useTrackValue,
-} from "./hooks";
-export type { InstancesProps } from "./instances";
-export { Instances } from "./instances";
+} from "./hooks.js";
+export type { InstancesProps } from "./instances.js";
+export { Instances } from "./instances.js";
 export type {
 	CameraPaneProps,
 	PictureInPictureProps,
 	QuadViewProps,
 	SplitScreenProps,
-} from "./layouts";
-export { PictureInPicture, QuadView, SplitScreen } from "./layouts";
-export type { PanZoomProps, UsePanZoomOptions } from "./pan-zoom";
-export { PanZoom, usePanZoom } from "./pan-zoom";
-export type { MultiStageProps, StageProps } from "./stage";
-export { MultiStage, Stage } from "./stage";
-export type { ComponentProps, SophistryComponent } from "./wrap";
-export { wrap } from "./wrap";
+} from "./layouts.js";
+export { PictureInPicture, QuadView, SplitScreen } from "./layouts.js";
+export type { PanZoomProps, UsePanZoomOptions } from "./pan-zoom.js";
+export { PanZoom, usePanZoom } from "./pan-zoom.js";
+export type { MultiStageProps, StageProps } from "./stage.js";
+export { MultiStage, Stage } from "./stage.js";
+export type { ComponentProps, SophistryComponent } from "./wrap.js";
+export { wrap } from "./wrap.js";

@@ -31,16 +31,16 @@ import type {
 import { group, Invalidate, path } from "@sophistry/core";
 import type { Point, Polyline } from "@sophistry/core/geometry";
 import { CompositeNode, rawProp } from "@sophistry/core/internal";
-import type { LatexHandle, LatexOptions, LatexStatus } from "./latex";
+import type { LatexHandle, LatexOptions, LatexStatus } from "./latex.js";
 import {
 	disposedError,
 	LatexReadables,
 	LatexSource,
 	ReadyWaiters,
-} from "./latex";
-import type { LatexMorph, LatexMorphOptions, MorphedPart } from "./morph";
-import { morphLatex } from "./morph";
-import type { PlacedLatex } from "./placed";
+} from "./latex.js";
+import type { LatexMorph, LatexMorphOptions, MorphedPart } from "./morph.js";
+import { morphLatex } from "./morph.js";
+import type { PlacedLatex } from "./placed.js";
 
 /**
  * Props for {@link mathTransform}: the two formulas, the blend, and paint,

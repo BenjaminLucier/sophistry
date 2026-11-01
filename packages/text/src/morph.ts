@@ -17,7 +17,7 @@ import {
 	lerpPolyline,
 	unionBounds,
 } from "@sophistry/core/internal";
-import type { PlacedLatex, PlacedPart } from "./placed";
+import type { PlacedLatex, PlacedPart } from "./placed.js";
 
 // The fade choreography is shared with `morphShapes`, so it lives beside it in
 // `geometry/shape-match.ts`; re-exported here, where `text/` has always had it.

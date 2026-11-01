@@ -3,6 +3,3 @@ declare module "*.ttf?url&no-inline" {
 	const src: string;
 	export default src;
 }
-
-/** KaTeX's stylesheet, imported for its side effect — it is the layout. */
-declare module "*.css";

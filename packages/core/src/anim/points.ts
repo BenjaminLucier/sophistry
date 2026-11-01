@@ -6,8 +6,8 @@
  * Internal to `anim/`.
  */
 
-import type { Polyline } from "../geometry";
-import { boundsOf } from "../geometry/bounds";
+import { boundsOf } from "../geometry/bounds.js";
+import type { Polyline } from "../geometry/index.js";
 
 /** A points track's value as rings, and how to put rings back into that shape. */
 export function asRings<T extends Polyline | Polyline[]>(

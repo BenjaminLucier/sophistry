@@ -9,11 +9,11 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock, defaultClock } from "../tween/clock";
-import { valueTo } from "./move";
-import { hold, lagged, parallel, sequence } from "./sequence";
-import { play } from "./timeline";
+import { track } from "../reactive/index.js";
+import { createClock, defaultClock } from "../tween/clock.js";
+import { valueTo } from "./move.js";
+import { hold, lagged, parallel, sequence } from "./sequence.js";
+import { play } from "./timeline.js";
 
 let queue: FrameRequestCallback[] = [];
 let now = 0;

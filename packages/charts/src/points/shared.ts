@@ -4,9 +4,9 @@
  */
 
 import type { Point } from "@sophistry/core/geometry";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { TooltipContent, TooltipState } from "../tooltip";
-import { shallowEqual } from "../util";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { TooltipContent, TooltipState } from "../tooltip.js";
+import { shallowEqual } from "../util.js";
 
 /** The interaction props of a batched layer with tooltips. */
 export interface ItemHandlerProps {

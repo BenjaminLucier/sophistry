@@ -7,12 +7,12 @@
 import type { CircleProps, CompositeContext, SceneNode } from "@sophistry/core";
 import { circle, defineComposite, Invalidate } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
-import { bandSpan } from "../band";
-import type { MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, DateSink } from "../data/channels";
+import { bandSpan } from "../band.js";
+import type { MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, DateSink } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
@@ -20,33 +20,33 @@ import {
 	indexOf,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import type { EndSpace } from "../end-space";
-import { endSpace } from "../end-space";
-import type { ChartFrame } from "../frame/types";
-import type { JoinEnd, JoinFrame } from "../join";
+} from "../data/channels.js";
+import type { EndSpace } from "../end-space.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame } from "../frame/types.js";
+import type { JoinEnd, JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import { beeswarmOffsets, dodgeSpan } from "../math/dodge";
-import { jitterOffsets } from "../math/jitter";
-import { uniqueKeys } from "../math/ordinal";
-import { blendCss } from "../mix";
+} from "../join.js";
+import { beeswarmOffsets, dodgeSpan } from "../math/dodge.js";
+import { jitterOffsets } from "../math/jitter.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import { blendCss } from "../mix.js";
 import type {
 	AnyDatum,
 	KeyedTransitionProps,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import { createSeries, dodgeSlotsFor } from "../series";
-import { orderRanks, staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { datumValue, tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix, mixPoint } from "../util";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
+} from "../props.js";
+import { createSeries, dodgeSlotsFor } from "../series.js";
+import { orderRanks, staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { datumValue, tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix, mixPoint } from "../util.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
 
 const DEFAULT_RADIUS = 0.07;
 const DEFAULT_JITTER_WIDTH = 0.6;

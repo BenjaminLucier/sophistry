@@ -21,22 +21,22 @@ import {
 import { formatTick } from "@sophistry/core/geometry";
 import { resolveColorRamp } from "@sophistry/core/internal";
 import type { Colormap } from "@sophistry/core/themes";
-import type { ColorNorm, RampScaleProps } from "../color-norm";
-import { colorNorm, rampOf } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import { dateSinkContext } from "../data/channels";
-import type { RampExtent } from "../frame/types";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { TripcolorFace } from "../math/tricontour";
-import { tripcolorFaces } from "../math/tricontour";
-import type { AnyDatum } from "../props";
-import { ranks } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo } from "../util";
-import type { TriChartBaseProps, TriPoints } from "./tri-shared";
-import { triPoints, triReveal, valueExtent } from "./tri-shared";
+import type { ColorNorm, RampScaleProps } from "../color-norm.js";
+import { colorNorm, rampOf } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import { dateSinkContext } from "../data/channels.js";
+import type { RampExtent } from "../frame/types.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { TripcolorFace } from "../math/tricontour.js";
+import { tripcolorFaces } from "../math/tricontour.js";
+import type { AnyDatum } from "../props.js";
+import { ranks } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo } from "../util.js";
+import type { TriChartBaseProps, TriPoints } from "./tri-shared.js";
+import { triPoints, triReveal, valueExtent } from "./tri-shared.js";
 
 /**
  * Props of {@link tripcolor}.

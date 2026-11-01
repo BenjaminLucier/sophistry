@@ -15,13 +15,13 @@ import {
 	track,
 } from "@sophistry/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { ClockProvider } from "./clock";
-import { useClock } from "./context";
-import { OrbitControls3D } from "./entries/3d";
-import { usePlayer } from "./hooks";
-import { Stage } from "./stage";
-import type { DomHarness } from "./test/dom";
-import { installDom, mountPoint } from "./test/dom";
+import { ClockProvider } from "./clock.js";
+import { useClock } from "./context.js";
+import { OrbitControls3D } from "./entries/3d.js";
+import { usePlayer } from "./hooks.js";
+import { Stage } from "./stage.js";
+import type { DomHarness } from "./test/dom.js";
+import { installDom, mountPoint } from "./test/dom.js";
 
 let dom: DomHarness;
 beforeEach(() => {

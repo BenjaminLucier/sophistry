@@ -10,7 +10,7 @@
  * Ties paint in tree order: the order the sources are handed over in.
  */
 
-import type { DrawSpec, SpecSource } from "./types";
+import type { DrawSpec, SpecSource } from "./types.js";
 
 /**
  * Reads every source's current spec and returns them in paint order.

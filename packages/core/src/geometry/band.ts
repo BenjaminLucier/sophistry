@@ -4,8 +4,8 @@
  * axis stays numeric, so `coordsToPoint` and annotations work unchanged.
  */
 
-import { clamp01, mix } from "./num";
-import type { Range } from "./scale/scales";
+import { clamp01, mix } from "./num.js";
+import type { Range } from "./scale/scales.js";
 
 /**
  * A category on a band axis: a string, or a number used as a name (a year,

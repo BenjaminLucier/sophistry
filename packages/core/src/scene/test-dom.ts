@@ -8,7 +8,7 @@
  * Not exported from any entry; only the scene and export tests import it.
  */
 
-import { resetFrameLoop } from "../tween/frame-loop";
+import { resetFrameLoop } from "../tween/frame-loop.js";
 
 /** One recorded canvas call: a method (`op`) or a property write (`set:name`). */
 export interface Call {

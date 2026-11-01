@@ -11,9 +11,9 @@
  * interaction, handles). `shapes/circle.ts` is the reference:
  *
  * ```ts
- * import { arcCurvePath, type Point } from "../geometry";
- * import { Invalidate } from "../scene/context";
- * import { defineShape, type ShapeProps, shapeProps } from "../scene/shape";
+ * import { arcCurvePath, type Point } from "../geometry/index.js";
+ * import { Invalidate } from "../scene/context.js";
+ * import { defineShape, type ShapeProps, shapeProps } from "../scene/shape.js";
  *
  * export interface CircleProps extends ShapeProps {
  * 	/** Centre. Defaults to the origin. *\/
@@ -72,14 +72,14 @@
  * a composite (`defineComposite`, `scene/composite.ts`), not a primitive.
  */
 
-import type { BaseNode } from "./node";
+import type { BaseNode } from "./node.js";
 import type {
 	CreateArguments,
 	CreateProps,
 	DeclaredInstanceable,
 	Definition,
 	PropsDescriptor,
-} from "./types";
+} from "./types.js";
 
 /**
  * Options for {@link definePrimitive}.

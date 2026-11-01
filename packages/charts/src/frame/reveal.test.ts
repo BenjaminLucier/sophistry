@@ -11,11 +11,11 @@
 import type { SceneNode } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartFrame, ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { scatter } from "../points/scatter";
-import { markItems, mount, probe } from "../test-harness";
+import type { ChartFrame, ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import { scatter } from "../points/scatter.js";
+import { markItems, mount, probe } from "../test-harness.js";
 
 const rows = [
 	{ x: 1, y: 2, s: "a" },

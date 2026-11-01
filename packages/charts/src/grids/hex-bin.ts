@@ -20,16 +20,16 @@ import {
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
-import type { RampScaleProps } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel } from "../data/channels";
-import { dateSinkContext, numberValues } from "../data/channels";
-import type { HexBinCell } from "../math/hexbin";
-import { hexbin } from "../math/hexbin";
-import type { AnyDatum } from "../props";
-import { keyedMemo } from "../util";
-import { createRampCells } from "./ramp-cells";
+import type { RampScaleProps } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel } from "../data/channels.js";
+import { dateSinkContext, numberValues } from "../data/channels.js";
+import type { HexBinCell } from "../math/hexbin.js";
+import { hexbin } from "../math/hexbin.js";
+import type { AnyDatum } from "../props.js";
+import { keyedMemo } from "../util.js";
+import { createRampCells } from "./ramp-cells.js";
 
 /**
  * Props of {@link hexBin}.

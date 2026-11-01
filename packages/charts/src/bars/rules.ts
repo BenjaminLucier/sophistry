@@ -17,35 +17,35 @@ import type {
 } from "@sophistry/core";
 import { defineComposite, Invalidate, line } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
-import { positionOf } from "../band";
-import type { BatchItem, MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import { positionOf } from "../band.js";
+import type { BatchItem, MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	resolveChannel,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { AxisExtent } from "../frame/types";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { JoinEnd } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { AxisExtent } from "../frame/types.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { JoinEnd } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	keyRanks,
 	layerTransition,
-} from "../join";
-import { blendCss, mixPoints } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { mix } from "../util";
-import { tooltipProps } from "./shared";
+} from "../join.js";
+import { blendCss, mixPoints } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { mix } from "../util.js";
+import { tooltipProps } from "./shared.js";
 
 /**
  * Props every rule takes.

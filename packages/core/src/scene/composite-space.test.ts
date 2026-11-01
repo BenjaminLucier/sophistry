@@ -6,14 +6,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { scaleFactorOf } from "../geometry/transform";
-import { rect } from "../shapes/rect";
-import { defineComposite } from "./composite";
-import { Invalidate } from "./context";
-import { group } from "./group";
-import { createScene } from "./scene";
-import type { Space } from "./types";
-import { SpaceChange } from "./types";
+import { scaleFactorOf } from "../geometry/transform.js";
+import { rect } from "../shapes/rect.js";
+import { defineComposite } from "./composite.js";
+import { Invalidate } from "./context.js";
+import { group } from "./group.js";
+import { createScene } from "./scene.js";
+import type { Space } from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /** A composite that records every update's reasons and the space it read. */
 function probe(watch?: number) {

@@ -8,9 +8,9 @@
 import type { Clock, Scene } from "@sophistry/core";
 import { draw, moveTo, sequence, track, trackPoint } from "@sophistry/core";
 import { onSettled } from "solid-js";
-import { Circle, Dot, Label } from "../generated/core.gen";
-import { usePlayer } from "../hooks";
-import { Stage } from "../stage";
+import { Circle, Dot, Label } from "../generated/core.gen.js";
+import { usePlayer } from "../hooks.js";
+import { Stage } from "../stage.js";
 
 /** Props of {@link ShapesExample}. */
 export interface ShapesExampleProps {

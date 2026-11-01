@@ -6,7 +6,7 @@ import {
 	gaugeBandIndex,
 	gaugeBands,
 	gaugeFraction,
-} from "./gauge";
+} from "./gauge.js";
 
 describe("gaugeFraction", () => {
 	it("maps min..max onto 0..1", () => {

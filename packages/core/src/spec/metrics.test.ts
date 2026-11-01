@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { labelBox, measureLabel } from "./metrics";
+import { labelBox, measureLabel } from "./metrics.js";
 
 const base = {
 	fontFamily: "sans-serif",

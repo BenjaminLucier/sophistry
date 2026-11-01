@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { braceRings, braceSpan, braceTip } from "./brace";
-import type { Polyline } from "./path/types";
+import { braceRings, braceSpan, braceTip } from "./brace.js";
+import type { Polyline } from "./path/types.js";
 
 function area(ring: Polyline): number {
 	let sum = 0;

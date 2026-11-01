@@ -15,8 +15,8 @@ import type {
 import type { Point } from "@sophistry/core/geometry";
 import { resolveColorRamp } from "@sophistry/core/internal";
 import type { Colormap, Theme } from "@sophistry/core/themes";
-import type { ColorNorm } from "../color-norm";
-import { projectRun } from "../raster";
+import type { ColorNorm } from "../color-norm.js";
+import { projectRun } from "../raster.js";
 
 /** The contours' colormap: the given ramp, else two theme series colours. */
 export function contourRamp(

@@ -13,28 +13,28 @@
  * a bump, so a frame that changed no handler costs nothing here.
  */
 
-import type { Bounds, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPolyline, invert } from "../geometry/transform";
+import type { Bounds, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { applyToPolyline, invert } from "../geometry/transform.js";
 import type {
 	FocusChannel,
 	FocusSource,
 	InteractionRegistry,
-} from "../interact/registry";
+} from "../interact/registry.js";
 import type {
 	HitArea,
 	HitCandidate,
 	InteractionHandlers,
 	InteractionRecord,
-} from "../interact/types";
-import { isFocusable } from "../interact/types";
-import { track } from "../reactive";
-import type { SceneGraph } from "./graph";
-import { mergeHandlers } from "./interaction-group";
-import type { InteractionGroupValue } from "./interaction-group-context";
-import { interactionGroupContext } from "./interaction-group-context";
-import type { BaseNode } from "./node";
-import { memo } from "./node";
+} from "../interact/types.js";
+import { isFocusable } from "../interact/types.js";
+import { track } from "../reactive/index.js";
+import type { SceneGraph } from "./graph.js";
+import { mergeHandlers } from "./interaction-group.js";
+import type { InteractionGroupValue } from "./interaction-group-context.js";
+import { interactionGroupContext } from "./interaction-group-context.js";
+import type { BaseNode } from "./node.js";
+import { memo } from "./node.js";
 
 /** The four corners of a box, in order. */
 function cornersOf(box: Bounds): Polyline {

@@ -4,10 +4,10 @@
  * for the design and `./pointer-gestures` for the gesture these extend.
  */
 
-import type { InteractionRegistry } from "../interact/registry";
-import { writeSink } from "../interact/types";
-import type { EventContext, PointerCore } from "./pointer-core";
-import type { Gesture } from "./pointer-gestures";
+import type { InteractionRegistry } from "../interact/registry.js";
+import { writeSink } from "../interact/types.js";
+import type { EventContext, PointerCore } from "./pointer-core.js";
+import type { Gesture } from "./pointer-gestures.js";
 
 /**
  * What the thing in hand is over, as a transition.

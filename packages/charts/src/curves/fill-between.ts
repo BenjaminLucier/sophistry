@@ -25,35 +25,35 @@ import type {
 	Point,
 } from "@sophistry/core/geometry";
 import { clipClosedCurvePathToX } from "@sophistry/core/geometry";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink, PositionValue } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink, PositionValue } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	indexOf,
 	numberValues,
-} from "../data/channels";
-import type { EndSpace, Mapper } from "../end-space";
-import { endSpace, sceneAreaRuns } from "../end-space";
-import type { JoinEnd } from "../join";
+} from "../data/channels.js";
+import type { EndSpace, Mapper } from "../end-space.js";
+import { endSpace, sceneAreaRuns } from "../end-space.js";
+import type { JoinEnd } from "../join.js";
 import {
 	createGroupJoin,
 	layerTransition,
 	sweepIn,
 	transitionColor,
-} from "../join";
-import { fillBetweenCurve, fillBetweenRings } from "../math/fillBetween";
-import type { AreaPoint } from "../math/morph";
-import { morphAreaRuns } from "../math/morph";
-import { revealClipAlongX, revealCutoff, xExtent } from "../math/reveal";
-import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props";
-import type { Category, GroupKey } from "../series";
-import { createSeries, groupIndices } from "../series";
-import { keyedMemo } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch, groupColors } from "./shared";
+} from "../join.js";
+import { fillBetweenCurve, fillBetweenRings } from "../math/fillBetween.js";
+import type { AreaPoint } from "../math/morph.js";
+import { morphAreaRuns } from "../math/morph.js";
+import { revealClipAlongX, revealCutoff, xExtent } from "../math/reveal.js";
+import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props.js";
+import type { Category, GroupKey } from "../series.js";
+import { createSeries, groupIndices } from "../series.js";
+import { keyedMemo } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch, groupColors } from "./shared.js";
 
 const DEFAULT_FILL_OPACITY = 0.3;
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stemPoints } from "./stem";
+import { stemPoints } from "./stem.js";
 
 describe("stemPoints", () => {
 	it("drops from the baseline to each point", () => {

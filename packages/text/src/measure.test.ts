@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { intersect, isInk } from "./measure";
+import { intersect, isInk } from "./measure.js";
 
 describe("intersect", () => {
 	it("returns the overlap", () => {

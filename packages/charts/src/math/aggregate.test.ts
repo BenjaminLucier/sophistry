@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { normalizeValues, reduceValues, rollingValues } from "./aggregate";
+import { normalizeValues, reduceValues, rollingValues } from "./aggregate.js";
 
 describe("reduceValues", () => {
 	const values = [4, 1, Number.NaN, 3, 2];

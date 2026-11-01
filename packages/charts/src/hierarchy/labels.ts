@@ -8,7 +8,7 @@
 import type { CompositeContext, LabelProps, SceneNode } from "@sophistry/core";
 import { label } from "@sophistry/core";
 import type { Theme } from "@sophistry/core/themes";
-import { textWidth } from "../text-width";
+import { textWidth } from "../text-width.js";
 
 /** One label of a keyed list: its key and the label's props. */
 export interface KeyedLabel {

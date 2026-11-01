@@ -5,11 +5,11 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { rect } from "../shapes/rect";
-import { defineComposite } from "./composite";
-import { Invalidate } from "./context";
-import { interactionProps } from "./interaction-props";
-import { createScene, sceneInternals } from "./scene";
+import { rect } from "../shapes/rect.js";
+import { defineComposite } from "./composite.js";
+import { Invalidate } from "./context.js";
+import { interactionProps } from "./interaction-props.js";
+import { createScene, sceneInternals } from "./scene.js";
 
 describe("composite interaction", () => {
 	it("a composite's own `label` value prop does not make it interactive", () => {

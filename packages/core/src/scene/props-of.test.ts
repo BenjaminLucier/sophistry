@@ -1,7 +1,7 @@
 import { describe, expectTypeOf, it } from "vitest";
-import type { CircleProps, circle } from "../shapes/circle";
-import type { group } from "./group";
-import type { NodeOf, PropsOf } from "./types";
+import type { CircleProps, circle } from "../shapes/circle.js";
+import type { group } from "./group.js";
+import type { NodeOf, PropsOf } from "./types.js";
 
 // Type-level: `tsc -b` checks these; the runtime assertions are no-ops.
 describe("PropsOf", () => {

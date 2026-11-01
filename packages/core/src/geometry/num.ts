@@ -9,8 +9,8 @@
  * baselines.
  */
 
-import { lerp } from "./lerp";
-import type { Point } from "./path/types";
+import { lerp } from "./lerp.js";
+import type { Point } from "./path/types.js";
 
 /** One full turn in radians, `2π`. */
 export const TAU = Math.PI * 2;

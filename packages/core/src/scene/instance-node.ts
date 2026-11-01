@@ -14,58 +14,61 @@
  * `instances()`.
  */
 
-import type { Bounds } from "../geometry";
-import type { InteractionHandlers, InteractionProps } from "../interact/types";
-import { hasInteraction } from "../interact/types";
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
-import type { MarksSpec } from "../spec/types";
-import type { Clock } from "../tween/clock";
-import { easings, resolveEasing } from "../tween/easing";
-import type { SpringOptions, SpringSpec } from "../tween/spring";
+import type { Bounds } from "../geometry/index.js";
+import type {
+	InteractionHandlers,
+	InteractionProps,
+} from "../interact/types.js";
+import { hasInteraction } from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
+import type { MarksSpec } from "../spec/types.js";
+import type { Clock } from "../tween/clock.js";
+import { easings, resolveEasing } from "../tween/easing.js";
+import type { SpringOptions, SpringSpec } from "../tween/spring.js";
 import {
 	naturalFrequency,
 	spring,
 	springDefaults,
 	springRestDelta,
-} from "../tween/spring";
+} from "../tween/spring.js";
 import {
 	clockContext,
 	Invalidate,
 	reducedMotionContext,
 	themeContext,
-} from "./context";
+} from "./context.js";
 import type {
 	ChannelColumn,
 	ChannelTarget,
 	ReconcilePlan,
 	ResolvedTiming,
-} from "./instance-bank";
-import { InstanceBank, NO_VALUE } from "./instance-bank";
+} from "./instance-bank.js";
+import { InstanceBank, NO_VALUE } from "./instance-bank.js";
 import {
 	InstanceLayer,
 	isMoveProp,
 	REVEAL_KEY,
 	STYLE_KEYS,
-} from "./instance-marks";
+} from "./instance-marks.js";
 import type {
 	InstanceEventName,
 	InstancePointerEvent,
 	InstanceTiming,
 	InstanceTransition,
-} from "./instances";
-import { ANY_CONTEXT, BaseNode } from "./node";
-import { definePrimitive } from "./primitive";
-import type { ShapeOptions, ShapeProps } from "./shape";
-import { shapeOptionsOf } from "./shape";
+} from "./instances.js";
+import { ANY_CONTEXT, BaseNode } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import type { ShapeOptions, ShapeProps } from "./shape.js";
+import { shapeOptionsOf } from "./shape.js";
 import type {
 	ContextKey,
 	Definition,
 	InvalidateBits,
 	PropDescriptor,
 	SceneNode,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /** An item's props by key, loosely typed (the public types check them). */
 type LooseProps = Record<string, unknown>;

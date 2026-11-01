@@ -53,13 +53,13 @@ import {
 	yieldOrigin,
 } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import { colorbar } from "../guides/colorbar";
-import { legend } from "../guides/legend";
-import { sizeKeyStack } from "../guides/size-legend";
-import type { JoinStages, StageWindow } from "../math/join";
-import { keyedMemo } from "../util";
-import { bandAxis } from "./band-axis";
-import type { ChartCoords } from "./coords";
+import { colorbar } from "../guides/colorbar.js";
+import { legend } from "../guides/legend.js";
+import { sizeKeyStack } from "../guides/size-legend.js";
+import type { JoinStages, StageWindow } from "../math/join.js";
+import { keyedMemo } from "../util.js";
+import { bandAxis } from "./band-axis.js";
+import type { ChartCoords } from "./coords.js";
 import type {
 	AxisEnds,
 	AxisSwapView,
@@ -67,8 +67,8 @@ import type {
 	GivenRange,
 	MergedAxisOptions,
 	ResolvedAxis,
-} from "./fit";
-import { bandWeight } from "./fit";
+} from "./fit.js";
+import { bandWeight } from "./fit.js";
 import {
 	AXIS_LABEL_GAP,
 	COLORBAR_THICKNESS,
@@ -77,17 +77,17 @@ import {
 	LEGEND_GAP,
 	TITLE_FONT_SIZE,
 	TITLE_GAP,
-} from "./guide-metrics";
-import type { ChartKeys } from "./keys";
-import type { ChartLayout } from "./layout";
+} from "./guide-metrics.js";
+import type { ChartKeys } from "./keys.js";
+import type { ChartLayout } from "./layout.js";
 import {
 	axisRange,
 	DEFAULT_SUBTITLE_FONT_SIZE,
 	keysRoom,
 	numberLineOptions,
 	SUBTITLE_GAP,
-} from "./layout";
-import type { ChartLayerExtent, ChartProps } from "./types";
+} from "./layout.js";
+import type { ChartLayerExtent, ChartProps } from "./types.js";
 
 /** One primary axis as the guides draw it. */
 export interface GuideAxis {

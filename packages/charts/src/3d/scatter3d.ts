@@ -4,18 +4,22 @@ import type { Dot3DProps } from "@sophistry/3d";
 import { dot3D } from "@sophistry/3d";
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
-import type { Channel, ColorChannel, Quantity } from "../data/channels";
-import { numberValues, resolveColor, resolveQuantity } from "../data/channels";
-import type { ScatterPoint3 } from "../math/3d/scatter3d";
-import { scatterPoints3 } from "../math/3d/scatter3d";
-import type { AnyDatum } from "../props";
+import type { Channel, ColorChannel, Quantity } from "../data/channels.js";
+import {
+	numberValues,
+	resolveColor,
+	resolveQuantity,
+} from "../data/channels.js";
+import type { ScatterPoint3 } from "../math/3d/scatter3d.js";
+import { scatterPoints3 } from "../math/3d/scatter3d.js";
+import type { AnyDatum } from "../props.js";
 import {
 	dataChanged,
 	forwardAll,
 	forwardChanged,
 	forwardedEntries,
 	setPoint3,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Plots */
 export interface Scatter3DProps<T = unknown>

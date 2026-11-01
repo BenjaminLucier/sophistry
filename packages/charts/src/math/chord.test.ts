@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { chordLayout, chordRibbon } from "./chord";
+import { chordLayout, chordRibbon } from "./chord.js";
 
 const TAU = Math.PI * 2;
 const sweep = (a: { startAngle: number; endAngle: number }) =>

@@ -42,49 +42,53 @@ import {
 	maxOf,
 	measureLabel,
 } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	resolveChannel,
-} from "../data/channels";
-import type { JoinFrame } from "../join";
+} from "../data/channels.js";
+import type { JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrame,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import type { KeyedJoin } from "../math/join";
-import { keyedJoin } from "../math/join";
-import { datumKeys } from "../math/ordinal";
-import { sweepWedge } from "../math/pie";
-import type { RadarAxisFrame } from "../math/radar";
+} from "../join.js";
+import type { KeyedJoin } from "../math/join.js";
+import { keyedJoin } from "../math/join.js";
+import { datumKeys } from "../math/ordinal.js";
+import { sweepWedge } from "../math/pie.js";
+import type { RadarAxisFrame } from "../math/radar.js";
 import {
 	assertRadarShape,
 	radarAxisFrames,
 	radarFramePolygon,
 	radarLabelOffset,
 	radarVertices,
-} from "../math/radar";
-import { blendCss } from "../mix";
+} from "../math/radar.js";
+import { blendCss } from "../mix.js";
 import type {
 	AnyDatum,
 	KeyedTransitionProps,
 	RadialReveal,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import type { Category } from "../series";
-import { createSeries } from "../series";
-import { hashRanks, orderRanks, staggered } from "../stagger";
-import { textWidth } from "../text-width";
-import { mix, shallowEqual } from "../util";
-import type { KeyedLabel } from "./shared";
-import { createFarScale, labelList } from "./shared";
+} from "../props.js";
+import type { Category } from "../series.js";
+import { createSeries } from "../series.js";
+import { hashRanks, orderRanks, staggered } from "../stagger.js";
+import { textWidth } from "../text-width.js";
+import { mix, shallowEqual } from "../util.js";
+import type { KeyedLabel } from "./shared.js";
+import { createFarScale, labelList } from "./shared.js";
 
 const DEFAULT_STROKE_WIDTH = 0.02;
 const DEFAULT_FILL_OPACITY = 0.25;

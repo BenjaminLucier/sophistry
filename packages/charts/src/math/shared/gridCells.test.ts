@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { buildGridCells, gridNcols } from "./gridCells";
+import { buildGridCells, gridNcols } from "./gridCells.js";
 
 describe("gridNcols", () => {
 	it("is the longest row", () => {

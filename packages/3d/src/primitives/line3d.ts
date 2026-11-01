@@ -8,9 +8,9 @@
 import { Invalidate } from "@sophistry/core";
 import { lerpPoint3 } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
-import { shape3DProps } from "../props3d";
-import { defineShape3D } from "../shape3d";
-import { type Curve3DProps, projectCurve } from "./curve3d";
+import { shape3DProps } from "../props3d.js";
+import { defineShape3D } from "../shape3d.js";
+import { type Curve3DProps, projectCurve } from "./curve3d.js";
 
 /** @category Primitives */
 export interface Line3DProps

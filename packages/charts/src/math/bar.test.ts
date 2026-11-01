@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { barSlot } from "./bar";
+import { barSlot } from "./bar.js";
 
 describe("barSlot", () => {
 	it("centres each bar in its slot", () => {

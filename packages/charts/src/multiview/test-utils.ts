@@ -18,7 +18,7 @@ import type {
 	TextSpec,
 } from "@sophistry/core/internal";
 import { sceneInternals } from "@sophistry/core/internal";
-import { theme } from "../test-harness";
+import { theme } from "../test-harness.js";
 
 /** A pointer event at plot point (x, y); 100 CSS px per scene unit. */
 export const at = (x: number, y = 0, pointerId = 1, shiftKey = false) =>

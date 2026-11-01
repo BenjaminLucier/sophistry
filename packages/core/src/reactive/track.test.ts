@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { derive, isReadable, track } from "./track";
+import { derive, isReadable, track } from "./track.js";
 
 describe("track", () => {
 	it("reads what was written and notifies on change only", () => {

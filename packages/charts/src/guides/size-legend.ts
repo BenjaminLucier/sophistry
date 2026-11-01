@@ -29,13 +29,19 @@ import {
 	DEFAULT_FONT_WEIGHT,
 	measureLabel,
 } from "@sophistry/core/internal";
-import type { SizeScale } from "../frame/types";
-import { bubbleLegendValues, bubbleRadiusScale } from "../math/bubble";
-import type { SizeLegendLayout } from "../math/legend";
-import { sizeLegendLayout } from "../math/legend";
-import { staggered } from "../stagger";
-import { keyedMemo, mix, mixPoint, shallowEqual, stableValue } from "../util";
-import { write } from "./nodes";
+import type { SizeScale } from "../frame/types.js";
+import { bubbleLegendValues, bubbleRadiusScale } from "../math/bubble.js";
+import type { SizeLegendLayout } from "../math/legend.js";
+import { sizeLegendLayout } from "../math/legend.js";
+import { staggered } from "../stagger.js";
+import {
+	keyedMemo,
+	mix,
+	mixPoint,
+	shallowEqual,
+	stableValue,
+} from "../util.js";
+import { write } from "./nodes.js";
 
 const DEFAULT_FONT_SIZE = 0.28;
 /** `scatter`'s default `sizeRange`. */

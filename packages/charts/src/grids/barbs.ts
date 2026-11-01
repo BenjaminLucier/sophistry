@@ -34,7 +34,7 @@ import {
 	forwardHandlers,
 	forwardProps,
 } from "@sophistry/core/internal";
-import { barbGlyph } from "../math/barbs";
+import { barbGlyph } from "../math/barbs.js";
 
 /** The longest shaft, as a share of the lattice cell — barbs shouldn't collide. */
 const DEFAULT_BARB_FILL = 0.8;

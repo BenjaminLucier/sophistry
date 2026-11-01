@@ -5,12 +5,12 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { bars } from "./bars";
-import { histogram } from "./histogram";
-import { boxes, drawnBoxes, specsOf } from "./test-helpers";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { bars } from "./bars.js";
+import { histogram } from "./histogram.js";
+import { boxes, drawnBoxes, specsOf } from "./test-helpers.js";
 
 /** An 8 × 4 chart with no axes drawn around `layer`. */
 function frame(

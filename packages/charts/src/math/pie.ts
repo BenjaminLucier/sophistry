@@ -2,8 +2,8 @@
 
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { clampNonNegative, mix, polarPoint } from "@sophistry/core/internal";
-import type { PolarSweepOptions } from "./shared/polar";
-import { resolvePolarSweep, TAU } from "./shared/polar";
+import type { PolarSweepOptions } from "./shared/polar.js";
+import { resolvePolarSweep, TAU } from "./shared/polar.js";
 
 /** @category Math */
 export interface PieSlice {

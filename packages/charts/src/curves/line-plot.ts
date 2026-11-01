@@ -28,41 +28,41 @@ import type {
 } from "@sophistry/core/geometry";
 import { clipCurvePathToX, curvePath } from "@sophistry/core/geometry";
 import { clipBounds } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink, PositionValue } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink, PositionValue } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	indexOf,
 	numberValues,
-} from "../data/channels";
-import type { Mapper } from "../end-space";
-import { endSpace } from "../end-space";
-import type { ChartFrame } from "../frame/types";
-import { createGroupJoin, layerTransition, transitionColor } from "../join";
+} from "../data/channels.js";
+import type { Mapper } from "../end-space.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame } from "../frame/types.js";
+import { createGroupJoin, layerTransition, transitionColor } from "../join.js";
 import {
 	DECIMATION_MIN_PER_COLUMN,
 	dataRuns,
 	decimateRun,
 	isNonDecreasingX,
-} from "../math/line";
-import { morphRuns } from "../math/morph";
-import { clipPolylineToX, revealCutoff, xExtent } from "../math/reveal";
-import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props";
-import { projectRun } from "../raster";
-import type { GroupKey } from "../series";
-import { groupIndices, WHOLE } from "../series";
+} from "../math/line.js";
+import { morphRuns } from "../math/morph.js";
+import { clipPolylineToX, revealCutoff, xExtent } from "../math/reveal.js";
+import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props.js";
+import { projectRun } from "../raster.js";
+import type { GroupKey } from "../series.js";
+import { groupIndices, WHOLE } from "../series.js";
 import type {
 	SharedTooltipDatum,
 	TooltipPoint,
 	TooltipState,
-} from "../tooltip";
-import { sharedTooltipPoints, tooltipContext } from "../tooltip";
-import { keyedMemo } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch } from "./shared";
+} from "../tooltip.js";
+import { sharedTooltipPoints, tooltipContext } from "../tooltip.js";
+import { keyedMemo } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch } from "./shared.js";
 
 /**
  * Columns a long line is decimated to across the plot's width (see `decimateRun`), meant as one

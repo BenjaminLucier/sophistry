@@ -29,31 +29,36 @@ import type {
 	RangeTransition,
 } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import { chart } from "../chart";
-import type { Channel } from "../data/channels";
-import { resolveChannel } from "../data/channels";
-import { halfLine } from "../frame/guide-metrics";
+import { chart } from "../chart.js";
+import type { Channel } from "../data/channels.js";
+import { resolveChannel } from "../data/channels.js";
+import { halfLine } from "../frame/guide-metrics.js";
 import type {
 	ChartAxisOptions,
 	ChartColorOptions,
 	ChartSizeLegendOptions,
 	ChartXAxisOptions,
 	ChartYAxisOptions,
-} from "../frame/types";
-import type { FacetSlot, SideRoom } from "../math/facet";
-import { facetGrid, facetSlots, outerEdge, panelProgress } from "../math/facet";
-import { uniqueKeys } from "../math/ordinal";
-import type { AnyDatum, LayersReveal } from "../props";
-import { shallowEqual } from "../util";
-import type { ChartGroup, ChartGroupScope } from "./chart-group";
+} from "../frame/types.js";
+import type { FacetSlot, SideRoom } from "../math/facet.js";
+import {
+	facetGrid,
+	facetSlots,
+	outerEdge,
+	panelProgress,
+} from "../math/facet.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import type { AnyDatum, LayersReveal } from "../props.js";
+import { shallowEqual } from "../util.js";
+import type { ChartGroup, ChartGroupScope } from "./chart-group.js";
 import {
 	chartGroupContext,
 	createChartGroup,
 	sameRatios,
 	spanRatios,
-} from "./chart-group";
-import type { GroupGuideOptions, GroupGuides } from "./group-guides";
-import { createGroupGuides, PANELS_END_WITH_GUIDES } from "./group-guides";
+} from "./chart-group.js";
+import type { GroupGuideOptions, GroupGuides } from "./group-guides.js";
+import { createGroupGuides, PANELS_END_WITH_GUIDES } from "./group-guides.js";
 
 const DEFAULT_PANEL_TITLE_FONT_SIZE = 0.3;
 /** Across a column gap: room for the end numbers of two shared x axes to sit side by side. */

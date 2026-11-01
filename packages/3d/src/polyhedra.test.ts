@@ -1,14 +1,14 @@
 import type { SceneNode } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import { cross3, dot3, subtract3 } from "./mesh-math";
+import { camera3D } from "./camera3d.js";
+import { cross3, dot3, subtract3 } from "./mesh-math.js";
 import {
 	convexHullFaces,
 	orientFaces,
 	PLATONIC_SOLIDS,
 	polyhedronMeshFaces,
-} from "./polyhedra";
+} from "./polyhedra.js";
 import {
 	convexHull3D,
 	dodecahedron3D,
@@ -16,8 +16,8 @@ import {
 	octahedron3D,
 	polyhedron3D,
 	tetrahedron3D,
-} from "./primitives/polyhedron3d";
-import { mount } from "./test/scene";
+} from "./primitives/polyhedron3d.js";
+import { mount } from "./test/scene.js";
 
 const centroid = (ps: readonly Point3[]): Point3 => ({
 	x: ps.reduce((s, p) => s + p.x, 0) / ps.length,

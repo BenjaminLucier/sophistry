@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scatterPoints } from "./scatter";
+import { scatterPoints } from "./scatter.js";
 
 describe("scatterPoints", () => {
 	it("keeps every finite pair with its original index", () => {

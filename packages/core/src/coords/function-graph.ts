@@ -15,24 +15,28 @@
  * to the shape, so animating one never re-samples the curve.
  */
 
-import type { Point, Range } from "../geometry";
-import { polylineToCurvePath } from "../geometry";
-import { isFinitePoint } from "../geometry/num";
-import type { Changes, CompositeNode } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { ShapeInstanceable, ShapeNode, ShapeProps } from "../scene/shape";
-import { defineShape, shapeProps } from "../scene/shape";
-import type { Definition, PropsDescriptor, SceneNode } from "../scene/types";
+import type { Point, Range } from "../geometry/index.js";
+import { polylineToCurvePath } from "../geometry/index.js";
+import { isFinitePoint } from "../geometry/num.js";
+import type { Changes, CompositeNode } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type {
+	ShapeInstanceable,
+	ShapeNode,
+	ShapeProps,
+} from "../scene/shape.js";
+import { defineShape, shapeProps } from "../scene/shape.js";
+import type { Definition, PropsDescriptor, SceneNode } from "../scene/types.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
-} from "../shapes/forward";
-import type { ShapeGeometry } from "../spec/bake";
-import type { CoordinateSystem } from "./coords";
-import { requireCoords } from "./coords";
-import type { PolarCoordinateSystem } from "./polar-plane";
+} from "../shapes/forward.js";
+import type { ShapeGeometry } from "../spec/bake.js";
+import type { CoordinateSystem } from "./coords.js";
+import { requireCoords } from "./coords.js";
+import type { PolarCoordinateSystem } from "./polar-plane.js";
 
 const DEFAULT_SAMPLES = 160;
 /** A step of half the axis extent between neighbours is not a curve, it's a cliff. */

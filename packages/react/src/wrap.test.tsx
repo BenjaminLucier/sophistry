@@ -13,8 +13,8 @@ import type {
 } from "@sophistry/core";
 import { circle as circleDefinition, defineComposite } from "@sophistry/core";
 import { describe, expect, expectTypeOf, it } from "vitest";
-import { Circle, Group } from "./generated/core.gen";
-import { type ComponentProps, wrap } from "./wrap";
+import { Circle, Group } from "./generated/core.gen.js";
+import { type ComponentProps, wrap } from "./wrap.js";
 
 describe("wrap", () => {
 	it("returns a host element type, the same for the same definition", () => {

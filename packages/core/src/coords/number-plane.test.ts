@@ -5,12 +5,12 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { Invalidate } from "../scene/context";
-import { complexCoordsOf, complexPlane } from "./complex-plane";
-import { coordsOf } from "./coords";
-import type { NumberPlaneProps } from "./number-plane";
-import { numberPlane } from "./number-plane";
-import { mount, theme } from "./test-scene";
+import { Invalidate } from "../scene/context.js";
+import { complexCoordsOf, complexPlane } from "./complex-plane.js";
+import { coordsOf } from "./coords.js";
+import type { NumberPlaneProps } from "./number-plane.js";
+import { numberPlane } from "./number-plane.js";
+import { mount, theme } from "./test-scene.js";
 
 /** Scene x of every vertical grid line (z -1). */
 function gridXs(props: NumberPlaneProps): number[] {

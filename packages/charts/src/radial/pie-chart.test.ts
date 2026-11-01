@@ -5,9 +5,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { ringLayout, ringOrder } from "../math/pie";
-import { mount } from "../test-harness";
-import { pieChart } from "./pie-chart";
+import { ringLayout, ringOrder } from "../math/pie.js";
+import { mount } from "../test-harness.js";
+import { pieChart } from "./pie-chart.js";
 import {
 	angleOf,
 	boxOf,
@@ -18,7 +18,7 @@ import {
 	labels,
 	picture,
 	turnOf,
-} from "./test-helpers";
+} from "./test-helpers.js";
 
 describe("ring layout across a transition", () => {
 	it("orders both ends' keys so nothing crosses", () => {

@@ -1,9 +1,9 @@
 import { track } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import { cube3D, prism3D } from "./primitives/prism3d";
-import { sphere3D } from "./primitives/sphere3d";
-import { mount } from "./test/scene";
+import { camera3D } from "./camera3d.js";
+import { cube3D, prism3D } from "./primitives/prism3d.js";
+import { sphere3D } from "./primitives/sphere3d.js";
+import { mount } from "./test/scene.js";
 
 describe("the 3D pipeline", () => {
 	it("draws a cube's three visible faces, and nothing outside a camera throws", () => {

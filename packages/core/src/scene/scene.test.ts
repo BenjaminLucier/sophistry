@@ -11,16 +11,16 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { BLUE, parseColor, toCss } from "../color";
-import { track } from "../reactive";
-import { rect } from "../shapes/rect";
-import { resolveTheme } from "../themes/theme";
-import { stepFrame } from "../tween/frame-loop";
-import { frameContext, themeContext } from "./context";
-import type { Scene } from "./scene";
-import { createScene, pointerDriver, sceneInternals } from "./scene";
-import type { Call, DomHarness } from "./test-dom";
-import { installDom, mountPoint, paintedXs } from "./test-dom";
+import { BLUE, parseColor, toCss } from "../color/index.js";
+import { track } from "../reactive/index.js";
+import { rect } from "../shapes/rect.js";
+import { resolveTheme } from "../themes/theme.js";
+import { stepFrame } from "../tween/frame-loop.js";
+import { frameContext, themeContext } from "./context.js";
+import type { Scene } from "./scene.js";
+import { createScene, pointerDriver, sceneInternals } from "./scene.js";
+import type { Call, DomHarness } from "./test-dom.js";
+import { installDom, mountPoint, paintedXs } from "./test-dom.js";
 
 let dom: DomHarness;
 const scenes: Scene[] = [];

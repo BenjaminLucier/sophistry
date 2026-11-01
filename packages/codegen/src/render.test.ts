@@ -3,7 +3,7 @@ import { renderEntry } from "./render.ts";
 
 const fixture = {
 	packageName: "@example/shapes",
-	wrapModule: "../wrap",
+	wrapModule: "../wrap.js",
 	items: [
 		{ exportName: "rect", componentName: "Rect" },
 		{ exportName: "circle", componentName: "Circle" },
@@ -18,7 +18,7 @@ describe("renderEntry", () => {
 // Regenerate with \`pnpm --filter @sophistry/codegen generate\`.
 
 import { circle, rect } from "@example/shapes";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * \`circle\` from \`@example/shapes\` as a component.

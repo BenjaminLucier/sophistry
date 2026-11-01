@@ -13,8 +13,8 @@ import {
 	splitViewports,
 } from "@sophistry/core";
 import { type ReactNode, useMemo } from "react";
-import type { CameraProps } from "./camera";
-import { Camera } from "./camera";
+import type { CameraProps } from "./camera.js";
+import { Camera } from "./camera.js";
 
 /**
  * A {@link CameraProps} minus its `viewport`: one pane of a layout

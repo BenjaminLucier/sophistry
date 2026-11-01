@@ -11,14 +11,14 @@
 import type { SceneNode } from "@sophistry/core";
 import { clipBounds } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { gaussianKde } from "../math/violin";
-import { mount } from "../test-harness";
-import { density } from "./density";
-import { regressionPlot } from "./regression";
-import type { CurveItem } from "./test-items";
-import { curveItems } from "./test-items";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { gaussianKde } from "../math/violin.js";
+import { mount } from "../test-harness.js";
+import { density } from "./density.js";
+import { regressionPlot } from "./regression.js";
+import type { CurveItem } from "./test-items.js";
+import { curveItems } from "./test-items.js";
 
 let handle!: ChartHandle;
 function draw(

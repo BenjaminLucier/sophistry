@@ -5,10 +5,10 @@
 
 import type { CoordinateSystem, SceneNode } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
-import { chart, chartHandle } from "../chart";
-import type { ChartProps } from "../frame/types";
-import type { MarkItem } from "../test-harness";
-import { markItems, mount } from "../test-harness";
+import { chart, chartHandle } from "../chart.js";
+import type { ChartProps } from "../frame/types.js";
+import type { MarkItem } from "../test-harness.js";
+import { markItems, mount } from "../test-harness.js";
 
 export const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 

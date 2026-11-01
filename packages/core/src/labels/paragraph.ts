@@ -5,35 +5,35 @@
  * box. No hyphenation, justification or mid-word breaks.
  */
 
-import type { ColorInput } from "../color";
-import type { Bounds, Point, Polyline } from "../geometry";
-import { progressIn } from "../geometry/lerp";
-import type { Matrix } from "../geometry/transform";
-import { fromTranslationRotationScale } from "../geometry/transform";
-import type { Readable } from "../reactive";
-import { frameContext, Invalidate, themeContext } from "../scene/context";
-import { memo } from "../scene/node";
-import { definePrimitive } from "../scene/primitive";
-import type { ShapeNode } from "../scene/shape";
-import { lastMatrix } from "../scene/shape";
-import type { LabelProps, TextNode } from "../scene/text";
-import { label } from "../scene/text";
+import type { ColorInput } from "../color/index.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import { progressIn } from "../geometry/lerp.js";
+import type { Matrix } from "../geometry/transform.js";
+import { fromTranslationRotationScale } from "../geometry/transform.js";
+import type { Readable } from "../reactive/index.js";
+import { frameContext, Invalidate, themeContext } from "../scene/context.js";
+import { memo } from "../scene/node.js";
+import { definePrimitive } from "../scene/primitive.js";
+import type { ShapeNode } from "../scene/shape.js";
+import { lastMatrix } from "../scene/shape.js";
+import type { LabelProps, TextNode } from "../scene/text.js";
+import { label } from "../scene/text.js";
 import type {
 	ContextKey,
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
 	SceneNode,
-} from "../scene/types";
-import { type LineProps, line } from "../shapes/line";
-import type { TextFont } from "../spec/bake";
-import { bakeTextFont } from "../spec/bake";
-import type { Placement } from "../spec/layout";
-import { readDelta } from "../spec/layout";
-import type { MetricsStyle } from "../spec/metrics";
-import { measureLabel } from "../spec/metrics";
-import type { Theme } from "../themes/types";
-import { boxPolyline, TextLayoutNode } from "./text-layout";
+} from "../scene/types.js";
+import { type LineProps, line } from "../shapes/line.js";
+import type { TextFont } from "../spec/bake.js";
+import { bakeTextFont } from "../spec/bake.js";
+import type { Placement } from "../spec/layout.js";
+import { readDelta } from "../spec/layout.js";
+import type { MetricsStyle } from "../spec/metrics.js";
+import { measureLabel } from "../spec/metrics.js";
+import type { Theme } from "../themes/types.js";
+import { boxPolyline, TextLayoutNode } from "./text-layout.js";
 
 /** Line height as a multiple of the font size, when none is given. */
 const DEFAULT_LINE_HEIGHT = 1.3;

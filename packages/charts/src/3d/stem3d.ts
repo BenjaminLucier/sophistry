@@ -4,18 +4,18 @@ import type { Line3DProps } from "@sophistry/3d";
 import { dot3D, line3D } from "@sophistry/3d";
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
-import type { Channel, ColorChannel } from "../data/channels";
-import { numberValues, resolveColor } from "../data/channels";
-import type { StemPoint3 } from "../math/3d/stem3d";
-import { stemPoints3 } from "../math/3d/stem3d";
-import type { AnyDatum } from "../props";
+import type { Channel, ColorChannel } from "../data/channels.js";
+import { numberValues, resolveColor } from "../data/channels.js";
+import type { StemPoint3 } from "../math/3d/stem3d.js";
+import { stemPoints3 } from "../math/3d/stem3d.js";
+import type { AnyDatum } from "../props.js";
 import {
 	dataChanged,
 	forwardAll,
 	forwardChanged,
 	forwardedEntries,
 	setPoint3,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Plots */
 export interface Stem3DProps<T = unknown>

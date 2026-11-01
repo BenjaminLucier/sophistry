@@ -5,8 +5,8 @@
 
 import { axes } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import { barbs } from "./barbs";
+import { mount } from "../test-harness.js";
+import { barbs } from "./barbs.js";
 
 const inAxes = (layer: ReturnType<typeof barbs.create>) =>
 	axes.create({

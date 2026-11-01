@@ -26,9 +26,9 @@ import {
 	measureAxisNumbers,
 } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import { colorbarWidth } from "../guides/colorbar";
-import { measureLegend } from "../guides/legend";
-import type { SizeKeyMeasures, SizeKeysEnds } from "../guides/size-legend";
+import { colorbarWidth } from "../guides/colorbar.js";
+import { measureLegend } from "../guides/legend.js";
+import type { SizeKeyMeasures, SizeKeysEnds } from "../guides/size-legend.js";
 import {
 	flowSizeKeys,
 	measureSizeKeyExtents,
@@ -36,17 +36,17 @@ import {
 	sameSizeKeyMeasures,
 	sameSizeKeysEnds,
 	sizeKeyOffsets,
-} from "../guides/size-legend";
-import type { JoinStages, StageWindow } from "../math/join";
-import { textWidth } from "../text-width";
-import { keyedMemo, shallowEqual, stableValue } from "../util";
+} from "../guides/size-legend.js";
+import type { JoinStages, StageWindow } from "../math/join.js";
+import { textWidth } from "../text-width.js";
+import { keyedMemo, shallowEqual, stableValue } from "../util.js";
 import type {
 	AxisSwap,
 	FittedTransition,
 	GivenRange,
 	MergedAxisOptions,
 	ResolvedAxis,
-} from "./fit";
+} from "./fit.js";
 import {
 	AXIS_LABEL_FONT_SIZE,
 	AXIS_LABEL_GAP,
@@ -61,14 +61,14 @@ import {
 	sameKeyExtent,
 	TITLE_FONT_SIZE,
 	TITLE_GAP,
-} from "./guide-metrics";
-import type { ChartKeys, FrameLegendEntry } from "./keys";
+} from "./guide-metrics.js";
+import type { ChartKeys, FrameLegendEntry } from "./keys.js";
 import type {
 	ChartLayerExtent,
 	ChartMargin,
 	ChartProps,
 	ChartSide,
-} from "./types";
+} from "./types.js";
 
 /** A category name's font size when the axis gives none. */
 export const DEFAULT_CATEGORY_FONT_SIZE = 0.28;

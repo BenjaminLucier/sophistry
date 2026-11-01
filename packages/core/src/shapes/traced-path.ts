@@ -8,21 +8,21 @@
  * moves.
  */
 
-import type { Point, Polyline } from "../geometry";
-import type { Readable } from "../reactive";
-import { derive } from "../reactive";
-import { type CompositeContext, defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { type ShapeProps, shapeProps } from "../scene/shape";
-import type { PropsDescriptor } from "../scene/types";
-import type { Clock } from "../tween/clock";
+import type { Point, Polyline } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { derive } from "../reactive/index.js";
+import { type CompositeContext, defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { type ShapeProps, shapeProps } from "../scene/shape.js";
+import type { PropsDescriptor } from "../scene/types.js";
+import type { Clock } from "../tween/clock.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
 	rawProp,
-} from "./forward";
-import { path } from "./path";
+} from "./forward.js";
+import { path } from "./path.js";
 
 /** @category Shapes */
 export interface TracedPathProps extends ShapeProps {

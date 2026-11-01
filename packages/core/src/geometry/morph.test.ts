@@ -8,9 +8,9 @@ import {
 	morphRings,
 	resampleCorrespondence,
 	resolveCorrespondence,
-} from "./morph";
-import { lineSegment } from "./path/cubic";
-import type { CurvePath, Point, Polyline } from "./path/types";
+} from "./morph.js";
+import { lineSegment } from "./path/cubic.js";
+import type { CurvePath, Point, Polyline } from "./path/types.js";
 
 function expectPointClose(a: Point, b: Point, digits = 4) {
 	expect(a.x).toBeCloseTo(b.x, digits);

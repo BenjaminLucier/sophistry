@@ -5,11 +5,11 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { mount } from "../test-harness";
-import { bars } from "./bars";
-import { histogram } from "./histogram";
-import { ruleX } from "./rules";
+import { chart } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { bars } from "./bars.js";
+import { histogram } from "./histogram.js";
+import { ruleX } from "./rules.js";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 

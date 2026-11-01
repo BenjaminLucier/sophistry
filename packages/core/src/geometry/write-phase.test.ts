@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { writeLagRatio, writePhase } from "./write-phase";
+import { writeLagRatio, writePhase } from "./write-phase.js";
 
 describe("writePhase", () => {
 	it("uses Manim's Write lag: min(4 / count, 0.2)", () => {

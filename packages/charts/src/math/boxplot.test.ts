@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boxplotStats } from "./boxplot";
+import { boxplotStats } from "./boxplot.js";
 
 describe("boxplotStats", () => {
 	it("matches hand-computed quartiles for a simple dataset", () => {

@@ -4,8 +4,8 @@
  * Without a `document` (SSR) measurements fall back to an em-based estimate.
  */
 
-import type { Bounds } from "../geometry";
-import type { TextStyle } from "./types";
+import type { Bounds } from "../geometry/index.js";
+import type { TextStyle } from "./types.js";
 
 /**
  * Everything that changes a string's advance width. `fontSize` and

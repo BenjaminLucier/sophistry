@@ -6,35 +6,35 @@
 import type { CompositeContext, CoordinateSystem } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
-import type { MarkTransition } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel } from "../data/channels";
+import type { MarkTransition } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	numberValues,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { ChartFrame } from "../frame/types";
-import type { JoinEnd, JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame } from "../frame/types.js";
+import type { JoinEnd, JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import { blendCss, mixPoints } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { createSeries } from "../series";
-import { ranks, staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { datumValue, tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import type { SegmentItem, SegmentMark } from "./segment-marks";
-import { createSegmentMark } from "./segment-marks";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
+} from "../join.js";
+import { blendCss, mixPoints } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { createSeries } from "../series.js";
+import { ranks, staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { datumValue, tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import type { SegmentItem, SegmentMark } from "./segment-marks.js";
+import { createSegmentMark } from "./segment-marks.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
 
 const DEFAULT_LENGTH = 0.18;
 const DEFAULT_OPACITY = 0.7;

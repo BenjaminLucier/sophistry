@@ -7,23 +7,28 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Matrix } from "../geometry/transform";
-import { IDENTITY, translate } from "../geometry/transform";
-import { viewMatrix } from "../geometry/view-matrix";
-import type { InteractionRegistry } from "../interact/registry";
+import type { Matrix } from "../geometry/transform.js";
+import { IDENTITY, translate } from "../geometry/transform.js";
+import { viewMatrix } from "../geometry/view-matrix.js";
+import type { InteractionRegistry } from "../interact/registry.js";
 import type {
 	HitCandidate,
 	InteractionHandlers,
 	InteractionRecord,
 	ScenePointerEvent,
-} from "../interact/types";
-import { isFocusable } from "../interact/types";
-import type { Readable } from "../reactive";
-import { track } from "../reactive";
-import type { DrawSpec, MarksSpec, ShapeSpec, TextSpec } from "../spec/types";
-import type { CameraView } from "./camera";
-import type { PointerDriverOptions } from "./pointer";
-import { type BackgroundPointerEvent, createPointerDriver } from "./pointer";
+} from "../interact/types.js";
+import { isFocusable } from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
+import type {
+	DrawSpec,
+	MarksSpec,
+	ShapeSpec,
+	TextSpec,
+} from "../spec/types.js";
+import type { CameraView } from "./camera.js";
+import type { PointerDriverOptions } from "./pointer.js";
+import { type BackgroundPointerEvent, createPointerDriver } from "./pointer.js";
 
 const SIZE = { width: 800, height: 600 };
 

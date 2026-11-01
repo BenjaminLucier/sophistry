@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bar3dSlots } from "./bar3d";
+import { bar3dSlots } from "./bar3d.js";
 
 describe("bar3dSlots", () => {
 	it("anchors each box at (x, y, z) and extends by (width, height, depth)", () => {

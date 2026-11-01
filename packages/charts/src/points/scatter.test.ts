@@ -1,8 +1,8 @@
 import type { CoordinateSystem } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { chart, chartHandle } from "../chart";
-import { mount, probe } from "../test-harness";
-import { scatter } from "./scatter";
+import { chart, chartHandle } from "../chart.js";
+import { mount, probe } from "../test-harness.js";
+import { scatter } from "./scatter.js";
 
 /** Item centres of a circle marks spec, as points. */
 function centres(spec: { centers: Float64Array; count: number }) {

@@ -21,6 +21,7 @@
 		"@sophistry/core": "workspace:*",
 		"@sophistry/solidjs": "workspace:*",
 		"@sophistry/text": "workspace:*",
+		"katex": "catalog:",
 		"solid-js": "catalog:"
 	},
 	"devDependencies": {

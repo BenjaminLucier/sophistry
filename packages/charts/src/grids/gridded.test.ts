@@ -9,26 +9,26 @@ import { axes, UNDER_AXES_Z_INDEX } from "@sophistry/core";
 import type { ImageSpec } from "@sophistry/core/internal";
 import { cssColor } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartProps } from "../chart";
-import { chart } from "../chart";
-import { scatter } from "../points/scatter";
+import type { ChartProps } from "../chart.js";
+import { chart } from "../chart.js";
+import { scatter } from "../points/scatter.js";
 import {
 	GRID_STAGGER_LIMIT,
 	gridStagger,
 	readingRanks,
 	reversedAxes,
-} from "../stagger";
-import { mount, probe, theme } from "../test-harness";
-import { cells } from "./cells";
-import { contour } from "./contour";
-import { contourF } from "./contour-f";
-import { hexBin } from "./hex-bin";
-import { hist2d } from "./hist2d";
-import { imshow } from "./imshow";
-import { pcolormesh } from "./pcolormesh";
-import { itemBox, itemCentre, itemsOf } from "./test-support";
-import { triContourF } from "./tri-contour";
-import { tripcolor } from "./tripcolor";
+} from "../stagger.js";
+import { mount, probe, theme } from "../test-harness.js";
+import { cells } from "./cells.js";
+import { contour } from "./contour.js";
+import { contourF } from "./contour-f.js";
+import { hexBin } from "./hex-bin.js";
+import { hist2d } from "./hist2d.js";
+import { imshow } from "./imshow.js";
+import { pcolormesh } from "./pcolormesh.js";
+import { itemBox, itemCentre, itemsOf } from "./test-support.js";
+import { triContourF } from "./tri-contour.js";
+import { tripcolor } from "./tripcolor.js";
 
 const grid = [
 	[1, 2, 3],

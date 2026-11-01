@@ -5,7 +5,7 @@ import {
 	violinProfile,
 	violinProfileRing,
 	violinRing,
-} from "./violin";
+} from "./violin.js";
 
 describe("gaussianKde", () => {
 	it("bins a large sample to within a hair of the exact sum", () => {

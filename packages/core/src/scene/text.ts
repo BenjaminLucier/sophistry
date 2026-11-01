@@ -12,37 +12,37 @@
  * `yUp` as the glyphs are drawn, and is re-measured once a web font loads.
  */
 
-import type { ColorInput } from "../color";
-import type { Bounds, Point, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { ColorInput } from "../color/index.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToPoint,
 	fromTranslationRotationScale,
 	scaleFactorOf,
-} from "../geometry/transform";
-import type { InteractionProps } from "../interact/types";
-import type { TextHalo } from "../spec/bake";
-import { bakeTextSpec, bakeTextStyle } from "../spec/bake";
-import type { Placement } from "../spec/layout";
-import { readDelta } from "../spec/layout";
-import { fontLoads, labelBox } from "../spec/metrics";
-import type { ClipRegion, TextSpec, TextStyle } from "../spec/types";
-import { Invalidate, themeContext } from "./context";
-import { fontEpochContext, watchFontLoads } from "./fonts";
-import type { SceneGraph } from "./graph";
-import { interactionProps } from "./interaction-props";
-import { ANY_CONTEXT, BaseNode, memo } from "./node";
-import { definePrimitive } from "./primitive";
-import { lastMatrix } from "./shape";
+} from "../geometry/transform.js";
+import type { InteractionProps } from "../interact/types.js";
+import type { TextHalo } from "../spec/bake.js";
+import { bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
+import type { Placement } from "../spec/layout.js";
+import { readDelta } from "../spec/layout.js";
+import { fontLoads, labelBox } from "../spec/metrics.js";
+import type { ClipRegion, TextSpec, TextStyle } from "../spec/types.js";
+import { Invalidate, themeContext } from "./context.js";
+import { fontEpochContext, watchFontLoads } from "./fonts.js";
+import type { SceneGraph } from "./graph.js";
+import { interactionProps } from "./interaction-props.js";
+import { ANY_CONTEXT, BaseNode, memo } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import { lastMatrix } from "./shape.js";
 import type {
 	ContextKey,
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
-export type { TextHalo } from "../spec/bake";
+export type { TextHalo } from "../spec/bake.js";
 
 /**
  * Props every text node accepts, besides what gives it its string.

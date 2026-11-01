@@ -1,6 +1,6 @@
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { dataRuns, decimateRun, isNonDecreasingX, sameRuns } from "./line";
+import { dataRuns, decimateRun, isNonDecreasingX, sameRuns } from "./line.js";
 
 describe("dataRuns", () => {
 	it("returns one run for continuous data", () => {

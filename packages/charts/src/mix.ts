@@ -13,7 +13,7 @@ import {
 	toCss,
 } from "@sophistry/core/color";
 import type { Bounds, Point } from "@sophistry/core/geometry";
-import { mix, mixPoint } from "./util";
+import { mix, mixPoint } from "./util.js";
 
 /** Above this many entries a cache is cleared rather than grown (a chart has few colours; a stream of computed ones must not leak). */
 const CACHE_LIMIT = 512;

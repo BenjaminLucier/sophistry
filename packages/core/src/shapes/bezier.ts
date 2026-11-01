@@ -2,15 +2,15 @@
  * Single bezier segments, cubic and quadratic, built where they sit.
  */
 
-import type { Point } from "../geometry";
-import { quadraticToCubic } from "../geometry";
-import { Invalidate } from "../scene/context";
+import type { Point } from "../geometry/index.js";
+import { quadraticToCubic } from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /** @category Shapes */
 export interface CubicBezierProps extends ShapeProps {

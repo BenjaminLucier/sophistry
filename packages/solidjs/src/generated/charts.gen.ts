@@ -76,7 +76,7 @@ import {
 	waffle,
 	waterfall,
 } from "@sophistry/charts";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * `barChart` from `@sophistry/charts` as a component.

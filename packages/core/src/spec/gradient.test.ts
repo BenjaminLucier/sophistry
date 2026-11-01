@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Point } from "../geometry";
-import type { PaintFrame } from "./gradient";
+import type { Point } from "../geometry/index.js";
+import type { PaintFrame } from "./gradient.js";
 import {
 	flatColor,
 	isGradientSpec,
@@ -8,8 +8,12 @@ import {
 	radialGradient,
 	resolvePaint,
 	sheen,
-} from "./gradient";
-import type { LinearGradientPaint, Paint, RadialGradientPaint } from "./types";
+} from "./gradient.js";
+import type {
+	LinearGradientPaint,
+	Paint,
+	RadialGradientPaint,
+} from "./types.js";
 
 /** Narrows a resolved `Paint` to its gradient variant, failing loudly otherwise. */
 function asLinear(paint: Paint | null): LinearGradientPaint {

@@ -5,13 +5,13 @@
  * `Animation` with `driveTrack`/`driveProgress` to compose or scrub.
  */
 
-import type { Clock } from "../tween/clock";
-import type { Easing } from "../tween/easing";
-import { auto } from "../tween/interpolators";
-import { easedLeaf } from "./animation";
-import { hold } from "./sequence";
-import type { PlayResult } from "./timeline";
-import { play } from "./timeline";
+import type { Clock } from "../tween/clock.js";
+import type { Easing } from "../tween/easing.js";
+import { auto } from "../tween/interpolators.js";
+import { easedLeaf } from "./animation.js";
+import { hold } from "./sequence.js";
+import type { PlayResult } from "./timeline.js";
+import { play } from "./timeline.js";
 
 /**
  * Options for {@link tween}.

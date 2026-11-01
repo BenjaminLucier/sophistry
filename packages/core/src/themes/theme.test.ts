@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { catppuccin } from "./catppuccin";
+import { catppuccin } from "./catppuccin.js";
 import {
 	catppuccinPalette,
 	definePalette,
 	palettes,
 	paletteTheme,
 	resolvePalette,
-} from "./palette";
-import { resolveTheme } from "./theme";
-import type { PaletteName } from "./types";
+} from "./palette.js";
+import { resolveTheme } from "./theme.js";
+import type { PaletteName } from "./types.js";
 
 describe("catppuccin", () => {
 	it("is the default palette: Mocha dark, Latte light", () => {
@@ -164,7 +164,7 @@ describe("resolveTheme", () => {
 
 describe("paletteCss", () => {
 	it("emits dark on :root and light on [data-mode=light], from the palette", async () => {
-		const { paletteCss } = await import("./css");
+		const { paletteCss } = await import("./css.js");
 		const css = paletteCss();
 		expect(css).toContain(':root, [data-mode="dark"] {');
 		expect(css).toContain('[data-mode="light"] {');
@@ -176,7 +176,7 @@ describe("paletteCss", () => {
 	});
 
 	it("honours a prefix", async () => {
-		const { paletteCss } = await import("./css");
+		const { paletteCss } = await import("./css.js");
 		expect(paletteCss("catppuccin", { prefix: "s" })).toContain("--s-accent:");
 	});
 });

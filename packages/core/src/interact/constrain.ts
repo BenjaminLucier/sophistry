@@ -5,14 +5,14 @@
  * (`geometry/path/`).
  */
 
-import type { ArcTable, Bounds, Point, Polyline } from "../geometry";
-import { measure } from "../geometry";
-import { padBounds } from "../geometry/bounds";
-import { createResolver } from "../geometry/resolver";
+import { padBounds } from "../geometry/bounds.js";
+import type { ArcTable, Bounds, Point, Polyline } from "../geometry/index.js";
+import { measure } from "../geometry/index.js";
+import { createResolver } from "../geometry/resolver.js";
 
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
-import type { ScenePointerEvent } from "./types";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
+import type { ScenePointerEvent } from "./types.js";
 
 /**
  * Where a gesture is, and where it began, in the units the projection works in.

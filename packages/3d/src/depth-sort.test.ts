@@ -8,13 +8,13 @@ import type { SceneNode } from "@sophistry/core";
 import { track } from "@sophistry/core";
 import type { Point3, ShapeSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import type { DepthItem } from "./depth-sort";
-import { sortByDepth } from "./depth-sort";
-import { meshFaces } from "./mesh";
-import { cube3D, prism3D } from "./primitives/prism3d";
-import { sphere3D } from "./primitives/sphere3d";
-import { mount } from "./test/scene";
+import { camera3D } from "./camera3d.js";
+import type { DepthItem } from "./depth-sort.js";
+import { sortByDepth } from "./depth-sort.js";
+import { meshFaces } from "./mesh.js";
+import { cube3D, prism3D } from "./primitives/prism3d.js";
+import { sphere3D } from "./primitives/sphere3d.js";
+import { mount } from "./test/scene.js";
 
 /**
  * Mounts `children` under a camera at `eye` looking at `target` and returns

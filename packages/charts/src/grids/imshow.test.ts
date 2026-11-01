@@ -10,12 +10,12 @@ import { tryParseColor } from "@sophistry/core/color";
 import type { ImageSpec } from "@sophistry/core/internal";
 import { resolveColormap } from "@sophistry/core/themes";
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { scatter } from "../points/scatter";
-import { mount, probe } from "../test-harness";
-import { hexCorners } from "./hex-bin";
-import { imshow } from "./imshow";
-import { itemBox, itemsOf } from "./test-support";
+import { chart } from "../chart.js";
+import { scatter } from "../points/scatter.js";
+import { mount, probe } from "../test-harness.js";
+import { hexCorners } from "./hex-bin.js";
+import { imshow } from "./imshow.js";
+import { itemBox, itemsOf } from "./test-support.js";
 
 const values = [
 	[0, 1, 2],

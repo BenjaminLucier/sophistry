@@ -10,10 +10,10 @@ import { group, type InteractionHandlers } from "@sophistry/core";
 import { parseColor, toCss } from "@sophistry/core/color";
 import type { Bounds } from "@sophistry/core/geometry";
 import type { MarksSpec, TextSpec } from "@sophistry/core/internal";
-import type { MarkItem } from "../test-harness";
-import { markItems, mount } from "../test-harness";
-import type { TooltipState } from "../tooltip";
-import { createTooltipState, tooltipContext } from "../tooltip";
+import type { MarkItem } from "../test-harness.js";
+import { markItems, mount } from "../test-harness.js";
+import type { TooltipState } from "../tooltip.js";
+import { createTooltipState, tooltipContext } from "../tooltip.js";
 
 export type Scene = ReturnType<typeof mount>;
 

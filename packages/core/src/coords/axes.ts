@@ -4,17 +4,17 @@
  * draw the same axes over a grid.
  */
 
-import type { Point, Range, RangeTransition } from "../geometry";
-import { currentRange } from "../geometry";
-import type { Readable } from "../reactive";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { measuresText } from "../scene/fonts";
-import type { LabelProps, TextNode } from "../scene/text";
-import { label } from "../scene/text";
-import type { PropsDescriptor, SceneNode } from "../scene/types";
-import { LEFT, ORIGIN, RIGHT, UP } from "../spec/layout";
+import type { Point, Range, RangeTransition } from "../geometry/index.js";
+import { currentRange } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { measuresText } from "../scene/fonts.js";
+import type { LabelProps, TextNode } from "../scene/text.js";
+import { label } from "../scene/text.js";
+import type { PropsDescriptor, SceneNode } from "../scene/types.js";
+import { LEFT, ORIGIN, RIGHT, UP } from "../spec/layout.js";
 import {
 	axisTicksAt,
 	contains,
@@ -24,24 +24,24 @@ import {
 	resolveOrigin,
 	weightedTicks,
 	yieldOrigin,
-} from "./axis-composition";
-import { anchoredLabelProps } from "./axis-labels";
+} from "./axis-composition.js";
+import { anchoredLabelProps } from "./axis-labels.js";
 import type {
 	AxisPosition,
 	CoordinateSystem,
 	XAxisPosition,
 	YAxisPosition,
-} from "./coords";
+} from "./coords.js";
 import {
 	axisFacesFar,
 	axisPositionValue,
 	createCartesianCoords,
 	createPhases,
 	publishCoords,
-} from "./coords";
-import { stablePoint } from "./grid-lines";
-import type { NumberLineProps } from "./number-line";
-import { numberLine } from "./number-line";
+} from "./coords.js";
+import { stablePoint } from "./grid-lines.js";
+import type { NumberLineProps } from "./number-line.js";
+import { numberLine } from "./number-line.js";
 
 /**
  * Everything a {@link numberLine} takes except the geometry `axes` decides for it.

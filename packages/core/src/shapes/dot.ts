@@ -4,32 +4,32 @@
  * a label. The disc is a circle placed by its `center` (the shape's `offset`).
  */
 
-import type { ColorInput } from "../color";
-import type { Point } from "../geometry";
-import { arcCurvePath } from "../geometry";
-import { boundsHeight, boundsWidth } from "../geometry/bounds";
-import { scaleFactorOf } from "../geometry/transform";
-import { type CompositeContext, defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
+import type { ColorInput } from "../color/index.js";
+import { boundsHeight, boundsWidth } from "../geometry/bounds.js";
+import type { Point } from "../geometry/index.js";
+import { arcCurvePath } from "../geometry/index.js";
+import { scaleFactorOf } from "../geometry/transform.js";
+import { type CompositeContext, defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
-import { label } from "../scene/text";
-import type { PropsDescriptor } from "../scene/types";
-import { SpaceChange } from "../scene/types";
-import { DEFAULT_FONT_WEIGHT } from "../spec/bake";
-import { labelBox } from "../spec/metrics";
-import type { Theme } from "../themes/types";
+} from "../scene/shape.js";
+import { label } from "../scene/text.js";
+import type { PropsDescriptor } from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
+import { DEFAULT_FONT_WEIGHT } from "../spec/bake.js";
+import { labelBox } from "../spec/metrics.js";
+import type { Theme } from "../themes/types.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
 	rawProp,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Shapes */
 export interface DotProps extends Omit<ShapeProps, "fill"> {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { INSIDE_LABEL_FADE, insideLabelFit, stackTotals } from "./barLabels";
+import { INSIDE_LABEL_FADE, insideLabelFit, stackTotals } from "./barLabels.js";
 
 const box = (minX: number, maxX: number, minY: number, maxY: number) => ({
 	minX,

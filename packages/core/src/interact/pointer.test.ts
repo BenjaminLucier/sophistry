@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createPointerChannel } from "./pointer";
+import { createPointerChannel } from "./pointer.js";
 
 describe("pointer channel", () => {
 	it("starts away and only wakes readers for a publish that says something new", () => {

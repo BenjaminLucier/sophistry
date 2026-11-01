@@ -8,11 +8,11 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import { circlePack } from "./circle-pack";
-import { icicle } from "./icicle";
-import { sunburst } from "./sunburst";
-import type { Scene } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import { circlePack } from "./circle-pack.js";
+import { icicle } from "./icicle.js";
+import { sunburst } from "./sunburst.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	boxes,
 	boxOfItem,
@@ -22,8 +22,8 @@ import {
 	mountChart,
 	opaque,
 	texts,
-} from "./test-helpers";
-import { treemap } from "./treemap";
+} from "./test-helpers.js";
+import { treemap } from "./treemap.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

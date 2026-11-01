@@ -4,8 +4,8 @@
  * identical on every engine) for variety that is the same on every render.
  */
 
-import { hslToRgb } from "./convert";
-import type { Color } from "./types";
+import { hslToRgb } from "./convert.js";
+import type { Color } from "./types.js";
 
 /**
  * A deterministic value in `[0, 1)` for `(seed, salt)`, built only from

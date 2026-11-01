@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boundsContain } from "./bounds";
+import { boundsContain } from "./bounds.js";
 import {
 	clamp01,
 	clampNonNegative,
@@ -16,9 +16,9 @@ import {
 	polarPoint,
 	TAU,
 	wrapAngle,
-} from "./num";
-import { ringArea } from "./path/arclength";
-import { distanceToSegment } from "./path/cubic";
+} from "./num.js";
+import { ringArea } from "./path/arclength.js";
+import { distanceToSegment } from "./path/cubic.js";
 
 describe("clamp01", () => {
 	it("clamps to the unit interval and reads NaN as 0", () => {

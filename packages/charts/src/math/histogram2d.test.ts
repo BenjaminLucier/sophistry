@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { histogram2d } from "./histogram2d";
+import { histogram2d } from "./histogram2d.js";
 
 function sum2d(counts: readonly (readonly number[])[]): number {
 	return counts.reduce(

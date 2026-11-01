@@ -25,6 +25,7 @@
 		"@sophistry/core": "workspace:*",
 		"@sophistry/solidjs": "workspace:*",
 		"@sophistry/text": "workspace:*",
+		"katex": "catalog:",
 		"astro": "catalog:",
 		"solid-js": "catalog:"
 	},

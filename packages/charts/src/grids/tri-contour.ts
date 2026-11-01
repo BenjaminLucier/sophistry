@@ -17,19 +17,19 @@ import {
 	pathBatch,
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
-import type { RampScaleProps } from "../color-norm";
-import { colorNorm, normLevels, rampOf } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import { dateSinkContext } from "../data/channels";
-import type { RampExtent } from "../frame/types";
-import type { ContourLine } from "../math/contour";
-import type { ContourBand } from "../math/contourf";
-import { tricontourBands, tricontourLines } from "../math/tricontour";
-import type { AnyDatum } from "../props";
-import { keyedMemo } from "../util";
-import type { ContourColors } from "./contour";
-import type { PlacedBand, PlacedLine } from "./contour-shared";
+import type { RampScaleProps } from "../color-norm.js";
+import { colorNorm, normLevels, rampOf } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import { dateSinkContext } from "../data/channels.js";
+import type { RampExtent } from "../frame/types.js";
+import type { ContourLine } from "../math/contour.js";
+import type { ContourBand } from "../math/contourf.js";
+import { tricontourBands, tricontourLines } from "../math/tricontour.js";
+import type { AnyDatum } from "../props.js";
+import { keyedMemo } from "../util.js";
+import type { ContourColors } from "./contour.js";
+import type { PlacedBand, PlacedLine } from "./contour-shared.js";
 import {
 	bandColor,
 	contourRamp,
@@ -38,9 +38,9 @@ import {
 	placeBands,
 	placeLines,
 	revealLines,
-} from "./contour-shared";
-import type { TriChartBaseProps, TriPoints } from "./tri-shared";
-import { levelRanks, triPoints, triReveal, valueExtent } from "./tri-shared";
+} from "./contour-shared.js";
+import type { TriChartBaseProps, TriPoints } from "./tri-shared.js";
+import { levelRanks, triPoints, triReveal, valueExtent } from "./tri-shared.js";
 
 const DEFAULT_LEVELS = 8;
 

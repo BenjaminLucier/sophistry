@@ -12,18 +12,18 @@
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import type { Theme } from "@sophistry/core/themes";
-import type { HierarchyNodeInfo } from "../math/hierarchy";
-import type { TooltipState } from "../tooltip";
-import type { ChartBreadcrumbsFrame } from "./breadcrumbs";
-import { createChartBreadcrumbs } from "./breadcrumbs";
+import type { HierarchyNodeInfo } from "../math/hierarchy.js";
+import type { TooltipState } from "../tooltip.js";
+import type { ChartBreadcrumbsFrame } from "./breadcrumbs.js";
+import { createChartBreadcrumbs } from "./breadcrumbs.js";
 import type {
 	HierarchyDrill,
 	HierarchyDrillProps,
 	NodeInteractionProps,
 	NodeInteractionState,
-} from "./drill";
-import { createHierarchyDrill, createNodeInteraction } from "./drill";
-import { createOwnTooltip } from "./own-tooltip";
+} from "./drill.js";
+import { createHierarchyDrill, createNodeInteraction } from "./drill.js";
+import { createOwnTooltip } from "./own-tooltip.js";
 import type {
 	HierarchyChartBaseProps,
 	HierarchyEnds,
@@ -32,7 +32,7 @@ import type {
 	HierarchyView,
 	HierarchyZoom,
 	Joined,
-} from "./shared";
+} from "./shared.js";
 import {
 	createHierarchyFills,
 	createHierarchyKeys,
@@ -40,7 +40,7 @@ import {
 	createHierarchyZoom,
 	createTooltipCloser,
 	lerpView,
-} from "./shared";
+} from "./shared.js";
 
 /** The props the shared steps read. */
 export type ZoomableChartProps<T> = HierarchyChartBaseProps<T> &

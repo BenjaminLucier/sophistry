@@ -11,11 +11,11 @@
  * retransform geometry); `bake()` composes them non-reactively for tests.
  */
 
-import { cssColor } from "../color/parse";
-import type { ColorInput } from "../color/types";
-import type { CurvePath, Point, Polyline } from "../geometry";
-import { boundsOf, centerOf, curvePathToPolyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import { cssColor } from "../color/parse.js";
+import type { ColorInput } from "../color/types.js";
+import type { CurvePath, Point, Polyline } from "../geometry/index.js";
+import { boundsOf, centerOf, curvePathToPolyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToCurvePath,
 	applyToPoint,
@@ -24,11 +24,11 @@ import {
 	fromTranslationRotationScale,
 	scaleFactorOf,
 	translate,
-} from "../geometry/transform";
-import { writeLagRatio } from "../geometry/write-phase";
-import type { Theme } from "../themes/types";
-import type { PaintFrame, PaintSpec } from "./gradient";
-import { isGradientSpec, resolvePaint } from "./gradient";
+} from "../geometry/transform.js";
+import { writeLagRatio } from "../geometry/write-phase.js";
+import type { Theme } from "../themes/types.js";
+import type { PaintFrame, PaintSpec } from "./gradient.js";
+import { isGradientSpec, resolvePaint } from "./gradient.js";
 import type {
 	AlongStroke,
 	ClipRegion,
@@ -37,7 +37,7 @@ import type {
 	StrokeStyle,
 	TextSpec,
 	TextStyle,
-} from "./types";
+} from "./types.js";
 
 /**
  * How a many-piece shape reveals under `progress`, the way Manim writes: pieces

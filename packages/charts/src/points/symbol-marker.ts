@@ -19,8 +19,8 @@ import type { ShapeInstanceable, ShapeProps } from "@sophistry/core";
 import { defineShape, Invalidate, shapeProps } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { arcCurvePath, polylineToCurvePath } from "@sophistry/core/geometry";
-import type { SymbolName } from "../math/symbol";
-import { symbolPolygon } from "../math/symbol";
+import type { SymbolName } from "../math/symbol.js";
+import { symbolPolygon } from "../math/symbol.js";
 
 /** Props of {@link symbolMarker}. */
 export interface SymbolMarkerProps extends ShapeProps {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { ecdfSteps } from "./ecdf";
+import { ecdfSteps } from "./ecdf.js";
 
 describe("ecdfSteps", () => {
 	it("builds a non-decreasing step function ending at exactly 1 for distinct values", () => {

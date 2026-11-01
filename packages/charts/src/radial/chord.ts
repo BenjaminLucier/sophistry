@@ -24,28 +24,32 @@ import {
 	cssColor,
 	polarPoint,
 } from "@sophistry/core/internal";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	identity,
 	numberValues,
 	resolveChannel,
 	resolveColor,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { ChordGroup, ChordLayout, ChordLink } from "../math/chord";
-import { chordLayout, chordRibbon } from "../math/chord";
-import type { SankeyId } from "../math/sankey";
-import type { AnyDatum } from "../props";
-import { ranks, staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipText } from "../tooltip";
-import type { KeyedLabel } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { ChordGroup, ChordLayout, ChordLink } from "../math/chord.js";
+import { chordLayout, chordRibbon } from "../math/chord.js";
+import type { SankeyId } from "../math/sankey.js";
+import type { AnyDatum } from "../props.js";
+import { ranks, staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipText } from "../tooltip.js";
+import type { KeyedLabel } from "./shared.js";
 import {
 	createItemCache,
 	createOwnTooltip,
 	labelList,
 	wedgeItem,
-} from "./shared";
+} from "./shared.js";
 
 const DEFAULT_RADIUS = 2;
 const DEFAULT_THICKNESS = 0.08;

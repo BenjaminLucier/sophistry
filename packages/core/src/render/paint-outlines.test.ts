@@ -6,9 +6,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { MarkOutline, MarksSpec, StrokeStyle } from "../spec/types";
-import { createPaintCache } from "./paint";
-import { drawMarks, mayBeVisible, splatMarks } from "./paint-items";
+import type { MarkOutline, MarksSpec, StrokeStyle } from "../spec/types.js";
+import { createPaintCache } from "./paint.js";
+import { drawMarks, mayBeVisible, splatMarks } from "./paint-items.js";
 
 type Call = [string, ...unknown[]];
 

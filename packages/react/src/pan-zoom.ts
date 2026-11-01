@@ -13,7 +13,7 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useScene } from "./hooks";
+import { useScene } from "./hooks.js";
 
 /**
  * Options for {@link usePanZoom}: core's `PanZoomSceneOptions`.

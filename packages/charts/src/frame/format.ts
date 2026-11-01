@@ -7,15 +7,15 @@ import {
 	toWallTime,
 } from "@sophistry/core/geometry";
 import { axisFormatter, axisTimeZone } from "@sophistry/core/internal";
-import type { OrdinalColorScale } from "../math/ordinal";
-import type { MergedAxisOptions, ResolvedAxis } from "./fit";
-import { numberLineOptions } from "./layout";
-import type { SecondaryFlags } from "./secondary";
+import type { OrdinalColorScale } from "../math/ordinal.js";
+import type { MergedAxisOptions, ResolvedAxis } from "./fit.js";
+import { numberLineOptions } from "./layout.js";
+import type { SecondaryFlags } from "./secondary.js";
 import type {
 	ChartColorOptions,
 	ChartFormatChannel,
 	ChartSizeLegendOptions,
-} from "./types";
+} from "./types.js";
 
 /** A formatter of one channel's values. */
 export type ValueFormat = (value: number | BandKey) => string;

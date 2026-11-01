@@ -37,14 +37,14 @@
  *   space); `demote(key)` writes its values back and disposes it.
  */
 
-import type { ScenePointerEvent } from "../interact/types";
-import type { Readable } from "../reactive";
-import type { Easing } from "../tween/easing";
-import type { SpringOptions, SpringSpec } from "../tween/spring";
-import type { InstancesNodeProps } from "./instance-node";
-import { checkInstances, instancesDefinition } from "./instance-node";
-import type { ShapeProps } from "./shape";
-import type { Bindable, Definition, SceneNode } from "./types";
+import type { ScenePointerEvent } from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import type { Easing } from "../tween/easing.js";
+import type { SpringOptions, SpringSpec } from "../tween/spring.js";
+import type { InstancesNodeProps } from "./instance-node.js";
+import { checkInstances, instancesDefinition } from "./instance-node.js";
+import type { ShapeProps } from "./shape.js";
+import type { Bindable, Definition, SceneNode } from "./types.js";
 
 /**
  * Per-item channels: for each instanceable prop, a function of the item.

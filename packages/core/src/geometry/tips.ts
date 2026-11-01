@@ -12,10 +12,10 @@
  * append a tip to a shaft without shortening the shaft.
  */
 
-import { ellipseCurvePath } from "./arc";
-import { closePolyline, polylineToCurvePath } from "./path/svg-path";
-import type { CurvePath, Point, Polyline } from "./path/types";
-import { arrowHeadAt, circlePolyline } from "./shapes";
+import { ellipseCurvePath } from "./arc.js";
+import { closePolyline, polylineToCurvePath } from "./path/svg-path.js";
+import type { CurvePath, Point, Polyline } from "./path/types.js";
+import { arrowHeadAt, circlePolyline } from "./shapes.js";
 
 /**
  * Arrow tip styles. `"vee"` is two open strokes; the rest are closed and fillable.

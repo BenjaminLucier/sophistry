@@ -9,8 +9,8 @@
  * holds. Only time changes.
  */
 
-import type { Animation } from "./animation";
-import { restTime, sampleTime } from "./animation";
+import type { Animation } from "./animation.js";
+import { restTime, sampleTime } from "./animation.js";
 
 /**
  * How fast to play: one factor for the whole animation, or speeds at points

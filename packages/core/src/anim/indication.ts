@@ -9,11 +9,11 @@
  * {@link passingFlash} turns that into the stroke's `dash`/`dashOffset`.
  */
 
-import type { Point, Polyline } from "../geometry";
-import type { Animatable } from "../tween";
-import { splitLongEdges } from "./points";
-import type { Animation, AnimOptions } from "./types";
-import { driveProgress } from "./types";
+import type { Point, Polyline } from "../geometry/index.js";
+import type { Animatable } from "../tween/index.js";
+import { splitLongEdges } from "./points.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveProgress } from "./types.js";
 
 /** @category Animation presets */
 export interface BlinkOptions extends Omit<AnimOptions, "easing"> {

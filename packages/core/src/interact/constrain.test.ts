@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { ConstraintSpec } from "./constrain";
-import { constraints, free, resolveConstraint } from "./constrain";
+import type { ConstraintSpec } from "./constrain.js";
+import { constraints, free, resolveConstraint } from "./constrain.js";
 
 describe("resolveConstraint", () => {
 	it("resolves undefined to null", () => {

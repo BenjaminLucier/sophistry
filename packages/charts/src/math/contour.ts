@@ -6,7 +6,7 @@
 
 import type { Point } from "@sophistry/core/geometry";
 import { stitchSegments } from "@sophistry/core/internal";
-import { resolveLevels as resolveLevelsShared } from "./shared/gridExtent";
+import { resolveLevels as resolveLevelsShared } from "./shared/gridExtent.js";
 
 type Pt = Point;
 

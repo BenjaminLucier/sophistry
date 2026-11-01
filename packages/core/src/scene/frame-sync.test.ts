@@ -10,15 +10,15 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { rect } from "../shapes/rect";
-import type { Clock } from "../tween/clock";
-import { createClock } from "../tween/clock";
-import { isFrameLoopRunning } from "../tween/frame-loop";
-import type { Scene, SceneOptions } from "./scene";
-import { createScene } from "./scene";
-import type { DomHarness } from "./test-dom";
-import { installDom, mountPoint } from "./test-dom";
+import { track } from "../reactive/index.js";
+import { rect } from "../shapes/rect.js";
+import type { Clock } from "../tween/clock.js";
+import { createClock } from "../tween/clock.js";
+import { isFrameLoopRunning } from "../tween/frame-loop.js";
+import type { Scene, SceneOptions } from "./scene.js";
+import { createScene } from "./scene.js";
+import type { DomHarness } from "./test-dom.js";
+import { installDom, mountPoint } from "./test-dom.js";
 
 let dom: DomHarness;
 const scenes: Scene[] = [];

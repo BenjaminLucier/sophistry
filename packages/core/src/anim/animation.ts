@@ -5,9 +5,9 @@
  * makes fast-forward and scrubbing work. No canvas, no clock here.
  */
 
-import { clamp } from "../geometry/lerp";
-import type { Easing } from "../tween/easing";
-import { resolveEasing } from "../tween/easing";
+import { clamp } from "../geometry/lerp.js";
+import type { Easing } from "../tween/easing.js";
+import { resolveEasing } from "../tween/easing.js";
 
 /**
  * Floating-point slack, in seconds, when comparing absolute times. Child

@@ -3,7 +3,7 @@
 import type { MeshFacesProps } from "@sophistry/3d";
 import { defineMesh3D, mesh3DProps } from "@sophistry/3d";
 import { Invalidate } from "@sophistry/core";
-import { surfaceGridFaces } from "../math/3d/surfaceGrid3d";
+import { surfaceGridFaces } from "../math/3d/surfaceGrid3d.js";
 
 /** @category Plots */
 export interface SurfaceGrid3DProps extends Omit<MeshFacesProps, "faces"> {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contourLines } from "./contour";
+import { contourLines } from "./contour.js";
 
 describe("contourLines", () => {
 	it("finds the single crossing segment on a hand-computable 2x2 cell", () => {

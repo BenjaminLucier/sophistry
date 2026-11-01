@@ -12,15 +12,15 @@
  * canvas, so any canvas a scene paints into (`scene.canvas`) will do.
  */
 
-import type { Animation } from "../anim/animation";
-import type { Timeline } from "../anim/timeline";
+import type { Animation } from "../anim/animation.js";
+import type { Timeline } from "../anim/timeline.js";
 import {
 	timeline as createTimeline,
 	timelineInternals,
-} from "../anim/timeline";
-import { isReadable } from "../reactive";
-import type { Clock } from "../tween/clock";
-import { stepFrame } from "../tween/frame-loop";
+} from "../anim/timeline.js";
+import { isReadable } from "../reactive/index.js";
+import type { Clock } from "../tween/clock.js";
+import { stepFrame } from "../tween/frame-loop.js";
 
 /**
  * Image formats `toBlob` universally supports; browsers may add more.

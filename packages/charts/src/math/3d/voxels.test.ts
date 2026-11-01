@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { voxelFaces } from "./voxels";
+import { voxelFaces } from "./voxels.js";
 
 describe("voxelFaces", () => {
 	it("returns [] for an empty grid", () => {

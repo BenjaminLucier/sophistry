@@ -5,9 +5,12 @@
  * saturation holds). `shadeColor` scales RGB channels.
  */
 
-import { type ColorInterpolationOptions, colorInterpolator } from "./convert";
-import { parseColor } from "./parse";
-import type { Color, ColorInput } from "./types";
+import {
+	type ColorInterpolationOptions,
+	colorInterpolator,
+} from "./convert.js";
+import { parseColor } from "./parse.js";
+import type { Color, ColorInput } from "./types.js";
 
 /** `color` between `a` and `b`, at `t`, in RGB — the direct replacement for
  * `mesh-math.ts`'s old `mixHexColor`, and the general "fade toward a base

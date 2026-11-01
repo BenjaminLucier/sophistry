@@ -5,12 +5,12 @@
  */
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { chart } from "../chart";
-import type { AnyDatum } from "../props";
-import { mount } from "../test-harness";
-import type { BarsProps } from "./bars";
-import { bars } from "./bars";
-import { boxes } from "./test-helpers";
+import { chart } from "../chart.js";
+import type { AnyDatum } from "../props.js";
+import { mount } from "../test-harness.js";
+import type { BarsProps } from "./bars.js";
+import { bars } from "./bars.js";
+import { boxes } from "./test-helpers.js";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 

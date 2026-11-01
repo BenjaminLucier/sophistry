@@ -18,35 +18,39 @@ import {
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { cssColor, maxOf } from "@sophistry/core/internal";
-import { bandSpan } from "../band";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink } from "../data/channels";
+import { bandSpan } from "../band.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	numberValues,
-} from "../data/channels";
-import type { EndSpace, Mapper } from "../end-space";
-import { endSpace, SCENE_UNITS } from "../end-space";
-import type { JoinEnd } from "../join";
+} from "../data/channels.js";
+import type { EndSpace, Mapper } from "../end-space.js";
+import { endSpace, SCENE_UNITS } from "../end-space.js";
+import type { JoinEnd } from "../join.js";
 import {
 	createGroupJoin,
 	layerTransition,
 	sweepIn,
 	transitionColor,
-} from "../join";
-import { morphPolyline } from "../math/morph";
-import { revealClipAlongX } from "../math/reveal";
-import type { KdePoint } from "../math/violin";
-import { gaussianKde } from "../math/violin";
-import type { AnyDatum, DensityReveal, SeriesTransitionProps } from "../props";
-import type { Category, GroupKey } from "../series";
-import { createSeries, groupIndices, WHOLE } from "../series";
-import { keyedMemo } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch, groupColors, slotOf } from "./shared";
+} from "../join.js";
+import { morphPolyline } from "../math/morph.js";
+import { revealClipAlongX } from "../math/reveal.js";
+import type { KdePoint } from "../math/violin.js";
+import { gaussianKde } from "../math/violin.js";
+import type {
+	AnyDatum,
+	DensityReveal,
+	SeriesTransitionProps,
+} from "../props.js";
+import type { Category, GroupKey } from "../series.js";
+import { createSeries, groupIndices, WHOLE } from "../series.js";
+import { keyedMemo } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch, groupColors, slotOf } from "./shared.js";
 
 const DEFAULT_FILL_OPACITY = 0.3;
 const DEFAULT_ROW_HEIGHT = 1.4;

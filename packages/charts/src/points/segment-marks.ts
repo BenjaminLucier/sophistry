@@ -14,8 +14,8 @@
 import type { LineProps, SceneNode } from "@sophistry/core";
 import { line } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
-import type { BatchedMark, BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
+import type { BatchedMark, BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
 
 /** One segment of a batched layer: its two ends in scene units and its colour. */
 export interface SegmentItem extends BatchItem {

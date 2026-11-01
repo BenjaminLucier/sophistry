@@ -12,12 +12,12 @@ import type { Polyline } from "@sophistry/core/geometry";
 import type { ShapeSpec } from "@sophistry/core/internal";
 import { DEFAULT_FONT_WEIGHT, measureLabel } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { chart, chartHandle } from "../chart";
-import { radarLabelOffset } from "../math/radar";
-import { hashRanks } from "../stagger";
-import { mount } from "../test-harness";
-import { radarChart } from "./radar-chart";
-import type { Scene } from "./test-helpers";
+import { chart, chartHandle } from "../chart.js";
+import { radarLabelOffset } from "../math/radar.js";
+import { hashRanks } from "../stagger.js";
+import { mount } from "../test-harness.js";
+import { radarChart } from "./radar-chart.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	angleOf,
 	boxOf,
@@ -28,7 +28,7 @@ import {
 	picture,
 	rounded,
 	shapePicture,
-} from "./test-helpers";
+} from "./test-helpers.js";
 
 /** The series polygons' filled parts. */
 const polygons = (scene: Scene) =>

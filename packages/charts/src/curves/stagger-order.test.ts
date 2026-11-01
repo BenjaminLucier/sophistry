@@ -8,12 +8,12 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { mount } from "../test-harness";
-import { density } from "./density";
-import { linePlot } from "./line-plot";
-import type { CurveItem } from "./test-items";
-import { drawing, itemsAt, rounded } from "./test-items";
+import { chart } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { density } from "./density.js";
+import { linePlot } from "./line-plot.js";
+import type { CurveItem } from "./test-items.js";
+import { drawing, itemsAt, rounded } from "./test-items.js";
 
 const Z = 7;
 

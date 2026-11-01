@@ -5,13 +5,13 @@
  * script never leaves a shape half-size or invisible.
  */
 
-import type { Bounds, Point } from "../geometry";
-import { pointOnBounds } from "../geometry";
-import type { Animatable } from "../tween";
-import { resolveInterpolator } from "../tween";
-import { parallel } from "./sequence";
-import type { Animation, AnimOptions } from "./types";
-import { driveTrack } from "./types";
+import type { Bounds, Point } from "../geometry/index.js";
+import { pointOnBounds } from "../geometry/index.js";
+import type { Animatable } from "../tween/index.js";
+import { resolveInterpolator } from "../tween/index.js";
+import { parallel } from "./sequence.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveTrack } from "./types.js";
 
 /** Manim grows over about a second, easing out of the pop. */
 const DEFAULT_DURATION = 1;

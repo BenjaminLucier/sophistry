@@ -7,12 +7,15 @@ Part of [sophistry](https://sophistry.dev), controllable Manim for the web. Pre-
 ## Install
 
 ```sh
-pnpm add @sophistry/core @sophistry/text
+pnpm add @sophistry/core @sophistry/text katex
 ```
+
+KaTeX lays formulas out with its stylesheet: import it once in your app.
 
 ## Example
 
 ```ts
+import "katex/dist/katex.css";
 import { createScene } from "@sophistry/core";
 import { mathTex } from "@sophistry/text";
 

@@ -5,24 +5,24 @@
  */
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { IDENTITY } from "../geometry/transform";
+import { IDENTITY } from "../geometry/transform.js";
 import type {
 	DrawSpec,
 	MarkOutline,
 	MarksSpec,
 	ShapeSpec,
 	StrokeStyle,
-} from "../spec/types";
-import { paintSpecs } from "./canvas-renderer";
-import { createLayerCache } from "./layer-cache";
-import { createPaintCache } from "./paint";
+} from "../spec/types.js";
+import { paintSpecs } from "./canvas-renderer.js";
+import { createLayerCache } from "./layer-cache.js";
+import { createPaintCache } from "./paint.js";
 import {
 	drawMarks,
 	mayBeVisible,
 	revealMeasures,
 	splatMarks,
 	visibleBox,
-} from "./paint-items";
+} from "./paint-items.js";
 
 type Call = [string, ...unknown[]];
 

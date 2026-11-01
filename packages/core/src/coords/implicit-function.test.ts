@@ -5,13 +5,13 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import type { CoordinateSystem } from "./coords";
-import { coordsContext, createCartesianCoords } from "./coords";
-import { implicitFunction } from "./implicit-function";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import type { CoordinateSystem } from "./coords.js";
+import { coordsContext, createCartesianCoords } from "./coords.js";
+import { implicitFunction } from "./implicit-function.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

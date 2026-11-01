@@ -1,7 +1,7 @@
 /** 3D stem geometry: a drop line along world y (up) from `baseline`, and a marker, per finite `(x, y, z)`. */
 
 import type { Point3 } from "@sophistry/core/internal";
-import { pairCount } from "../shared/pairs";
+import { pairCount } from "../shared/pairs.js";
 
 /** @category Math */
 export interface StemPoint3 {

@@ -23,10 +23,10 @@ import {
 import type { ColorInput } from "@sophistry/core/color";
 import { formatTick, tickValues } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
-import { type Camera3DValue, camera3DContext } from "../context";
-import { depthZ, projectPoint } from "../project";
-import { line3D } from "./line3d";
-import { vector3D } from "./vector3d";
+import { type Camera3DValue, camera3DContext } from "../context.js";
+import { depthZ, projectPoint } from "../project.js";
+import { line3D } from "./line3d.js";
+import { vector3D } from "./vector3d.js";
 
 /**
  * Tick-mark options for `Axes3DProps.ticks`; passing `true` takes every

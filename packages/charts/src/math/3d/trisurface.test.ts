@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { trisurfaceFaces } from "./trisurface";
+import { trisurfaceFaces } from "./trisurface.js";
 
 describe("trisurfaceFaces", () => {
 	it("returns [] for degenerate input", () => {

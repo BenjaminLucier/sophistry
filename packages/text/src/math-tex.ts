@@ -59,15 +59,15 @@ import {
 	forwardProps,
 	rawProp,
 } from "@sophistry/core/internal";
-import type { LatexHandle, LatexOptions, LatexStatus } from "./latex";
+import type { LatexHandle, LatexOptions, LatexStatus } from "./latex.js";
 import {
 	disposedError,
 	LatexReadables,
 	LatexSource,
 	ReadyWaiters,
-} from "./latex";
-import { OUTLINE_RATIO } from "./outline-stroke";
-import type { PlacedLatex, PlacedPart } from "./placed";
+} from "./latex.js";
+import { OUTLINE_RATIO } from "./outline-stroke.js";
+import type { PlacedLatex, PlacedPart } from "./placed.js";
 
 /**
  * Per-part paint for {@link mathTex} (Manim's `tex_to_color_map`): a

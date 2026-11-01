@@ -7,9 +7,9 @@
 
 import type { Bounds, Point, Polyline } from "@sophistry/core/geometry";
 import { boundsOf, flattenPath, lerpPoint } from "@sophistry/core/geometry";
-import { loadFace } from "./fonts";
-import type { MeasuredAtom, MeasureOptions, PixelRect } from "./measure";
-import { HOST_FONT_SIZE, measureLatex } from "./measure";
+import { loadFace } from "./fonts.js";
+import type { MeasuredAtom, MeasureOptions, PixelRect } from "./measure.js";
+import { HOST_FONT_SIZE, measureLatex } from "./measure.js";
 
 /**
  * One drawable piece of a formula, in the order it should be written.

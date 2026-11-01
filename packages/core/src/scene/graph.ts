@@ -19,13 +19,13 @@
  * `compileFrame` over the drawables in tree order; the tests check that.
  */
 
-import type { DrawSpec } from "../spec/types";
-import { requestFrame } from "../tween/frame-loop";
-import { BaseContainer } from "./container";
-import type { BaseNode } from "./node";
-import { ROOT_SPACE } from "./node";
-import type { Definition, InvalidateBits, Space } from "./types";
-import { SpaceChange } from "./types";
+import type { DrawSpec } from "../spec/types.js";
+import { requestFrame } from "../tween/frame-loop.js";
+import { BaseContainer } from "./container.js";
+import type { BaseNode } from "./node.js";
+import { ROOT_SPACE } from "./node.js";
+import type { Definition, InvalidateBits, Space } from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /**
  * More structural moves than this in one commit are cheaper as one re-sort

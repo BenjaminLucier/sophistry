@@ -5,9 +5,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { polarAreaChart } from "./polar-area-chart";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { polarAreaChart } from "./polar-area-chart.js";
 import {
 	angleOf,
 	areaOf,
@@ -18,7 +18,7 @@ import {
 	labelled,
 	picture,
 	turnOf,
-} from "./test-helpers";
+} from "./test-helpers.js";
 
 describe("keyed transitions on polarAreaChart", () => {
 	const before = [

@@ -1,6 +1,6 @@
 /** `scatter(x, y)` — one marker per finite `(x, y)` pair. */
 
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /** @category Math */
 export interface ScatterPoint {

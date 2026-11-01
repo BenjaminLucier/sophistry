@@ -5,7 +5,7 @@
 
 import type { JSX } from "@solidjs/web";
 import type { Clock } from "@sophistry/core";
-import { ClockContext } from "./context";
+import { ClockContext } from "./context.js";
 
 /**
  * Props for {@link ClockProvider}.

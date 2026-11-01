@@ -6,19 +6,19 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { circle } from "../shapes/circle";
-import type { AxesProps } from "./axes";
-import { axes } from "./axes";
-import type { CoordinateSystem } from "./coords";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { circle } from "../shapes/circle.js";
+import type { AxesProps } from "./axes.js";
+import { axes } from "./axes.js";
+import type { CoordinateSystem } from "./coords.js";
 import {
 	axisPositionValue,
 	coordsContext,
 	coordsOf,
 	requireCoords,
-} from "./coords";
-import { mount } from "./test-scene";
+} from "./coords.js";
+import { mount } from "./test-scene.js";
 
 function plot(props: Omit<AxesProps, "width" | "height">) {
 	const node = axes.create({ width: 8, height: 4, ...props });

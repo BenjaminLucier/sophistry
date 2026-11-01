@@ -8,13 +8,13 @@ import type { CompositeContext } from "@sophistry/core";
 import { defineComposite, track } from "@sophistry/core";
 import type { Range } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { bars } from "../bars/bars";
-import { chart, chartHandle } from "../chart";
-import { chartLayer } from "../context";
-import { linePlot } from "../curves/line-plot";
-import { secondaryX, secondaryY } from "../frame/secondary-axes";
-import type { ChartFrame, ChartHandle, ChartMargin } from "../frame/types";
-import { mount, probe } from "../test-harness";
+import { bars } from "../bars/bars.js";
+import { chart, chartHandle } from "../chart.js";
+import { chartLayer } from "../context.js";
+import { linePlot } from "../curves/line-plot.js";
+import { secondaryX, secondaryY } from "../frame/secondary-axes.js";
+import type { ChartFrame, ChartHandle, ChartMargin } from "../frame/types.js";
+import { mount, probe } from "../test-harness.js";
 
 const top = (range: Range) => Math.max(range[0], range[1]);
 const handle = (node: Parameters<typeof chartHandle>[0]) =>
@@ -304,12 +304,12 @@ describe('chart autosize="contain"', () => {
 
 describe("multi-view under animation", () => {
 	it("scrubs a facet, a link, a brush and a secondary axis without errors", async () => {
-		const { facet } = await import("./facet");
-		const { chartLink, rangeBrush } = await import("./chart-link");
-		const { pairPlot } = await import("./pair-plot");
-		const { jointPlot } = await import("./joint-plot");
+		const { facet } = await import("./facet.js");
+		const { chartLink, rangeBrush } = await import("./chart-link.js");
+		const { pairPlot } = await import("./pair-plot.js");
+		const { jointPlot } = await import("./joint-plot.js");
 		const { derive } = await import("@sophistry/core");
-		const { scatter } = await import("../points/scatter");
+		const { scatter } = await import("../points/scatter.js");
 		const rows = [
 			{ site: "A", year: "y1", temp: 1, rain: 10 },
 			{ site: "A", year: "y2", temp: 3, rain: 30 },

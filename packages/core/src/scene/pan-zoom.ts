@@ -5,17 +5,20 @@
  * `panZoomHandlers` is the gesture maths alone, with no scene around it.
  */
 
-import type { Bounds, Point } from "../geometry";
-import type { Track } from "../reactive";
-import { track } from "../reactive";
-import { mineCamera, subscribeCameraGesture } from "../render/camera-gesture";
+import type { Bounds, Point } from "../geometry/index.js";
+import type { Track } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
+import {
+	mineCamera,
+	subscribeCameraGesture,
+} from "../render/camera-gesture.js";
 import type {
 	BackgroundPointerEvent,
 	SceneWheelEvent,
-} from "../render/pointer";
-import type { Animatable } from "../tween/target";
-import type { Scene } from "./scene";
-import { sceneInternals } from "./scene";
+} from "../render/pointer.js";
+import type { Animatable } from "../tween/target.js";
+import type { Scene } from "./scene.js";
+import { sceneInternals } from "./scene.js";
 
 /** @category Stage & cameras */
 export interface PanZoomOptions {

@@ -7,7 +7,7 @@
 import type { DivergingKind, Range, Scale } from "@sophistry/core/geometry";
 import { divergingScale, resolveScale } from "@sophistry/core/geometry";
 import type { Colormap } from "@sophistry/core/themes";
-import type { RampExtent } from "./frame/types";
+import type { RampExtent } from "./frame/types.js";
 
 /**
  * How a colour layer spreads values over its colormap: `"linear"` even

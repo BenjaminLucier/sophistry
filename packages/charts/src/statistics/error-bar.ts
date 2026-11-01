@@ -24,16 +24,16 @@ import type {
 } from "@sophistry/core";
 import { circle, defineComposite, Invalidate, line } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
-import type { BatchItem, MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
+import type { BatchItem, MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
 import type {
 	Channel,
 	ColorChannel,
 	DateSink,
 	PositionValue,
-} from "../data/channels";
+} from "../data/channels.js";
 import {
 	dateSinkContext,
 	identity,
@@ -41,28 +41,28 @@ import {
 	numberValues,
 	resolveChannel,
 	resolveColor,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { JoinEnd, JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { JoinEnd, JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import type { ErrorBarPoint } from "../math/errorbar";
-import { errorBarPoints } from "../math/errorbar";
-import type { KeyedJoin } from "../math/join";
-import { mixPaint } from "../mix";
+} from "../join.js";
+import type { ErrorBarPoint } from "../math/errorbar.js";
+import { errorBarPoints } from "../math/errorbar.js";
+import type { KeyedJoin } from "../math/join.js";
+import { mixPaint } from "../mix.js";
 import type {
 	AnyDatum,
 	KeyedTransitionProps,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import { createSeries } from "../series";
-import { orderRanks, staggered } from "../stagger";
-import { mix } from "../util";
+} from "../props.js";
+import { createSeries } from "../series.js";
+import { orderRanks, staggered } from "../stagger.js";
+import { mix } from "../util.js";
 
 const DEFAULT_MARKER_RADIUS = 0.09;
 const DEFAULT_CAP_SIZE = 0.15;

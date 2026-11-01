@@ -8,9 +8,9 @@ import type { MeshFace, MeshFacesProps } from "@sophistry/3d";
 import { defineMesh3D, mesh3DProps } from "@sophistry/3d";
 import { Invalidate } from "@sophistry/core";
 import { delaunayTriangleIndices } from "@sophistry/core/internal";
-import type { Channel } from "../data/channels";
-import { numberValues } from "../data/channels";
-import type { AnyDatum } from "../props";
+import type { Channel } from "../data/channels.js";
+import { numberValues } from "../data/channels.js";
+import type { AnyDatum } from "../props.js";
 
 /** @category Plots */
 export interface TriSurface3DProps<T = unknown>

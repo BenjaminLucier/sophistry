@@ -13,18 +13,18 @@ import {
 	fromTranslationRotationScale,
 	IDENTITY,
 	type Matrix,
-} from "../geometry/transform";
-import { circle, rect } from "../shapes";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { BaseContainer } from "./container";
-import { themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import type { BaseNode } from "./node";
-import { definePrimitive } from "./primitive";
-import type { SceneNode, Space } from "./types";
-import { SpaceChange } from "./types";
+} from "../geometry/transform.js";
+import { circle, rect } from "../shapes/index.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { BaseContainer } from "./container.js";
+import { themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import type { BaseNode } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import type { SceneNode, Space } from "./types.js";
+import { SpaceChange } from "./types.js";
 
 function manualGraph() {
 	const graph = new SceneGraph({ schedule: () => {} });
@@ -251,7 +251,7 @@ describe("group space economy", () => {
 	});
 
 	it("binds its props like any node", async () => {
-		const { track } = await import("../reactive");
+		const { track } = await import("../reactive/index.js");
 		const { graph, commit } = manualGraph();
 		const angle = track(0);
 		const child = rect.create({ width: 2, height: 2 });

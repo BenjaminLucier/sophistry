@@ -42,17 +42,17 @@ import type {
 	RangeTransition,
 } from "@sophistry/core/geometry";
 import { clamp01, contains } from "@sophistry/core/internal";
-import { chartContext, chartLayersContext } from "./context";
-import type { DateAxis, DateSink } from "./data/channels";
-import { dateSinkContext } from "./data/channels";
-import { createChartCoords } from "./frame/coords";
-import type { AxisFitInput, MergedAxisOptions } from "./frame/fit";
-import { axisSpan, createAxisFit, createAxisSwap } from "./frame/fit";
-import { createChartFormats } from "./frame/format";
-import { createChartGuides } from "./frame/guides";
-import { createChartKeys } from "./frame/keys";
-import { createChartLayout, marginBand } from "./frame/layout";
-import { createLayerRegistry } from "./frame/registry";
+import { chartContext, chartLayersContext } from "./context.js";
+import type { DateAxis, DateSink } from "./data/channels.js";
+import { dateSinkContext } from "./data/channels.js";
+import { createChartCoords } from "./frame/coords.js";
+import type { AxisFitInput, MergedAxisOptions } from "./frame/fit.js";
+import { axisSpan, createAxisFit, createAxisSwap } from "./frame/fit.js";
+import { createChartFormats } from "./frame/format.js";
+import { createChartGuides } from "./frame/guides.js";
+import { createChartKeys } from "./frame/keys.js";
+import { createChartLayout, marginBand } from "./frame/layout.js";
+import { createLayerRegistry } from "./frame/registry.js";
 import {
 	createSteadyReports,
 	datesOn,
@@ -63,10 +63,10 @@ import {
 	sameShape,
 	sameStages,
 	transitionShapeOf,
-} from "./frame/reports";
-import type { SecondaryFlags } from "./frame/secondary";
-import { secondaryFit } from "./frame/secondary";
-import { tooltipOverlay } from "./frame/tooltip-overlay";
+} from "./frame/reports.js";
+import type { SecondaryFlags } from "./frame/secondary.js";
+import { secondaryFit } from "./frame/secondary.js";
+import { tooltipOverlay } from "./frame/tooltip-overlay.js";
 import type {
 	ChartFormatChannel,
 	ChartFrame,
@@ -76,17 +76,17 @@ import type {
 	ChartProps,
 	ChartRange,
 	ChartSide,
-} from "./frame/types";
-import type { JoinStages, StageWindow } from "./math/join";
-import { joinStages, stageProgress } from "./math/join";
-import type { OrdinalColorScale } from "./math/ordinal";
-import type { ChartPanel } from "./multiview/chart-group";
-import { chartPanel } from "./multiview/chart-group";
-import type { TooltipConfig, TooltipState } from "./tooltip";
-import { createTooltipState, tooltipContext } from "./tooltip";
-import { keyedMemo, shallowEqual, stableValue } from "./util";
+} from "./frame/types.js";
+import type { JoinStages, StageWindow } from "./math/join.js";
+import { joinStages, stageProgress } from "./math/join.js";
+import type { OrdinalColorScale } from "./math/ordinal.js";
+import type { ChartPanel } from "./multiview/chart-group.js";
+import { chartPanel } from "./multiview/chart-group.js";
+import type { TooltipConfig, TooltipState } from "./tooltip.js";
+import { createTooltipState, tooltipContext } from "./tooltip.js";
+import { keyedMemo, shallowEqual, stableValue } from "./util.js";
 
-export type * from "./frame/types";
+export type * from "./frame/types.js";
 
 /** Where the frame's share of `progress` ends and the data's begins. */
 const FRAME_END = 0.5;

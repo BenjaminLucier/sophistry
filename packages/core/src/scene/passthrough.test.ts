@@ -9,14 +9,14 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { circle, rect } from "../shapes";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { defineComposite } from "./composite";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import type { SceneNode } from "./types";
+import { track } from "../reactive/index.js";
+import { circle, rect } from "../shapes/index.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { defineComposite } from "./composite.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import type { SceneNode } from "./types.js";
 
 interface BadgeProps {
 	zIndex?: number;

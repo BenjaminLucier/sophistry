@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scalarParam } from "./param";
+import { scalarParam } from "./param.js";
 
 describe("scalarParam step", () => {
 	const param = scalarParam(

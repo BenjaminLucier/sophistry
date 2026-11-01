@@ -26,8 +26,8 @@ import {
 	type SceneWheelEvent,
 } from "@sophistry/core/internal";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import { orbitControls3D, orbitControlsHandlers } from "./orbit-controls";
+import { camera3D } from "./camera3d.js";
+import { orbitControls3D, orbitControlsHandlers } from "./orbit-controls.js";
 
 function cell<T>(initial: T): Animatable<T> {
 	let value = initial;

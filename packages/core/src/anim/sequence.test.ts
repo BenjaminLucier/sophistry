@@ -1,14 +1,21 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { trackPoint } from "../tween/track";
-import { animation, compose } from "./animation";
-import { fadeInFrom } from "./fade";
-import { growFromCenter, growFromPoint, spinInFromNothing } from "./growing";
-import { moveBy, moveTo, valueTo } from "./move";
-import { forever, hold, lagged, parallel, repeat, sequence } from "./sequence";
-import { play, timeline } from "./timeline";
-import { driveProgress, driveTrack } from "./types";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { trackPoint } from "../tween/track.js";
+import { animation, compose } from "./animation.js";
+import { fadeInFrom } from "./fade.js";
+import { growFromCenter, growFromPoint, spinInFromNothing } from "./growing.js";
+import { moveBy, moveTo, valueTo } from "./move.js";
+import {
+	forever,
+	hold,
+	lagged,
+	parallel,
+	repeat,
+	sequence,
+} from "./sequence.js";
+import { play, timeline } from "./timeline.js";
+import { driveProgress, driveTrack } from "./types.js";
 
 // The clock starts a rAF loop on subscribe; tests drive time by hand instead.
 beforeEach(() => {

@@ -13,14 +13,14 @@
  * Internal: not in the barrel.
  */
 
-import type { Readable } from "../reactive";
-import type { CompositeContext } from "../scene/composite";
-import { Invalidate } from "../scene/context";
+import type { Readable } from "../reactive/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
 import type {
 	PropDescriptor,
 	PropsDescriptor,
 	SceneNode,
-} from "../scene/types";
+} from "../scene/types.js";
 
 type AnyDescriptor = Record<string, PropDescriptor<unknown>>;
 

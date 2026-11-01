@@ -10,10 +10,16 @@
  * is also the default every `<Stage>` uses when nothing else is said.
  */
 
-import type { ColorInput } from "../color";
-import { cssColor, mixColor, parseColor, rgbToOklch, toCss } from "../color";
-import { createResolver } from "../geometry/resolver";
-import { catppuccin, catppuccinSeed } from "./catppuccin";
+import type { ColorInput } from "../color/index.js";
+import {
+	cssColor,
+	mixColor,
+	parseColor,
+	rgbToOklch,
+	toCss,
+} from "../color/index.js";
+import { createResolver } from "../geometry/resolver.js";
+import { catppuccin, catppuccinSeed } from "./catppuccin.js";
 import type {
 	ColorMode,
 	Palette,
@@ -24,7 +30,7 @@ import type {
 	ThemeDefaults,
 	ThemePalette,
 	ThemePaletteSeed,
-} from "./types";
+} from "./types.js";
 
 /** Sizing defaults a palette gets when it does not set its own: stroke width and font size in scene units, plus a system sans-serif stack. */
 export const DEFAULT_THEME_DEFAULTS: ThemeDefaults = {

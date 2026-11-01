@@ -7,8 +7,8 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { beeswarm, rug, stem, strip } from ".";
-import { plot, rounded } from "./test-utils";
+import { beeswarm, rug, stem, strip } from "./index.js";
+import { plot, rounded } from "./test-utils.js";
 
 const Z = 7;
 const before = [

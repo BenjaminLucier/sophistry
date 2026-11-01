@@ -6,8 +6,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { calendarAxis, timeScale } from "./scale/scales";
-import { formatSpecifier } from "./scale/tick-format";
+import { calendarAxis, timeScale } from "./scale/scales.js";
+import { formatSpecifier } from "./scale/tick-format.js";
 import {
 	fromWallTime,
 	type TemporalInstantLike,
@@ -17,7 +17,7 @@ import {
 	toEpochMs,
 	toWallTime,
 	wallTimeInstants,
-} from "./time";
+} from "./time.js";
 
 const HOUR = 3_600_000;
 const NY = "America/New_York";

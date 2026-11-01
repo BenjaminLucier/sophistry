@@ -12,7 +12,7 @@ import type { ContextKey, Readable, ScenePointerEvent } from "@sophistry/core";
 import { createContextKey, track } from "@sophistry/core";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
-import { lowerBound } from "./util";
+import { lowerBound } from "./util.js";
 
 /** Gap between a tooltip panel and the point it describes, scene units. */
 export const TIP_GAP = 0.18;

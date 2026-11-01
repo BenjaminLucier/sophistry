@@ -7,9 +7,9 @@
 import type { SceneNode } from "@sophistry/core";
 import { linearGradient, UP } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import type { ChartProps } from "../frame/types";
-import { hashRanks } from "../stagger";
-import { markItems } from "../test-harness";
+import type { ChartProps } from "../frame/types.js";
+import { hashRanks } from "../stagger.js";
+import { markItems } from "../test-harness.js";
 import {
 	beeswarm,
 	eventPlot,
@@ -22,8 +22,8 @@ import {
 	tickX,
 	tickY,
 	vectors,
-} from ".";
-import { plot, rounded } from "./test-utils";
+} from "./index.js";
+import { plot, rounded } from "./test-utils.js";
 
 const Z = 7;
 const frame: Partial<ChartProps> = { xRange: [0, 5], yRange: [0, 5] };

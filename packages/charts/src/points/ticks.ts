@@ -7,35 +7,35 @@
 import type { CompositeContext, CoordinateSystem } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { BandKey, BandScale, Point } from "@sophistry/core/geometry";
-import { bandSpan, positionOf } from "../band";
-import type { MarkTransition } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import { bandSpan, positionOf } from "../band.js";
+import type { MarkTransition } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	resolveChannel,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { AxisExtent, ChartFrame } from "../frame/types";
-import type { JoinEnd, JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { AxisExtent, ChartFrame } from "../frame/types.js";
+import type { JoinEnd, JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	keyRanks,
 	layerTransition,
-} from "../join";
-import { blendCss, mixPoints } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import type { SegmentItem, SegmentMark } from "./segment-marks";
-import { createSegmentMark } from "./segment-marks";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
+} from "../join.js";
+import { blendCss, mixPoints } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import type { SegmentItem, SegmentMark } from "./segment-marks.js";
+import { createSegmentMark } from "./segment-marks.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
 
 const DEFAULT_LENGTH = 0.3;
 

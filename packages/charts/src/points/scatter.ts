@@ -35,17 +35,17 @@ import { defineComposite, Invalidate, pathBatch } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { polylineToCurvePath } from "@sophistry/core/geometry";
 import { clampNonNegative, maxOf } from "@sophistry/core/internal";
-import type { MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
+import type { MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
 import type {
 	Channel,
 	ChannelFn,
 	ColorChannel,
 	PositionValue,
 	Quantity,
-} from "../data/channels";
+} from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
@@ -54,46 +54,46 @@ import {
 	numberValues,
 	resolveColor,
 	resolveQuantity,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { ChartFrame, SizeExtent } from "../frame/types";
-import type { JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame, SizeExtent } from "../frame/types.js";
+import type { JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import { bubbleRadiusScale } from "../math/bubble";
-import { keyframeAt, trailPolyline } from "../math/keyframes";
-import { uniqueKeys } from "../math/ordinal";
-import type { SymbolName } from "../math/symbol";
-import { blendCss } from "../mix";
+} from "../join.js";
+import { bubbleRadiusScale } from "../math/bubble.js";
+import { keyframeAt, trailPolyline } from "../math/keyframes.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import type { SymbolName } from "../math/symbol.js";
+import { blendCss } from "../mix.js";
 import type {
 	AnyDatum,
 	KeyedTransitionProps,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import { projectPoints } from "../raster";
-import { createSeries } from "../series";
-import { hashRanks, ranks, staggered } from "../stagger";
+} from "../props.js";
+import { projectPoints } from "../raster.js";
+import { createSeries } from "../series.js";
+import { hashRanks, ranks, staggered } from "../stagger.js";
 import type {
 	SharedTooltipDatum,
 	TooltipField,
 	TooltipSpec,
 	TooltipState,
-} from "../tooltip";
+} from "../tooltip.js";
 import {
 	datumValue,
 	sharedTooltipPoints,
 	tooltipContext,
 	tooltipText,
-} from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import { createItemHandlers, stableShared, tooltipsOn } from "./shared";
-import type { SymbolMarkerProps } from "./symbol-marker";
-import { symbolMarker } from "./symbol-marker";
+} from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import { createItemHandlers, stableShared, tooltipsOn } from "./shared.js";
+import type { SymbolMarkerProps } from "./symbol-marker.js";
+import { symbolMarker } from "./symbol-marker.js";
 
 const DEFAULT_RADIUS = 0.09;
 /** The radius range the `size` channel maps onto by default, in scene units. */

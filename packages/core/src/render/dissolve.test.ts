@@ -5,8 +5,8 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { resolveTheme } from "../themes";
-import { createPaintHost } from "./test-host";
+import { resolveTheme } from "../themes/index.js";
+import { createPaintHost } from "./test-host.js";
 
 type Call = { op: string; args: unknown[] };
 

@@ -5,7 +5,7 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { fillRings, paintsFill } from "./paint";
+import { fillRings, paintsFill } from "./paint.js";
 
 function recorder() {
 	const calls: string[] = [];

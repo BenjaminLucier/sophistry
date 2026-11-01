@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { MetricsStyle } from "../spec/metrics";
-import { formatDecimal, layoutGlyphs, MINUS } from "./digits";
+import type { MetricsStyle } from "../spec/metrics.js";
+import { formatDecimal, layoutGlyphs, MINUS } from "./digits.js";
 
 describe("formatDecimal", () => {
 	it("formats a positive number with the default 2 decimal places", () => {

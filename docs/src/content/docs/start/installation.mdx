@@ -14,7 +14,7 @@ sophistry is a framework-free TypeScript core plus thin, generated bindings. You
 | `@sophistry/core` | the scene graph, every 2D definition (`circle`, `label`, `axes`, ...), `createScene`, tracks, animations, springs, instancing, interaction, themes | nothing but a few d3 modules and `wgpu-matrix` |
 | `@sophistry/solidjs` | `<Stage>`, a component per definition (`<Circle>`), hooks (`usePlayer`, `useScene`, ...) for Solid 2 | peers: `core`, `solid-js`, `@solidjs/web` |
 | `@sophistry/react` | the same for React 19, through a custom reconciler | peers: `core`, `react` |
-| `@sophistry/text` | LaTeX as geometry: `mathTex`, `mathTransform`, `createLatex` | peer: `core`; bundles KaTeX and opentype.js |
+| `@sophistry/text` | LaTeX as geometry: `mathTex`, `mathTransform`, `createLatex` | peers: `core`, `katex`; depends on opentype.js |
 | `@sophistry/charts` | bar, line, scatter, pie, heatmap and the other charts, with data channels | peer: `core` (and `3d` for the `/3d` subpath) |
 | `@sophistry/3d` | `camera3D`, 3D primitives and surfaces, `orbitControls3D` | peer: `core` |
 
@@ -53,10 +53,18 @@ The core never imports a UI framework, so the bindings are small: every componen
 Then add the feature packages you use, with any package manager:
 
 ```sh
-pnpm add @sophistry/text     # MathTex, MathTransform
-pnpm add @sophistry/charts   # BarChart, LineChart, ...
-pnpm add @sophistry/3d       # Camera3D, Surface3D, ... (and 3D charts)
+pnpm add @sophistry/text katex   # MathTex, MathTransform
+pnpm add @sophistry/charts       # BarChart, LineChart, ...
+pnpm add @sophistry/3d           # Camera3D, Surface3D, ... (and 3D charts)
 ```
+
+KaTeX lays formulas out with its stylesheet, so an app using `@sophistry/text` imports it once, next to its entry point:
+
+```ts
+import "katex/dist/katex.css";
+```
+
+Without it formulas are positioned wrong, and the first one logs a warning.
 
 Their components come from the binding's matching subpath, so a scene that uses no charts never loads chart code:
 

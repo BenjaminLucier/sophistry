@@ -6,7 +6,7 @@
  */
 
 import type { SceneNode } from "@sophistry/core";
-import { deepEqual } from "../util";
+import { deepEqual } from "../util.js";
 
 /**
  * Writes the props of `next` that differ by value from `node`'s current

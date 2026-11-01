@@ -16,14 +16,14 @@
  * too, and joining a graph starts that graph's font-load subscription.
  */
 
-import type { Bounds, Polyline } from "../geometry";
-import { BaseContainer } from "../scene/container";
-import { Invalidate, themeContext } from "../scene/context";
-import { fontEpochContext, watchFontLoads } from "../scene/fonts";
-import type { SceneGraph } from "../scene/graph";
-import { ANY_CONTEXT, BaseNode } from "../scene/node";
-import type { ContextKey, InvalidateBits, SceneNode } from "../scene/types";
-import { SpaceChange } from "../scene/types";
+import type { Bounds, Polyline } from "../geometry/index.js";
+import { BaseContainer } from "../scene/container.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { fontEpochContext, watchFontLoads } from "../scene/fonts.js";
+import type { SceneGraph } from "../scene/graph.js";
+import { ANY_CONTEXT, BaseNode } from "../scene/node.js";
+import type { ContextKey, InvalidateBits, SceneNode } from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
 
 /**
  * A box's four corners, `minX..maxX` by `minY..maxY`, as one closed polyline.

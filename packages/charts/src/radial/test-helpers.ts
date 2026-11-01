@@ -7,7 +7,7 @@
 import type { SceneNode } from "@sophistry/core";
 import type { Point, Polyline } from "@sophistry/core/geometry";
 import type { MarksSpec, ShapeSpec, TextSpec } from "@sophistry/core/internal";
-import { markItems, mount } from "../test-harness";
+import { markItems, mount } from "../test-harness.js";
 
 export type Scene = ReturnType<typeof mount>;
 

@@ -26,19 +26,19 @@ import {
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { Range } from "@sophistry/core/geometry";
-import type { RampScaleProps } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { ImshowCell, ImshowResult } from "../math/imshow";
-import { imshowCells } from "../math/imshow";
-import { gridNcols } from "../math/shared/gridCells";
-import { affineFrame, rampTable, rasterize } from "../raster";
-import { gridStagger } from "../stagger";
-import { keyedMemo } from "../util";
-import type { CellItem, CellRects } from "./cell-rects";
-import { createCellRects } from "./cell-rects";
-import { placeGridCells, revealCells } from "./pcolormesh";
-import { createRampCells } from "./ramp-cells";
+import type { RampScaleProps } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { ImshowCell, ImshowResult } from "../math/imshow.js";
+import { imshowCells } from "../math/imshow.js";
+import { gridNcols } from "../math/shared/gridCells.js";
+import { affineFrame, rampTable, rasterize } from "../raster.js";
+import { gridStagger } from "../stagger.js";
+import { keyedMemo } from "../util.js";
+import type { CellItem, CellRects } from "./cell-rects.js";
+import { createCellRects } from "./cell-rects.js";
+import { placeGridCells, revealCells } from "./pcolormesh.js";
+import { createRampCells } from "./ramp-cells.js";
 
 /** How far, in scene units, an unstroked cell reaches past its edges to close the seams. */
 const SEAM_BLEED = 0.004;

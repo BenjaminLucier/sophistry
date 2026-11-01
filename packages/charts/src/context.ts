@@ -22,10 +22,14 @@ import type {
 import { coordsContext, createContextKey } from "@sophistry/core";
 import type { BandKey } from "@sophistry/core/geometry";
 import type { Theme } from "@sophistry/core/themes";
-import type { ChartFrame, ChartLayerExtent, ChartLayers } from "./frame/types";
-import type { OrdinalColorScale } from "./math/ordinal";
-import { ordinalColorScale } from "./math/ordinal";
-import { shallowEqual } from "./util";
+import type {
+	ChartFrame,
+	ChartLayerExtent,
+	ChartLayers,
+} from "./frame/types.js";
+import type { OrdinalColorScale } from "./math/ordinal.js";
+import { ordinalColorScale } from "./math/ordinal.js";
+import { shallowEqual } from "./util.js";
 
 /**
  * The enclosing chart's frame, or null outside one (a plain `axes`, or no

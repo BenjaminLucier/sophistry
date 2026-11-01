@@ -53,6 +53,23 @@
 	},
 	"overrides": [
 		{
+			"includes": [
+				"packages/{core,text,charts,3d,solidjs,react}/src/**",
+				"packages/{core,text,charts,3d,solidjs,react}/*.ts"
+			],
+			"linter": {
+				"rules": {
+					"correctness": {
+						"useImportExtensions": {
+							"level": "error",
+							"fix": "safe",
+							"options": { "forceJsExtensions": true }
+						}
+					}
+				}
+			}
+		},
+		{
 			"includes": ["**/*.astro"],
 			"linter": {
 				"rules": {

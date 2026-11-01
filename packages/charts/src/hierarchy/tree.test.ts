@@ -9,9 +9,9 @@
 
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { mount, theme } from "../test-harness";
-import { textWidth } from "../text-width";
-import type { Scene } from "./test-helpers";
+import { mount, theme } from "../test-harness.js";
+import { textWidth } from "../text-width.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	itemsOf,
 	labelOf,
@@ -19,8 +19,8 @@ import {
 	mountChart,
 	opaque,
 	texts,
-} from "./test-helpers";
-import { tree as treeChart } from "./tree";
+} from "./test-helpers.js";
+import { tree as treeChart } from "./tree.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

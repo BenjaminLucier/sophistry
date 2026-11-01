@@ -9,7 +9,7 @@ export type {
 	Hsl,
 	Hsv,
 	Oklch,
-} from "./convert";
+} from "./convert.js";
 export {
 	colorInterpolator,
 	hslToRgb,
@@ -18,7 +18,7 @@ export {
 	rgbToHsl,
 	rgbToHsv,
 	rgbToOklch,
-} from "./convert";
+} from "./convert.js";
 export {
 	BLACK,
 	BLUE,
@@ -39,21 +39,21 @@ export {
 	TEAL,
 	WHITE,
 	YELLOW,
-} from "./named";
+} from "./named.js";
 export {
 	darken,
 	lighten,
 	mixColor,
 	shadeColor,
 	withAlpha,
-} from "./ops";
+} from "./ops.js";
 export {
 	cssColor,
 	FALLBACK_COLOR,
 	parseColor,
 	toCss,
 	tryParseColor,
-} from "./parse";
-export type { RandomColorOptions } from "./random";
-export { randomColor } from "./random";
-export type { Color, ColorInput, ColorSpace } from "./types";
+} from "./parse.js";
+export type { RandomColorOptions } from "./random.js";
+export { randomColor } from "./random.js";
+export type { Color, ColorInput, ColorSpace } from "./types.js";

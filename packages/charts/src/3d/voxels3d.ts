@@ -3,7 +3,7 @@
 import type { MeshFacesProps } from "@sophistry/3d";
 import { defineMesh3D, mesh3DProps } from "@sophistry/3d";
 import { Invalidate } from "@sophistry/core";
-import { voxelFaces } from "../math/3d/voxels";
+import { voxelFaces } from "../math/3d/voxels.js";
 
 /** @category Plots */
 export interface Voxels3DProps extends Omit<MeshFacesProps, "faces"> {

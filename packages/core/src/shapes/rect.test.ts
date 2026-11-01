@@ -4,13 +4,13 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { polylineToCurvePath, rectPolyline } from "../geometry";
-import { themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import { bake, plainShapeSpec } from "../spec/bake";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { openRing, rect, square } from "./rect";
+import { polylineToCurvePath, rectPolyline } from "../geometry/index.js";
+import { themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { bake, plainShapeSpec } from "../spec/bake.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { openRing, rect, square } from "./rect.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

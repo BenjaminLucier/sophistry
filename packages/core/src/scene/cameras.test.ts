@@ -6,19 +6,19 @@
  */
 
 import { afterEach, describe, expect, it } from "vitest";
-import { BLUE } from "../color";
-import { track } from "../reactive";
+import { BLUE } from "../color/index.js";
+import { track } from "../reactive/index.js";
 import {
 	FULL_VIEWPORT,
 	pictureInPictureViewports,
 	quadViewports,
 	splitViewports,
-} from "../render/camera";
-import { resolveTheme } from "../themes/theme";
-import { pictureInPicture, quadView, splitScreen } from "./cameras";
-import { group } from "./group";
-import type { Scene } from "./scene";
-import { createScene } from "./scene";
+} from "../render/camera.js";
+import { resolveTheme } from "../themes/theme.js";
+import { pictureInPicture, quadView, splitScreen } from "./cameras.js";
+import { group } from "./group.js";
+import type { Scene } from "./scene.js";
+import { createScene } from "./scene.js";
 
 const scenes: Scene[] = [];
 afterEach(() => {

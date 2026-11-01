@@ -7,6 +7,16 @@ import Example from "../../../components/Example.astro";
 
 `@sophistry/text` typesets LaTeX with KaTeX and extracts the glyph outlines as scene geometry. Its definitions are `mathTex` and `mathTransform`, and the components `<MathTex>` and `<MathTransform>` come from `@sophistry/solidjs/text` (or `@sophistry/react/text`). A formula is therefore *shapes*, not a text run: it writes itself on stroke by stroke, takes gradients and the theme's colors, and morphs into another formula with every symbol the two share gliding to its new place.
 
+Install it with KaTeX, and import KaTeX's stylesheet once in your app; the layout comes from it (see [Installation](/start/installation/)):
+
+```sh
+pnpm add @sophistry/text katex
+```
+
+```ts
+import "katex/dist/katex.css";
+```
+
 ## MathTex
 
 `<MathTex>` renders a TeX string, centred on its position. `fontSize` is in scene units per em and is the only thing that sets size, so every dimension inside the formula scales with it. The component returns the node, and the node is the handle: `ref` receives a `MathTexNode` with `ready()`, `pending()`, `status`, `placed()`, `parts()` and `partBounds(index)` on top of every node method.
@@ -268,7 +278,7 @@ KaTeX typesets the formula into a hidden DOM node, the layout is read back out, 
 - **Each distinct formula** costs a few milliseconds once, then is cached. The first time, nothing is drawn for a couple of frames while fonts load.
 - **Fonts load lazily**: only the faces a formula uses are fetched, and opentype.js itself is loaded on the first face it parses. `ensureWebFonts()`, `loadFace(name)` and `resolveFace(...)` preload them.
 - **On the server** nothing typesets (a request never settles there); the formula typesets in the browser after mount, with no mismatch.
-- **Bundle size**: KaTeX and opentype.js are large. They are dependencies of `@sophistry/text` only, so apps that never import it (or the bindings' `/text` subpaths) pay nothing; see [Installation](/start/installation/#bundle-size).
+- **Bundle size**: KaTeX and opentype.js are large. Only `@sophistry/text` uses them, so apps that never import it (or the bindings' `/text` subpaths) pay nothing; see [Installation](/start/installation/#bundle-size).
 
 ### Lazy-loading the text entry point
 

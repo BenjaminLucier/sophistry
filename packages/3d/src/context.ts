@@ -13,7 +13,7 @@
 import { type ContextKey, createContextKey } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import type { Projection } from "@sophistry/core/internal";
-import type { DepthSorter } from "./depth-sort";
+import type { DepthSorter } from "./depth-sort.js";
 
 /**
  * What `camera3D` publishes to the shapes under it. Read it with

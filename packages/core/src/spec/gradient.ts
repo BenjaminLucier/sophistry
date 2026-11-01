@@ -6,11 +6,11 @@
  * memo; `render/paint.ts` caches the `CanvasGradient`.
  */
 
-import type { ColorInput } from "../color";
-import { cssColor } from "../color";
-import type { Point } from "../geometry";
-import { colorRamp } from "../themes/ramp";
-import type { GradientStop, Paint } from "./types";
+import type { ColorInput } from "../color/index.js";
+import { cssColor } from "../color/index.js";
+import type { Point } from "../geometry/index.js";
+import { colorRamp } from "../themes/ramp.js";
+import type { GradientStop, Paint } from "./types.js";
 
 /**
  * Where a gradient's endpoints are measured: `"bbox"` for fractions of the

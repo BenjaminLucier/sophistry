@@ -23,10 +23,10 @@ import type { GroupNode } from "@sophistry/core/internal";
 import { act, cleanup, render } from "@testing-library/react";
 import { Component, createRef, type ReactNode } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Circle, Group, Rect } from "./generated/core.gen";
-import { Stage } from "./stage";
-import { type DomHarness, installDom } from "./test-dom";
-import { wrap } from "./wrap";
+import { Circle, Group, Rect } from "./generated/core.gen.js";
+import { Stage } from "./stage.js";
+import { type DomHarness, installDom } from "./test-dom.js";
+import { wrap } from "./wrap.js";
 
 type CircleNode = ShapeNode<CircleProps>;
 

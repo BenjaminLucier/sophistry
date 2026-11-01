@@ -13,16 +13,16 @@ import type {
 } from "@sophistry/core/geometry";
 import { toEpochMs } from "@sophistry/core/geometry";
 import { axisTimeZone } from "@sophistry/core/internal";
-import type { DateAxis } from "../data/channels";
-import type { JoinStages, JoinStaging } from "../math/join";
-import { shallowEqual } from "../util";
+import type { DateAxis } from "../data/channels.js";
+import type { JoinStages, JoinStaging } from "../math/join.js";
+import { shallowEqual } from "../util.js";
 import type {
 	ChartAxisOptions,
 	ChartLayerExtent,
 	ChartProps,
 	ChartRange,
 	LayerTransition,
-} from "./types";
+} from "./types.js";
 
 /** A given range with `Date` or Temporal ends read as epoch milliseconds (plain ones in `timeZone`); anything else as is. */
 export function numericRange(

@@ -5,11 +5,11 @@
  * no scene graph, no canvas (bar the offscreen `measureText` context).
  */
 
-export * from "./bake";
-export * from "./clip";
-export * from "./colorRampProp";
-export * from "./compile";
-export * from "./gradient";
-export * from "./layout";
-export * from "./metrics";
-export * from "./types";
+export * from "./bake.js";
+export * from "./clip.js";
+export * from "./colorRampProp.js";
+export * from "./compile.js";
+export * from "./gradient.js";
+export * from "./layout.js";
+export * from "./metrics.js";
+export * from "./types.js";

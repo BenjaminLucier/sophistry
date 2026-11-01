@@ -17,40 +17,40 @@ import {
 	line,
 } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
-import { growsFromZero } from "../band";
-import type { MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, PositionValue } from "../data/channels";
+import { growsFromZero } from "../band.js";
+import type { MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, PositionValue } from "../data/channels.js";
 import {
 	dateSinkContext,
 	identity,
 	indexOf,
 	numberValues,
 	resolveColor,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { JoinFrame } from "../join";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import { mixPaint } from "../mix";
+} from "../join.js";
+import { mixPaint } from "../mix.js";
 import type {
 	AnyDatum,
 	KeyedTransitionProps,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import { createSeries } from "../series";
-import { orderRanks, staggered } from "../stagger";
-import { keyedMemo, mix } from "../util";
-import type { SegmentItem, SegmentMark } from "./segment-marks";
-import { createSegmentMark } from "./segment-marks";
-import { stableShared } from "./shared";
+} from "../props.js";
+import { createSeries } from "../series.js";
+import { orderRanks, staggered } from "../stagger.js";
+import { keyedMemo, mix } from "../util.js";
+import type { SegmentItem, SegmentMark } from "./segment-marks.js";
+import { createSegmentMark } from "./segment-marks.js";
+import { stableShared } from "./shared.js";
 
 const DEFAULT_MARKER_RADIUS = 0.09;
 

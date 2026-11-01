@@ -8,11 +8,11 @@
  * scrubbing and deterministic testing work.
  */
 
-import type { Readable } from "../reactive";
-import { derive, track } from "../reactive";
-import { onFrame } from "./frame-loop";
-import type { ReducedMotion } from "./reduced-motion";
-import { prefersReducedMotion } from "./reduced-motion";
+import type { Readable } from "../reactive/index.js";
+import { derive, track } from "../reactive/index.js";
+import { onFrame } from "./frame-loop.js";
+import type { ReducedMotion } from "./reduced-motion.js";
+import { prefersReducedMotion } from "./reduced-motion.js";
 
 /**
  * Callback receiving the step `dt` and the new total `time`, both in seconds.

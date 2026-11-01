@@ -10,19 +10,19 @@
  * costs one comparison per node.
  */
 
-import { tryParseColor } from "../color/parse";
-import type { Bounds, CurvePath, Polyline } from "../geometry";
-import { arcCurvePath } from "../geometry/arc";
-import { boundsOf } from "../geometry/bounds";
-import { revealedPolylines } from "../geometry/path/arclength";
+import { tryParseColor } from "../color/parse.js";
+import { arcCurvePath } from "../geometry/arc.js";
+import { boundsOf } from "../geometry/bounds.js";
+import type { Bounds, CurvePath, Polyline } from "../geometry/index.js";
+import { revealedPolylines } from "../geometry/path/arclength.js";
 import {
 	curveRevealOf,
 	polylineRevealOf,
 	revealedCurves,
 	revealMeasures,
-} from "../geometry/path/outline-reveal";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint, invert } from "../geometry/transform";
+} from "../geometry/path/outline-reveal.js";
+import type { Matrix } from "../geometry/transform.js";
+import { applyToPoint, invert } from "../geometry/transform.js";
 import type {
 	DrawSpec,
 	ImagePixels,
@@ -30,9 +30,9 @@ import type {
 	MarkOutline,
 	MarksSpec,
 	ShapeSpec,
-} from "../spec/types";
-import type { PaintCache } from "./paint";
-import { applyStrokeStyle } from "./paint";
+} from "../spec/types.js";
+import type { PaintCache } from "./paint.js";
+import { applyStrokeStyle } from "./paint.js";
 
 /** A rectangle in device pixels. */
 export interface DeviceRect {

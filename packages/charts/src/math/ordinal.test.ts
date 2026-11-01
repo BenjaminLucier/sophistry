@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { legendLayout } from "./legend";
+import { legendLayout } from "./legend.js";
 import {
 	datumKeys,
 	observable10,
@@ -7,7 +7,7 @@ import {
 	ordinalColorScale,
 	tableau10,
 	uniqueKeys,
-} from "./ordinal";
+} from "./ordinal.js";
 
 describe("uniqueKeys", () => {
 	it("keeps first-seen order, drops repeats and nullish entries", () => {
