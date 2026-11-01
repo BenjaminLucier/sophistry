@@ -1,6 +1,6 @@
 {
 	"name": "@sophistry/charts",
-	"version": "0.0.1",
+	"version": "0.1.0",
 	"type": "module",
 	"license": "MIT",
 	"description": "Charts for Sophistry scenes: bars, lines, scatter, pies, hierarchies and more, with keyed transitions and reveals.",
