@@ -5,9 +5,9 @@
  * `interact/` so neither scene code nor the driver depends on the other.
  */
 
-import type { Point } from "../geometry";
-import type { Readable } from "../reactive";
-import { track } from "../reactive";
+import type { Point } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
 
 /**
  * The pointer over a canvas, resolved into the spaces a scene reads in.

@@ -34,12 +34,12 @@ import {
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, BandScale, Bounds } from "@sophistry/core/geometry";
-import { growsFromZero } from "../band";
-import type { BatchItem, MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, DateSink } from "../data/channels";
+import { growsFromZero } from "../band.js";
+import type { BatchItem, MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel, DateSink } from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
@@ -47,38 +47,38 @@ import {
 	indexOf,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import { endSpace } from "../end-space";
-import type { AxisExtent } from "../frame/types";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { JoinEnd } from "../join";
-import { createKeyedData, layerTransition, transitionColor } from "../join";
-import type { StackTotal } from "../math/barLabels";
+} from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { AxisExtent } from "../frame/types.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { JoinEnd } from "../join.js";
+import { createKeyedData, layerTransition, transitionColor } from "../join.js";
+import type { StackTotal } from "../math/barLabels.js";
 import {
 	barLabelValues,
 	mixBarLabelValues,
 	stackTotals,
-} from "../math/barLabels";
-import type { StackOffset } from "../math/stack";
-import { blendCss, mixBounds } from "../mix";
+} from "../math/barLabels.js";
+import type { StackOffset } from "../math/stack.js";
+import { blendCss, mixBounds } from "../mix.js";
 import type {
 	AnyDatum,
 	BarReveal,
 	KeyedTransitionProps,
 	RevealProps,
 	StaggerOrder,
-} from "../props";
-import type { Category } from "../series";
-import { createSeries } from "../series";
-import { hashRanks, ranks, staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo, mix } from "../util";
-import type { BarLabelEntry, BarLabelOptions } from "./bar-labels";
-import { barLabelEntries, barLabelSettings } from "./bar-labels";
-import { tooltipProps } from "./shared";
-import type { StackOptions } from "./transforms";
-import { dodge, stack } from "./transforms";
+} from "../props.js";
+import type { Category } from "../series.js";
+import { createSeries } from "../series.js";
+import { hashRanks, ranks, staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo, mix } from "../util.js";
+import type { BarLabelEntry, BarLabelOptions } from "./bar-labels.js";
+import { barLabelEntries, barLabelSettings } from "./bar-labels.js";
+import { tooltipProps } from "./shared.js";
+import type { StackOptions } from "./transforms.js";
+import { dodge, stack } from "./transforms.js";
 
 const DEFAULT_FILL_OPACITY = 0.75;
 

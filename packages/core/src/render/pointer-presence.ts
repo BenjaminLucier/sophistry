@@ -5,11 +5,11 @@
  * See `./pointer` for the design.
  */
 
-import type { Point } from "../geometry";
-import { writeSink } from "../interact/types";
-import type { PointerDriverOptions } from "./pointer";
-import type { EventContext, PointerCore } from "./pointer-core";
-import { detachedView } from "./pointer-core";
+import type { Point } from "../geometry/index.js";
+import { writeSink } from "../interact/types.js";
+import type { PointerDriverOptions } from "./pointer.js";
+import type { EventContext, PointerCore } from "./pointer-core.js";
+import { detachedView } from "./pointer-core.js";
 
 /** Hover, resting position and the published pointer, for one driver. */
 export interface PointerPresence {

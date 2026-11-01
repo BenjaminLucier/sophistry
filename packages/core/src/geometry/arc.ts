@@ -8,17 +8,17 @@
  * `flattenCubicPolyline`, so there is exactly one subdivider of each kind.
  */
 
-import { polarPoint } from "./num";
-import { measure, resample } from "./path/arclength";
+import { polarPoint } from "./num.js";
+import { measure, resample } from "./path/arclength.js";
 import {
 	arcCubics,
 	flattenCubicPolyline,
 	lineSegment,
 	quadraticToCubic,
-} from "./path/cubic";
-import { closePolyline, curvePathToPolyline } from "./path/svg-path";
-import type { CurvePath, CurveSegment, Point, Polyline } from "./path/types";
-import { arcPolyline, segmentsForRadius } from "./shapes";
+} from "./path/cubic.js";
+import { closePolyline, curvePathToPolyline } from "./path/svg-path.js";
+import type { CurvePath, CurveSegment, Point, Polyline } from "./path/types.js";
+import { arcPolyline, segmentsForRadius } from "./shapes.js";
 
 /** `arcCubics`'s `[p0, c1, c2, p1]` tuples, minus the redundant per-cubic `p0`. */
 function cubicsToSegments(

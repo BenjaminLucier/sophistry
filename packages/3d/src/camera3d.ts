@@ -26,8 +26,8 @@ import {
 	type Point3,
 	Projection,
 } from "@sophistry/core/internal";
-import { type Camera3DValue, camera3DContext } from "./context";
-import { createDepthSorter, type DepthSorterRunner } from "./depth-sort";
+import { type Camera3DValue, camera3DContext } from "./context.js";
+import { createDepthSorter, type DepthSorterRunner } from "./depth-sort.js";
 
 /** @category Camera */
 export interface Camera3DProps {

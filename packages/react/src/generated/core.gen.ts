@@ -74,7 +74,7 @@ import {
 	vectorField,
 	verticalLineToGraph,
 } from "@sophistry/core";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * `angle` from `@sophistry/core` as a component.

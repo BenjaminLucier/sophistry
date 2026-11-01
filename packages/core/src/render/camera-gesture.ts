@@ -9,7 +9,7 @@ import type {
 	BackgroundPointerEvent,
 	PointerDriver,
 	SceneWheelEvent,
-} from "./pointer";
+} from "./pointer.js";
 
 /**
  * Whether a gesture locked to `camera` belongs to a controller that only

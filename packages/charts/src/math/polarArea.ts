@@ -4,8 +4,8 @@
  */
 
 import { clampNonNegative, maxOf } from "@sophistry/core/internal";
-import type { PolarSweepOptions } from "./shared/polar";
-import { resolvePolarSweep, TAU } from "./shared/polar";
+import type { PolarSweepOptions } from "./shared/polar.js";
+import { resolvePolarSweep, TAU } from "./shared/polar.js";
 
 /** @category Math */
 export interface PolarAreaSlice {

@@ -6,10 +6,10 @@
  * itself (which cameras exist, in tree order) belongs to the scene.
  */
 
-import type { Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import type { PixelBox } from "../geometry/view-matrix";
-import { viewMatrix } from "../geometry/view-matrix";
+import type { Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import type { PixelBox } from "../geometry/view-matrix.js";
+import { viewMatrix } from "../geometry/view-matrix.js";
 
 /**
  * A camera's rectangle of canvas, in **fractions** of the canvas — `{ x: 0.5,

@@ -20,11 +20,11 @@ import {
 	segmentsForArc,
 	starInnerRadius,
 	starPolygon,
-} from "./arc";
-import { measure, resample } from "./path/arclength";
-import { lineSegment } from "./path/cubic";
-import { curvePathToPolyline } from "./path/svg-path";
-import type { CurvePath, Point } from "./path/types";
+} from "./arc.js";
+import { measure, resample } from "./path/arclength.js";
+import { lineSegment } from "./path/cubic.js";
+import { curvePathToPolyline } from "./path/svg-path.js";
+import type { CurvePath, Point } from "./path/types.js";
 
 function expectPointClose(a: Point, b: Point, digits = 6) {
 	expect(a.x).toBeCloseTo(b.x, digits);

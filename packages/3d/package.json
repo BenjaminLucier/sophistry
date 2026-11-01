@@ -47,9 +47,6 @@
 		"test": "vitest run",
 		"build": "vite build && tsc -p tsconfig.build.json"
 	},
-	"dependencies": {
-		"wgpu-matrix": "^3.4.2"
-	},
 	"peerDependencies": {
 		"@sophistry/core": "workspace:^"
 	},

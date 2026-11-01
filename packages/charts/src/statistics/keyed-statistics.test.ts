@@ -8,10 +8,10 @@
 
 import type { Range } from "@sophistry/core/geometry";
 import { describe, expect, it, vi } from "vitest";
-import { boxplotStats } from "../math/boxplot";
-import { mount } from "../test-harness";
-import { boxPlot } from "./box-plot";
-import type { Mounted } from "./test-picture";
+import { boxplotStats } from "../math/boxplot.js";
+import { mount } from "../test-harness.js";
+import { boxPlot } from "./box-plot.js";
+import type { Mounted } from "./test-picture.js";
 import {
 	bodies,
 	boxOf,
@@ -20,8 +20,8 @@ import {
 	label,
 	pathItems,
 	picture,
-} from "./test-picture";
-import { violinPlot } from "./violin-plot";
+} from "./test-picture.js";
+import { violinPlot } from "./violin-plot.js";
 
 const opacityOf = (scene: Mounted, text: string) =>
 	label(scene, text)?.style.opacity;

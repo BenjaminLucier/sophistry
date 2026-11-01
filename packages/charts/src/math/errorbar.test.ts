@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { errorBarPoints } from "./errorbar";
+import { errorBarPoints } from "./errorbar.js";
 
 describe("errorBarPoints", () => {
 	it("builds symmetric yerr bars", () => {

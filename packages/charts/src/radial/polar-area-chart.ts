@@ -25,39 +25,43 @@ import {
 	cssColor,
 	maxOf,
 } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import type { JoinFrame } from "../join";
+} from "../data/channels.js";
+import type { JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrame,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import { ringLayout } from "../math/pie";
-import { polarAreaSlices } from "../math/polarArea";
-import { blendCss } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import type { Category } from "../series";
-import { createSeries } from "../series";
-import { staggered } from "../stagger";
-import { mix } from "../util";
-import { ringOrders } from "./pie-chart";
-import type { KeyedLabel } from "./shared";
+} from "../join.js";
+import { ringLayout } from "../math/pie.js";
+import { polarAreaSlices } from "../math/polarArea.js";
+import { blendCss } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import type { Category } from "../series.js";
+import { createSeries } from "../series.js";
+import { staggered } from "../stagger.js";
+import { mix } from "../util.js";
+import { ringOrders } from "./pie-chart.js";
+import type { KeyedLabel } from "./shared.js";
 import {
 	createFarScale,
 	createItemCache,
 	labelList,
 	wedgeItem,
-} from "./shared";
+} from "./shared.js";
 
 const DEFAULT_STROKE_WIDTH = 0.02;
 /** Fraction of a wedge's own radius its percentage/label sits at, from the centre. */

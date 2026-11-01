@@ -29,12 +29,12 @@ import type {
 	Point,
 	Polyline,
 } from "@sophistry/core/geometry";
-import type { ChartLayer } from "../context";
-import type { GroupJoin } from "../join";
-import { uniqueKeys } from "../math/ordinal";
-import type { GroupKey, SeriesState } from "../series";
-import { WHOLE } from "../series";
-import { deepEqual, shallowEqual } from "../util";
+import type { ChartLayer } from "../context.js";
+import type { GroupJoin } from "../join.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import type { GroupKey, SeriesState } from "../series.js";
+import { WHOLE } from "../series.js";
+import { deepEqual, shallowEqual } from "../util.js";
 
 /**
  * A group's colour from the series scale, across a keyed transition: while

@@ -9,9 +9,9 @@
 import type { Clock, Scene } from "@sophistry/core";
 import { draw, moveTo, sequence } from "@sophistry/core";
 import { type Ref, useEffect } from "react";
-import { Circle, Dot, Label } from "../generated/core.gen";
-import { usePlayer, useTrack } from "../hooks";
-import { Stage } from "../stage";
+import { Circle, Dot, Label } from "../generated/core.gen.js";
+import { usePlayer, useTrack } from "../hooks.js";
+import { Stage } from "../stage.js";
 
 /** Props of {@link ShapesExample}. */
 export interface ShapesExampleProps {

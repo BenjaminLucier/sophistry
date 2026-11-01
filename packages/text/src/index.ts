@@ -27,19 +27,24 @@ export {
 	matchShapesByPointCloud,
 	morphShapes,
 } from "@sophistry/core/geometry";
-export type { FaceName } from "./fonts";
-export { ensureWebFonts, KATEX_FAMILIES, loadFace, resolveFace } from "./fonts";
+export type { FaceName } from "./fonts.js";
+export {
+	ensureWebFonts,
+	KATEX_FAMILIES,
+	loadFace,
+	resolveFace,
+} from "./fonts.js";
 export type {
 	Latex,
 	LatexHandle,
 	LatexOptions,
 	LatexStatus,
-} from "./latex";
-export { createLatex, placeOutline } from "./latex";
-export type { MathTexProps, PartFill } from "./math-tex";
-export { MathTexNode, mathTex } from "./math-tex";
-export type { MathTransformProps } from "./math-transform";
-export { MathTransformNode, mathTransform } from "./math-transform";
+} from "./latex.js";
+export { createLatex, placeOutline } from "./latex.js";
+export type { MathTexProps, PartFill } from "./math-tex.js";
+export { MathTexNode, mathTex } from "./math-tex.js";
+export type { MathTransformProps } from "./math-transform.js";
+export { MathTransformNode, mathTransform } from "./math-transform.js";
 export type {
 	MeasuredAtom,
 	MeasuredGlyph,
@@ -48,11 +53,12 @@ export type {
 	Measurement,
 	MeasureOptions,
 	PixelRect,
-} from "./measure";
-export { HOST_FONT_SIZE, measureLatex } from "./measure";
-export type { LatexMorph, LatexMorphOptions, MorphedPart } from "./morph";
-export { crossFade, FADE_STAGGER, morphLatex } from "./morph";
-export type { LatexOutline, LatexPart } from "./outline";
-export { latexOutline, outlineLatex, partPathData } from "./outline";
-export { OUTLINE_RATIO } from "./outline-stroke";
-export type { PlacedLatex, PlacedPart } from "./placed";
+} from "./measure.js";
+export { HOST_FONT_SIZE, measureLatex } from "./measure.js";
+export type { LatexMorph, LatexMorphOptions, MorphedPart } from "./morph.js";
+export { crossFade, FADE_STAGGER, morphLatex } from "./morph.js";
+export type { OpenTypeFont } from "./opentype-font.js";
+export type { LatexOutline, LatexPart } from "./outline.js";
+export { latexOutline, outlineLatex, partPathData } from "./outline.js";
+export { OUTLINE_RATIO } from "./outline-stroke.js";
+export type { PlacedLatex, PlacedPart } from "./placed.js";

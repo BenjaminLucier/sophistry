@@ -4,18 +4,18 @@ import type { Vector3DProps } from "@sophistry/3d";
 import { vector3D } from "@sophistry/3d";
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
-import type { Channel, ColorChannel } from "../data/channels";
-import { numberValues, resolveColor } from "../data/channels";
-import type { QuiverVector3 } from "../math/3d/quiver3d";
-import { quiverVectors } from "../math/3d/quiver3d";
-import type { AnyDatum } from "../props";
+import type { Channel, ColorChannel } from "../data/channels.js";
+import { numberValues, resolveColor } from "../data/channels.js";
+import type { QuiverVector3 } from "../math/3d/quiver3d.js";
+import { quiverVectors } from "../math/3d/quiver3d.js";
+import type { AnyDatum } from "../props.js";
 import {
 	dataChanged,
 	forwardAll,
 	forwardChanged,
 	forwardedEntries,
 	setPoint3,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Plots */
 export interface Quiver3DProps<T = unknown>

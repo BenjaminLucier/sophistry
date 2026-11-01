@@ -4,9 +4,9 @@
  * the points are given in.
  */
 
-import { lineSegment, splitCubicAt } from "./path/cubic";
-import { polylineToCurvePath } from "./path/svg-path";
-import type { CurvePath, CurveSegment, Point } from "./path/types";
+import { lineSegment, splitCubicAt } from "./path/cubic.js";
+import { polylineToCurvePath } from "./path/svg-path.js";
+import type { CurvePath, CurveSegment, Point } from "./path/types.js";
 
 /**
  * How a line or area's boundary runs between its points:

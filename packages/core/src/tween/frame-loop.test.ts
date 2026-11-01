@@ -5,8 +5,8 @@
  * phase.
  */
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { derive, track } from "../reactive";
-import { createClock } from "./clock";
+import { derive, track } from "../reactive/index.js";
+import { createClock } from "./clock.js";
 import {
 	currentFramePhase,
 	isFrameLoopRunning,
@@ -15,7 +15,7 @@ import {
 	resetFrameLoop,
 	stepFrame,
 	watch,
-} from "./frame-loop";
+} from "./frame-loop.js";
 
 let queue: FrameRequestCallback[] = [];
 

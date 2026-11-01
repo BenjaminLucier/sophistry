@@ -11,25 +11,28 @@
  * every pending bit. Subclasses implement `run`.
  */
 
-import type { Bounds, Point, Polyline } from "../geometry";
-import { boundsUnder } from "../geometry/bounds";
-import type { Matrix } from "../geometry/transform";
-import { compose, IDENTITY } from "../geometry/transform";
-import type { InteractionHandlers, InteractionProps } from "../interact/types";
-import { hasInteraction } from "../interact/types";
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
+import { boundsUnder } from "../geometry/bounds.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { compose, IDENTITY } from "../geometry/transform.js";
+import type {
+	InteractionHandlers,
+	InteractionProps,
+} from "../interact/types.js";
+import { hasInteraction } from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
 import {
 	boundsCenter,
 	boundsHeight,
 	boundsWidth,
 	pointOn,
-} from "../spec/layout";
-import type { DrawSpec } from "../spec/types";
-import type { BaseContainer } from "./container";
-import { Invalidate } from "./context";
-import type { SceneGraph } from "./graph";
-import { interactionGroupContext } from "./interaction-group-context";
+} from "../spec/layout.js";
+import type { DrawSpec } from "../spec/types.js";
+import type { BaseContainer } from "./container.js";
+import { Invalidate } from "./context.js";
+import type { SceneGraph } from "./graph.js";
+import { interactionGroupContext } from "./interaction-group-context.js";
 import type {
 	Bindable,
 	ContextKey,
@@ -40,8 +43,8 @@ import type {
 	PropDescriptor,
 	SceneNode,
 	Space,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /** A placeholder `stop` until the subscription exists. */
 const noop = () => {};

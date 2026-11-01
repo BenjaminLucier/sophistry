@@ -6,8 +6,8 @@
  * which is exact for digits and signs but would be wrong for prose.
  */
 
-import type { MetricsStyle } from "../spec/metrics";
-import { measureLabel } from "../spec/metrics";
+import type { MetricsStyle } from "../spec/metrics.js";
+import { measureLabel } from "../spec/metrics.js";
 
 /**
  * U+2212. A hyphen is not a minus sign, and at this size you can tell.

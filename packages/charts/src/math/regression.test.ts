@@ -5,7 +5,7 @@ import {
 	meanInterval,
 	regression,
 	studentT,
-} from "./regression";
+} from "./regression.js";
 
 describe("studentT", () => {
 	it("matches tabulated quantiles", () => {

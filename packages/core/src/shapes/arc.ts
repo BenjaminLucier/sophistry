@@ -3,22 +3,22 @@
  * built where it sits (the centre is part of the geometry).
  */
 
-import type { Point } from "../geometry";
+import type { Point } from "../geometry/index.js";
 import {
 	annularSectorCurvePath,
 	annulusCurvePaths,
 	arcBetweenPointsCurvePath,
 	arcCurvePath,
 	sectorCurvePath,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /** No sweep, nothing to draw: a zero-length stroke's round caps would paint a dot (an angle mark before its angle opens). */
 const NOTHING: ShapeGeometry = { polylines: [], closed: false };

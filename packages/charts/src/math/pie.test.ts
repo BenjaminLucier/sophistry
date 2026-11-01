@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pieGrow, pieSlices, pieSweep, sweepWedge } from "./pie";
+import { pieGrow, pieSlices, pieSweep, sweepWedge } from "./pie.js";
 
 describe("pieSlices", () => {
 	it("sweeps a full turn across three values", () => {

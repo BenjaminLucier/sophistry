@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { hexbin } from "./hexbin";
+import { hexbin } from "./hexbin.js";
 
 function dist(ax: number, ay: number, bx: number, by: number): number {
 	return Math.hypot(ax - bx, ay - by);

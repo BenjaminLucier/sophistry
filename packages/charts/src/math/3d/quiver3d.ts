@@ -5,7 +5,7 @@
  */
 
 import type { Point3 } from "@sophistry/core/internal";
-import { pairCount } from "../shared/pairs";
+import { pairCount } from "../shared/pairs.js";
 
 /** @category Math */
 export interface QuiverVector3 {

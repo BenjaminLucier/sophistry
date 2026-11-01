@@ -6,7 +6,7 @@
 
 import type { BandKey, Range } from "@sophistry/core/geometry";
 import { clamp01, hashUnit } from "@sophistry/core/internal";
-import type { StaggerOrder } from "./props";
+import type { StaggerOrder } from "./props.js";
 
 /**
  * One datum's share of a reveal staggered across `count` data: start times

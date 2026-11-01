@@ -1,6 +1,6 @@
 import { describe, expect, it, vi } from "vitest";
-import { derive, track } from "../reactive";
-import { isTrack, trackPoint } from "./track";
+import { derive, track } from "../reactive/index.js";
+import { isTrack, trackPoint } from "./track.js";
 
 describe("track as an animation cell", () => {
 	it("read-after-write: peek() sees a write immediately", () => {

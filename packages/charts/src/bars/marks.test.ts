@@ -6,12 +6,12 @@
 import type { SceneNode } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { markItems, mount } from "../test-harness";
-import { bars } from "./bars";
-import { ruleX, ruleY } from "./rules";
-import { boxes, specsOf } from "./test-helpers";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { markItems, mount } from "../test-harness.js";
+import { bars } from "./bars.js";
+import { ruleX, ruleY } from "./rules.js";
+import { boxes, specsOf } from "./test-helpers.js";
 
 /** An 8 × 4 chart centred on the origin around `children`. */
 function frame(

@@ -9,12 +9,12 @@
 
 import type { Point } from "@sophistry/core/geometry";
 import { delaunayTriangleIndices } from "@sophistry/core/internal";
-import type { ContourLine, KeyedSegment } from "./contour";
-import { evenLevels, stitch } from "./contour";
-import type { ContourBand, Vtx } from "./contourf";
-import { clipByThreshold, evenBoundaries } from "./contourf";
-import { resolveLevels } from "./shared/gridExtent";
-import { pairCount } from "./shared/pairs";
+import type { ContourLine, KeyedSegment } from "./contour.js";
+import { evenLevels, stitch } from "./contour.js";
+import type { ContourBand, Vtx } from "./contourf.js";
+import { clipByThreshold, evenBoundaries } from "./contourf.js";
+import { resolveLevels } from "./shared/gridExtent.js";
+import { pairCount } from "./shared/pairs.js";
 
 /**
  * Three indices into the point arrays, one triangle.

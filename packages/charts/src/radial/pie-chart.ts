@@ -19,26 +19,30 @@ import type {
 import { defineComposite, Invalidate, pathBatch } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { clamp01, clampNonNegative, cssColor } from "@sophistry/core/internal";
-import { chartContext } from "../context";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import { chartContext } from "../context.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import type { JoinFrame } from "../join";
-import { createKeyedData, joinFrame } from "../join";
-import type { KeyedJoin } from "../math/join";
-import type { RingSlice } from "../math/pie";
-import { ringLayout, ringOrder, sweepShare } from "../math/pie";
-import { resolvePolarSweep } from "../math/shared/polar";
-import { blendCss } from "../mix";
-import type { AnyDatum, KeyedTransitionProps, RadialReveal } from "../props";
-import { mix } from "../util";
-import type { KeyedLabel } from "./shared";
-import { createItemCache, labelList, wedgeItem } from "./shared";
+} from "../data/channels.js";
+import type { JoinFrame } from "../join.js";
+import { createKeyedData, joinFrame } from "../join.js";
+import type { KeyedJoin } from "../math/join.js";
+import type { RingSlice } from "../math/pie.js";
+import { ringLayout, ringOrder, sweepShare } from "../math/pie.js";
+import { resolvePolarSweep } from "../math/shared/polar.js";
+import { blendCss } from "../mix.js";
+import type { AnyDatum, KeyedTransitionProps, RadialReveal } from "../props.js";
+import { mix } from "../util.js";
+import type { KeyedLabel } from "./shared.js";
+import { createItemCache, labelList, wedgeItem } from "./shared.js";
 
 const DEFAULT_STROKE_WIDTH = 0.02;
 /** Fraction of the radius a plain pie's slice label sits at, from the centre. */

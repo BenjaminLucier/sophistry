@@ -9,8 +9,8 @@
  * drift. See {@link Animation} for how seeking a composite treats its children.
  */
 
-import type { Animation, CycleStart } from "./animation";
-import { animation, compose, cycles } from "./animation";
+import type { Animation, CycleStart } from "./animation.js";
+import { animation, compose, cycles } from "./animation.js";
 
 /**
  * `AnimationGroup`: runs every animation at once; lasts as long as the

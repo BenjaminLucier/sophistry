@@ -5,14 +5,14 @@
  * events: the pointer driver in `render/` turns those into calls here.
  */
 
-export * from "./constrain";
-export * from "./drag";
-export * from "./drop";
-export * from "./hit";
-export * from "./item-order";
-export * from "./param";
-export * from "./pick-items";
-export * from "./pointer";
-export * from "./registry";
-export * from "./slop";
-export * from "./types";
+export * from "./constrain.js";
+export * from "./drag.js";
+export * from "./drop.js";
+export * from "./hit.js";
+export * from "./item-order.js";
+export * from "./param.js";
+export * from "./pick-items.js";
+export * from "./pointer.js";
+export * from "./registry.js";
+export * from "./slop.js";
+export * from "./types.js";

@@ -17,13 +17,17 @@
  * units, `SPEC` only the assembly, each behind a last-input cache.
  */
 
-import type { Bounds, Point, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint, IDENTITY, scaleFactorOf } from "../geometry/transform";
-import type { InteractionProps } from "../interact/types";
-import { bakeStrokeStyle } from "../spec/bake";
-import type { PaintSpec } from "../spec/gradient";
-import { isGradientSpec } from "../spec/gradient";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import {
+	applyToPoint,
+	IDENTITY,
+	scaleFactorOf,
+} from "../geometry/transform.js";
+import type { InteractionProps } from "../interact/types.js";
+import { bakeStrokeStyle } from "../spec/bake.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { isGradientSpec } from "../spec/gradient.js";
 import type {
 	ClipRegion,
 	ImagePixels,
@@ -31,18 +35,18 @@ import type {
 	MarkShape,
 	MarksSpec,
 	StrokeStyle,
-} from "../spec/types";
-import { Invalidate, themeContext } from "./context";
-import { interactionProps } from "./interaction-props";
-import { ANY_CONTEXT, BaseNode, memo } from "./node";
-import { definePrimitive } from "./primitive";
+} from "../spec/types.js";
+import { Invalidate, themeContext } from "./context.js";
+import { interactionProps } from "./interaction-props.js";
+import { ANY_CONTEXT, BaseNode, memo } from "./node.js";
+import { definePrimitive } from "./primitive.js";
 import type {
 	ContextKey,
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /**
  * A layer of marks in the definition's own units, before the enclosing

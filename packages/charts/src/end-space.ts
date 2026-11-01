@@ -5,10 +5,10 @@
 
 import type { CoordinateSystem } from "@sophistry/core";
 import type { BandScale, Point } from "@sophistry/core/geometry";
-import type { ChartEnds, ChartFrame } from "./frame/types";
-import type { JoinEnd, JoinFrame } from "./join";
-import type { AreaPoint } from "./math/morph";
-import { mix, mixPoint } from "./util";
+import type { ChartEnds, ChartFrame } from "./frame/types.js";
+import type { JoinEnd, JoinFrame } from "./join.js";
+import type { AreaPoint } from "./math/morph.js";
+import { mix, mixPoint } from "./util.js";
 
 /**
  * What a mark's geometry maps through: a plot's `coordsToPoint`, {@link SCENE_UNITS},

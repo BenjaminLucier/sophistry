@@ -5,10 +5,10 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import type { BarChartHandle } from "./bar-chart";
-import { barChart, barChartHandle } from "./bar-chart";
-import { boxes } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import type { BarChartHandle } from "./bar-chart.js";
+import { barChart, barChartHandle } from "./bar-chart.js";
+import { boxes } from "./test-helpers.js";
 
 const heights = (handle: BarChartHandle) =>
 	Array.from({ length: handle.count() }, (_, i) => {

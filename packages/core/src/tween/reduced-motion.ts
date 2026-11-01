@@ -7,8 +7,8 @@
  * reads as no preference.
  */
 
-import type { Readable } from "../reactive";
-import { track } from "../reactive";
+import type { Readable } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
 
 /**
  * How a clock, scene or run decides whether to reduce motion.

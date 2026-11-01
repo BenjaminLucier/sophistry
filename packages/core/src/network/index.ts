@@ -12,5 +12,5 @@ export type {
 	VertexConfig,
 	VertexMap,
 	VertexRender,
-} from "./network-graph";
-export { diGraph, networkGraph, networkHandle } from "./network-graph";
+} from "./network-graph.js";
+export { diGraph, networkGraph, networkHandle } from "./network-graph.js";

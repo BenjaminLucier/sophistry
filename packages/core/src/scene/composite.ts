@@ -13,13 +13,13 @@
  * `group` inside for a transform.
  */
 
-import type { Readable } from "../reactive";
-import type { Theme } from "../themes/types";
-import type { Clock } from "../tween/clock";
-import { BaseContainer } from "./container";
-import { clockContext, Invalidate, themeContext } from "./context";
-import { interactionProps } from "./interaction-props";
-import { ANY_CONTEXT, memo } from "./node";
+import type { Readable } from "../reactive/index.js";
+import type { Theme } from "../themes/types.js";
+import type { Clock } from "../tween/clock.js";
+import { BaseContainer } from "./container.js";
+import { clockContext, Invalidate, themeContext } from "./context.js";
+import { interactionProps } from "./interaction-props.js";
+import { ANY_CONTEXT, memo } from "./node.js";
 import type {
 	ContainerNode,
 	ContextKey,
@@ -31,8 +31,8 @@ import type {
 	PropsDescriptor,
 	SceneNode,
 	Space,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
 /**
  * The reason `update` receives when the space the composite lives in changed

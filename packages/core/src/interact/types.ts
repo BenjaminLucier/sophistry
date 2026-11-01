@@ -5,11 +5,11 @@
  * type imported from `tween/`) or a plain setter.
  */
 
-import type { Bounds, Point, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import type { Animatable } from "../tween/target";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import type { Animatable } from "../tween/target.js";
 
-import type { HitCache } from "./hit";
+import type { HitCache } from "./hit.js";
 
 /**
  * Somewhere a gesture can write a value: an `Animatable<T>` (a `Track<T>`, or

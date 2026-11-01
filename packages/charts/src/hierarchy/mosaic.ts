@@ -14,27 +14,31 @@ import type { ColorInput } from "@sophistry/core/color";
 import type { Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
 import { clamp01, cssColor } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { Channel, ColorChannel } from "../data/channels";
-import { numberValues, resolveChannel, resolveColor } from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { Channel, ColorChannel } from "../data/channels.js";
+import {
+	numberValues,
+	resolveChannel,
+	resolveColor,
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
 import type {
 	MosaicInput,
 	MosaicKey,
 	MosaicLayout,
 	MosaicRect,
-} from "../math/mosaic";
-import { mosaicLayout } from "../math/mosaic";
-import { largestRemainder } from "../math/waffle";
-import { readableOn } from "../mix";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipText } from "../tooltip";
-import type { KeyedLabel } from "./labels";
-import { createLabelMeasure, labelList } from "./labels";
-import { createOwnTooltip } from "./own-tooltip";
+} from "../math/mosaic.js";
+import { mosaicLayout } from "../math/mosaic.js";
+import { largestRemainder } from "../math/waffle.js";
+import { readableOn } from "../mix.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipText } from "../tooltip.js";
+import type { KeyedLabel } from "./labels.js";
+import { createLabelMeasure, labelList } from "./labels.js";
+import { createOwnTooltip } from "./own-tooltip.js";
 
 /** Share of `progress` spent fading in the column names before the columns grow. */
 const FRAME_SHARE = 0.2;

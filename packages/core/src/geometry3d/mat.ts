@@ -88,5 +88,3 @@ export function createScratch(): Scratch {
 		matB: createMat4(),
 	};
 }
-
-export { mat4, vec3 };

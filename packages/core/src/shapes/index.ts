@@ -8,37 +8,43 @@ export type {
 	ElbowProps,
 	Ray,
 	RightAngleProps,
-} from "./angle";
-export { angle, elbow, resolveAngleAnchor, rightAngle } from "./angle";
-export type { AnimatedBoundaryProps } from "./animated-boundary";
-export { animatedBoundary } from "./animated-boundary";
+} from "./angle.js";
+export { angle, elbow, resolveAngleAnchor, rightAngle } from "./angle.js";
+export type { AnimatedBoundaryProps } from "./animated-boundary.js";
+export { animatedBoundary } from "./animated-boundary.js";
 export type {
 	AnnularSectorProps,
 	AnnulusProps,
 	ArcBetweenPointsProps,
 	ArcProps,
 	SectorProps,
-} from "./arc";
-export { annularSector, annulus, arc, arcBetweenPoints, sector } from "./arc";
-export type { CubicBezierProps, QuadraticBezierProps } from "./bezier";
-export { cubicBezier, quadraticBezier } from "./bezier";
-export type { BraceProps } from "./brace";
-export { brace } from "./brace";
-export type { CircleProps, EllipseProps } from "./circle";
-export { circle, ellipse } from "./circle";
+} from "./arc.js";
+export {
+	annularSector,
+	annulus,
+	arc,
+	arcBetweenPoints,
+	sector,
+} from "./arc.js";
+export type { CubicBezierProps, QuadraticBezierProps } from "./bezier.js";
+export { cubicBezier, quadraticBezier } from "./bezier.js";
+export type { BraceProps } from "./brace.js";
+export { brace } from "./brace.js";
+export type { CircleProps, EllipseProps } from "./circle.js";
+export { circle, ellipse } from "./circle.js";
 export type {
 	AnnotationDotProps,
 	DotProps,
 	LabeledDotMetrics,
 	LabeledDotProps,
-} from "./dot";
+} from "./dot.js";
 export {
 	annotationDot,
 	dot,
 	LABELED_DOT_FONT_SIZE,
 	labeledDot,
 	labeledDotRadius,
-} from "./dot";
+} from "./dot.js";
 export type {
 	ArrowProps,
 	CurvedArrowProps,
@@ -48,7 +54,7 @@ export type {
 	LineProps,
 	TippedProps,
 	VectorProps,
-} from "./line";
+} from "./line.js";
 export {
 	arrow,
 	bearingTo,
@@ -63,7 +69,7 @@ export {
 	tipFillOf,
 	tipGeometryAt,
 	vector,
-} from "./line";
+} from "./line.js";
 export type {
 	BackgroundRectangleProps,
 	CrossProps,
@@ -71,27 +77,27 @@ export type {
 	MatcherTarget,
 	SurroundingRectangleProps,
 	UnderlineProps,
-} from "./matchers";
+} from "./matchers.js";
 export {
 	backgroundRectangle,
 	cross,
 	surroundingRectangle,
 	targetBounds,
 	underline,
-} from "./matchers";
-export type { PathProps, PlotProps } from "./path";
-export { path, plot } from "./path";
-export type { PolygonProps } from "./polygon";
-export { polygon } from "./polygon";
+} from "./matchers.js";
+export type { PathProps, PlotProps } from "./path.js";
+export { path, plot } from "./path.js";
+export type { PolygonProps } from "./polygon.js";
+export { polygon } from "./polygon.js";
 export type {
 	PolygramProps,
 	RegularPolygramProps,
 	StarProps,
-} from "./polygram";
-export { polygram, regularPolygram, star } from "./polygram";
-export type { RectProps, SquareProps } from "./rect";
-export { rect, square } from "./rect";
-export type { TracedPathProps } from "./traced-path";
-export { tracedPath } from "./traced-path";
-export type { TransformMatchingShapesProps } from "./transform-matching-shapes";
-export { transformMatchingShapes } from "./transform-matching-shapes";
+} from "./polygram.js";
+export { polygram, regularPolygram, star } from "./polygram.js";
+export type { RectProps, SquareProps } from "./rect.js";
+export { rect, square } from "./rect.js";
+export type { TracedPathProps } from "./traced-path.js";
+export { tracedPath } from "./traced-path.js";
+export type { TransformMatchingShapesProps } from "./transform-matching-shapes.js";
+export { transformMatchingShapes } from "./transform-matching-shapes.js";

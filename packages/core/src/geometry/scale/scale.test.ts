@@ -5,8 +5,8 @@ import {
 	interpolateRange,
 	isRangeTransition,
 	transitionTicks,
-} from "./range-transition";
-import type { Range, ScaleSpec } from "./scales";
+} from "./range-transition.js";
+import type { Range, ScaleSpec } from "./scales.js";
 import {
 	linearScale,
 	logScale,
@@ -15,14 +15,14 @@ import {
 	sqrtScale,
 	symlogScale,
 	timeScale,
-} from "./scales";
-import type { TickFormatterSpec } from "./tick-format";
+} from "./scales.js";
+import type { TickFormatterSpec } from "./tick-format.js";
 import {
 	formatSpecifier,
 	formatTick,
 	resolveTickFormatter,
 	tickFormatters,
-} from "./tick-format";
+} from "./tick-format.js";
 import {
 	axisTicks,
 	logTicks,
@@ -30,7 +30,7 @@ import {
 	thinTickLabels,
 	tickStep,
 	tickValues,
-} from "./ticks";
+} from "./ticks.js";
 
 describe("linearScale", () => {
 	it("toUnit/fromUnit are inverses at the endpoints", () => {

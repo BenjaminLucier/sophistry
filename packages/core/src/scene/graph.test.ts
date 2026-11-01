@@ -5,17 +5,17 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { derive, track } from "../reactive";
-import { compileFrame } from "../spec/compile";
-import type { DrawSpec, ShapeSpec } from "../spec/types";
-import type { CompositeContext } from "./composite";
-import { defineComposite } from "./composite";
-import { BaseContainer } from "./container";
-import { createContextKey, Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { BaseNode } from "./node";
-import { definePrimitive } from "./primitive";
-import type { InvalidateBits } from "./types";
+import { derive, track } from "../reactive/index.js";
+import { compileFrame } from "../spec/compile.js";
+import type { DrawSpec, ShapeSpec } from "../spec/types.js";
+import type { CompositeContext } from "./composite.js";
+import { defineComposite } from "./composite.js";
+import { BaseContainer } from "./container.js";
+import { createContextKey, Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { BaseNode } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import type { InvalidateBits } from "./types.js";
 
 interface ToyProps {
 	size?: number;

@@ -5,7 +5,7 @@
  * `defineText` live with the text node kind in `scene/text.ts`.
  */
 
-export * from "./decimal-number";
-export * from "./digits";
-export * from "./paragraph";
-export { TextLayoutNode } from "./text-layout";
+export * from "./decimal-number.js";
+export * from "./digits.js";
+export * from "./paragraph.js";
+export { TextLayoutNode } from "./text-layout.js";

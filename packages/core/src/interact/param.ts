@@ -4,12 +4,12 @@
  * same on screen; the first writes `t`, the second a `Point`.
  */
 
-import type { ArcTable, Point, Polyline } from "../geometry";
-import { pointAtT } from "../geometry";
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
-import { arcTableFor, closestPointOnTable } from "./constrain";
-import type { DragParam } from "./drag";
+import type { ArcTable, Point, Polyline } from "../geometry/index.js";
+import { pointAtT } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
+import { arcTableFor, closestPointOnTable } from "./constrain.js";
+import type { DragParam } from "./drag.js";
 
 /**
  * A polyline given outright, or one that changes (an animating graph): a

@@ -8,8 +8,8 @@
  */
 
 import type { CompositeContext } from "@sophistry/core";
-import type { TooltipState } from "../tooltip";
-import { createTooltipState, tooltipContext } from "../tooltip";
+import type { TooltipState } from "../tooltip.js";
+import { createTooltipState, tooltipContext } from "../tooltip.js";
 
 /** Call once, in `setup`; read the result in each `update`. */
 export function createOwnTooltip(): <P>(

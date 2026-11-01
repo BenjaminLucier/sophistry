@@ -11,22 +11,22 @@
  * overshoot 0..1; the interpolators extrapolate (and clamp colour channels).
  */
 
-import type { Readable } from "../reactive/track";
-import type { Clock } from "../tween/clock";
-import { defaultClock } from "../tween/clock";
-import type { Interpolator } from "../tween/interpolate";
-import { auto } from "../tween/interpolators";
-import type { SpringOptions, SpringState } from "../tween/spring";
+import type { Readable } from "../reactive/track.js";
+import type { Clock } from "../tween/clock.js";
+import { defaultClock } from "../tween/clock.js";
+import type { Interpolator } from "../tween/interpolate.js";
+import { auto } from "../tween/interpolators.js";
+import type { SpringOptions, SpringState } from "../tween/spring.js";
 import {
 	naturalFrequency,
 	spring,
 	springAt,
 	springProgress,
 	springRestDelta,
-} from "../tween/spring";
-import type { Animatable } from "../tween/target";
-import type { Animation } from "./animation";
-import { easedLeaf } from "./animation";
+} from "../tween/spring.js";
+import type { Animatable } from "../tween/target.js";
+import type { Animation } from "./animation.js";
+import { easedLeaf } from "./animation.js";
 
 /**
  * Options for {@link springTo}.

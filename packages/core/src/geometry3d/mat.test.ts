@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { createMat4, createScratch, createVec3, mat4, vec3 } from "./mat";
+import { mat4, vec3 } from "wgpu-matrix";
+import { createMat4, createScratch, createVec3 } from "./mat.js";
 
 describe("createVec3 / createMat4", () => {
 	it("createVec3 defaults to the zero vector", () => {

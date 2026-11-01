@@ -22,13 +22,13 @@ import {
 import { act, cleanup, render } from "@testing-library/react";
 import { createRef, StrictMode } from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { ClockProvider } from "./context";
-import { OrbitControls3D } from "./entries/3d";
-import { Circle } from "./generated/core.gen";
-import { useClock, usePlayer } from "./hooks";
-import { Instances } from "./instances";
-import { Stage } from "./stage";
-import { type DomHarness, installDom } from "./test-dom";
+import { ClockProvider } from "./context.js";
+import { OrbitControls3D } from "./entries/3d.js";
+import { Circle } from "./generated/core.gen.js";
+import { useClock, usePlayer } from "./hooks.js";
+import { Instances } from "./instances.js";
+import { Stage } from "./stage.js";
+import { type DomHarness, installDom } from "./test-dom.js";
 
 let dom: DomHarness;
 beforeEach(() => {

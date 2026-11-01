@@ -8,17 +8,17 @@
 import type { SceneNode } from "@sophistry/core";
 import type { MarksSpec, TextSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { stackPlot } from "../curves/stack-plot";
-import { itemsAt } from "../curves/test-items";
-import { partitionLayout } from "../math/hierarchy";
-import { hierarchyJoin } from "../math/hierarchyJoin";
-import { markItems, mount } from "../test-harness";
-import { circlePack } from "./circle-pack";
-import { icicle } from "./icicle";
-import { sunburst } from "./sunburst";
-import { tree as treeChart } from "./tree";
-import { treemap } from "./treemap";
+import { chart } from "../chart.js";
+import { stackPlot } from "../curves/stack-plot.js";
+import { itemsAt } from "../curves/test-items.js";
+import { partitionLayout } from "../math/hierarchy.js";
+import { hierarchyJoin } from "../math/hierarchyJoin.js";
+import { markItems, mount } from "../test-harness.js";
+import { circlePack } from "./circle-pack.js";
+import { icicle } from "./icicle.js";
+import { sunburst } from "./sunburst.js";
+import { tree as treeChart } from "./tree.js";
+import { treemap } from "./treemap.js";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 

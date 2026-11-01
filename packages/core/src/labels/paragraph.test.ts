@@ -6,14 +6,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { frameContext, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import { DELTA } from "../spec/layout";
-import { measureLabel } from "../spec/metrics";
-import type { DrawSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { bulletedList, paragraph, title, wrapText } from "./paragraph";
+import { track } from "../reactive/index.js";
+import { frameContext, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { DELTA } from "../spec/layout.js";
+import { measureLabel } from "../spec/metrics.js";
+import type { DrawSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { bulletedList, paragraph, title, wrapText } from "./paragraph.js";
 
 function manualGraph() {
 	const graph = new SceneGraph({ schedule: () => {} });

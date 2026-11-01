@@ -10,7 +10,7 @@ import {
 	cssColor,
 	parseColor,
 	toCss,
-} from "../color";
+} from "../color/index.js";
 
 /**
  * Options for {@link colorRamp}.

@@ -9,17 +9,17 @@ import type {
 	MatchedShapePart,
 	MatchShapesOptions,
 	ShapePart,
-} from "../geometry/shape-match";
-import { morphShapes } from "../geometry/shape-match";
-import { derive } from "../reactive";
-import { type CompositeContext, defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { group } from "../scene/group";
-import { type ShapeProps, shapeProps } from "../scene/shape";
-import type { PropsDescriptor, SceneNode } from "../scene/types";
-import type { PaintSpec } from "../spec/gradient";
-import { rawProp } from "./forward";
-import { path } from "./path";
+} from "../geometry/shape-match.js";
+import { morphShapes } from "../geometry/shape-match.js";
+import { derive } from "../reactive/index.js";
+import { type CompositeContext, defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { group } from "../scene/group.js";
+import { type ShapeProps, shapeProps } from "../scene/shape.js";
+import type { PropsDescriptor, SceneNode } from "../scene/types.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { rawProp } from "./forward.js";
+import { path } from "./path.js";
 
 /** @category Animation presets */
 export interface TransformMatchingShapesProps

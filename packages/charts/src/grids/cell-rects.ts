@@ -10,8 +10,8 @@
 import type { CoordinateSystem, RectProps, SceneNode } from "@sophistry/core";
 import { rect } from "@sophistry/core";
 import type { Bounds, Point } from "@sophistry/core/geometry";
-import type { BatchedMark, BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
+import type { BatchedMark, BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
 
 /** One cell on one frame, in scene units. */
 export interface CellItem extends BatchItem {

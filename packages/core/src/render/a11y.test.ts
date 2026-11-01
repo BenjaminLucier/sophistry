@@ -7,36 +7,36 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import type { Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { IDENTITY, rotate } from "../geometry/transform";
-import { viewMatrix } from "../geometry/view-matrix";
+import type { Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { IDENTITY, rotate } from "../geometry/transform.js";
+import { viewMatrix } from "../geometry/view-matrix.js";
 import type {
 	FocusChannel,
 	FocusSource,
 	InteractionRegistry,
-} from "../interact/registry";
+} from "../interact/registry.js";
 import type {
 	InteractionHandlers,
 	InteractionRecord,
 	ScenePointerEvent,
-} from "../interact/types";
-import { isFocusable } from "../interact/types";
-import { type Track, track } from "../reactive";
+} from "../interact/types.js";
+import { isFocusable } from "../interact/types.js";
+import { type Track, track } from "../reactive/index.js";
 import type {
 	DrawSpec,
 	MarksSpec,
 	ShapeSpec,
 	StrokeStyle,
-} from "../spec/types";
-import { resetFrameLoop, stepFrame } from "../tween/frame-loop";
+} from "../spec/types.js";
+import { resetFrameLoop, stepFrame } from "../tween/frame-loop.js";
 import type {
 	AccessibilityDriver,
 	AccessibilityMirror,
 	FocusItem,
-} from "./a11y";
-import { createAccessibilityMirror, focusIds } from "./a11y";
-import type { CameraView } from "./camera";
+} from "./a11y.js";
+import { createAccessibilityMirror, focusIds } from "./a11y.js";
+import type { CameraView } from "./camera.js";
 
 const style: StrokeStyle = {
 	stroke: "black",

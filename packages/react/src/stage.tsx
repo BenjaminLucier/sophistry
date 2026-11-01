@@ -28,9 +28,9 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { ConcurrentRoot } from "react-reconciler/constants";
-import { bridge, ClockContext } from "./context";
-import { reconciler } from "./reconciler";
+import { ConcurrentRoot } from "react-reconciler/constants.js";
+import { bridge, ClockContext } from "./context.js";
+import { reconciler } from "./reconciler.js";
 
 /**
  * Props for {@link Stage} (and {@link MultiStage}).

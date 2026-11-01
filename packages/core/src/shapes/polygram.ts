@@ -3,22 +3,22 @@
  * of the geometry).
  */
 
-import type { Point, Polyline } from "../geometry";
+import type { Point, Polyline } from "../geometry/index.js";
 import {
 	closePolyline,
 	polygramPolyline,
 	polylineToCurvePath,
 	starInnerRadius,
 	starPolygon,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
-import { openRing } from "./rect";
+} from "../scene/shape.js";
+import { openRing } from "./rect.js";
 
 /** @category Shapes */
 export interface StarProps extends ShapeProps {

@@ -5,10 +5,10 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { MarkOutline, MarksSpec, StrokeStyle } from "../spec/types";
-import { itemAt } from "./hit";
-import { itemBox } from "./item-order";
-import { pickMark } from "./pick-items";
+import type { MarkOutline, MarksSpec, StrokeStyle } from "../spec/types.js";
+import { itemAt } from "./hit.js";
+import { itemBox } from "./item-order.js";
+import { pickMark } from "./pick-items.js";
 
 const style: StrokeStyle = {
 	stroke: "none",

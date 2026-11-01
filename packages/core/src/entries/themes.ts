@@ -22,22 +22,22 @@
  * @packageDocumentation
  */
 
-export type { CatppuccinFlavor } from "../themes/catppuccin";
-export { catppuccin, catppuccinSeed } from "../themes/catppuccin";
+export type { CatppuccinFlavor } from "../themes/catppuccin.js";
+export { catppuccin, catppuccinSeed } from "../themes/catppuccin.js";
 export type {
 	Colormap,
 	ColormapName,
 	ColormapOptions,
 	ColormapSpec,
-} from "../themes/colormap";
+} from "../themes/colormap.js";
 export {
 	colormapStops,
 	colormaps,
 	resolveColormap,
-} from "../themes/colormap";
-export type { PaletteCssOptions } from "../themes/css";
-export { paletteCss, paletteVariables } from "../themes/css";
-export type { ModeOptions, ThemeInitScriptOptions } from "../themes/mode";
+} from "../themes/colormap.js";
+export type { PaletteCssOptions } from "../themes/css.js";
+export { paletteCss, paletteVariables } from "../themes/css.js";
+export type { ModeOptions, ThemeInitScriptOptions } from "../themes/mode.js";
 export {
 	colorMode,
 	colorModeReadable,
@@ -48,7 +48,7 @@ export {
 	resolveModePreference,
 	setModePreference,
 	themeInitScript,
-} from "../themes/mode";
+} from "../themes/mode.js";
 export {
 	catppuccinPalette,
 	completePalette,
@@ -58,11 +58,11 @@ export {
 	palettes,
 	paletteTheme,
 	resolvePalette,
-} from "../themes/palette";
-export type { ColorRampOptions } from "../themes/ramp";
-export { colorRamp, sampleRamp } from "../themes/ramp";
-export type { ThemeSpec } from "../themes/theme";
-export { resolveTheme } from "../themes/theme";
+} from "../themes/palette.js";
+export type { ColorRampOptions } from "../themes/ramp.js";
+export { colorRamp, sampleRamp } from "../themes/ramp.js";
+export type { ThemeSpec } from "../themes/theme.js";
+export { resolveTheme } from "../themes/theme.js";
 export type {
 	ColorMode,
 	ModePreference,
@@ -74,4 +74,4 @@ export type {
 	ThemeDefaults,
 	ThemePalette,
 	ThemePaletteSeed,
-} from "../themes/types";
+} from "../themes/types.js";

@@ -11,14 +11,14 @@
 
 import { Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh";
-import type { PlatonicSolid } from "../polyhedra";
+import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh.js";
+import type { PlatonicSolid } from "../polyhedra.js";
 import {
 	convexHullFaces,
 	orientFaces,
 	PLATONIC_SOLIDS,
 	polyhedronMeshFaces,
-} from "../polyhedra";
+} from "../polyhedra.js";
 
 /** @category Primitives */
 export interface Polyhedron3DProps extends Mesh3DProps {

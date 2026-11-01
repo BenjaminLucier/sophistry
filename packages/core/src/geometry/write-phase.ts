@@ -12,7 +12,7 @@
  * `MathTex` does.
  */
 
-import { progressIn } from "./lerp";
+import { progressIn } from "./lerp.js";
 
 /**
  * Where one piece of a write stands.

@@ -42,34 +42,34 @@
  * keeps its arrays otherwise, and an unchanged spec keeps its identity.
  */
 
-import { toCss, tryParseColor } from "../color/parse";
-import type { Color } from "../color/types";
-import type { Bounds, Point, Polyline } from "../geometry";
-import { boundsOf, centerOf } from "../geometry/bounds";
-import type { Matrix } from "../geometry/transform";
-import { compose, IDENTITY, scaleFactorOf } from "../geometry/transform";
-import type { ShapeGeometry } from "../spec/bake";
+import { toCss, tryParseColor } from "../color/parse.js";
+import type { Color } from "../color/types.js";
+import { boundsOf, centerOf } from "../geometry/bounds.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { compose, IDENTITY, scaleFactorOf } from "../geometry/transform.js";
+import type { ShapeGeometry } from "../spec/bake.js";
 import {
 	bakeLocalTransform,
 	bakeStrokeStyle,
 	derivePolylines,
 	isSimilarity,
-} from "../spec/bake";
-import type { PaintSpec } from "../spec/gradient";
-import { isGradientSpec } from "../spec/gradient";
-import type { Placement } from "../spec/layout";
-import { readDelta } from "../spec/layout";
+} from "../spec/bake.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { isGradientSpec } from "../spec/gradient.js";
+import type { Placement } from "../spec/layout.js";
+import { readDelta } from "../spec/layout.js";
 import type {
 	MarkOutline,
 	MarkShape,
 	MarksSpec,
 	StrokeStyle,
-} from "../spec/types";
-import type { Theme } from "../themes/types";
-import { Invalidate } from "./context";
-import type { ChannelColumn, InstanceBank } from "./instance-bank";
-import type { InstanceMark, ShapeOptions, ShapeProps } from "./shape";
-import type { PropsDescriptor, Space } from "./types";
+} from "../spec/types.js";
+import type { Theme } from "../themes/types.js";
+import { Invalidate } from "./context.js";
+import type { ChannelColumn, InstanceBank } from "./instance-bank.js";
+import type { InstanceMark, ShapeOptions, ShapeProps } from "./shape.js";
+import type { PropsDescriptor, Space } from "./types.js";
 
 /**
  * The props that only style an item (everything else may place or shape it).

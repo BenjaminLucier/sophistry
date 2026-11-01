@@ -3,8 +3,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import * as root from "../index";
-import * as internal from "./internal";
+import * as root from "../index.js";
+import * as internal from "./internal.js";
 
 describe("root entry", () => {
 	it("exports createPointerChannel", () => {

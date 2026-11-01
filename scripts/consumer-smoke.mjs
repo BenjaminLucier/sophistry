@@ -4,6 +4,9 @@
 // workspace with npm, bundles a tiny app that imports every entry point, and
 // loads it in headless Chromium. Fails on any build warning about unresolved
 // imports, console error / warning, page error, failed request, or blank canvas.
+// It also typechecks an import of every entry point with `strict` and no
+// `skipLibCheck`, under both `bundler` and `nodenext` module resolution, so the
+// published declarations must resolve with nothing but the packages installed.
 //
 //   pnpm smoke:consumer         # or: just smoke
 //
@@ -42,11 +45,46 @@ const catalog = Object.fromEntries(
 		),
 	].map((m) => [m[1], m[2]]),
 );
-const need = ["solid-js", "@solidjs/web", "@solidjs/vite-plugin", "vite"];
+const need = [
+	"solid-js",
+	"@solidjs/web",
+	"@solidjs/vite-plugin",
+	"vite",
+	"typescript",
+	"katex",
+];
 for (const n of need)
 	if (!catalog[n]) throw new Error(`catalog entry missing: ${n}`);
 
+/** Every public entry point, plus `/internal`, which the feature packages use. */
+const ENTRIES = [
+	"@sophistry/core",
+	"@sophistry/core/geometry",
+	"@sophistry/core/color",
+	"@sophistry/core/themes",
+	"@sophistry/core/internal",
+	"@sophistry/text",
+	"@sophistry/charts",
+	"@sophistry/charts/math",
+	"@sophistry/charts/3d",
+	"@sophistry/3d",
+	"@sophistry/solidjs",
+	"@sophistry/solidjs/text",
+	"@sophistry/solidjs/charts",
+	"@sophistry/solidjs/charts/3d",
+	"@sophistry/solidjs/3d",
+	"@sophistry/react",
+	"@sophistry/react/text",
+	"@sophistry/react/charts",
+	"@sophistry/react/charts/3d",
+	"@sophistry/react/3d",
+];
+const typesProbe = `${ENTRIES.map((e, i) => `import * as e${i} from "${e}";`).join("\n")}
+export const entries = [${ENTRIES.map((_, i) => `e${i}`).join(", ")}];
+`;
+
 const app = `
+import "katex/dist/katex.css";
 import { render } from "@solidjs/web";
 import * as core from "@sophistry/core";
 import * as geometry from "@sophistry/core/geometry";
@@ -116,9 +154,12 @@ try {
 				react: "^19.3.0",
 				"solid-js": catalog["solid-js"],
 				"@solidjs/web": catalog["@solidjs/web"],
+				katex: catalog.katex,
 			},
 			devDependencies: {
 				vite: catalog.vite,
+				typescript: catalog.typescript,
+				"@types/react": "^19.3.0",
 				"@solidjs/vite-plugin": catalog["@solidjs/vite-plugin"],
 			},
 		}),
@@ -135,12 +176,40 @@ try {
 	writeFileSync(
 		join(dir, "tsconfig.json"),
 		JSON.stringify({
-			compilerOptions: { jsx: "preserve", jsxImportSource: "solid-js" },
+			compilerOptions: { jsx: "preserve", jsxImportSource: "@solidjs/web" },
 		}),
 	);
 
 	console.log("installing packed tarball ...");
 	run("npm", ["install", "--no-audit", "--no-fund", "--loglevel=error"], dir);
+	writeFileSync(join(dir, "src/types.ts"), typesProbe);
+	for (const resolution of ["bundler", "nodenext"]) {
+		console.log(`typechecking every entry point (${resolution}) ...`);
+		const config = `tsconfig.types-${resolution}.json`;
+		writeFileSync(
+			join(dir, config),
+			JSON.stringify({
+				compilerOptions: {
+					module: resolution === "bundler" ? "esnext" : "nodenext",
+					moduleResolution: resolution,
+					target: "es2023",
+					lib: ["es2023", "dom", "dom.iterable"],
+					strict: true,
+					skipLibCheck: false,
+					noEmit: true,
+					types: [],
+				},
+				files: ["src/types.ts"],
+			}),
+		);
+		try {
+			run("npx", ["tsc", "-p", config], dir);
+		} catch (error) {
+			throw new Error(
+				`consumer types fail under ${resolution} resolution:\n${error.stdout}${error.stderr}`,
+			);
+		}
+	}
 	console.log("building consumer ...");
 	const build = execFileSync("npx", ["vite", "build"], {
 		cwd: dir,

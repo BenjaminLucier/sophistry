@@ -3,19 +3,19 @@
  * own and animate) and `plot` (a sampled parametric function).
  */
 
-import type { CurvePath, Polyline } from "../geometry";
+import type { CurvePath, Polyline } from "../geometry/index.js";
 import {
 	pathDataToCurvePath,
 	plotPolyline,
 	polylineToCurvePath,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /** @category Shapes */
 export interface PathProps extends ShapeProps {

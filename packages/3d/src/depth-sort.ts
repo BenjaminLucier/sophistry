@@ -12,7 +12,7 @@
  */
 
 import type { Point3 } from "@sophistry/core/internal";
-import type { ProjectedPoint } from "./project";
+import type { ProjectedPoint } from "./project.js";
 
 /**
  * One depth-sortable piece of a 3D primitive: a mesh face, a sphere's disc, a

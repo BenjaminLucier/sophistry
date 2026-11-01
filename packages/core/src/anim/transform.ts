@@ -5,16 +5,19 @@
  * replay a prebuilt interpolator.
  */
 
-import type { CurvePath, Polyline } from "../geometry";
-import type { MorphInterpolator, RingsInterpolator } from "../geometry/morph";
+import type { CurvePath, Polyline } from "../geometry/index.js";
+import type {
+	MorphInterpolator,
+	RingsInterpolator,
+} from "../geometry/morph.js";
 import {
 	morphCurvePaths,
 	morphPathData,
 	morphPolylines,
-} from "../geometry/morph";
-import type { Animatable } from "../tween";
-import type { Animation, AnimOptions } from "./types";
-import { driveProgress } from "./types";
+} from "../geometry/morph.js";
+import type { Animatable } from "../tween/index.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveProgress } from "./types.js";
 
 /** @category Animation presets */
 export interface MorphOptions extends AnimOptions {

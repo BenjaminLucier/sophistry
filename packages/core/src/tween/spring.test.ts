@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { SpringSpec, SpringState } from "./spring";
+import type { SpringSpec, SpringState } from "./spring.js";
 import {
 	dampingRatio,
 	spring,
@@ -9,7 +9,7 @@ import {
 	springEnergyNorm,
 	springProgress,
 	springSettleTime,
-} from "./spring";
+} from "./spring.js";
 
 /** Integrates the oscillator with classic RK4; the reference for the closed form. */
 function integrate(

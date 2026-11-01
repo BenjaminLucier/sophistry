@@ -7,15 +7,18 @@
  * `interaction-group-context.ts`.
  */
 
-import type { InteractionHandlers, InteractionProps } from "../interact/types";
-import { BaseContainer } from "./container";
-import { Invalidate } from "./context";
-import type { InteractionGroupValue } from "./interaction-group-context";
-import { interactionGroupContext } from "./interaction-group-context";
-import { interactionProps } from "./interaction-props";
-import { memo } from "./node";
-import { definePrimitive } from "./primitive";
-import type { Definition, SceneNode } from "./types";
+import type {
+	InteractionHandlers,
+	InteractionProps,
+} from "../interact/types.js";
+import { BaseContainer } from "./container.js";
+import { Invalidate } from "./context.js";
+import type { InteractionGroupValue } from "./interaction-group-context.js";
+import { interactionGroupContext } from "./interaction-group-context.js";
+import { interactionProps } from "./interaction-props.js";
+import { memo } from "./node.js";
+import { definePrimitive } from "./primitive.js";
+import type { Definition, SceneNode } from "./types.js";
 
 /**
  * Props for {@link interactionGroup}: every {@link InteractionProps} field

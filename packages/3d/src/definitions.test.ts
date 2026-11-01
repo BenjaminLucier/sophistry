@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { definitions } from "./entries/definitions";
+import { definitions } from "./entries/definitions.js";
 
 describe("@sophistry/3d/definitions", () => {
 	it("collects every 3D definition by export name", () => {

@@ -4,8 +4,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { applyToPoint } from "../geometry/transform";
-import type { CameraView } from "./camera";
+import { applyToPoint } from "../geometry/transform.js";
+import type { CameraView } from "./camera.js";
 import {
 	cameraMatrix,
 	FULL_VIEWPORT,
@@ -14,7 +14,7 @@ import {
 	quadViewports,
 	splitViewports,
 	viewportBox,
-} from "./camera";
+} from "./camera.js";
 
 const size = { width: 801, height: 450 };
 

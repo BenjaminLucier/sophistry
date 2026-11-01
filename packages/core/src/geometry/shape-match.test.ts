@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { Polyline } from "./path/types";
-import type { ShapePart } from "./shape-match";
-import { matchShapesByPointCloud, morphShapes } from "./shape-match";
+import type { Polyline } from "./path/types.js";
+import type { ShapePart } from "./shape-match.js";
+import { matchShapesByPointCloud, morphShapes } from "./shape-match.js";
 
 function square(cx: number, cy: number, size: number): Polyline {
 	const h = size / 2;

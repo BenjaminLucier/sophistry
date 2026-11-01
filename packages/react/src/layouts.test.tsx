@@ -17,13 +17,13 @@ import {
 import { cleanup, render } from "@testing-library/react";
 import { createRef } from "react";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { Camera } from "./camera";
-import { Circle } from "./generated/core.gen";
-import { useTheme } from "./hooks";
-import { PictureInPicture, QuadView, SplitScreen } from "./layouts";
-import { PanZoom } from "./pan-zoom";
-import { MultiStage, Stage } from "./stage";
-import { type DomHarness, installDom } from "./test-dom";
+import { Camera } from "./camera.js";
+import { Circle } from "./generated/core.gen.js";
+import { useTheme } from "./hooks.js";
+import { PictureInPicture, QuadView, SplitScreen } from "./layouts.js";
+import { PanZoom } from "./pan-zoom.js";
+import { MultiStage, Stage } from "./stage.js";
+import { type DomHarness, installDom } from "./test-dom.js";
 
 let dom: DomHarness;
 beforeEach(() => {

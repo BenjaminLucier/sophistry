@@ -6,22 +6,22 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Point } from "../geometry";
-import { polylineToCurvePath } from "../geometry";
-import { track } from "../reactive";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import type { CoordinateSystem } from "./coords";
-import { coordsContext, createCartesianCoords } from "./coords";
+import type { Point } from "../geometry/index.js";
+import { polylineToCurvePath } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import type { CoordinateSystem } from "./coords.js";
+import { coordsContext, createCartesianCoords } from "./coords.js";
 import {
 	functionGraph,
 	graphHandle,
 	parametricGraph,
 	polarGraph,
 	sampleRuns,
-} from "./function-graph";
+} from "./function-graph.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

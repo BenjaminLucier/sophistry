@@ -17,35 +17,35 @@ import type {
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { polylineToCurvePath } from "@sophistry/core/geometry";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, DateSink } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, DateSink } from "../data/channels.js";
 import {
 	channelValues,
 	dateSinkContext,
 	identity,
 	numberValues,
-} from "../data/channels";
-import type { Mapper } from "../end-space";
-import { endSpace } from "../end-space";
-import type { ChartFrame } from "../frame/types";
-import type { GroupJoin } from "../join";
+} from "../data/channels.js";
+import type { Mapper } from "../end-space.js";
+import { endSpace } from "../end-space.js";
+import type { ChartFrame } from "../frame/types.js";
+import type { GroupJoin } from "../join.js";
 import {
 	createGroupJoin,
 	layerTransition,
 	sweepIn,
 	transitionColor,
-} from "../join";
-import type { StepFunction } from "../math/morph";
-import { morphSteps } from "../math/morph";
-import { clipPolylineToX, revealCutoff, xExtent } from "../math/reveal";
-import { stairsPolyline } from "../math/stairs";
-import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props";
-import type { Category, GroupKey } from "../series";
-import { createSeries, groupIndices, WHOLE } from "../series";
-import { keyedMemo } from "../util";
-import type { CurveBatch } from "./shared";
-import { createCurveBatch, groupColors } from "./shared";
+} from "../join.js";
+import type { StepFunction } from "../math/morph.js";
+import { morphSteps } from "../math/morph.js";
+import { clipPolylineToX, revealCutoff, xExtent } from "../math/reveal.js";
+import { stairsPolyline } from "../math/stairs.js";
+import type { AnyDatum, CurveReveal, SeriesTransitionProps } from "../props.js";
+import type { Category, GroupKey } from "../series.js";
+import { createSeries, groupIndices, WHOLE } from "../series.js";
+import { keyedMemo } from "../util.js";
+import type { CurveBatch } from "./shared.js";
+import { createCurveBatch, groupColors } from "./shared.js";
 
 /**
  * The stroke props every step line takes (`stairs`, `ecdf`).

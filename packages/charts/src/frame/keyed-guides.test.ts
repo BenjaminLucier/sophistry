@@ -16,14 +16,14 @@ import type { SceneNode } from "@sophistry/core";
 import { UNDER_AXES_Z_INDEX } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
 import { describe, expect, it, vi } from "vitest";
-import { ruleX, ruleY } from "../bars/rules";
-import { chart, chartHandle } from "../chart";
-import { cells } from "../grids/cells";
-import { heatmap } from "../grids/heatmap";
-import { labels } from "../points/labels";
-import { rects } from "../points/rects";
-import { tickX, tickY } from "../points/ticks";
-import { markItems, mount, probe } from "../test-harness";
+import { ruleX, ruleY } from "../bars/rules.js";
+import { chart, chartHandle } from "../chart.js";
+import { cells } from "../grids/cells.js";
+import { heatmap } from "../grids/heatmap.js";
+import { labels } from "../points/labels.js";
+import { rects } from "../points/rects.js";
+import { tickX, tickY } from "../points/ticks.js";
+import { markItems, mount, probe } from "../test-harness.js";
 
 const rounded = (value: number) => Math.round(value * 1e6) / 1e6 + 0;
 

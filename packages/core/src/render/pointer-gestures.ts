@@ -5,14 +5,17 @@
  * or a background event nobody claimed). See `./pointer` for the design.
  */
 
-import type { Point } from "../geometry";
-import type { DragBehaviour, DropTarget } from "../interact/types";
-import { isFocusable, writeSink } from "../interact/types";
-import type { BackgroundPointerEvent, PointerDriverOptions } from "./pointer";
-import type { EventContext, LockedView, PointerCore } from "./pointer-core";
-import { detachedView } from "./pointer-core";
-import { finishDropTarget, updateDropTarget } from "./pointer-drop";
-import type { PointerPresence } from "./pointer-presence";
+import type { Point } from "../geometry/index.js";
+import type { DragBehaviour, DropTarget } from "../interact/types.js";
+import { isFocusable, writeSink } from "../interact/types.js";
+import type {
+	BackgroundPointerEvent,
+	PointerDriverOptions,
+} from "./pointer.js";
+import type { EventContext, LockedView, PointerCore } from "./pointer-core.js";
+import { detachedView } from "./pointer-core.js";
+import { finishDropTarget, updateDropTarget } from "./pointer-drop.js";
+import type { PointerPresence } from "./pointer-presence.js";
 
 /** One pointer's press, from pointerdown until it ends. */
 export interface Gesture {

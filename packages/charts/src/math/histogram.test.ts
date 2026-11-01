@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { histogramBins } from "./histogram";
+import { histogramBins } from "./histogram.js";
 
 function sum(values: readonly number[]): number {
 	return values.reduce((total, value) => total + value, 0);

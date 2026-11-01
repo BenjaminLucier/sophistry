@@ -19,24 +19,24 @@ import { defineComposite, Invalidate, line, rect } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
 import { cssColor } from "@sophistry/core/internal";
-import { bandSpan, positionOf } from "../band";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, PositionValue } from "../data/channels";
+import { bandSpan, positionOf } from "../band.js";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, PositionValue } from "../data/channels.js";
 import {
 	dateSinkContext,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipField, TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { keyedMemo } from "../util";
-import { tooltipProps } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipField, TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { keyedMemo } from "../util.js";
+import { tooltipProps } from "./shared.js";
 
 const DEFAULT_BODY_WIDTH = 0.6;
 const DEFAULT_TICK = 0.35;

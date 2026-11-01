@@ -7,16 +7,16 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import { group } from "../scene/group";
-import { bakeTextStyle } from "../spec/bake";
-import { labelBox } from "../spec/metrics";
-import type { TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { decimalNumber, integer, variable } from "./decimal-number";
-import { formatDecimal, layoutGlyphs, MINUS } from "./digits";
+import { track } from "../reactive/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { group } from "../scene/group.js";
+import { bakeTextStyle } from "../spec/bake.js";
+import { labelBox } from "../spec/metrics.js";
+import type { TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { decimalNumber, integer, variable } from "./decimal-number.js";
+import { formatDecimal, layoutGlyphs, MINUS } from "./digits.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

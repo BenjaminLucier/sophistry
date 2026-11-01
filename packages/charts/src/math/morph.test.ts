@@ -5,7 +5,7 @@ import {
 	morphPolyline,
 	morphRuns,
 	morphSteps,
-} from "./morph";
+} from "./morph.js";
 
 const pts = (...xy: [number, number][]) => xy.map(([x, y]) => ({ x, y }));
 

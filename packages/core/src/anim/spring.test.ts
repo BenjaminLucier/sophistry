@@ -1,16 +1,16 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { parseColor } from "../color";
-import type { Readable } from "../reactive/track";
-import { track } from "../reactive/track";
-import type { Clock } from "../tween/clock";
-import { createClock } from "../tween/clock";
-import { resetFrameLoop } from "../tween/frame-loop";
-import { cssColorInterpolator } from "../tween/interpolators";
-import { spring, springProgress, springSettleTime } from "../tween/spring";
-import { compose } from "./animation";
-import { parallel, sequence } from "./sequence";
-import { follow, springTo } from "./spring";
-import { driveTrack } from "./types";
+import { parseColor } from "../color/index.js";
+import type { Readable } from "../reactive/track.js";
+import { track } from "../reactive/track.js";
+import type { Clock } from "../tween/clock.js";
+import { createClock } from "../tween/clock.js";
+import { resetFrameLoop } from "../tween/frame-loop.js";
+import { cssColorInterpolator } from "../tween/interpolators.js";
+import { spring, springProgress, springSettleTime } from "../tween/spring.js";
+import { compose } from "./animation.js";
+import { parallel, sequence } from "./sequence.js";
+import { follow, springTo } from "./spring.js";
+import { driveTrack } from "./types.js";
 
 beforeEach(() => {
 	resetFrameLoop();

@@ -4,16 +4,16 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Point, Polyline } from "../geometry";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { animatedBoundary } from "./animated-boundary";
-import { manualGraph, shapeSpecsOf } from "./test-graph";
-import { tracedPath } from "./traced-path";
+import type { Point, Polyline } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { animatedBoundary } from "./animated-boundary.js";
+import { manualGraph, shapeSpecsOf } from "./test-graph.js";
+import { tracedPath } from "./traced-path.js";
 import {
 	type TransformMatchingShapesProps as Shapes,
 	transformMatchingShapes,
-} from "./transform-matching-shapes";
+} from "./transform-matching-shapes.js";
 
 describe("tracedPath", () => {
 	function mount(extra: { dissipatingTime?: number } = {}) {

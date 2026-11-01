@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { GraphData, GraphLayoutSpec } from "./graph-layout";
+import type { GraphData, GraphLayoutSpec } from "./graph-layout.js";
 import {
 	circularLayout,
 	edgeKey,
@@ -13,7 +13,7 @@ import {
 	springLayout,
 	springTrajectory,
 	treeLayout,
-} from "./graph-layout";
+} from "./graph-layout.js";
 
 function expectFinite(points: Iterable<{ x: number; y: number }>) {
 	for (const p of points) {

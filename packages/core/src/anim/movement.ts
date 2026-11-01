@@ -12,14 +12,14 @@
  * need none of this; `linearTransform()` does those exactly and for free.
  */
 
-import type { Point, Polyline } from "../geometry";
-import type { Complex } from "../geometry/complex";
-import type { PointPath } from "../geometry/lerp";
-import { pathAlongArc } from "../geometry/lerp";
-import type { Animatable } from "../tween";
-import { asRings, extentOf, splitLongEdges } from "./points";
-import type { Animation, AnimOptions } from "./types";
-import { driveProgress } from "./types";
+import type { Complex } from "../geometry/complex.js";
+import type { Point, Polyline } from "../geometry/index.js";
+import type { PointPath } from "../geometry/lerp.js";
+import { pathAlongArc } from "../geometry/lerp.js";
+import type { Animatable } from "../tween/index.js";
+import { asRings, extentOf, splitLongEdges } from "./points.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveProgress } from "./types.js";
 
 /** Default split length, as a share of the shape's larger side. */
 const SPLIT_SHARE = 1 / 64;

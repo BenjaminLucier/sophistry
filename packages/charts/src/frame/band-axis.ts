@@ -28,11 +28,11 @@ import {
 	clamp01,
 	stablePoint,
 } from "@sophistry/core/internal";
-import type { MergedAxisOptions } from "./fit";
+import type { MergedAxisOptions } from "./fit.js";
 import {
 	DEFAULT_CATEGORY_FONT_SIZE,
 	DEFAULT_CATEGORY_NUMBER_GAP,
-} from "./layout";
+} from "./layout.js";
 
 /**
  * Props for {@link bandAxis}.

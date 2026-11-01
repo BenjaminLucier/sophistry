@@ -8,14 +8,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { CurvePath, Point } from "../geometry";
+import type { CurvePath, Point } from "../geometry/index.js";
 import {
 	arcBetweenPointsCurvePath,
 	measureCurve,
 	polylineToCurvePath,
 	tangentAtT,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	arrow,
 	curvedArrow,
@@ -26,8 +26,13 @@ import {
 	line,
 	tipGeometryAt,
 	vector,
-} from "./line";
-import { darkTheme, expectBaked, manualGraph, shapeSpec } from "./test-graph";
+} from "./line.js";
+import {
+	darkTheme,
+	expectBaked,
+	manualGraph,
+	shapeSpec,
+} from "./test-graph.js";
 
 /** Bearing a `"vee"` tip's own three-point polyline was built along: the
  * inverse of `arrowHeadAt`: `tip` is the middle point, and the tip points

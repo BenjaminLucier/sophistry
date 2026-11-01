@@ -5,4 +5,4 @@
  * @module @sophistry/react/charts
  */
 
-export * from "../generated/charts.gen";
+export * from "../generated/charts.gen.js";

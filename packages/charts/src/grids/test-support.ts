@@ -6,11 +6,11 @@
 import type { SceneNode } from "@sophistry/core";
 import { defineComposite } from "@sophistry/core";
 import type { MarksSpec } from "@sophistry/core/internal";
-import { chart, chartHandle } from "../chart";
-import { chartLayersContext } from "../context";
-import type { ChartLayerExtent, ChartProps } from "../frame/types";
-import type { MarkItem } from "../test-harness";
-import { markItems, mount } from "../test-harness";
+import { chart, chartHandle } from "../chart.js";
+import { chartLayersContext } from "../context.js";
+import type { ChartLayerExtent, ChartProps } from "../frame/types.js";
+import type { MarkItem } from "../test-harness.js";
+import { markItems, mount } from "../test-harness.js";
 
 /** Mounts `layers` in a chart; returns the scene and the chart's handle. */
 export function inChart(props: Partial<ChartProps>, ...layers: SceneNode[]) {

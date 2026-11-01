@@ -6,16 +6,16 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { Invalidate } from "../scene/context";
-import { group } from "../scene/group";
-import { line } from "../shapes/line";
+import { Invalidate } from "../scene/context.js";
+import { group } from "../scene/group.js";
+import { line } from "../shapes/line.js";
 import {
 	basisVectors,
 	LinearTransformNode,
 	linearTransform,
 	transformDeterminant,
-} from "./linear-transform";
-import { mount } from "./test-scene";
+} from "./linear-transform.js";
+import { mount } from "./test-scene.js";
 
 const SHEAR = { iHat: { x: 2, y: 0 }, jHat: { x: 1, y: 2 } };
 

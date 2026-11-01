@@ -14,8 +14,8 @@ import {
 	splitViewports,
 } from "@sophistry/core";
 import { createMemo } from "solid-js";
-import type { CameraProps } from "./stage";
-import { Camera } from "./stage";
+import type { CameraProps } from "./stage.js";
+import { Camera } from "./stage.js";
 
 /**
  * A {@link CameraProps} minus its `viewport`: one pane of a layout

@@ -4,10 +4,10 @@
  * renderer installed, so `StrokeStyle` lengths are scene units.
  */
 
-import type { CurvePath, Polyline } from "../geometry";
-import { isFinitePoint } from "../geometry/num";
-import type { Paint, StrokeStyle } from "../spec/types";
-import { paintsFill } from "../spec/types";
+import type { CurvePath, Polyline } from "../geometry/index.js";
+import { isFinitePoint } from "../geometry/num.js";
+import type { Paint, StrokeStyle } from "../spec/types.js";
+import { paintsFill } from "../spec/types.js";
 
 /**
  * A tracing target: a live context or a `Path2D`. Both take the same path
@@ -152,7 +152,7 @@ export function tracePath(ctx: PathTarget, path: CurvePath): void {
 
 // `fontString` lives beside the metrics oracle so measuring and painting
 // share one font shorthand.
-export { fontString } from "../spec/metrics";
+export { fontString } from "../spec/metrics.js";
 
 /**
  * Applies dash, cap, join, alpha, and width from `style` to `ctx`. Assumes the caller saved state.
@@ -179,7 +179,7 @@ export function applyStrokeStyle(
 	}
 }
 
-export { paintsFill } from "../spec/types";
+export { paintsFill } from "../spec/types.js";
 
 /**
  * Fills every ring as a single path (non-zero winding), scaling the style's

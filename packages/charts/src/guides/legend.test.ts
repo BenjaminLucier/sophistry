@@ -4,9 +4,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { mount, theme } from "../test-harness";
-import type { LegendEntry } from "./legend";
-import { legend, measureLegend } from "./legend";
+import { mount, theme } from "../test-harness.js";
+import type { LegendEntry } from "./legend.js";
+import { legend, measureLegend } from "./legend.js";
 
 const entries: LegendEntry[] = [
 	{ key: "n", label: "North", color: "#ff0000" },

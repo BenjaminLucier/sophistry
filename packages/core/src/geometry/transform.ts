@@ -6,8 +6,8 @@
  * jitter and hatch in pixels without knowing anything about the camera.
  */
 
-import { lerp } from "./lerp";
-import type { CurvePath, Point, Polyline } from "./path/types";
+import { lerp } from "./lerp.js";
+import type { CurvePath, Point, Polyline } from "./path/types.js";
 
 /**
  * Column-major affine matrix, matching the canvas `setTransform` argument order.

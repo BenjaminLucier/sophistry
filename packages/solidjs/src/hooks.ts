@@ -33,7 +33,7 @@ import {
 } from "@sophistry/core";
 import type { Accessor } from "solid-js";
 import { createMemo, createSignal, getOwner, onCleanup } from "solid-js";
-import { currentClock, currentScene } from "./context";
+import { currentClock, currentScene } from "./context.js";
 
 /**
  * A `track()`: a value scene nodes can bind to and animations can write.

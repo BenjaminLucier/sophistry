@@ -7,15 +7,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { textBoxAt } from "../interact/hit";
-import { themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { GroupProps } from "../scene/group";
-import { group } from "../scene/group";
-import type { LabelProps } from "../scene/text";
-import { label } from "../scene/text";
-import type { DrawSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
+import { textBoxAt } from "../interact/hit.js";
+import { themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { GroupProps } from "../scene/group.js";
+import { group } from "../scene/group.js";
+import type { LabelProps } from "../scene/text.js";
+import { label } from "../scene/text.js";
+import type { DrawSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
 
 /**
  * A label under a group with `space` (none for the identity), on a scene

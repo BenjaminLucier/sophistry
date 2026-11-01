@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { scatterPoints3 } from "./scatter3d";
+import { scatterPoints3 } from "./scatter3d.js";
 
 describe("scatterPoints3", () => {
 	it("keeps every finite triple with its original index", () => {

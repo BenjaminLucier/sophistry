@@ -14,7 +14,7 @@
  */
 
 import type { Definition } from "@sophistry/core";
-import * as entry from "../index";
+import * as entry from "../index.js";
 
 /** Whether `value` is a definition made by `definePrimitive`, `defineShape3D` and friends. */
 function isDefinition(value: unknown): value is Definition {

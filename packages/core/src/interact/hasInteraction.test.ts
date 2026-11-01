@@ -20,8 +20,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { InteractionProps } from "./types";
-import { hasInteraction } from "./types";
+import type { InteractionProps } from "./types.js";
+import { hasInteraction } from "./types.js";
 
 const noop = () => {};
 

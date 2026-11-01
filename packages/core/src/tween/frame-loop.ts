@@ -29,7 +29,7 @@
  * `requestAnimationFrame` (server rendering, plain Node) nothing is scheduled.
  */
 
-import type { Readable } from "../reactive";
+import type { Readable } from "../reactive/index.js";
 
 /**
  * A phase of a frame: `"tick"` (clocks and animations), `"commit"` (scenes

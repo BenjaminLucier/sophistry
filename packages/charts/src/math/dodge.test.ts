@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { beeswarmOffsets, dodgeSpan } from "./dodge";
+import { beeswarmOffsets, dodgeSpan } from "./dodge.js";
 
 describe("dodgeSpan", () => {
 	it("splits a band into equal sub-bands with padding on both sides", () => {

@@ -23,8 +23,8 @@ import type {
 import type { CompositeNode } from "@sophistry/core/internal";
 import type { Component } from "solid-js";
 import { children, createRenderEffect, onCleanup, untrack } from "solid-js";
-import { currentScene } from "./context";
-import { childNodes, NO_NODES, sameNodes, warnOnce } from "./nodes";
+import { currentScene } from "./context.js";
+import { childNodes, NO_NODES, sameNodes, warnOnce } from "./nodes.js";
 
 /**
  * The keys of `P` holding nodes placed inside (a definition's

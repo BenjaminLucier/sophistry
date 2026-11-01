@@ -3,4 +3,4 @@
  * shared frame loop synchronously, and encode the canvas.
  */
 
-export * from "./frames";
+export * from "./frames.js";

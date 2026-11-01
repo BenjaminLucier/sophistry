@@ -10,7 +10,7 @@ import type {
 	PointerEvents,
 	ScenePointerEvent,
 	Sink,
-} from "./types";
+} from "./types.js";
 
 /** @category Interaction */
 export interface DropOptions {

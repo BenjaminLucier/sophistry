@@ -13,19 +13,19 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { draggable } from "../interact/drag";
-import { dropTarget } from "../interact/drop";
-import type { ScenePointerEvent } from "../interact/types";
-import { track } from "../reactive";
-import { rect } from "../shapes/rect";
-import { trackPoint } from "../tween/track";
-import { group } from "./group";
-import { interactionGroup } from "./interaction-group";
-import { panZoom } from "./pan-zoom";
-import type { Scene } from "./scene";
-import { createScene, sceneInternals } from "./scene";
-import type { DomHarness } from "./test-dom";
-import { installDom, mountPoint } from "./test-dom";
+import { draggable } from "../interact/drag.js";
+import { dropTarget } from "../interact/drop.js";
+import type { ScenePointerEvent } from "../interact/types.js";
+import { track } from "../reactive/index.js";
+import { rect } from "../shapes/rect.js";
+import { trackPoint } from "../tween/track.js";
+import { group } from "./group.js";
+import { interactionGroup } from "./interaction-group.js";
+import { panZoom } from "./pan-zoom.js";
+import type { Scene } from "./scene.js";
+import { createScene, sceneInternals } from "./scene.js";
+import type { DomHarness } from "./test-dom.js";
+import { installDom, mountPoint } from "./test-dom.js";
 
 let dom: DomHarness;
 const scenes: Scene[] = [];

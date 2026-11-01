@@ -12,7 +12,7 @@
  */
 
 import { collectDefinitions } from "@sophistry/core/definitions";
-import * as entry from "../index";
+import * as entry from "../index.js";
 
 /**
  * Every definition `@sophistry/text` exports, by export name.

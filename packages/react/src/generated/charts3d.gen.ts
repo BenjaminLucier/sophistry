@@ -11,7 +11,7 @@ import {
 	voxels3D,
 	wireframe3D,
 } from "@sophistry/charts/3d";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * `barChart3D` from `@sophistry/charts/3d` as a component.

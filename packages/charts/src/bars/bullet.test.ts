@@ -7,11 +7,11 @@
 import type { SceneNode } from "@sophistry/core";
 import { cssColor } from "@sophistry/core/internal";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { mount } from "../test-harness";
-import type { BulletProps } from "./bullet";
-import { bullet as bulletDefinition, bulletTooltip } from "./bullet";
-import type { DrawnBox } from "./test-helpers";
-import { boxes } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import type { BulletProps } from "./bullet.js";
+import { bullet as bulletDefinition, bulletTooltip } from "./bullet.js";
+import type { DrawnBox } from "./test-helpers.js";
+import { boxes } from "./test-helpers.js";
 
 const POOR = cssColor("#444444");
 const OK = cssColor("#888888");

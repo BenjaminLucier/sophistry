@@ -13,19 +13,19 @@
  * @packageDocumentation
  */
 
-export type { BarChart3DProps } from "./bar-chart3d";
-export { barChart3D } from "./bar-chart3d";
-export type { Quiver3DProps } from "./quiver3d";
-export { quiver3D } from "./quiver3d";
-export type { Scatter3DProps } from "./scatter3d";
-export { scatter3D } from "./scatter3d";
-export type { Stem3DProps } from "./stem3d";
-export { stem3D } from "./stem3d";
-export type { SurfaceGrid3DProps } from "./surface-grid3d";
-export { surfaceGrid3D } from "./surface-grid3d";
-export type { TriSurface3DProps } from "./tri-surface3d";
-export { triSurface3D } from "./tri-surface3d";
-export type { Voxels3DProps } from "./voxels3d";
-export { voxels3D } from "./voxels3d";
-export type { Wireframe3DProps } from "./wireframe3d";
-export { wireframe3D } from "./wireframe3d";
+export type { BarChart3DProps } from "./bar-chart3d.js";
+export { barChart3D } from "./bar-chart3d.js";
+export type { Quiver3DProps } from "./quiver3d.js";
+export { quiver3D } from "./quiver3d.js";
+export type { Scatter3DProps } from "./scatter3d.js";
+export { scatter3D } from "./scatter3d.js";
+export type { Stem3DProps } from "./stem3d.js";
+export { stem3D } from "./stem3d.js";
+export type { SurfaceGrid3DProps } from "./surface-grid3d.js";
+export { surfaceGrid3D } from "./surface-grid3d.js";
+export type { TriSurface3DProps } from "./tri-surface3d.js";
+export { triSurface3D } from "./tri-surface3d.js";
+export type { Voxels3DProps } from "./voxels3d.js";
+export { voxels3D } from "./voxels3d.js";
+export type { Wireframe3DProps } from "./wireframe3d.js";
+export { wireframe3D } from "./wireframe3d.js";

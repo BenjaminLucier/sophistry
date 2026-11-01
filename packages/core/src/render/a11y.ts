@@ -13,29 +13,32 @@
  * paint phase of the frame (after the commit that produced the snapshot).
  */
 
-import type { Bounds, Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint, compose, invert } from "../geometry/transform";
-import { isYUp } from "../geometry/view-matrix";
-import { boundsOfNodes, indexSpecs } from "../interact/hit";
+import type { Bounds, Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { applyToPoint, compose, invert } from "../geometry/transform.js";
+import { isYUp } from "../geometry/view-matrix.js";
+import { boundsOfNodes, indexSpecs } from "../interact/hit.js";
 import {
 	ITEM_KEYS,
 	itemCenter,
 	itemCount,
 	itemPosition,
 	stepItem,
-} from "../interact/item-order";
-import type { FocusChannel, InteractionRegistry } from "../interact/registry";
+} from "../interact/item-order.js";
+import type {
+	FocusChannel,
+	InteractionRegistry,
+} from "../interact/registry.js";
 import type {
 	InteractionRecord,
 	KeyboardBehaviour,
 	ScenePointerEvent,
-} from "../interact/types";
-import type { Readable } from "../reactive";
-import type { DrawSpec } from "../spec/types";
-import { requestFrame } from "../tween/frame-loop";
-import type { CameraView } from "./camera";
-import { cameraMatrix, viewportBox } from "./camera";
+} from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import type { DrawSpec } from "../spec/types.js";
+import { requestFrame } from "../tween/frame-loop.js";
+import type { CameraView } from "./camera.js";
+import { cameraMatrix, viewportBox } from "./camera.js";
 
 /**
  * The nodes the focus ring should wrap: the focused node and the rest of its

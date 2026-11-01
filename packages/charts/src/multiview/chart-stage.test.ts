@@ -13,13 +13,13 @@
 import type { Scene, SceneNode } from "@sophistry/core";
 import { createScene, derive, track } from "@sophistry/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { bars } from "../bars/bars";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { rangeBrush } from "./chart-link";
-import { chartZoom } from "./chart-zoom";
-import type { DomHarness } from "./test-dom";
-import { installDom, mountPoint } from "./test-dom";
+import { bars } from "../bars/bars.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import { rangeBrush } from "./chart-link.js";
+import { chartZoom } from "./chart-zoom.js";
+import type { DomHarness } from "./test-dom.js";
+import { installDom, mountPoint } from "./test-dom.js";
 
 let dom: DomHarness;
 const scenes: Scene[] = [];

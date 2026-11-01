@@ -27,24 +27,24 @@ import {
 	measureLabel,
 	minOf,
 } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { Channel, ColorChannel, Quantity } from "../data/channels";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { Channel, ColorChannel, Quantity } from "../data/channels.js";
 import {
 	colorResolver,
 	identity,
 	numberValues,
 	resolveChannel,
 	resolveQuantity,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { BulletRowGeometry } from "../math/bullet";
-import { bulletDomain, bulletRow } from "../math/bullet";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { createTooltipState, tooltipText } from "../tooltip";
-import { labelStyle } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { BulletRowGeometry } from "../math/bullet.js";
+import { bulletDomain, bulletRow } from "../math/bullet.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { createTooltipState, tooltipText } from "../tooltip.js";
+import { labelStyle } from "./shared.js";
 
 /** Share of `progress` spent fading in the bands, titles and ticks before the data. */
 const FRAME_SHARE = 0.3;

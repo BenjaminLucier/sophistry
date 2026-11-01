@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { Camera3DState } from "./camera";
-import { createProjected, Projection } from "./camera";
+import type { Camera3DState } from "./camera.js";
+import { createProjected, Projection } from "./camera.js";
 
 const straightOn: Camera3DState = {
 	eye: { x: 0, y: 0, z: 5 },

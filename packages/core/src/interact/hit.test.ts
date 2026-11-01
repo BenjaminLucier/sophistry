@@ -10,16 +10,16 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Polyline } from "../geometry";
-import { clipRings } from "../spec/clip";
-import { labelBox } from "../spec/metrics";
+import type { Polyline } from "../geometry/index.js";
+import { clipRings } from "../spec/clip.js";
+import { labelBox } from "../spec/metrics.js";
 import type {
 	ClipRegion,
 	ShapeSpec,
 	StrokeStyle,
 	TextSpec,
 	TextStyle,
-} from "../spec/types";
+} from "../spec/types.js";
 import {
 	boundsOfNodes,
 	boundsOfSpec,
@@ -30,8 +30,8 @@ import {
 	pointInClip,
 	pointInRings,
 	textBoxAt,
-} from "./hit";
-import type { HitCandidate } from "./types";
+} from "./hit.js";
+import type { HitCandidate } from "./types.js";
 
 const style: StrokeStyle = {
 	stroke: "#000",

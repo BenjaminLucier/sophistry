@@ -5,10 +5,10 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { valueTo } from "./move";
-import { play, timeline } from "./timeline";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { valueTo } from "./move.js";
+import { play, timeline } from "./timeline.js";
 
 describe("onReducedJump", () => {
 	it("runs once, before the tracks move, when a reduced run jumps", async () => {

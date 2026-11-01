@@ -24,6 +24,8 @@ catalog:
   "@types/katex": ^0.16.8
   "@vitest/coverage-v8": ^4.1.10
   d3-array: ^3.2.4
+  d3-interpolate: ^3.0.1
+  katex: ^0.18.4
   filesystem-routing: ^0.4.0
   happy-dom: ^20.11.2
   solid-js: 2.0.0-rc.14

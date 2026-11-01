@@ -39,8 +39,8 @@ import {
 	DefaultEventPriority,
 	DiscreteEventPriority,
 	NoEventPriority,
-} from "react-reconciler/constants";
-import { type CatalogueEntry, catalogueEntry } from "./wrap";
+} from "react-reconciler/constants.js";
+import { type CatalogueEntry, catalogueEntry } from "./wrap.js";
 
 /** Props React hands a host element. */
 type Props = Record<string, unknown>;

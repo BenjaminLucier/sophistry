@@ -4,8 +4,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { markItems, mount } from "../test-harness";
-import { parallelCoordinates } from "./parallel-coordinates";
+import { markItems, mount } from "../test-harness.js";
+import { parallelCoordinates } from "./parallel-coordinates.js";
 
 const cars = [
 	{ mpg: 20, hp: 100, kg: 1200 },

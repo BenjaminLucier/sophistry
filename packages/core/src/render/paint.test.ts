@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import type { CurvePath } from "../geometry";
-import { lineSegment } from "../geometry";
-import { tracePath, tracePolyline } from "./paint";
+import type { CurvePath } from "../geometry/index.js";
+import { lineSegment } from "../geometry/index.js";
+import { tracePath, tracePolyline } from "./paint.js";
 
 /** Records path calls without needing a real canvas. */
 function mockCtx() {

@@ -4,8 +4,9 @@
  * 3D content shares the 2D pipeline.
  */
 
-import type { Mat4, Point3, Scratch, Vec3 } from "./mat";
-import { createMat4, createScratch, mat4, vec3 } from "./mat";
+import { mat4, vec3 } from "wgpu-matrix";
+import type { Mat4, Point3, Scratch, Vec3 } from "./mat.js";
+import { createMat4, createScratch } from "./mat.js";
 
 /**
  * Everything a {@link Projection} needs to build its view matrix: where the

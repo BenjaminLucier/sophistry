@@ -8,14 +8,14 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { circle } from "../shapes";
-import { compileFrame } from "../spec/compile";
-import type { DrawSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { defineShape, type ShapeProps, shapeProps } from "./shape";
-import type { NodeOf } from "./types";
+import { circle } from "../shapes/index.js";
+import { compileFrame } from "../spec/compile.js";
+import type { DrawSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { defineShape, type ShapeProps, shapeProps } from "./shape.js";
+import type { NodeOf } from "./types.js";
 
 type Circle = NodeOf<typeof circle>;
 

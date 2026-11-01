@@ -12,12 +12,12 @@
  * only ever read and write tracks over time.
  */
 
-import type { Animatable, Easing } from "../tween";
-import { auto } from "../tween";
-import type { Animation } from "./animation";
-import { easedLeaf } from "./animation";
+import type { Animatable, Easing } from "../tween/index.js";
+import { auto } from "../tween/index.js";
+import type { Animation } from "./animation.js";
+import { easedLeaf } from "./animation.js";
 
-export type { Animation } from "./animation";
+export type { Animation } from "./animation.js";
 
 /**
  * Options shared by every animation preset.

@@ -6,7 +6,7 @@
  * any explicit prop still overrides.
  */
 
-import type { ColorInput } from "../color/types";
+import type { ColorInput } from "../color/types.js";
 
 /**
  * A concrete colour mode. What a palette variant is keyed by.

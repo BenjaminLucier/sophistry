@@ -10,10 +10,10 @@
  * unrelated shapes with similar descriptors can pair, which `maxCost` refuses.
  */
 
-import { progressIn } from "./lerp";
-import { morphRings } from "./morph";
-import { ringArea } from "./path/arclength";
-import type { Point, Polyline } from "./path/types";
+import { progressIn } from "./lerp.js";
+import { morphRings } from "./morph.js";
+import { ringArea } from "./path/arclength.js";
+import type { Point, Polyline } from "./path/types.js";
 
 /**
  * How far apart the two fades are, as a fraction of the run.

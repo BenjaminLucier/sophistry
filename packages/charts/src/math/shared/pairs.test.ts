@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { pairCount } from "./pairs";
+import { pairCount } from "./pairs.js";
 
 describe("pairCount", () => {
 	it("is the shorter of the two lengths", () => {

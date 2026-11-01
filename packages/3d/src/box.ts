@@ -9,7 +9,7 @@
  */
 
 import type { Point3 } from "@sophistry/core/internal";
-import type { MeshFace } from "./mesh-math";
+import type { MeshFace } from "./mesh-math.js";
 
 /**
  * The six axis-aligned faces of a box centred at `center` with the

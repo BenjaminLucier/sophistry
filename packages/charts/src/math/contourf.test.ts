@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contourBands } from "./contourf";
+import { contourBands } from "./contourf.js";
 
 describe("contourBands", () => {
 	it("clips a linear ramp cell into two hand-computable half-square bands", () => {

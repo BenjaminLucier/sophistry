@@ -5,18 +5,18 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Point } from "../geometry";
-import { track } from "../reactive";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { ShapeSpec, TextSpec } from "../spec/types";
-import type { CoordinateSystem } from "./coords";
+import type { Point } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { ShapeSpec, TextSpec } from "../spec/types.js";
+import type { CoordinateSystem } from "./coords.js";
 import {
 	coordsContext,
 	createCartesianCoords,
 	UNDER_AXES_Z_INDEX,
-} from "./coords";
-import { sampleRuns } from "./function-graph";
+} from "./coords.js";
+import { sampleRuns } from "./function-graph.js";
 import {
 	angleOfTangent,
 	areaUnderGraph,
@@ -27,8 +27,8 @@ import {
 	slopeOfSecant,
 	tangentToGraph,
 	verticalLineToGraph,
-} from "./graph-annotations";
-import { theme } from "./test-scene";
+} from "./graph-annotations.js";
+import { theme } from "./test-scene.js";
 
 /** x in [-4, 4], y in [-2, 2], one data unit per scene unit. */
 function unitCoords(scale = 1): CoordinateSystem {

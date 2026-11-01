@@ -1,10 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import type { Animation } from "./animation";
-import { valueTo } from "./move";
-import { forever, hold, lagged, parallel, repeat, sequence } from "./sequence";
-import { timeline } from "./timeline";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import type { Animation } from "./animation.js";
+import { valueTo } from "./move.js";
+import {
+	forever,
+	hold,
+	lagged,
+	parallel,
+	repeat,
+	sequence,
+} from "./sequence.js";
+import { timeline } from "./timeline.js";
 
 // A regression here is a synchronous infinite loop, which no test timeout can
 // interrupt; run this file under `timeout` if you suspect one.

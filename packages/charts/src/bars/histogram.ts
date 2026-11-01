@@ -18,22 +18,22 @@ import {
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Range } from "@sophistry/core/geometry";
 import { cssColor } from "@sophistry/core/internal";
-import { growsFromZero } from "../band";
-import type { BatchItem, MarkTransition } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel } from "../data/channels";
-import { dateSinkContext, identity, numberValues } from "../data/channels";
-import { endSpace } from "../end-space";
-import type { JoinFrame } from "../join";
-import { createJoin, joinFrame, layerTransition } from "../join";
-import type { HistogramBins } from "../math/histogram";
-import { histogramBins } from "../math/histogram";
-import { mixPoints } from "../mix";
-import type { AnyDatum, RevealProps, TransitionProps } from "../props";
-import { staggered } from "../stagger";
-import { keyedMemo, mix } from "../util";
+import { growsFromZero } from "../band.js";
+import type { BatchItem, MarkTransition } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel } from "../data/channels.js";
+import { dateSinkContext, identity, numberValues } from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { JoinFrame } from "../join.js";
+import { createJoin, joinFrame, layerTransition } from "../join.js";
+import type { HistogramBins } from "../math/histogram.js";
+import { histogramBins } from "../math/histogram.js";
+import { mixPoints } from "../mix.js";
+import type { AnyDatum, RevealProps, TransitionProps } from "../props.js";
+import { staggered } from "../stagger.js";
+import { keyedMemo, mix } from "../util.js";
 
 const DEFAULT_FILL_OPACITY = 0.85;
 

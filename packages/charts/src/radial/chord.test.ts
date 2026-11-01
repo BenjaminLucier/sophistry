@@ -6,10 +6,10 @@
 
 import { cssColor } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import { chord } from "./chord";
-import type { Scene } from "./test-helpers";
-import { boxOf, items } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import { chord } from "./chord.js";
+import type { Scene } from "./test-helpers.js";
+import { boxOf, items } from "./test-helpers.js";
 
 type Move = { from: string; to: string; n: number };
 

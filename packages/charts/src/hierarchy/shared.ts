@@ -15,15 +15,15 @@ import { formatTick } from "@sophistry/core/geometry";
 import { clamp01, cssColor, mix } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
 import { interpolateZoom } from "d3-interpolate";
-import type { Channel, ColorChannel } from "../data/channels";
-import { resolveChannel, resolveColor } from "../data/channels";
-import type { HierarchyNodeInfo, HierarchyOptions } from "../math/hierarchy";
-import type { HierarchyJoinInfo } from "../math/hierarchyJoin";
-import { hierarchyJoin, hierarchyKeys } from "../math/hierarchyJoin";
-import type { JoinStaging } from "../math/join";
-import { blendCss } from "../mix";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { deepEqual, keyedMemo, shallowEqual } from "../util";
+import type { Channel, ColorChannel } from "../data/channels.js";
+import { resolveChannel, resolveColor } from "../data/channels.js";
+import type { HierarchyNodeInfo, HierarchyOptions } from "../math/hierarchy.js";
+import type { HierarchyJoinInfo } from "../math/hierarchyJoin.js";
+import { hierarchyJoin, hierarchyKeys } from "../math/hierarchyJoin.js";
+import type { JoinStaging } from "../math/join.js";
+import { blendCss } from "../mix.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { deepEqual, keyedMemo, shallowEqual } from "../util.js";
 
 /** Default label font size of the hierarchy charts, in scene units. */
 export const HIERARCHY_LABEL_FONT_SIZE = 0.2;

@@ -6,9 +6,9 @@
 
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
-import { sankey } from "./sankey";
-import type { Scene } from "./test-helpers";
+import { mount } from "../test-harness.js";
+import { sankey } from "./sankey.js";
+import type { Scene } from "./test-helpers.js";
 import {
 	batchHandlers,
 	boxOfItem,
@@ -16,7 +16,7 @@ import {
 	labelOf,
 	mountChart,
 	texts,
-} from "./test-helpers";
+} from "./test-helpers.js";
 
 type Flow = { from: string; to: string; twh: number };
 

@@ -17,25 +17,25 @@
  * in JSX order.
  */
 
-import type { ColorInput } from "../color";
-import { cssColor } from "../color";
-import type { Point } from "../geometry";
-import type { Readable } from "../reactive";
-import { isReadable } from "../reactive";
+import type { ColorInput } from "../color/index.js";
+import { cssColor } from "../color/index.js";
+import type { Point } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { isReadable } from "../reactive/index.js";
 import type {
 	CameraDefaults,
 	CameraView,
 	PipCorner,
 	Viewport,
-} from "../render/camera";
+} from "../render/camera.js";
 import {
 	FULL_VIEWPORT,
 	pictureInPictureViewports,
 	quadViewports,
 	splitViewports,
-} from "../render/camera";
-import type { BaseNode } from "./node";
-import type { SceneNode } from "./types";
+} from "../render/camera.js";
+import type { BaseNode } from "./node.js";
+import type { SceneNode } from "./types.js";
 
 /**
  * Options for `scene.addCamera(...)`: the camera's props. Anything

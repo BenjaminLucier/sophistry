@@ -7,26 +7,31 @@
  * design.
  */
 
-import type { Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToPoint,
 	IDENTITY,
 	invert,
 	scaleFactorOf,
-} from "../geometry/transform";
-import { isYUp } from "../geometry/view-matrix";
-import type { HitCache } from "../interact/hit";
-import { createHitCache, hitTest, indexSpecs, itemAt } from "../interact/hit";
-import { DEFAULT_SLOP } from "../interact/slop";
+} from "../geometry/transform.js";
+import { isYUp } from "../geometry/view-matrix.js";
+import type { HitCache } from "../interact/hit.js";
+import {
+	createHitCache,
+	hitTest,
+	indexSpecs,
+	itemAt,
+} from "../interact/hit.js";
+import { DEFAULT_SLOP } from "../interact/slop.js";
 import type {
 	InteractionHandlers,
 	InteractionRecord,
 	ScenePointerEvent,
-} from "../interact/types";
-import type { DrawSpec } from "../spec/types";
-import { cameraMatrix, pickCamera } from "./camera";
-import type { PointerDriverOptions } from "./pointer";
+} from "../interact/types.js";
+import type { DrawSpec } from "../spec/types.js";
+import { cameraMatrix, pickCamera } from "./camera.js";
+import type { PointerDriverOptions } from "./pointer.js";
 
 /** The camera a gesture is locked to, and what survives if it goes away. */
 export interface LockedView {

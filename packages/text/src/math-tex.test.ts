@@ -21,8 +21,8 @@ import {
 import type { ShapeSpec } from "@sophistry/core/internal";
 import { plainShapeSpec } from "@sophistry/core/internal";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { LatexOutline } from "./outline";
-import { OUTLINE_RATIO } from "./outline-stroke";
+import type { LatexOutline } from "./outline.js";
+import { OUTLINE_RATIO } from "./outline-stroke.js";
 
 interface Deferred {
 	tex: string;
@@ -51,7 +51,7 @@ const fake = (tex: string): LatexOutline => ({
 	height: 1,
 });
 
-vi.mock("./outline", () => ({
+vi.mock("./outline.js", () => ({
 	latexOutline: vi.fn(
 		(tex: string) =>
 			new Promise((resolve, reject) => {
@@ -64,9 +64,9 @@ vi.mock("./outline", () => ({
 	),
 }));
 
-import { createLatex } from "./latex";
-import { MathTexNode, mathTex } from "./math-tex";
-import { mathTransform } from "./math-transform";
+import { createLatex } from "./latex.js";
+import { MathTexNode, mathTex } from "./math-tex.js";
+import { mathTransform } from "./math-transform.js";
 
 const tick = () => new Promise((resolve) => setTimeout(resolve, 0));
 
@@ -199,7 +199,7 @@ describe("createLatex", () => {
 		await land("ab");
 		// The fake answers each call with a new promise; share the settled one
 		// as the real outline cache does.
-		const { latexOutline } = await import("./outline");
+		const { latexOutline } = await import("./outline.js");
 		const shared = Promise.resolve(fake("ab"));
 		vi.mocked(latexOutline)
 			.mockReturnValueOnce(shared)

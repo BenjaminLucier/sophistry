@@ -6,12 +6,12 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { bars } from "./bars";
-import { drawnBoxes } from "./test-helpers";
-import { dodge, stack } from "./transforms";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { bars } from "./bars.js";
+import { drawnBoxes } from "./test-helpers.js";
+import { dodge, stack } from "./transforms.js";
 
 /** An 8 × 4 chart with no axes drawn. */
 function frame(

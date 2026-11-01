@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { eventPlotRows } from "./eventplot";
+import { eventPlotRows } from "./eventplot.js";
 
 describe("eventPlotRows", () => {
 	it("makes one row per input row, with distinct event counts", () => {

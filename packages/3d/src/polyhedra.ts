@@ -13,8 +13,8 @@
  */
 
 import type { Point3 } from "@sophistry/core/internal";
-import type { MeshFace } from "./mesh-math";
-import { cross3, dot3, normalize3, subtract3 } from "./mesh-math";
+import type { MeshFace } from "./mesh-math.js";
+import { cross3, dot3, normalize3, subtract3 } from "./mesh-math.js";
 
 /** The golden ratio, which every icosahedron and dodecahedron is built from. */
 const PHI = (1 + Math.sqrt(5)) / 2;

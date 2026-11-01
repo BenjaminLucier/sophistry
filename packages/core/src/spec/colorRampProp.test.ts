@@ -7,8 +7,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { colormaps, resolveColormap } from "../themes";
-import { resolveColorRamp } from "./colorRampProp";
+import { colormaps, resolveColormap } from "../themes/index.js";
+import { resolveColorRamp } from "./colorRampProp.js";
 
 const fallback = () => ["#000000", "#ffffff"];
 

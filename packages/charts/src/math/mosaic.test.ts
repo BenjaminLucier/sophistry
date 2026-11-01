@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import type { MosaicInput } from "./mosaic";
-import { mosaicLayout } from "./mosaic";
+import type { MosaicInput } from "./mosaic.js";
+import { mosaicLayout } from "./mosaic.js";
 
 const table: MosaicInput[] = [
 	{ x: "N", y: "a", value: 30 },

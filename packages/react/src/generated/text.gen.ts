@@ -2,7 +2,7 @@
 // Regenerate with `pnpm --filter @sophistry/codegen generate`.
 
 import { mathTex, mathTransform } from "@sophistry/text";
-import { type ComponentProps, wrap } from "../wrap";
+import { type ComponentProps, wrap } from "../wrap.js";
 
 /**
  * `mathTex` from `@sophistry/text` as a component.

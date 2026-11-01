@@ -1,18 +1,18 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { resetFrameLoop, stepFrame, watch } from "../tween/frame-loop";
-import { trackPoint } from "../tween/track";
-import { animation } from "./animation";
-import { draw, drawBorderThenFill, unwrite, write } from "./draw";
-import { circumscribe, flash, indicate, pulse, wiggle } from "./emphasis";
-import { fadeIn, fadeInFrom, fadeOut } from "./fade";
-import { growFromCenter, growFromPoint, spinInFromNothing } from "./growing";
-import { moveAlong, valueTo } from "./move";
-import { forever, hold, parallel, repeat, sequence } from "./sequence";
-import { anySignal, play, splitPlayArguments, timeline } from "./timeline";
-import { tween, wait } from "./tween";
-import { driveTrack } from "./types";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { resetFrameLoop, stepFrame, watch } from "../tween/frame-loop.js";
+import { trackPoint } from "../tween/track.js";
+import { animation } from "./animation.js";
+import { draw, drawBorderThenFill, unwrite, write } from "./draw.js";
+import { circumscribe, flash, indicate, pulse, wiggle } from "./emphasis.js";
+import { fadeIn, fadeInFrom, fadeOut } from "./fade.js";
+import { growFromCenter, growFromPoint, spinInFromNothing } from "./growing.js";
+import { moveAlong, valueTo } from "./move.js";
+import { forever, hold, parallel, repeat, sequence } from "./sequence.js";
+import { anySignal, play, splitPlayArguments, timeline } from "./timeline.js";
+import { tween, wait } from "./tween.js";
+import { driveTrack } from "./types.js";
 
 beforeEach(() => {
 	resetFrameLoop();

@@ -1,4 +1,4 @@
-export type { AngleArcOptions } from "./arc";
+export type { AngleArcOptions } from "./arc.js";
 export {
 	angleArcCurvePath,
 	angleArcPolyline,
@@ -20,13 +20,13 @@ export {
 	segmentsForArc,
 	starInnerRadius,
 	starPolygon,
-} from "./arc";
-export type { BandKey, BandScale, BandScaleOptions } from "./band";
-export { bandScale, interpolateBandScale, slotBandScale } from "./band";
-export { boundsOf, centerOf, pointOnBounds } from "./bounds";
-export type { BraceOptions } from "./brace";
-export { braceRings, braceSpan, braceTip } from "./brace";
-export type { ClosedCurveKind, CurveKind } from "./curves";
+} from "./arc.js";
+export type { BandKey, BandScale, BandScaleOptions } from "./band.js";
+export { bandScale, interpolateBandScale, slotBandScale } from "./band.js";
+export { boundsOf, centerOf, pointOnBounds } from "./bounds.js";
+export type { BraceOptions } from "./brace.js";
+export { braceRings, braceSpan, braceTip } from "./brace.js";
+export type { ClosedCurveKind, CurveKind } from "./curves.js";
 export {
 	areaCurvePath,
 	clipClosedCurvePathToX,
@@ -34,14 +34,14 @@ export {
 	closedCurvePath,
 	curvePath,
 	reverseCurvePath,
-} from "./curves";
-export type { StreamlineOptions, VectorFn } from "./field";
+} from "./curves.js";
+export type { StreamlineOptions, VectorFn } from "./field.js";
 export {
 	fieldJitter,
 	rk4Step,
 	streamline,
 	streamlineBothWays,
-} from "./field";
+} from "./field.js";
 export type {
 	GraphData,
 	GraphDirection,
@@ -52,7 +52,7 @@ export type {
 	GraphLayoutOptions,
 	GraphLayoutSpec,
 	VertexId,
-} from "./graph-layout";
+} from "./graph-layout.js";
 export {
 	circularLayout,
 	edgeKey,
@@ -67,22 +67,22 @@ export {
 	springLayout,
 	springTrajectory,
 	treeLayout,
-} from "./graph-layout";
-export type { ImplicitCurveOptions, ImplicitCurvePiece } from "./implicit";
-export { implicitCurve } from "./implicit";
-export { lerpPoint } from "./lerp";
+} from "./graph-layout.js";
+export type { ImplicitCurveOptions, ImplicitCurvePiece } from "./implicit.js";
+export { implicitCurve } from "./implicit.js";
+export { lerpPoint } from "./lerp.js";
 // `lerpPoint` is exported from `./lerp` (its canonical home — see that
 // file's module doc) rather than from `./morph`, even though `./morph` also
 // re-exports it (from `../tween/interpolate`, for its own historical
 // reasons — see that file's module doc). Same function either way; this is
 // just which import path this barrel prefers.
-export type { MorphInterpolator, RingsInterpolator } from "./morph";
+export type { MorphInterpolator, RingsInterpolator } from "./morph.js";
 export {
 	morphCurvePaths,
 	morphPathData,
 	morphPolylines,
 	morphRings,
-} from "./morph";
+} from "./morph.js";
 export {
 	clamp01,
 	clampNonNegative,
@@ -99,8 +99,8 @@ export {
 	polarPoint,
 	TAU,
 	wrapAngle,
-} from "./num";
-export type { ArcTable, CurveArcTable } from "./path/arclength";
+} from "./num.js";
+export type { ArcTable, CurveArcTable } from "./path/arclength.js";
 export {
 	measure,
 	measureCurve,
@@ -113,7 +113,7 @@ export {
 	sliceCurveAtT,
 	sliceCurveBetween,
 	tangentAtT,
-} from "./path/arclength";
+} from "./path/arclength.js";
 export {
 	arcCubics,
 	cubicArcLength,
@@ -121,7 +121,7 @@ export {
 	lineSegment,
 	quadraticToCubic,
 	splitCubicAt,
-} from "./path/cubic";
+} from "./path/cubic.js";
 export {
 	closePolyline,
 	curvePathToPolyline,
@@ -130,7 +130,7 @@ export {
 	pathDataToCurvePath,
 	polylineToCurvePath,
 	toPathData,
-} from "./path/svg-path";
+} from "./path/svg-path.js";
 export type {
 	Bounds,
 	CurvePath,
@@ -138,17 +138,20 @@ export type {
 	Point,
 	Polyline,
 	Subpath,
-} from "./path/types";
-export type { Resolver } from "./resolver";
-export { createResolver } from "./resolver";
-export type { RangeTransition, WeightedTick } from "./scale/range-transition";
+} from "./path/types.js";
+export type { Resolver } from "./resolver.js";
+export { createResolver } from "./resolver.js";
+export type {
+	RangeTransition,
+	WeightedTick,
+} from "./scale/range-transition.js";
 export {
 	currentRange,
 	interpolateRange,
 	isRangeTransition,
 	spacedTicks,
 	transitionTicks,
-} from "./scale/range-transition";
+} from "./scale/range-transition.js";
 export type {
 	DivergingKind,
 	DivergingScaleOptions,
@@ -158,7 +161,7 @@ export type {
 	ScaleSpec,
 	ScaleTicks,
 	TimeScaleOptions,
-} from "./scale/scales";
+} from "./scale/scales.js";
 export {
 	divergingScale,
 	linearScale,
@@ -168,24 +171,24 @@ export {
 	sqrtScale,
 	symlogScale,
 	timeScale,
-} from "./scale/scales";
+} from "./scale/scales.js";
 export type {
 	TickFormatContext,
 	TickFormatter,
 	TickFormatterName,
 	TickFormatterSpec,
-} from "./scale/tick-format";
+} from "./scale/tick-format.js";
 export {
 	formatSpecifier,
 	formatTick,
 	resolveTickFormatter,
 	tickFormatters,
-} from "./scale/tick-format";
+} from "./scale/tick-format.js";
 export type {
 	AxisTickOptions,
 	LogTickOptions,
 	TickOptions,
-} from "./scale/ticks";
+} from "./scale/ticks.js";
 export {
 	axisTicks,
 	logTicks,
@@ -193,7 +196,7 @@ export {
 	thinTickLabels,
 	tickStep,
 	tickValues,
-} from "./scale/ticks";
+} from "./scale/ticks.js";
 export {
 	arcPolyline,
 	arrowHead,
@@ -205,7 +208,7 @@ export {
 	rectPolyline,
 	regularPolygon,
 	segmentsForRadius,
-} from "./shapes";
+} from "./shapes.js";
 export type {
 	TemporalInstantLike,
 	TemporalPlainDateLike,
@@ -213,16 +216,16 @@ export type {
 	TemporalValue,
 	TimeValue,
 	TimeZone,
-} from "./time";
+} from "./time.js";
 export {
 	fromWallTime,
 	timeZoneOffset,
 	toEpochMs,
 	toWallTime,
-} from "./time";
-export type { TipGeometry, TipShape } from "./tips";
-export { tipIsClosed, tipPolylines } from "./tips";
-export type { Matrix } from "./transform";
+} from "./time.js";
+export type { TipGeometry, TipShape } from "./tips.js";
+export { tipIsClosed, tipPolylines } from "./tips.js";
+export type { Matrix } from "./transform.js";
 export {
 	about,
 	applyToPoint,
@@ -240,4 +243,4 @@ export {
 	scale,
 	scaleFactorOf,
 	translate,
-} from "./transform";
+} from "./transform.js";

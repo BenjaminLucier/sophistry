@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { delaunayTriangleIndices } from "./delaunay";
+import { delaunayTriangleIndices } from "./delaunay.js";
 
 /** Shoelace area of a convex hull given as ordered vertices. */
 function polygonArea(points: { x: number; y: number }[]): number {

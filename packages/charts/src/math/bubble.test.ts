@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bubbleRadiusScale } from "./bubble";
+import { bubbleRadiusScale } from "./bubble.js";
 
 describe("bubbleRadiusScale", () => {
 	it("maps the max value to maxRadius", () => {

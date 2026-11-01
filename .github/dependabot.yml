@@ -1,0 +1,12 @@
+# Keeps the workflows' actions, pinned to commit SHAs, up to date.
+# (Vulnerable npm dependencies get security PRs from Dependabot security
+# updates, enabled in the repository settings.)
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      actions:
+        patterns: ["*"]

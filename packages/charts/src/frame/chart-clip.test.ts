@@ -10,11 +10,11 @@ import type { Bounds } from "@sophistry/core/geometry";
 import type { DrawSpec, MarksSpec } from "@sophistry/core/internal";
 import { DEFAULT_GRID_Z_INDEX } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { scatter } from "../points/scatter";
-import { markItems, mount } from "../test-harness";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import { scatter } from "../points/scatter.js";
+import { markItems, mount } from "../test-harness.js";
 
 type View = ReturnType<typeof mount>;
 

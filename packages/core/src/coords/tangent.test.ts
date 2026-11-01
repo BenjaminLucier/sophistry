@@ -4,11 +4,11 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { tangentLine } from "./tangent";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { tangentLine } from "./tangent.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

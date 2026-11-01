@@ -6,8 +6,8 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { clipBounds, clipBox, clipOf, clipRings, nestClip } from "./clip";
-import type { ClipRegion } from "./types";
+import { clipBounds, clipBox, clipOf, clipRings, nestClip } from "./clip.js";
+import type { ClipRegion } from "./types.js";
 
 const unit = { minX: 0, minY: 0, maxX: 1, maxY: 1 };
 

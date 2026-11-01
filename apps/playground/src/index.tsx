@@ -4,6 +4,7 @@ import { fileRoutes } from "@solidjs/router/fs";
 import { render } from "@solidjs/web";
 import { installColorMode } from "@sophistry/core/themes";
 import { attribution } from "solid-js/attribution";
+import "katex/dist/katex.css";
 import { App } from "./App";
 import "./index.css";
 

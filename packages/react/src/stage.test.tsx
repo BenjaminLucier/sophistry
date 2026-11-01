@@ -17,8 +17,8 @@ import { act, cleanup, render } from "@testing-library/react";
 import { FiberProvider } from "its-fine";
 import { createContext, createRef, StrictMode, useContext } from "react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Camera } from "./camera";
-import { Circle } from "./generated/core.gen";
+import { Camera } from "./camera.js";
+import { Circle } from "./generated/core.gen.js";
 import {
 	type Player,
 	useClock,
@@ -27,9 +27,9 @@ import {
 	useScene,
 	useTrack,
 	useTrackValue,
-} from "./hooks";
-import { Stage } from "./stage";
-import { type DomHarness, installDom } from "./test-dom";
+} from "./hooks.js";
+import { Stage } from "./stage.js";
+import { type DomHarness, installDom } from "./test-dom.js";
 
 let dom: DomHarness;
 

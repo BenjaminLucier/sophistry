@@ -33,7 +33,7 @@ export interface Binding {
 export const GENERATED_DIRECTORY = "src/generated";
 
 /** The module the generated files import `wrap` and `ComponentProps` from, relative to them. */
-export const WRAP_MODULE = "../wrap";
+export const WRAP_MODULE = "../wrap.js";
 
 export const sourcePackages: readonly SourcePackage[] = [
 	{ name: "@sophistry/core", file: "core" },

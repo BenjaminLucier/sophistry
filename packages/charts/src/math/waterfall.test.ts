@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { waterfallSteps } from "./waterfall";
+import { waterfallSteps } from "./waterfall.js";
 
 describe("waterfallSteps", () => {
 	it("floats each change from the running total", () => {

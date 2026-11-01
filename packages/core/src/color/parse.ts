@@ -12,8 +12,8 @@
  */
 
 import { color as d3Color } from "d3-color";
-import { hslToRgb, oklchToRgb } from "./convert";
-import type { Color, ColorInput } from "./types";
+import { hslToRgb, oklchToRgb } from "./convert.js";
+import type { Color, ColorInput } from "./types.js";
 
 /**
  * The documented fallback for a colour string d3-color cannot parse:

@@ -33,13 +33,13 @@ import {
 	DEFAULT_FONT_WEIGHT,
 	measureLabel,
 } from "@sophistry/core/internal";
-import type { LegendMark } from "../frame/types";
-import type { LegendItemLayout, LegendLayout } from "../math/legend";
-import { legendLayout } from "../math/legend";
-import { symbolPolygon } from "../math/symbol";
-import { staggered } from "../stagger";
-import { deepEqual, keyedMemo, shallowEqual, stableValue } from "../util";
-import { write } from "./nodes";
+import type { LegendMark } from "../frame/types.js";
+import type { LegendItemLayout, LegendLayout } from "../math/legend.js";
+import { legendLayout } from "../math/legend.js";
+import { symbolPolygon } from "../math/symbol.js";
+import { staggered } from "../stagger.js";
+import { deepEqual, keyedMemo, shallowEqual, stableValue } from "../util.js";
+import { write } from "./nodes.js";
 
 const DEFAULT_LEGEND_FONT_SIZE = 0.28;
 /** Fraction of a legend's reveal spent staggering its entries in order. */

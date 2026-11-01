@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { keyframeAt, raceTimeline, trailPolyline } from "./keyframes";
+import { keyframeAt, raceTimeline, trailPolyline } from "./keyframes.js";
 
 describe("keyframeAt", () => {
 	it("finds the keyframes either side and the blend between", () => {

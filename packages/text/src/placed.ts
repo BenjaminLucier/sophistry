@@ -6,7 +6,7 @@
  */
 
 import type { Bounds, Polyline } from "@sophistry/core/geometry";
-import type { LatexPart } from "./outline";
+import type { LatexPart } from "./outline.js";
 
 /**
  * A part with its geometry already in the stage's scene units, y-up.

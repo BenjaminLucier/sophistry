@@ -23,12 +23,12 @@ import type {
 	Range,
 	RangeTransition,
 } from "@sophistry/core/geometry";
-import { chartContext } from "../context";
-import type { ChartColorOptions, ChartFrame } from "../frame/types";
-import type { BrushAxis, BrushCell } from "./brush";
-import { boxBrushDrags, brushDrags, brushWheel } from "./brush";
-import type { ChartGroup } from "./chart-group";
-import { chartGroupContext, createChartGroup } from "./chart-group";
+import { chartContext } from "../context.js";
+import type { ChartColorOptions, ChartFrame } from "../frame/types.js";
+import type { BrushAxis, BrushCell } from "./brush.js";
+import { boxBrushDrags, brushDrags, brushWheel } from "./brush.js";
+import type { ChartGroup } from "./chart-group.js";
+import { chartGroupContext, createChartGroup } from "./chart-group.js";
 
 /**
  * Props for {@link chartLink}.

@@ -11,17 +11,17 @@ import { axes } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import type { ImageSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { RampExtent } from "../frame/types";
-import { mount } from "../test-harness";
-import { cells } from "./cells";
-import { contour } from "./contour";
-import { contourF } from "./contour-f";
-import { hexBin } from "./hex-bin";
-import { hist2d } from "./hist2d";
-import { imshow } from "./imshow";
-import { pcolormesh } from "./pcolormesh";
-import { inChart, itemBox, itemsOf, recorder } from "./test-support";
-import { tripcolor } from "./tripcolor";
+import type { RampExtent } from "../frame/types.js";
+import { mount } from "../test-harness.js";
+import { cells } from "./cells.js";
+import { contour } from "./contour.js";
+import { contourF } from "./contour-f.js";
+import { hexBin } from "./hex-bin.js";
+import { hist2d } from "./hist2d.js";
+import { imshow } from "./imshow.js";
+import { pcolormesh } from "./pcolormesh.js";
+import { inChart, itemBox, itemsOf, recorder } from "./test-support.js";
+import { tripcolor } from "./tripcolor.js";
 
 /** A ramp that writes its input into the colour, so a fill reads back as `t`. */
 const probe = (t: number) =>

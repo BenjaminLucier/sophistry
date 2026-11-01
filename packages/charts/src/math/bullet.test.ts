@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bulletDomain, bulletRow } from "./bullet";
+import { bulletDomain, bulletRow } from "./bullet.js";
 
 describe("bulletDomain", () => {
 	it("runs from zero to the largest value, rounded out to ticks", () => {

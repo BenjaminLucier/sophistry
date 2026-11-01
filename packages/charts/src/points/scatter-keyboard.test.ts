@@ -8,8 +8,8 @@
 import { createScene, stepFrame } from "@sophistry/core";
 import { resetFrameLoop } from "@sophistry/core/internal";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { scatter } from ".";
+import { chart } from "../chart.js";
+import { scatter } from "./index.js";
 
 let frames: FrameRequestCallback[] = [];
 let dispose: (() => void) | null = null;

@@ -4,13 +4,13 @@
 
 import type { Range } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { chart, chartHandle } from "../chart";
-import type { ChartFrame, ChartHandle } from "../frame/types";
-import { scatter } from "../points/scatter";
-import { mount, probe } from "../test-harness";
-import { jointPlot } from "./joint-plot";
-import type { PairPanel } from "./pair-plot";
-import { pairPlot } from "./pair-plot";
+import { chart, chartHandle } from "../chart.js";
+import type { ChartFrame, ChartHandle } from "../frame/types.js";
+import { scatter } from "../points/scatter.js";
+import { mount, probe } from "../test-harness.js";
+import { jointPlot } from "./joint-plot.js";
+import type { PairPanel } from "./pair-plot.js";
+import { pairPlot } from "./pair-plot.js";
 
 const top = (range: Range) => Math.max(range[0], range[1]);
 const area = (frame: ChartFrame) => frame.coords.area();

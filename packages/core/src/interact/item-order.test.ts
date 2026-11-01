@@ -3,9 +3,9 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Matrix } from "../geometry/transform";
-import type { ImageSpec, MarksSpec, StrokeStyle } from "../spec/types";
-import { itemBox, itemPosition, stepItem } from "./item-order";
+import type { Matrix } from "../geometry/transform.js";
+import type { ImageSpec, MarksSpec, StrokeStyle } from "../spec/types.js";
+import { itemBox, itemPosition, stepItem } from "./item-order.js";
 
 const style: StrokeStyle = {
 	stroke: "none",

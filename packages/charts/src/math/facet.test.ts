@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { facetGrid, facetSlots, outerEdge, panelProgress } from "./facet";
+import { facetGrid, facetSlots, outerEdge, panelProgress } from "./facet.js";
 
 describe("facetSlots", () => {
 	it("lays rows × columns out row-major", () => {

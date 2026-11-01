@@ -42,7 +42,7 @@ import size2Regular from "katex/dist/fonts/KaTeX_Size2-Regular.ttf?url&no-inline
 import size3Regular from "katex/dist/fonts/KaTeX_Size3-Regular.ttf?url&no-inline";
 import size4Regular from "katex/dist/fonts/KaTeX_Size4-Regular.ttf?url&no-inline";
 import typewriterRegular from "katex/dist/fonts/KaTeX_Typewriter-Regular.ttf?url&no-inline";
-import type { Font } from "opentype.js";
+import type { OpenTypeFont } from "./opentype-font.js";
 
 /**
  * A resolved face name, exactly as KaTeX names its files.
@@ -215,7 +215,7 @@ export function resolveFace(
 let opentype: Promise<typeof import("opentype.js")> | null = null;
 
 /** One in-flight or settled parse per face, so a face is fetched at most once. */
-const faces = new Map<FaceName, Promise<Font>>();
+const faces = new Map<FaceName, Promise<OpenTypeFont>>();
 
 /**
  * Fetches and parses one KaTeX font file with opentype.js, for its outlines.
@@ -226,7 +226,7 @@ const faces = new Map<FaceName, Promise<Font>>();
  *
  * @category Fonts
  */
-export function loadFace(name: FaceName): Promise<Font> {
+export function loadFace(name: FaceName): Promise<OpenTypeFont> {
 	const existing = faces.get(name);
 	if (existing) return existing;
 

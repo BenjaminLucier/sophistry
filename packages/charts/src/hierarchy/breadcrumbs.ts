@@ -16,13 +16,13 @@ import type {
 import { defineComposite, Invalidate, label } from "@sophistry/core";
 import type { Bounds, Point } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import type { BreadcrumbItem, HierarchyPathSpec } from "../math/breadcrumbs";
-import { breadcrumbLayout, isPathTransition } from "../math/breadcrumbs";
-import type { HierarchyNodeInfo } from "../math/hierarchy";
-import { textWidth } from "../text-width";
-import { deepEqual, keyedMemo } from "../util";
-import type { HierarchyBreadcrumbOptions, HierarchyDrill } from "./drill";
-import type { ResolvedFocus } from "./shared";
+import type { BreadcrumbItem, HierarchyPathSpec } from "../math/breadcrumbs.js";
+import { breadcrumbLayout, isPathTransition } from "../math/breadcrumbs.js";
+import type { HierarchyNodeInfo } from "../math/hierarchy.js";
+import { textWidth } from "../text-width.js";
+import { deepEqual, keyedMemo } from "../util.js";
+import type { HierarchyBreadcrumbOptions, HierarchyDrill } from "./drill.js";
+import type { ResolvedFocus } from "./shared.js";
 
 const DEFAULT_FONT_SIZE = 0.24;
 const DEFAULT_SEPARATOR = "›";

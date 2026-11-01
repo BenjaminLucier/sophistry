@@ -22,7 +22,7 @@ export type {
 	Hsl,
 	Hsv,
 	Oklch,
-} from "../color/convert";
+} from "../color/convert.js";
 export {
 	colorInterpolator,
 	hslToRgb,
@@ -31,7 +31,7 @@ export {
 	rgbToHsl,
 	rgbToHsv,
 	rgbToOklch,
-} from "../color/convert";
+} from "../color/convert.js";
 export {
 	BLACK,
 	BLUE,
@@ -52,29 +52,33 @@ export {
 	TEAL,
 	WHITE,
 	YELLOW,
-} from "../color/named";
+} from "../color/named.js";
 export {
 	darken,
 	lighten,
 	mixColor,
 	shadeColor,
 	withAlpha,
-} from "../color/ops";
+} from "../color/ops.js";
 export {
 	FALLBACK_COLOR,
 	parseColor,
 	toCss,
 	tryParseColor,
-} from "../color/parse";
-export type { RandomColorOptions } from "../color/random";
-export { randomColor } from "../color/random";
-export type { Color, ColorInput, ColorSpace } from "../color/types";
+} from "../color/parse.js";
+export type { RandomColorOptions } from "../color/random.js";
+export { randomColor } from "../color/random.js";
+export type { Color, ColorInput, ColorSpace } from "../color/types.js";
 export type {
 	Colormap,
 	ColormapName,
 	ColormapOptions,
 	ColormapSpec,
-} from "../themes/colormap";
-export { colormapStops, colormaps, resolveColormap } from "../themes/colormap";
-export type { ColorRampOptions } from "../themes/ramp";
-export { colorRamp, sampleRamp } from "../themes/ramp";
+} from "../themes/colormap.js";
+export {
+	colormapStops,
+	colormaps,
+	resolveColormap,
+} from "../themes/colormap.js";
+export type { ColorRampOptions } from "../themes/ramp.js";
+export { colorRamp, sampleRamp } from "../themes/ramp.js";

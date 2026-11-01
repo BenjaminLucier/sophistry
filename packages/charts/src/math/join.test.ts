@@ -6,7 +6,7 @@ import {
 	rescaleWindow,
 	stageProgress,
 	staggeredStageProgress,
-} from "./join";
+} from "./join.js";
 
 describe("keyedJoin", () => {
 	it("splits keys into update, enter and exit, from's order then to's new keys", () => {

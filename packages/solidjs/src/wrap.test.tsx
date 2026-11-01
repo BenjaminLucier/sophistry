@@ -18,12 +18,12 @@ import {
 import type { BaseNode } from "@sophistry/core/internal";
 import { createSignal, For, flush, Show } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { Circle, Group, Rect } from "./generated/core.gen";
-import { Stage } from "./stage";
-import type { DomHarness } from "./test/dom";
-import { installDom, mountPoint } from "./test/dom";
-import type { ComponentProps } from "./wrap";
-import { wrap } from "./wrap";
+import { Circle, Group, Rect } from "./generated/core.gen.js";
+import { Stage } from "./stage.js";
+import type { DomHarness } from "./test/dom.js";
+import { installDom, mountPoint } from "./test/dom.js";
+import type { ComponentProps } from "./wrap.js";
+import { wrap } from "./wrap.js";
 
 let dom: DomHarness;
 beforeEach(() => {

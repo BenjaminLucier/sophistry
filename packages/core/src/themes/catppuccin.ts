@@ -5,7 +5,7 @@
  * alternates warm and cool hues). Values from https://catppuccin.com/palette.
  */
 
-import type { ThemePalette } from "./types";
+import type { ThemePalette } from "./types.js";
 
 /**
  * The 26 named swatches of one Catppuccin flavour, as CSS hex strings.

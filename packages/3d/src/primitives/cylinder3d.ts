@@ -11,10 +11,10 @@
 
 import { Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh";
-import type { MeshFace } from "../mesh-math";
-import type { Axis } from "../ring";
-import { axisVector, ringPoints } from "../ring";
+import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh.js";
+import type { MeshFace } from "../mesh-math.js";
+import type { Axis } from "../ring.js";
+import { axisVector, ringPoints } from "../ring.js";
 
 /** @category Primitives */
 export interface Cylinder3DProps extends Mesh3DProps {

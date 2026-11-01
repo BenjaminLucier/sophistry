@@ -18,8 +18,8 @@ import type { Point, Polyline } from "@sophistry/core/geometry";
 import type { MarksSpec, ShapeSpec, TextSpec } from "@sophistry/core/internal";
 import { SceneGraph } from "@sophistry/core/internal";
 import { resolveTheme } from "@sophistry/core/themes";
-import { chartContext } from "./context";
-import type { ChartFrame } from "./frame/types";
+import { chartContext } from "./context.js";
+import type { ChartFrame } from "./frame/types.js";
 
 export const theme = resolveTheme({ mode: "dark" });
 

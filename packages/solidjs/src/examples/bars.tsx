@@ -5,8 +5,8 @@
  */
 
 import type { Readable, Scene } from "@sophistry/core";
-import { BarChart } from "../generated/charts.gen";
-import { Stage } from "../stage";
+import { BarChart } from "../generated/charts.gen.js";
+import { Stage } from "../stage.js";
 
 /** Props of {@link BarsExample}. */
 export interface BarsExampleProps {

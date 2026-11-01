@@ -10,13 +10,18 @@ import type { Scene, SceneNode } from "@sophistry/core";
 import { createClock, defaultClock, track, valueTo } from "@sophistry/core";
 import { createContext, createSignal, flush, Show, useContext } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { useClock, useScene } from "./context";
-import { Circle } from "./generated/core.gen";
-import type { UsePlayerResult } from "./hooks";
-import { useMovablePoint, usePlayer, useTrack, useTrackValue } from "./hooks";
-import { Camera, MultiStage, Stage } from "./stage";
-import type { DomHarness } from "./test/dom";
-import { installDom, mountPoint } from "./test/dom";
+import { useClock, useScene } from "./context.js";
+import { Circle } from "./generated/core.gen.js";
+import type { UsePlayerResult } from "./hooks.js";
+import {
+	useMovablePoint,
+	usePlayer,
+	useTrack,
+	useTrackValue,
+} from "./hooks.js";
+import { Camera, MultiStage, Stage } from "./stage.js";
+import type { DomHarness } from "./test/dom.js";
+import { installDom, mountPoint } from "./test/dom.js";
 
 let dom: DomHarness;
 beforeEach(() => {

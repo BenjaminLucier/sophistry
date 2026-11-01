@@ -1,9 +1,9 @@
 import { describe, expect, it } from "vitest";
-import { bars } from "../bars";
-import { chart, chartHandle } from "../chart";
-import { secondaryY } from "../guides";
-import { scatter } from "../points";
-import { mount, probe } from "../test-harness";
+import { bars } from "../bars/index.js";
+import { chart, chartHandle } from "../chart.js";
+import { secondaryY } from "../guides/index.js";
+import { scatter } from "../points/index.js";
+import { mount, probe } from "../test-harness.js";
 
 const rows = [
 	{ x: 1, y: 2, s: "a", c: "p" },

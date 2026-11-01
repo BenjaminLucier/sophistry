@@ -1,14 +1,14 @@
-export type { WritePhase } from "../geometry/write-phase";
-export { writeLagRatio, writePhase } from "../geometry/write-phase";
+export type { WritePhase } from "../geometry/write-phase.js";
+export { writeLagRatio, writePhase } from "../geometry/write-phase.js";
 export type {
 	Clock,
 	ClockListener,
 	ClockOptions,
 	ReducedMotionTransition,
 	VisibilityHandle,
-} from "./clock";
-export { createClock, defaultClock, watchClockVisibility } from "./clock";
-export type { Easing, EasingFunction, EasingName } from "./easing";
+} from "./clock.js";
+export { createClock, defaultClock, watchClockVisibility } from "./clock.js";
+export type { Easing, EasingFunction, EasingName } from "./easing.js";
 export {
 	easings,
 	exponentialDecay,
@@ -18,20 +18,20 @@ export {
 	squish,
 	thereAndBack,
 	thereAndBackWithPause,
-} from "./easing";
+} from "./easing.js";
 export type {
 	FrameCallback,
 	FrameParticipantOptions,
 	FramePhase,
-} from "./frame-loop";
+} from "./frame-loop.js";
 export {
 	currentFramePhase,
 	onFrame,
 	requestFrame,
 	stepFrame,
 	watch,
-} from "./frame-loop";
-export type { Interpolator } from "./interpolate";
+} from "./frame-loop.js";
+export type { Interpolator } from "./interpolate.js";
 // `lerpPoint` is deliberately not re-exported from this barrel: `geometry/`
 // already publishes it (via `geometry/lerp.ts`, its canonical home — see
 // that file's module doc), and `export *`-ing both from the package root
@@ -44,8 +44,8 @@ export {
 	lerpPoint3,
 	progressIn,
 	remap,
-} from "./interpolate";
-export type { InterpolatorName } from "./interpolators";
+} from "./interpolate.js";
+export type { InterpolatorName } from "./interpolators.js";
 export {
 	auto,
 	cssColorInterpolator,
@@ -57,18 +57,18 @@ export {
 	pointInterpolator,
 	polylineInterpolator,
 	resolveInterpolator,
-} from "./interpolators";
-export type { ReducedMotion } from "./reduced-motion";
+} from "./interpolators.js";
+export type { ReducedMotion } from "./reduced-motion.js";
 export {
 	prefersReducedMotion,
 	resolveReducedMotion,
-} from "./reduced-motion";
+} from "./reduced-motion.js";
 export type {
 	SpringOptions,
 	SpringProgress,
 	SpringSpec,
 	SpringState,
-} from "./spring";
+} from "./spring.js";
 export {
 	dampingRatio,
 	naturalFrequency,
@@ -80,7 +80,7 @@ export {
 	springProgress,
 	springRestDelta,
 	springSettleTime,
-} from "./spring";
-export type { Animatable, PathKey } from "./target";
-export { lensTarget, propTarget, storeTarget } from "./target";
-export { isTrack, trackPoint } from "./track";
+} from "./spring.js";
+export type { Animatable, PathKey } from "./target.js";
+export { lensTarget, propTarget, storeTarget } from "./target.js";
+export { isTrack, trackPoint } from "./track.js";

@@ -9,8 +9,8 @@
  * asks the chart to update (`onChange`, which only marks).
  */
 
-import { deepEqual } from "../util";
-import type { AxisExtent, ChartLayerExtent, ChartLayers } from "./types";
+import { deepEqual } from "../util.js";
+import type { AxisExtent, ChartLayerExtent, ChartLayers } from "./types.js";
 
 /** An axis extent with its `values` reduced to their finite extremes. */
 function normaliseAxis(axis: AxisExtent | undefined): AxisExtent | undefined {

@@ -54,7 +54,7 @@ function installFakeBrowser(
 
 async function load() {
 	vi.resetModules();
-	return import("./index");
+	return import("./index.js");
 }
 
 beforeEach(() => vi.resetModules());

@@ -7,8 +7,8 @@
  * Not exported from any entry; only the render tests import it.
  */
 
-import type { Renderer, RendererOptions } from "./canvas-renderer";
-import { createCanvasRenderer } from "./canvas-renderer";
+import type { Renderer, RendererOptions } from "./canvas-renderer.js";
+import { createCanvasRenderer } from "./canvas-renderer.js";
 
 /** A renderer plus the frames its paint requests have queued. */
 export interface PaintHost {

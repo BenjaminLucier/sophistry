@@ -10,8 +10,8 @@
  * `data-mode` is dark — the same fallback `themeInitScript` uses.
  */
 
-import { resolvePalette } from "./palette";
-import type { ColorMode, PaletteSpec, ThemePalette } from "./types";
+import { resolvePalette } from "./palette.js";
+import type { ColorMode, PaletteSpec, ThemePalette } from "./types.js";
 
 /**
  * Options for {@link paletteCss}.

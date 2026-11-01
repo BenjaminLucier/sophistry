@@ -10,14 +10,14 @@
 
 import type { SceneNode } from "@sophistry/core";
 import { describe, expect, it, vi } from "vitest";
-import { chart, chartHandle } from "../chart";
-import * as legendModule from "../guides/legend";
-import { scatter } from "../points/scatter";
-import { markItems, mount } from "../test-harness";
-import type { ChartProps } from "./types";
+import { chart, chartHandle } from "../chart.js";
+import * as legendModule from "../guides/legend.js";
+import { scatter } from "../points/scatter.js";
+import { markItems, mount } from "../test-harness.js";
+import type { ChartProps } from "./types.js";
 
-vi.mock("../guides/legend", async (original) => {
-	const actual = await original<typeof import("../guides/legend")>();
+vi.mock("../guides/legend.js", async (original) => {
+	const actual = await original<typeof import("../guides/legend.js")>();
 	return { ...actual, measureLegend: vi.fn(actual.measureLegend) };
 });
 

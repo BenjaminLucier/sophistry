@@ -8,7 +8,7 @@
  * them would silently change every axis's tick spacing.
  */
 
-import type { Range, Scale, ScaleTicks } from "./scales";
+import type { Range, Scale, ScaleTicks } from "./scales.js";
 
 /**
  * Options for {@link logTicks}.

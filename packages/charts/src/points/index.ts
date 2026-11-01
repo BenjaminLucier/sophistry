@@ -1,24 +1,24 @@
 /** Family barrel: per-datum point marks. Re-exported from the package entry. */
 
-export type { EventPlotProps } from "./event-plot";
-export { eventPlot } from "./event-plot";
-export type { LabelsProps } from "./labels";
-export { labels } from "./labels";
-export type { LinksProps, SegmentStyleProps, VectorsProps } from "./links";
-export { links, vectors } from "./links";
-export type { RectsProps } from "./rects";
-export { rects } from "./rects";
-export type { RugProps } from "./rug";
-export { rug } from "./rug";
-export type { ScatterProps, ScatterTrailOptions } from "./scatter";
-export { scatter } from "./scatter";
-export type { StemProps } from "./stem";
-export { stem } from "./stem";
+export type { EventPlotProps } from "./event-plot.js";
+export { eventPlot } from "./event-plot.js";
+export type { LabelsProps } from "./labels.js";
+export { labels } from "./labels.js";
+export type { LinksProps, SegmentStyleProps, VectorsProps } from "./links.js";
+export { links, vectors } from "./links.js";
+export type { RectsProps } from "./rects.js";
+export { rects } from "./rects.js";
+export type { RugProps } from "./rug.js";
+export { rug } from "./rug.js";
+export type { ScatterProps, ScatterTrailOptions } from "./scatter.js";
+export { scatter } from "./scatter.js";
+export type { StemProps } from "./stem.js";
+export { stem } from "./stem.js";
 export type {
 	BeeswarmProps,
 	DotDistributionProps,
 	StripProps,
-} from "./strip";
-export { beeswarm, strip } from "./strip";
-export type { TickBaseProps, TickXProps, TickYProps } from "./ticks";
-export { tickX, tickY } from "./ticks";
+} from "./strip.js";
+export { beeswarm, strip } from "./strip.js";
+export type { TickBaseProps, TickXProps, TickYProps } from "./ticks.js";
+export { tickX, tickY } from "./ticks.js";

@@ -10,15 +10,15 @@
 import type { SceneNode } from "@sophistry/core";
 import { clipBounds } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { fillBetween } from "./fill-between";
-import { linePlot } from "./line-plot";
-import { stackPlot } from "./stack-plot";
-import { stairs } from "./stairs";
-import type { CurveItem } from "./test-items";
-import { curveItems } from "./test-items";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { fillBetween } from "./fill-between.js";
+import { linePlot } from "./line-plot.js";
+import { stackPlot } from "./stack-plot.js";
+import { stairs } from "./stairs.js";
+import type { CurveItem } from "./test-items.js";
+import { curveItems } from "./test-items.js";
 
 let handle!: ChartHandle;
 function draw(

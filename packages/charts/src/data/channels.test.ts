@@ -11,7 +11,7 @@ import {
 	resolveChannel,
 	resolveColor,
 	resolveQuantity,
-} from "./channels";
+} from "./channels.js";
 
 interface Row {
 	year: number;

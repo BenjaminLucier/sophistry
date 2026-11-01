@@ -17,13 +17,13 @@ import {
 } from "@sophistry/core";
 import { createSignal, flush, Show } from "solid-js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { Circle } from "./generated/core.gen";
-import { useTheme } from "./hooks";
-import { PictureInPicture, QuadView, SplitScreen } from "./layouts";
-import { PanZoom } from "./pan-zoom";
-import { Camera, MultiStage, Stage } from "./stage";
-import type { DomHarness } from "./test/dom";
-import { installDom, mountPoint } from "./test/dom";
+import { Circle } from "./generated/core.gen.js";
+import { useTheme } from "./hooks.js";
+import { PictureInPicture, QuadView, SplitScreen } from "./layouts.js";
+import { PanZoom } from "./pan-zoom.js";
+import { Camera, MultiStage, Stage } from "./stage.js";
+import type { DomHarness } from "./test/dom.js";
+import { installDom, mountPoint } from "./test/dom.js";
 
 let dom: DomHarness;
 beforeEach(() => {

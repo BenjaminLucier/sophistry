@@ -5,7 +5,7 @@ import {
 	LEGEND_GAP,
 	TITLE_FONT_SIZE,
 	TITLE_GAP,
-} from "./guide-metrics";
+} from "./guide-metrics.js";
 import {
 	atLowEdge,
 	centerOffset,
@@ -21,7 +21,7 @@ import {
 	roomOver,
 	SUBTITLE_GAP,
 	widestMargins,
-} from "./layout";
+} from "./layout.js";
 
 const key = (width: number, height: number, presence = 1) => ({
 	width,

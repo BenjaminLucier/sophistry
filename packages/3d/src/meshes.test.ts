@@ -14,12 +14,12 @@
 import type { SceneNode } from "@sophistry/core";
 import { createInteractionRegistry } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import { cone3D } from "./primitives/cone3d";
-import { cylinder3D } from "./primitives/cylinder3d";
-import { cube3D } from "./primitives/prism3d";
-import { sphere3D } from "./primitives/sphere3d";
-import { mount } from "./test/scene";
+import { camera3D } from "./camera3d.js";
+import { cone3D } from "./primitives/cone3d.js";
+import { cylinder3D } from "./primitives/cylinder3d.js";
+import { cube3D } from "./primitives/prism3d.js";
+import { sphere3D } from "./primitives/sphere3d.js";
+import { mount } from "./test/scene.js";
 
 /** Mounts `solid` under a camera at a default eye. */
 function mountSolid(solid: SceneNode) {

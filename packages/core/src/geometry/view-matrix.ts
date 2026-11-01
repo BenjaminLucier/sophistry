@@ -8,9 +8,9 @@
  * `render/`'s `camera.ts` both need it, and `scene/` may not import `render/`.
  */
 
-import type { Point } from "./path/types";
-import type { Matrix } from "./transform";
-import { compose, scale as scaleMatrix, translate } from "./transform";
+import type { Point } from "./path/types.js";
+import type { Matrix } from "./transform.js";
+import { compose, scale as scaleMatrix, translate } from "./transform.js";
 
 /**
  * A rectangle of the canvas, in device pixels.

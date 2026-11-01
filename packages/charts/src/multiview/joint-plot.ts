@@ -13,25 +13,25 @@ import type {
 	RangeTransition,
 } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import { bin } from "../bars/transforms";
-import { density } from "../curves/density";
-import type { Channel } from "../data/channels";
+import { bin } from "../bars/transforms.js";
+import { density } from "../curves/density.js";
+import type { Channel } from "../data/channels.js";
 import type {
 	ChartColorOptions,
 	ChartXAxisOptions,
 	ChartYAxisOptions,
-} from "../frame/types";
-import { facetGrid } from "../math/facet";
-import { rects } from "../points/rects";
-import { scatter } from "../points/scatter";
-import type { AnyDatum } from "../props";
-import { shallowEqual } from "../util";
-import type { ChartGroup, PanelKeys } from "./chart-group";
-import { createChartGroup } from "./chart-group";
-import type { GroupGuideOptions, GroupGuides } from "./group-guides";
-import { createGroupGuides, PANELS_END_WITH_GUIDES } from "./group-guides";
-import type { PanelNodes } from "./panels";
-import { makePanel, outerRoom, watchGroup } from "./panels";
+} from "../frame/types.js";
+import { facetGrid } from "../math/facet.js";
+import { rects } from "../points/rects.js";
+import { scatter } from "../points/scatter.js";
+import type { AnyDatum } from "../props.js";
+import { shallowEqual } from "../util.js";
+import type { ChartGroup, PanelKeys } from "./chart-group.js";
+import { createChartGroup } from "./chart-group.js";
+import type { GroupGuideOptions, GroupGuides } from "./group-guides.js";
+import { createGroupGuides, PANELS_END_WITH_GUIDES } from "./group-guides.js";
+import type { PanelNodes } from "./panels.js";
+import { makePanel, outerRoom, watchGroup } from "./panels.js";
 
 const DEFAULT_RATIO = 5;
 const DEFAULT_SPACE = 0.15;

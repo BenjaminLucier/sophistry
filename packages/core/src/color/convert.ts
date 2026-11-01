@@ -5,8 +5,8 @@
  * `rgb` stays the default colour space for interpolation.
  */
 
-import { parseColor } from "./parse";
-import type { Color, ColorInput, ColorSpace } from "./types";
+import { parseColor } from "./parse.js";
+import type { Color, ColorInput, ColorSpace } from "./types.js";
 
 /**
  * Hue, saturation, lightness.

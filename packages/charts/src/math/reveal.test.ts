@@ -7,7 +7,7 @@ import {
 	revealPolylinesAlongX,
 	revealRingsAlongX,
 	xExtent,
-} from "./reveal";
+} from "./reveal.js";
 
 const p = (x: number, y: number) => ({ x, y });
 

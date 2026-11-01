@@ -7,10 +7,10 @@
  * Pure math over plain objects, like the rest of `geometry/`.
  */
 
-import type { Bounds, Point, Polyline } from "./path/types";
-import type { Matrix } from "./transform";
+import type { Bounds, Point, Polyline } from "./path/types.js";
+import type { Matrix } from "./transform.js";
 
-export type { Bounds } from "./path/types";
+export type { Bounds } from "./path/types.js";
 
 /**
  * Bounding box of every point in a set of polylines.

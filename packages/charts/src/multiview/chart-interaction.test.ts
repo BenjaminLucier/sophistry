@@ -14,18 +14,18 @@ import type { SceneNode } from "@sophistry/core";
 import { derive, track } from "@sophistry/core";
 import { bandScale } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { chart, chartHandle } from "../chart";
-import type { ChartHandle } from "../frame/types";
-import { scatter } from "../points/scatter";
+import { chart, chartHandle } from "../chart.js";
+import type { ChartHandle } from "../frame/types.js";
+import { scatter } from "../points/scatter.js";
 import {
 	boxBrushDrags,
 	brushDrags,
 	chartZoomActions,
 	chartZoomDrag,
-} from "./brush";
-import { brushedCategories, chartLink, rangeBrush } from "./chart-link";
-import { chartZoom } from "./chart-zoom";
-import { at, boxOf, press, stage, values } from "./test-utils";
+} from "./brush.js";
+import { brushedCategories, chartLink, rangeBrush } from "./chart-link.js";
+import { chartZoom } from "./chart-zoom.js";
+import { at, boxOf, press, stage, values } from "./test-utils.js";
 
 type Cell = ReturnType<typeof track<number>>;
 

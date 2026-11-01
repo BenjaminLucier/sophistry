@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stairsPolyline } from "./stairs";
+import { stairsPolyline } from "./stairs.js";
 
 describe("stairsPolyline", () => {
 	it("defaults edges to 0..n", () => {

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { dataExtent, resolveLevels } from "./gridExtent";
+import { dataExtent, resolveLevels } from "./gridExtent.js";
 
 describe("dataExtent", () => {
 	it("finds the finite min/max across a 2D grid", () => {

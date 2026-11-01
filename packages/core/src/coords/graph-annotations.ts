@@ -11,34 +11,34 @@
  * straight through to the shapes it draws.
  */
 
-import type { ColorInput } from "../color";
-import type { Point, Range } from "../geometry";
-import { clamp } from "../geometry/lerp";
-import type { Readable } from "../reactive";
-import { derive } from "../reactive";
-import type { Changes, CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { ShapeProps } from "../scene/shape";
-import { shapeProps } from "../scene/shape";
-import { label } from "../scene/text";
-import type { PropsDescriptor, SceneNode } from "../scene/types";
-import { dot } from "../shapes/dot";
+import type { ColorInput } from "../color/index.js";
+import type { Point, Range } from "../geometry/index.js";
+import { clamp } from "../geometry/lerp.js";
+import type { Readable } from "../reactive/index.js";
+import { derive } from "../reactive/index.js";
+import type { Changes, CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type { ShapeProps } from "../scene/shape.js";
+import { shapeProps } from "../scene/shape.js";
+import { label } from "../scene/text.js";
+import type { PropsDescriptor, SceneNode } from "../scene/types.js";
+import { dot } from "../shapes/dot.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
 	rawProp,
-} from "../shapes/forward";
-import { dashedLine, line } from "../shapes/line";
-import { path } from "../shapes/path";
-import { flatColor } from "../spec/gradient";
-import type { Vec2 } from "../spec/layout";
-import { DOWN, RIGHT } from "../spec/layout";
-import { anchoredLabelProps } from "./axis-labels";
-import type { CoordinateSystem } from "./coords";
-import { requireCoords, UNDER_AXES_Z_INDEX } from "./coords";
-import { needsRebuild, sampleRuns } from "./function-graph";
+} from "../shapes/forward.js";
+import { dashedLine, line } from "../shapes/line.js";
+import { path } from "../shapes/path.js";
+import { flatColor } from "../spec/gradient.js";
+import type { Vec2 } from "../spec/layout.js";
+import { DOWN, RIGHT } from "../spec/layout.js";
+import { anchoredLabelProps } from "./axis-labels.js";
+import type { CoordinateSystem } from "./coords.js";
+import { requireCoords, UNDER_AXES_Z_INDEX } from "./coords.js";
+import { needsRebuild, sampleRuns } from "./function-graph.js";
 
 const DEFAULT_SAMPLES = 160;
 const DEFAULT_RECT_COUNT = 6;

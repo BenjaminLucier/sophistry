@@ -15,7 +15,7 @@
  * phases bound straight to the parts, so a reveal never reaches `update`.
  */
 
-import type { ColorInput } from "../color";
+import type { ColorInput } from "../color/index.js";
 import type {
 	GraphData,
 	GraphEdge,
@@ -25,22 +25,26 @@ import type {
 	Point,
 	TipShape,
 	VertexId,
-} from "../geometry";
-import { edgeKey, resolveGraphLayout, scaleFactorOf } from "../geometry";
-import { progressIn } from "../geometry/lerp";
-import type { Readable } from "../reactive";
-import { derive } from "../reactive";
-import type { CompositeContext } from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { label } from "../scene/text";
-import type { SceneNode } from "../scene/types";
-import { SpaceChange } from "../scene/types";
-import { circle } from "../shapes/circle";
-import { LABELED_DOT_FONT_SIZE, labeledDotRadius } from "../shapes/dot";
-import { arrow, line } from "../shapes/line";
-import type { PaintSpec } from "../spec/gradient";
-import type { Theme } from "../themes/types";
+} from "../geometry/index.js";
+import {
+	edgeKey,
+	resolveGraphLayout,
+	scaleFactorOf,
+} from "../geometry/index.js";
+import { progressIn } from "../geometry/lerp.js";
+import type { Readable } from "../reactive/index.js";
+import { derive } from "../reactive/index.js";
+import type { CompositeContext } from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { label } from "../scene/text.js";
+import type { SceneNode } from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
+import { circle } from "../shapes/circle.js";
+import { LABELED_DOT_FONT_SIZE, labeledDotRadius } from "../shapes/dot.js";
+import { arrow, line } from "../shapes/line.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import type { Theme } from "../themes/types.js";
 
 /**
  * Drawn-vertex cap. Past it the first `MAX_VERTICES` declared vertices are drawn

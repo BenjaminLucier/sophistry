@@ -10,14 +10,14 @@ import {
 	plotPolyline,
 	polylineToCurvePath,
 	regularPolygon,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
-import { cross } from "./matchers";
-import { path, plot } from "./path";
-import { polygon } from "./polygon";
-import { polygram, regularPolygram, star } from "./polygram";
-import { openRing } from "./rect";
-import { expectBaked, manualGraph, shapeSpec } from "./test-graph";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
+import { cross } from "./matchers.js";
+import { path, plot } from "./path.js";
+import { polygon } from "./polygon.js";
+import { polygram, regularPolygram, star } from "./polygram.js";
+import { openRing } from "./rect.js";
+import { expectBaked, manualGraph, shapeSpec } from "./test-graph.js";
 
 function firstPoint(node: Parameters<typeof shapeSpec>[0]) {
 	const first = shapeSpec(node).polylines[0]?.[0];

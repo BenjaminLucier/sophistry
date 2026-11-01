@@ -28,11 +28,11 @@ import type {
 	RampExtent,
 	SharedSizeDomain,
 	SizeExtent,
-} from "../frame/types";
-import type { JoinStages } from "../math/join";
-import type { OrdinalColorScale } from "../math/ordinal";
-import { ordinalColorScale, uniqueKeys } from "../math/ordinal";
-import { deepEqual, shallowEqual } from "../util";
+} from "../frame/types.js";
+import type { JoinStages } from "../math/join.js";
+import type { OrdinalColorScale } from "../math/ordinal.js";
+import { ordinalColorScale, uniqueKeys } from "../math/ordinal.js";
+import { deepEqual, shallowEqual } from "../util.js";
 
 /** Room a panel's guides take on each side of its plotting area, in scene units. */
 export interface PanelRoom {

@@ -5,14 +5,14 @@ import { line3D } from "@sophistry/3d";
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { surfaceGridWireframe } from "../math/3d/surfaceGrid3d";
+import { surfaceGridWireframe } from "../math/3d/surfaceGrid3d.js";
 import {
 	dataChanged,
 	forwardAll,
 	forwardChanged,
 	forwardedEntries,
 	setPoint3,
-} from "./forward";
+} from "./forward.js";
 
 /** @category Primitives */
 export interface Wireframe3DProps extends Omit<Line3DProps, "from" | "to"> {

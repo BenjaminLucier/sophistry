@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { packLayout, partitionLayout } from "./hierarchy";
-import { hierarchyJoin, hierarchyKeys } from "./hierarchyJoin";
+import { packLayout, partitionLayout } from "./hierarchy.js";
+import { hierarchyJoin, hierarchyKeys } from "./hierarchyJoin.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

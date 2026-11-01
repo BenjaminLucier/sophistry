@@ -8,7 +8,7 @@ import {
 	rolling,
 	stack,
 	summarize,
-} from "./transforms";
+} from "./transforms.js";
 
 const sales = [
 	{ quarter: "Q1", region: "north", units: 3 },

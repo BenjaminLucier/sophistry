@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { bandScale, interpolateBandScale, slotBandScale } from "./band";
+import { bandScale, interpolateBandScale, slotBandScale } from "./band.js";
 
 describe("bandScale", () => {
 	it("gives each category a unit slot, its band centred in it", () => {

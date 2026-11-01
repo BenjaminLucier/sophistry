@@ -15,25 +15,25 @@ import {
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
-import { chart } from "../chart";
-import type { RampScaleName } from "../color-norm";
-import type { Channel } from "../data/channels";
-import { numberValues, resolveChannel } from "../data/channels";
-import type { ChartProps } from "../frame/types";
+import { chart } from "../chart.js";
+import type { RampScaleName } from "../color-norm.js";
+import type { Channel } from "../data/channels.js";
+import { numberValues, resolveChannel } from "../data/channels.js";
+import type { ChartProps } from "../frame/types.js";
 import type {
 	ClusterLinkage,
 	ClusterMetric,
 	ClusterTree,
-} from "../math/cluster";
-import { clusterRows } from "../math/cluster";
-import { uniqueKeys } from "../math/ordinal";
-import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props";
-import type { TooltipSpec } from "../tooltip";
-import { keyedMemo } from "../util";
-import type { CellsProps } from "./cells";
-import { cells } from "./cells";
-import type { DendrogramProps } from "./dendrogram";
-import { dendrogram } from "./dendrogram";
+} from "../math/cluster.js";
+import { clusterRows } from "../math/cluster.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import type { AnyDatum, KeyedTransitionProps, RevealProps } from "../props.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { keyedMemo } from "../util.js";
+import type { CellsProps } from "./cells.js";
+import { cells } from "./cells.js";
+import type { DendrogramProps } from "./dendrogram.js";
+import { dendrogram } from "./dendrogram.js";
 
 /**
  * Props of {@link heatmap}.

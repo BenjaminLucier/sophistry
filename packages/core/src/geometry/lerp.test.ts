@@ -7,7 +7,7 @@ import {
 	pathAlongArc,
 	progressIn,
 	remap,
-} from "./lerp";
+} from "./lerp.js";
 
 describe("lerp", () => {
 	it("interpolates between two numbers", () => {

@@ -1,12 +1,12 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { Polyline } from "../geometry";
-import { morphPolylines } from "../geometry/morph";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { trackPoint } from "../tween/track";
-import { moveBy, moveTo } from "./move";
-import { timeline } from "./timeline";
-import { morph } from "./transform";
+import type { Polyline } from "../geometry/index.js";
+import { morphPolylines } from "../geometry/morph.js";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { trackPoint } from "../tween/track.js";
+import { moveBy, moveTo } from "./move.js";
+import { timeline } from "./timeline.js";
+import { morph } from "./transform.js";
 
 beforeEach(() => {
 	vi.stubGlobal("requestAnimationFrame", () => 0);

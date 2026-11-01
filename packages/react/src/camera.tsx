@@ -6,8 +6,8 @@
 import type { CameraOptions, Camera as SceneCamera } from "@sophistry/core";
 import type { GroupNode } from "@sophistry/core/internal";
 import { type ReactNode, useLayoutEffect, useRef } from "react";
-import { Group } from "./generated/core.gen";
-import { useScene } from "./hooks";
+import { Group } from "./generated/core.gen.js";
+import { useScene } from "./hooks.js";
 
 /**
  * Props for {@link Camera}: the options of `scene.addCamera(...)` minus

@@ -6,13 +6,13 @@
 
 import type { MarksSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { mount } from "../test-harness";
-import { candlestick } from "./candlestick";
-import { funnel } from "./funnel";
-import { boxes } from "./test-helpers";
-import { waterfall } from "./waterfall";
+import type { ChartHandle } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { candlestick } from "./candlestick.js";
+import { funnel } from "./funnel.js";
+import { boxes } from "./test-helpers.js";
+import { waterfall } from "./waterfall.js";
 
 const days = [
 	{ day: "Mon", o: 10, h: 12, l: 9, c: 11.5 },

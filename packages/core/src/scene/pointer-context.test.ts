@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { pointerContext } from "./context";
-import { group } from "./group";
-import { createScene } from "./scene";
+import { pointerContext } from "./context.js";
+import { group } from "./group.js";
+import { createScene } from "./scene.js";
 
 describe("pointerContext", () => {
 	it("is null outside a scene", () => {

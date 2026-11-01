@@ -32,41 +32,41 @@ import {
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Point, Range } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import { chart } from "../chart";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel } from "../data/channels";
-import { colorResolver, dateSinkContext } from "../data/channels";
-import { endSpace } from "../end-space";
-import type { ChartProps, ChartYAxisOptions } from "../frame/types";
-import type { JoinEnd, JoinFrame } from "../join";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import { chart } from "../chart.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel } from "../data/channels.js";
+import { colorResolver, dateSinkContext } from "../data/channels.js";
+import { endSpace } from "../end-space.js";
+import type { ChartProps, ChartYAxisOptions } from "../frame/types.js";
+import type { JoinEnd, JoinFrame } from "../join.js";
 import {
 	createKeyedData,
 	joinFrames,
 	layerTransition,
 	transitionColor,
-} from "../join";
-import type { BoxplotStats } from "../math/boxplot";
-import { boxplotStats } from "../math/boxplot";
-import { dodgeSpan } from "../math/dodge";
-import type { JoinStaging } from "../math/join";
-import { uniqueKeys } from "../math/ordinal";
-import { blendCss } from "../mix";
-import type { AnyDatum, RevealProps, TransitionProps } from "../props";
-import type { Category } from "../series";
-import { createSeries, dodgeSlotsFor } from "../series";
-import { ranks, staggered } from "../stagger";
-import { mix, shallowEqual } from "../util";
-import type { GroupTransition } from "./groups";
+} from "../join.js";
+import type { BoxplotStats } from "../math/boxplot.js";
+import { boxplotStats } from "../math/boxplot.js";
+import { dodgeSpan } from "../math/dodge.js";
+import type { JoinStaging } from "../math/join.js";
+import { uniqueKeys } from "../math/ordinal.js";
+import { blendCss } from "../mix.js";
+import type { AnyDatum, RevealProps, TransitionProps } from "../props.js";
+import type { Category } from "../series.js";
+import { createSeries, dodgeSlotsFor } from "../series.js";
+import { ranks, staggered } from "../stagger.js";
+import { mix, shallowEqual } from "../util.js";
+import type { GroupTransition } from "./groups.js";
 import {
 	categoryName,
 	createGroupData,
 	DODGE_GAP,
 	presetChartProps,
 	updateChanged,
-} from "./groups";
+} from "./groups.js";
 
 /** Box width as a fraction of the slot pitch. */
 const DEFAULT_BOX_WIDTH = 0.6;

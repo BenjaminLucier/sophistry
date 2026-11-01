@@ -24,26 +24,26 @@ import type {
 import { circle, defineComposite, pathBatch } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { Channel } from "../data/channels";
-import { resolveChannel } from "../data/channels";
-import type { TreeLayoutKind, TreeLinkShape, TreeNode } from "../math/tree";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type { Channel } from "../data/channels.js";
+import { resolveChannel } from "../data/channels.js";
+import type { TreeLayoutKind, TreeLinkShape, TreeNode } from "../math/tree.js";
 import {
 	hierarchyTreeLayout,
 	radialTreeLink,
 	radialTreePoint,
 	treeLink,
-} from "../math/tree";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import { keyedMemo, mix, shallowEqual } from "../util";
-import type { HierarchyDrillProps } from "./drill";
-import type { HierarchyChart } from "./frame";
-import { createHierarchyChart } from "./frame";
-import type { KeyedLabel } from "./labels";
-import { createLabelMeasure, labelList } from "./labels";
-import { hierarchyPropsDescriptor } from "./props";
+} from "../math/tree.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import { keyedMemo, mix, shallowEqual } from "../util.js";
+import type { HierarchyDrillProps } from "./drill.js";
+import type { HierarchyChart } from "./frame.js";
+import { createHierarchyChart } from "./frame.js";
+import type { KeyedLabel } from "./labels.js";
+import { createLabelMeasure, labelList } from "./labels.js";
+import { hierarchyPropsDescriptor } from "./props.js";
 import type {
 	HierarchyChartBaseProps,
 	HierarchyFocusSpec,
@@ -51,7 +51,7 @@ import type {
 	HierarchyView,
 	Joined,
 	ResolvedFocus,
-} from "./shared";
+} from "./shared.js";
 import {
 	HIERARCHY_LABEL_FONT_SIZE,
 	hierarchyOptionDeps,
@@ -59,7 +59,7 @@ import {
 	isWithin,
 	labelPad,
 	presenceOf,
-} from "./shared";
+} from "./shared.js";
 
 const DEFAULT_STAGGER = 0.5;
 const DEFAULT_NODE_RADIUS = 0.06;

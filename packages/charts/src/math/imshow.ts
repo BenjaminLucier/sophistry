@@ -5,7 +5,7 @@ import {
 	type GridCell,
 	type GridResult,
 	gridNcols,
-} from "./shared/gridCells";
+} from "./shared/gridCells.js";
 
 /** @category Math */
 export type ImshowCell = GridCell;

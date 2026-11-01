@@ -14,9 +14,9 @@
 
 import { Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh";
-import type { Axis } from "../ring";
-import { surfaceFaces } from "./surface-plot3d";
+import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh.js";
+import type { Axis } from "../ring.js";
+import { surfaceFaces } from "./surface-plot3d.js";
 
 /** @category Primitives */
 export interface Torus3DProps extends Mesh3DProps {

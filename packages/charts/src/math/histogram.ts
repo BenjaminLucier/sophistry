@@ -8,7 +8,7 @@ import {
 	binIndex,
 	resolveBinning,
 	widenDegenerate,
-} from "./shared/binning";
+} from "./shared/binning.js";
 
 /** @category Math */
 export interface HistogramBins {

@@ -4,8 +4,13 @@
  * tips are subpaths of one outline, and a reveal draws the shaft first.
  */
 
-import type { ColorInput } from "../color";
-import type { CurvePath, Point, TipGeometry, TipShape } from "../geometry";
+import type { ColorInput } from "../color/index.js";
+import type {
+	CurvePath,
+	Point,
+	TipGeometry,
+	TipShape,
+} from "../geometry/index.js";
 import {
 	arcBetweenPointsCurvePath,
 	arrowHeadAt,
@@ -14,18 +19,18 @@ import {
 	tangentAtT,
 	tipIsClosed,
 	tipPolylines,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
-import type { PropsDescriptor } from "../scene/types";
-import type { PaintSpec } from "../spec/gradient";
-import type { Theme } from "../themes/types";
+} from "../scene/shape.js";
+import type { PropsDescriptor } from "../scene/types.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import type { Theme } from "../themes/types.js";
 
 /** @category Shapes */
 export interface LineProps extends ShapeProps {

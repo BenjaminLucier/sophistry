@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { createResolver } from "./resolver";
+import { createResolver } from "./resolver.js";
 
 describe("createResolver", () => {
 	it("resolves a registered name to its value", () => {

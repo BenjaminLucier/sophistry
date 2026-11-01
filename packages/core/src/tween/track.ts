@@ -5,9 +5,9 @@
  * bound to it follows it without an `always_redraw` wrapper.
  */
 
-import type { Point } from "../geometry";
-import type { Track } from "../reactive";
-import { isReadable, track } from "../reactive";
+import type { Point } from "../geometry/index.js";
+import type { Track } from "../reactive/index.js";
+import { isReadable, track } from "../reactive/index.js";
 
 /**
  * Creates a track holding a 2D point in scene units; the common case for

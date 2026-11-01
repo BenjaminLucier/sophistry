@@ -23,24 +23,24 @@ import {
 	LEGEND_GAP,
 	TITLE_FONT_SIZE,
 	TITLE_GAP,
-} from "../frame/guide-metrics";
+} from "../frame/guide-metrics.js";
 import type {
 	ChartSizeLegendOptions,
 	RampExtent,
 	SizeExtent,
-} from "../frame/types";
-import { colorbar, colorbarWidth } from "../guides/colorbar";
-import { legend, measureLegend } from "../guides/legend";
-import type { SizeKeysEnds } from "../guides/size-legend";
+} from "../frame/types.js";
+import { colorbar, colorbarWidth } from "../guides/colorbar.js";
+import { legend, measureLegend } from "../guides/legend.js";
+import type { SizeKeysEnds } from "../guides/size-legend.js";
 import {
 	measureSizeKeys,
 	sizeKeyOffsets,
 	sizeKeyStack,
-} from "../guides/size-legend";
-import type { SideRoom } from "../math/facet";
-import { stageProgress } from "../math/join";
-import type { ChartGroup } from "./chart-group";
-import { sizeKeysOf } from "./chart-group";
+} from "../guides/size-legend.js";
+import type { SideRoom } from "../math/facet.js";
+import { stageProgress } from "../math/join.js";
+import type { ChartGroup } from "./chart-group.js";
+import { sizeKeysOf } from "./chart-group.js";
 
 /** Where a group's panels' share of `progress` ends when a legend or colour bar follows. */
 export const PANELS_END_WITH_GUIDES = 0.9;

@@ -9,22 +9,22 @@
  * everything.
  */
 
-import type { Bounds, Point, Polyline } from "../geometry";
-import { measure, revealedPolylines } from "../geometry";
-import { boundsContain, boundsOf, unionBounds } from "../geometry/bounds";
-import { distanceToSegment } from "../geometry/path/cubic";
-import { clipBox } from "../spec/clip";
-import { labelBox } from "../spec/metrics";
+import { boundsContain, boundsOf, unionBounds } from "../geometry/bounds.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import { measure, revealedPolylines } from "../geometry/index.js";
+import { distanceToSegment } from "../geometry/path/cubic.js";
+import { clipBox } from "../spec/clip.js";
+import { labelBox } from "../spec/metrics.js";
 import type {
 	ClipRegion,
 	DrawSpec,
 	ImageSpec,
 	ShapeSpec,
 	TextSpec,
-} from "../spec/types";
-import { paintsFill } from "../spec/types";
-import { pickMark, pickPixel } from "./pick-items";
-import type { HitCandidate, HitOptions } from "./types";
+} from "../spec/types.js";
+import { paintsFill } from "../spec/types.js";
+import { pickMark, pickPixel } from "./pick-items.js";
+import type { HitCandidate, HitOptions } from "./types.js";
 
 /**
  * Axis-aligned boxes memoised per node, so the cheap rejection that precedes

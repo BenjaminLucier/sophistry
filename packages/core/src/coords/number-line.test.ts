@@ -6,20 +6,20 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import { circle } from "../shapes/circle";
-import { imaginaryTick } from "./complex-plane";
-import type { CoordinateSystem } from "./coords";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import { circle } from "../shapes/circle.js";
+import { imaginaryTick } from "./complex-plane.js";
+import type { CoordinateSystem } from "./coords.js";
 import {
 	coordsContext,
 	coordsOf,
 	coordsReadable,
 	requireCoords,
-} from "./coords";
-import type { NumberLineProps } from "./number-line";
-import { numberLine, unitInterval } from "./number-line";
-import { mount } from "./test-scene";
+} from "./coords.js";
+import type { NumberLineProps } from "./number-line.js";
+import { numberLine, unitInterval } from "./number-line.js";
+import { mount } from "./test-scene.js";
 
 function labels(props: Partial<NumberLineProps>): string[] {
 	const scene = mount(

@@ -23,17 +23,17 @@
  *   stay the same objects.
  */
 
-import type { Bounds, CurvePath, Point, Polyline } from "../geometry";
-import { boundsOf } from "../geometry/bounds";
-import type { Matrix } from "../geometry/transform";
+import { boundsOf } from "../geometry/bounds.js";
+import type { Bounds, CurvePath, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	compose,
 	IDENTITY,
 	scaleFactorOf,
 	translate,
-} from "../geometry/transform";
-import type { InteractionProps } from "../interact/types";
-import type { ShapeGeometry, StrokeAlongInput } from "../spec/bake";
+} from "../geometry/transform.js";
+import type { InteractionProps } from "../interact/types.js";
+import type { ShapeGeometry, StrokeAlongInput } from "../spec/bake.js";
 import {
 	bakeCurvePaths,
 	bakeLocalTransform,
@@ -46,17 +46,17 @@ import {
 	flattenCurves,
 	isSimilarity,
 	resolveWrite,
-} from "../spec/bake";
-import type { PaintSpec } from "../spec/gradient";
-import { isGradientSpec } from "../spec/gradient";
-import type { Placement } from "../spec/layout";
-import { readDelta } from "../spec/layout";
-import type { ClipRegion, ShapeSpec, StrokeStyle } from "../spec/types";
-import type { Theme } from "../themes/types";
-import { Invalidate, themeContext } from "./context";
-import { interactionProps } from "./interaction-props";
-import { ANY_CONTEXT, BaseNode, memo, sameMatrix } from "./node";
-import { definePrimitive } from "./primitive";
+} from "../spec/bake.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { isGradientSpec } from "../spec/gradient.js";
+import type { Placement } from "../spec/layout.js";
+import { readDelta } from "../spec/layout.js";
+import type { ClipRegion, ShapeSpec, StrokeStyle } from "../spec/types.js";
+import type { Theme } from "../themes/types.js";
+import { Invalidate, themeContext } from "./context.js";
+import { interactionProps } from "./interaction-props.js";
+import { ANY_CONTEXT, BaseNode, memo, sameMatrix } from "./node.js";
+import { definePrimitive } from "./primitive.js";
 import type {
 	ContextKey,
 	DeclaredInstanceable,
@@ -64,10 +64,10 @@ import type {
 	InvalidateBits,
 	PropsDescriptor,
 	SceneNode,
-} from "./types";
-import { SpaceChange } from "./types";
+} from "./types.js";
+import { SpaceChange } from "./types.js";
 
-export type { ShapeGeometry } from "../spec/bake";
+export type { ShapeGeometry } from "../spec/bake.js";
 
 /**
  * Styling, transform and interaction props every shape accepts, on top of its

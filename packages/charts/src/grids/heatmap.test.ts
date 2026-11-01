@@ -8,12 +8,12 @@ import type { SceneNode } from "@sophistry/core";
 import { UNDER_AXES_Z_INDEX } from "@sophistry/core";
 import type { TextSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { clusterRows } from "../math/cluster";
-import { mount } from "../test-harness";
-import { cells } from "./cells";
-import { dendrogram } from "./dendrogram";
-import { heatmap } from "./heatmap";
-import { inChart, itemBox, itemsOf } from "./test-support";
+import { clusterRows } from "../math/cluster.js";
+import { mount } from "../test-harness.js";
+import { cells } from "./cells.js";
+import { dendrogram } from "./dendrogram.js";
+import { heatmap } from "./heatmap.js";
+import { inChart, itemBox, itemsOf } from "./test-support.js";
 
 // Rows r1 and r3 are alike, as are r2 and r4; columns a and c are alike.
 const rows = ["r1", "r2", "r3", "r4"];

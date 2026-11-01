@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { chart } from "../chart";
-import { mount } from "../test-harness";
-import { stackPlot } from "./stack-plot";
+import { chart } from "../chart.js";
+import { mount } from "../test-harness.js";
+import { stackPlot } from "./stack-plot.js";
 
 const genres = ["jazz", "folk", "rock", "soul", "funk"];
 const rows = Array.from({ length: 5 }, (_, week) => ({

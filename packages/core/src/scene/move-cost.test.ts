@@ -8,18 +8,18 @@
  */
 
 import { afterEach, describe, expect, it, vi } from "vitest";
-import type { Point } from "../geometry";
-import { track } from "../reactive";
-import { circle, ellipse, rect, square } from "../shapes";
-import * as bake from "../spec/bake";
-import type { ShapeSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import type { SceneNode } from "./types";
+import type { Point } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { circle, ellipse, rect, square } from "../shapes/index.js";
+import * as bake from "../spec/bake.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import type { SceneNode } from "./types.js";
 
-vi.mock("../spec/bake", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("../spec/bake")>();
+vi.mock("../spec/bake.js", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("../spec/bake.js")>();
 	return {
 		...actual,
 		bakeStrokeStyle: vi.fn(actual.bakeStrokeStyle),

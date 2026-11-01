@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clamp, lerp, lerpPoint, lerpPoint3, remap } from "./interpolate";
+import { clamp, lerp, lerpPoint, lerpPoint3, remap } from "./interpolate.js";
 
 describe("lerp", () => {
 	it("t=0 returns a, t=1 returns b", () => {

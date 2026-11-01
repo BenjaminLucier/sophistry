@@ -6,14 +6,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { bakeTextSpec, bakeTextStyle } from "../spec/bake";
-import { labelBox } from "../spec/metrics";
-import type { TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import { defineText, label, type TextProps, textProps } from "./text";
+import { bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
+import { labelBox } from "../spec/metrics.js";
+import type { TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import { defineText, label, type TextProps, textProps } from "./text.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

@@ -4,7 +4,7 @@ import {
 	radarAxisFrames,
 	radarFramePolygon,
 	radarVertices,
-} from "./radar";
+} from "./radar.js";
 
 describe("radarVertices", () => {
 	it("places n vertices evenly around a full turn", () => {

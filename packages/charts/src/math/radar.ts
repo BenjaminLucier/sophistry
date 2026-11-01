@@ -5,9 +5,9 @@
 
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { clampNonNegative, maxOf, wrapAngle } from "@sophistry/core/internal";
-import { keyedJoin } from "./join";
-import type { PolarSweepOptions } from "./shared/polar";
-import { resolvePolarSweep, TAU } from "./shared/polar";
+import { keyedJoin } from "./join.js";
+import type { PolarSweepOptions } from "./shared/polar.js";
+import { resolvePolarSweep, TAU } from "./shared/polar.js";
 
 /** @category Math */
 export interface RadarVertex extends Point {

@@ -6,15 +6,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Polyline } from "../geometry";
+import type { Polyline } from "../geometry/index.js";
 import type {
 	MarkOutline,
 	MarksSpec,
 	ShapeSpec,
 	StrokeStyle,
-} from "../spec/types";
-import { hitSpec } from "./hit";
-import { pickMark } from "./pick-items";
+} from "../spec/types.js";
+import { hitSpec } from "./hit.js";
+import { pickMark } from "./pick-items.js";
 
 const base: StrokeStyle = {
 	stroke: "#fff",

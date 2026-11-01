@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import type { Point } from "../geometry";
-import type { BackgroundPointerEvent } from "../render/pointer";
-import type { Animatable } from "../tween/target";
-import { panZoomHandlers, pinchFactor } from "./pan-zoom";
+import type { Point } from "../geometry/index.js";
+import type { BackgroundPointerEvent } from "../render/pointer.js";
+import type { Animatable } from "../tween/target.js";
+import { panZoomHandlers, pinchFactor } from "./pan-zoom.js";
 
 function cell<T>(initial: T): Animatable<T> {
 	let value = initial;

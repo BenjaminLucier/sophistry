@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { EasingName } from "./easing";
+import type { EasingName } from "./easing.js";
 import {
 	easings,
 	exponentialDecay,
@@ -9,7 +9,7 @@ import {
 	squish,
 	thereAndBack,
 	thereAndBackWithPause,
-} from "./easing";
+} from "./easing.js";
 
 describe("easings registry", () => {
 	const names = Object.keys(easings) as EasingName[];

@@ -26,8 +26,8 @@
  * @module @sophistry/core/definitions
  */
 
-import * as entry from "../index";
-import type { Definition } from "../scene/types";
+import * as entry from "../index.js";
+import type { Definition } from "../scene/types.js";
 
 /**
  * Whether `value` is a definition made by `definePrimitive`, `defineShape`,

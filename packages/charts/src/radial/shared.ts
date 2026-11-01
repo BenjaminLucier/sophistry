@@ -19,13 +19,13 @@ import {
 	sectorCurvePath,
 } from "@sophistry/core/geometry";
 import type { Theme } from "@sophistry/core/themes";
-import { tooltipOverlay } from "../frame/tooltip-overlay";
-import type { OrdinalColorScale } from "../math/ordinal";
-import { ordinalColorScale, uniqueKeys } from "../math/ordinal";
-import type { Category } from "../series";
-import type { TooltipState } from "../tooltip";
-import { createTooltipState, tooltipContext } from "../tooltip";
-import { shallowEqual } from "../util";
+import { tooltipOverlay } from "../frame/tooltip-overlay.js";
+import type { OrdinalColorScale } from "../math/ordinal.js";
+import { ordinalColorScale, uniqueKeys } from "../math/ordinal.js";
+import type { Category } from "../series.js";
+import type { TooltipState } from "../tooltip.js";
+import { createTooltipState, tooltipContext } from "../tooltip.js";
+import { shallowEqual } from "../util.js";
 
 /** Smallest sweep worth drawing, in radians: what `sector` and `annularSector` skip. */
 export const NO_SWEEP = 1e-9;

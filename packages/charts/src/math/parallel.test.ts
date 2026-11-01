@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { parallelAxisX, parallelLines } from "./parallel";
+import { parallelAxisX, parallelLines } from "./parallel.js";
 
 describe("parallelAxisX", () => {
 	it("spaces axes evenly from 0 to 1", () => {

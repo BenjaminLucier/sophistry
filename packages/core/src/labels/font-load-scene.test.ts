@@ -18,12 +18,12 @@ import {
 	it,
 	vi,
 } from "vitest";
-import type { Scene } from "../scene/scene";
-import { createScene, sceneInternals } from "../scene/scene";
-import type { DomHarness } from "../scene/test-dom";
-import { installDom, mountPoint } from "../scene/test-dom";
-import { label } from "../scene/text";
-import { circle } from "../shapes/circle";
+import type { Scene } from "../scene/scene.js";
+import { createScene, sceneInternals } from "../scene/scene.js";
+import type { DomHarness } from "../scene/test-dom.js";
+import { installDom, mountPoint } from "../scene/test-dom.js";
+import { label } from "../scene/text.js";
+import { circle } from "../shapes/circle.js";
 
 const fonts = new EventTarget();
 const original = Object.getOwnPropertyDescriptor(document, "fonts");

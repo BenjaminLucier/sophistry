@@ -18,35 +18,35 @@ export type {
 	CameraPane,
 	PictureInPictureLayout,
 	SplitScreenLayout,
-} from "./cameras";
-export { pictureInPicture, quadView, splitScreen } from "./cameras";
+} from "./cameras.js";
+export { pictureInPicture, quadView, splitScreen } from "./cameras.js";
 export type {
 	Changes,
 	CompositeContext,
 	CompositeOptions,
 	ListOptions,
-} from "./composite";
-export { defineComposite } from "./composite";
-export * from "./context";
-export { fontEpochContext, measuresText } from "./fonts";
-export type { GroupProps } from "./group";
-export { group } from "./group";
-export * from "./instances";
-export type { InteractionGroupProps } from "./interaction-group";
-export { interactionGroup } from "./interaction-group";
-export * from "./interaction-props";
-export * from "./marks";
-export * from "./pan-zoom";
-export * from "./path-batch";
-export * from "./primitive";
+} from "./composite.js";
+export { defineComposite } from "./composite.js";
+export * from "./context.js";
+export { fontEpochContext, measuresText } from "./fonts.js";
+export type { GroupProps } from "./group.js";
+export { group } from "./group.js";
+export * from "./instances.js";
+export type { InteractionGroupProps } from "./interaction-group.js";
+export { interactionGroup } from "./interaction-group.js";
+export * from "./interaction-props.js";
+export * from "./marks.js";
+export * from "./pan-zoom.js";
+export * from "./path-batch.js";
+export * from "./primitive.js";
 export type {
 	Scene,
 	SceneBackground,
 	SceneOptions,
 	SceneSize,
 	SceneView,
-} from "./scene";
-export { createScene, pointerDriver } from "./scene";
-export * from "./shape";
-export * from "./text";
-export * from "./types";
+} from "./scene.js";
+export { createScene, pointerDriver } from "./scene.js";
+export * from "./shape.js";
+export * from "./text.js";
+export * from "./types.js";

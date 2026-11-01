@@ -14,14 +14,14 @@ import {
 	tricontourBands,
 	tricontourLines,
 	tripcolorFaces,
-} from "../math/tricontour";
-import type { MarkItem } from "../test-harness";
-import { mount } from "../test-harness";
-import { contour } from "./contour";
-import { contourF } from "./contour-f";
-import { itemsOf, inChart as mountChart, recorder } from "./test-support";
-import { triContour, triContourF } from "./tri-contour";
-import { tripcolor } from "./tripcolor";
+} from "../math/tricontour.js";
+import type { MarkItem } from "../test-harness.js";
+import { mount } from "../test-harness.js";
+import { contour } from "./contour.js";
+import { contourF } from "./contour-f.js";
+import { itemsOf, inChart as mountChart, recorder } from "./test-support.js";
+import { triContour, triContourF } from "./tri-contour.js";
+import { tripcolor } from "./tripcolor.js";
 
 type Sample = { x: number; y: number; v: number };
 

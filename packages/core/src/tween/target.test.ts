@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { moveTo, valueTo } from "../anim/move";
-import { sequence } from "../anim/sequence";
-import { timeline } from "../anim/timeline";
-import { track } from "../reactive";
-import { createClock } from "./clock";
-import { lensTarget, propTarget, storeTarget } from "./target";
+import { moveTo, valueTo } from "../anim/move.js";
+import { sequence } from "../anim/sequence.js";
+import { timeline } from "../anim/timeline.js";
+import { track } from "../reactive/index.js";
+import { createClock } from "./clock.js";
+import { lensTarget, propTarget, storeTarget } from "./target.js";
 
 const linear = { easing: "linear" } as const;
 

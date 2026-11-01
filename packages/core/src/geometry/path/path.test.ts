@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { boundsOf, centerOf, pointOnBounds } from "../bounds";
+import { boundsOf, centerOf, pointOnBounds } from "../bounds.js";
 import {
 	measure,
 	measureCurve,
@@ -12,7 +12,7 @@ import {
 	sliceCurveAtT,
 	sliceCurveBetween,
 	tangentAtT,
-} from "./arclength";
+} from "./arclength.js";
 import {
 	arcCubics,
 	cubicArcLength,
@@ -20,7 +20,7 @@ import {
 	lineSegment,
 	quadraticToCubic,
 	splitCubicAt,
-} from "./cubic";
+} from "./cubic.js";
 import {
 	closePolyline,
 	curvePathToPolyline,
@@ -29,8 +29,8 @@ import {
 	pathDataToCurvePath,
 	polylineToCurvePath,
 	toPathData,
-} from "./svg-path";
-import type { CurvePath, Point, Polyline } from "./types";
+} from "./svg-path.js";
+import type { CurvePath, Point, Polyline } from "./types.js";
 
 function expectPointClose(a: Point, b: Point, digits = 6) {
 	expect(a.x).toBeCloseTo(b.x, digits);

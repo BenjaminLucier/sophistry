@@ -6,7 +6,7 @@
 
 import { cssColor } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { mount } from "../test-harness";
+import { mount } from "../test-harness.js";
 import {
 	alphaOf,
 	area,
@@ -17,8 +17,8 @@ import {
 	mountChart,
 	opaque,
 	texts,
-} from "./test-helpers";
-import { treemap } from "./treemap";
+} from "./test-helpers.js";
+import { treemap } from "./treemap.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

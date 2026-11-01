@@ -5,4 +5,4 @@
  * @module @sophistry/react/text
  */
 
-export * from "../generated/text.gen";
+export * from "../generated/text.gen.js";

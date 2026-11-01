@@ -6,10 +6,10 @@
  * all of them".
  */
 
-import type { Bounds, Point, Polyline } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import { applyToPoint } from "../geometry/transform";
-import type { ClipRegion } from "./types";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import { applyToPoint } from "../geometry/transform.js";
+import type { ClipRegion } from "./types.js";
 
 /**
  * What `<Group clip>` accepts, in the group's own units: a box, one polygon,

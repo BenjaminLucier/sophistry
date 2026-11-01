@@ -7,7 +7,7 @@
  * tip (where the centreline doubles back on itself) never has to be offset.
  */
 
-import type { Bounds, Point, Polyline } from "./path/types";
+import type { Bounds, Point, Polyline } from "./path/types.js";
 
 /** @category Shapes */
 export interface BraceOptions {

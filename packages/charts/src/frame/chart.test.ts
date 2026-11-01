@@ -9,15 +9,15 @@ import type { Point } from "@sophistry/core/geometry";
 import type { TextSpec } from "@sophistry/core/internal";
 import { DEFAULT_GRID_Z_INDEX } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { bars, barsHandle } from "../bars/bars";
-import { histogram } from "../bars/histogram";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { stackPlot } from "../curves/stack-plot";
-import { scatter } from "../points/scatter";
-import { stem } from "../points/stem";
-import { markItems, mount } from "../test-harness";
+import { bars, barsHandle } from "../bars/bars.js";
+import { histogram } from "../bars/histogram.js";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import { stackPlot } from "../curves/stack-plot.js";
+import { scatter } from "../points/scatter.js";
+import { stem } from "../points/stem.js";
+import { markItems, mount } from "../test-harness.js";
 
 type View = ReturnType<typeof mount>;
 

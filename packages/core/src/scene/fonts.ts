@@ -15,12 +15,12 @@
  * provided value changes.
  */
 
-import { fontLoads } from "../spec/metrics";
-import type { CompositeContext } from "./composite";
-import { createContextKey } from "./context";
-import type { SceneGraph } from "./graph";
-import type { BaseNode } from "./node";
-import type { ContextKey } from "./types";
+import { fontLoads } from "../spec/metrics.js";
+import type { CompositeContext } from "./composite.js";
+import { createContextKey } from "./context.js";
+import type { SceneGraph } from "./graph.js";
+import type { BaseNode } from "./node.js";
+import type { ContextKey } from "./types.js";
 
 /**
  * How many web fonts had finished loading when the scene last heard of one:

@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { TreeNode } from "./tree";
+import type { TreeNode } from "./tree.js";
 import {
 	hierarchyTreeLayout,
 	radialTreeLink,
 	radialTreePoint,
 	treeLink,
-} from "./tree";
+} from "./tree.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

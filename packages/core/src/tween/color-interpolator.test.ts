@@ -1,10 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { mixColor, toCss } from "../color";
-import * as parse from "../color/parse";
-import { cssColorInterpolator } from "./interpolators";
+import { mixColor, toCss } from "../color/index.js";
+import * as parse from "../color/parse.js";
+import { cssColorInterpolator } from "./interpolators.js";
 
-vi.mock("../color/parse", async (importOriginal) => {
-	const actual = await importOriginal<typeof import("../color/parse")>();
+vi.mock("../color/parse.js", async (importOriginal) => {
+	const actual = await importOriginal<typeof import("../color/parse.js")>();
 	return { ...actual, parseColor: vi.fn(actual.parseColor) };
 });
 

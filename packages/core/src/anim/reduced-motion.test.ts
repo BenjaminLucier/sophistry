@@ -1,17 +1,17 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
-import { resetFrameLoop } from "../tween/frame-loop";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
+import { resetFrameLoop } from "../tween/frame-loop.js";
 import {
 	prefersReducedMotion,
 	resetReducedMotion,
-} from "../tween/reduced-motion";
-import { trackPoint } from "../tween/track";
-import { fadeIn } from "./fade";
-import { moveBy, valueTo } from "./move";
-import { forever, hold, parallel, sequence } from "./sequence";
-import { play, timeline } from "./timeline";
-import { wait } from "./tween";
+} from "../tween/reduced-motion.js";
+import { trackPoint } from "../tween/track.js";
+import { fadeIn } from "./fade.js";
+import { moveBy, valueTo } from "./move.js";
+import { forever, hold, parallel, sequence } from "./sequence.js";
+import { play, timeline } from "./timeline.js";
+import { wait } from "./tween.js";
 
 const lin = { easing: "linear" } as const;
 

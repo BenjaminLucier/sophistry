@@ -14,20 +14,20 @@ import {
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { Range } from "@sophistry/core/geometry";
-import type { MarkTransition } from "../batch";
-import type { RampScaleProps } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel } from "../data/channels";
-import { dateSinkContext, numberValues } from "../data/channels";
-import type { Histogram2D } from "../math/histogram2d";
-import { histogram2d } from "../math/histogram2d";
-import type { AnyDatum } from "../props";
-import { keyedMemo } from "../util";
-import type { CellItem, CellRects } from "./cell-rects";
-import { boxPlacement, cellBox, createCellRects } from "./cell-rects";
-import { revealCells } from "./pcolormesh";
-import { createRampCells } from "./ramp-cells";
+import type { MarkTransition } from "../batch.js";
+import type { RampScaleProps } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel } from "../data/channels.js";
+import { dateSinkContext, numberValues } from "../data/channels.js";
+import type { Histogram2D } from "../math/histogram2d.js";
+import { histogram2d } from "../math/histogram2d.js";
+import type { AnyDatum } from "../props.js";
+import { keyedMemo } from "../util.js";
+import type { CellItem, CellRects } from "./cell-rects.js";
+import { boxPlacement, cellBox, createCellRects } from "./cell-rects.js";
+import { revealCells } from "./pcolormesh.js";
+import { createRampCells } from "./ramp-cells.js";
 
 /**
  * Props of {@link hist2d}.

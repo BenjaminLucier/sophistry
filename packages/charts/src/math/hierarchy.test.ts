@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import type { HierarchyRect } from "./hierarchy";
+import type { HierarchyRect } from "./hierarchy.js";
 import {
 	packLayout,
 	partitionLayout,
 	treemapLayout,
 	treemapRows,
-} from "./hierarchy";
+} from "./hierarchy.js";
 
 type Node = { name: string; size?: number; children?: Node[] };
 

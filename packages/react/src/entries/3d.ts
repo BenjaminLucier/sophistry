@@ -19,9 +19,9 @@ import {
 	useRef,
 	useState,
 } from "react";
-import { useScene } from "../hooks";
+import { useScene } from "../hooks.js";
 
-export * from "../generated/3d.gen";
+export * from "../generated/3d.gen.js";
 
 /**
  * Attaches `orbitControls3D` to the enclosing `<Stage>`'s scene while the

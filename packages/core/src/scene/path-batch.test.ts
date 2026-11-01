@@ -4,20 +4,20 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import type { Polyline } from "../geometry";
-import { pickMark } from "../interact/pick-items";
-import type { MarksSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { Invalidate, themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
+import type { Polyline } from "../geometry/index.js";
+import { pickMark } from "../interact/pick-items.js";
+import type { MarksSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { Invalidate, themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
 import {
 	definePathBatch,
 	type PathBatchItem,
 	type PathBatchProps,
 	pathBatch,
 	pathBatchProps,
-} from "./path-batch";
+} from "./path-batch.js";
 
 const theme = resolveTheme({ mode: "dark" });
 

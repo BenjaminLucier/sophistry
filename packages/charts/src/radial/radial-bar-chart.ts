@@ -25,30 +25,34 @@ import {
 	maxOf,
 	polarPoint,
 } from "@sophistry/core/internal";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	colorResolver,
 	dateSinkContext,
 	identity,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import type { AnyDatum } from "../props";
-import { createSeries } from "../series";
-import { staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipText } from "../tooltip";
-import type { KeyedLabel } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import type { AnyDatum } from "../props.js";
+import { createSeries } from "../series.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipText } from "../tooltip.js";
+import type { KeyedLabel } from "./shared.js";
 import {
 	createItemCache,
 	createOwnTooltip,
 	labelList,
 	NO_SWEEP,
 	wedgeItem,
-} from "./shared";
+} from "./shared.js";
 
 /** Share of `progress` spent fading in the tracks and labels before the bars. */
 const FRAME_SHARE = 0.2;

@@ -11,20 +11,20 @@
  */
 
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { moveTo } from "../anim/move";
-import { sequence } from "../anim/sequence";
-import { track } from "../reactive";
-import { circle } from "../shapes/circle";
-import { rect } from "../shapes/rect";
-import { createClock } from "../tween/clock";
-import { trackPoint } from "../tween/track";
-import { pictureInPicture, splitScreen } from "./cameras";
-import { group } from "./group";
-import type { Scene, SceneOptions } from "./scene";
-import { createScene } from "./scene";
-import type { Call, DomHarness } from "./test-dom";
-import { installDom, mountPoint } from "./test-dom";
-import { label } from "./text";
+import { moveTo } from "../anim/move.js";
+import { sequence } from "../anim/sequence.js";
+import { track } from "../reactive/index.js";
+import { circle } from "../shapes/circle.js";
+import { rect } from "../shapes/rect.js";
+import { createClock } from "../tween/clock.js";
+import { trackPoint } from "../tween/track.js";
+import { pictureInPicture, splitScreen } from "./cameras.js";
+import { group } from "./group.js";
+import type { Scene, SceneOptions } from "./scene.js";
+import { createScene } from "./scene.js";
+import type { Call, DomHarness } from "./test-dom.js";
+import { installDom, mountPoint } from "./test-dom.js";
+import { label } from "./text.js";
 
 let dom: DomHarness;
 let messages: string[] = [];

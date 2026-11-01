@@ -8,8 +8,8 @@
  * endpoints and midpoint are exact; the tests check them.
  */
 
-import { createResolver } from "../geometry/resolver";
-import { type ColorRampOptions, colorRamp } from "./ramp";
+import { createResolver } from "../geometry/resolver.js";
+import { type ColorRampOptions, colorRamp } from "./ramp.js";
 
 /**
  * A colormap: magnitude in `[0, 1]` → a CSS colour.

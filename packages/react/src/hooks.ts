@@ -39,7 +39,7 @@ import {
 	useState,
 	useSyncExternalStore,
 } from "react";
-import { ClockContext, SceneContext } from "./context";
+import { ClockContext, SceneContext } from "./context.js";
 
 /**
  * The scene of the enclosing `<Stage>`. Call it in a component rendered

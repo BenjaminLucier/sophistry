@@ -19,16 +19,16 @@
  */
 
 import { interpolate as d3Interpolate } from "d3-interpolate";
-import type { ColorSpace } from "../color";
-import { colorInterpolator, toCss } from "../color";
-import type { CurvePath, Point, Polyline } from "../geometry";
-import { lerpCurvePath, lerpPolyline } from "../geometry/lerp";
-import { createResolver } from "../geometry/resolver";
-import type { Matrix } from "../geometry/transform";
-import { lerpMatrix } from "../geometry/transform";
-import type { Point3 } from "../geometry3d/mat";
-import type { Interpolator } from "./interpolate";
-import { lerp, lerpPoint, lerpPoint3 } from "./interpolate";
+import type { ColorSpace } from "../color/index.js";
+import { colorInterpolator, toCss } from "../color/index.js";
+import type { CurvePath, Point, Polyline } from "../geometry/index.js";
+import { lerpCurvePath, lerpPolyline } from "../geometry/lerp.js";
+import { createResolver } from "../geometry/resolver.js";
+import type { Matrix } from "../geometry/transform.js";
+import { lerpMatrix } from "../geometry/transform.js";
+import type { Point3 } from "../geometry3d/mat.js";
+import type { Interpolator } from "./interpolate.js";
+import { lerp, lerpPoint, lerpPoint3 } from "./interpolate.js";
 
 /** Linear between two numbers. */
 const numberInterpolator: Interpolator<number> = (a, b) => (t) => lerp(a, b, t);

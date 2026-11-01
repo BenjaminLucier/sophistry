@@ -8,15 +8,15 @@
 import { track } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { camera3D } from "./camera3d";
-import { axes3D } from "./primitives/axes3d";
-import { curve3D } from "./primitives/curve3d";
-import { grid3D, gridLineCount } from "./primitives/grid3d";
-import { line3D } from "./primitives/line3d";
-import { cube3D } from "./primitives/prism3d";
-import { highlightPosition, sphere3D } from "./primitives/sphere3d";
-import { vector3D } from "./primitives/vector3d";
-import { mount } from "./test/scene";
+import { camera3D } from "./camera3d.js";
+import { axes3D } from "./primitives/axes3d.js";
+import { curve3D } from "./primitives/curve3d.js";
+import { grid3D, gridLineCount } from "./primitives/grid3d.js";
+import { line3D } from "./primitives/line3d.js";
+import { cube3D } from "./primitives/prism3d.js";
+import { highlightPosition, sphere3D } from "./primitives/sphere3d.js";
+import { vector3D } from "./primitives/vector3d.js";
+import { mount } from "./test/scene.js";
 
 type Shapes = ReturnType<ReturnType<typeof mount>["shapes"]>;
 

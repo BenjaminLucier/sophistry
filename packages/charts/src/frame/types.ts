@@ -22,12 +22,12 @@ import type {
 	ScaleSpec,
 } from "@sophistry/core/geometry";
 import type { Colormap } from "@sophistry/core/themes";
-import type { PositionValue } from "../data/channels";
-import type { JoinStages, JoinStaging } from "../math/join";
-import type { OrdinalColorScale } from "../math/ordinal";
-import type { SymbolName } from "../math/symbol";
-import type { LayersReveal } from "../props";
-import type { TooltipAnchor, TooltipFormat, TooltipState } from "../tooltip";
+import type { PositionValue } from "../data/channels.js";
+import type { JoinStages, JoinStaging } from "../math/join.js";
+import type { OrdinalColorScale } from "../math/ordinal.js";
+import type { SymbolName } from "../math/symbol.js";
+import type { LayersReveal } from "../props.js";
+import type { TooltipAnchor, TooltipFormat, TooltipState } from "../tooltip.js";
 
 /**
  * How a series' marks look in a legend entry.

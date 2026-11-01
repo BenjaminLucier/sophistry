@@ -26,25 +26,25 @@ import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
 import { measureLabel } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import { chart } from "../chart";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { Channel, ColorChannel } from "../data/channels";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import { chart } from "../chart.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { Channel, ColorChannel } from "../data/channels.js";
 import {
 	colorResolver,
 	identity,
 	numberValues,
 	resolveChannel,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
-import { readableOn } from "../mix";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec } from "../tooltip";
-import { tooltipContext, tooltipText } from "../tooltip";
-import { besidePlace, labelStyle, tooltipProps } from "./shared";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
+import { readableOn } from "../mix.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec } from "../tooltip.js";
+import { tooltipContext, tooltipText } from "../tooltip.js";
+import { besidePlace, labelStyle, tooltipProps } from "./shared.js";
 
 const DEFAULT_STAGGER = 0.5;
 const DEFAULT_PADDING = 0.25;

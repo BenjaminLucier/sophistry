@@ -6,19 +6,19 @@
  * @packageDocumentation
  */
 
-export * from "./anim";
-export * from "./coords";
-export * from "./entries/color";
+export * from "./anim/index.js";
+export * from "./coords/index.js";
+export * from "./entries/color.js";
 export type {
 	Bounds,
 	Matrix,
 	Point,
 	Range,
 	RangeTransition,
-} from "./entries/geometry";
-export * from "./entries/themes";
-export * from "./export";
-export type { Point3 } from "./geometry3d";
+} from "./entries/geometry.js";
+export * from "./entries/themes.js";
+export * from "./export/index.js";
+export type { Point3 } from "./geometry3d/index.js";
 export type {
 	BoundsSource,
 	ClampOptions,
@@ -28,7 +28,7 @@ export type {
 	DragContext,
 	SnapOptions,
 	ValueSource,
-} from "./interact/constrain";
+} from "./interact/constrain.js";
 export {
 	alongDirection,
 	alongPath,
@@ -42,30 +42,30 @@ export {
 	snapTo,
 	snapToGrid,
 	toBounds,
-} from "./interact/constrain";
+} from "./interact/constrain.js";
 export type {
 	DraggableProps,
 	DragOptions,
 	DragParam,
 	FlagSource,
-} from "./interact/drag";
-export { draggable } from "./interact/drag";
-export type { DropOptions, DropTargetProps } from "./interact/drop";
-export { dropTarget } from "./interact/drop";
+} from "./interact/drag.js";
+export { draggable } from "./interact/drag.js";
+export type { DropOptions, DropTargetProps } from "./interact/drop.js";
+export { dropTarget } from "./interact/drop.js";
 export type {
 	AngleParamOptions,
 	LineSource,
 	ScalarParamOptions,
-} from "./interact/param";
+} from "./interact/param.js";
 export {
 	angleParam,
 	pathParam,
 	pointParam,
 	scalarParam,
-} from "./interact/param";
-export type { PointerChannel, ScenePointer } from "./interact/pointer";
-export { createPointerChannel } from "./interact/pointer";
-export type { FocusChannel, FocusSource } from "./interact/registry";
+} from "./interact/param.js";
+export type { PointerChannel, ScenePointer } from "./interact/pointer.js";
+export { createPointerChannel } from "./interact/pointer.js";
+export type { FocusChannel, FocusSource } from "./interact/registry.js";
 export type {
 	DragBehaviour,
 	DropTarget,
@@ -77,24 +77,24 @@ export type {
 	SceneNodeWheelEvent,
 	ScenePointerEvent,
 	Sink,
-} from "./interact/types";
-export * from "./labels";
-export * from "./network";
-export * from "./reactive";
-export type { CameraView, PipCorner, Viewport } from "./render/camera";
+} from "./interact/types.js";
+export * from "./labels/index.js";
+export * from "./network/index.js";
+export * from "./reactive/index.js";
+export type { CameraView, PipCorner, Viewport } from "./render/camera.js";
 export {
 	FULL_VIEWPORT,
 	pictureInPictureViewports,
 	quadViewports,
 	splitViewports,
-} from "./render/camera";
-export type { PointerDriver } from "./render/pointer";
-export * from "./scene";
-export * from "./shapes";
-export type { ShapeGeometry, ShapeWrite } from "./spec/bake";
-export type { ClipShape } from "./spec/clip";
-export type { ColorRampSpec } from "./spec/colorRampProp";
-export * from "./spec/gradient";
-export * from "./spec/layout";
-export type { ImagePixels } from "./spec/types";
-export * from "./tween";
+} from "./render/camera.js";
+export type { PointerDriver } from "./render/pointer.js";
+export * from "./scene/index.js";
+export * from "./shapes/index.js";
+export type { ShapeGeometry, ShapeWrite } from "./spec/bake.js";
+export type { ClipShape } from "./spec/clip.js";
+export type { ColorRampSpec } from "./spec/colorRampProp.js";
+export * from "./spec/gradient.js";
+export * from "./spec/layout.js";
+export type { ImagePixels } from "./spec/types.js";
+export * from "./tween/index.js";

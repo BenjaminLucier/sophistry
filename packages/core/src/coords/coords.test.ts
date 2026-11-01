@@ -5,15 +5,15 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Range } from "../geometry";
-import { track } from "../reactive";
-import type { CartesianOptions } from "./coords";
+import type { Range } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import type { CartesianOptions } from "./coords.js";
 import {
 	createCartesianCoords,
 	createPhases,
 	crossingValue,
 	phaseProgress,
-} from "./coords";
+} from "./coords.js";
 
 describe("crossingValue", () => {
 	it("is zero when zero is inside the range", () => {

@@ -4,7 +4,7 @@ import {
 	flattenPathSpec,
 	pathTarget,
 	samePath,
-} from "./breadcrumbs";
+} from "./breadcrumbs.js";
 
 /** One unit per character, so widths are easy to read. */
 const options = {

@@ -16,19 +16,19 @@
 import type { SceneNode } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { regression } from "../math/regression";
-import { gaussianKde } from "../math/violin";
-import { mount } from "../test-harness";
-import { density } from "./density";
-import { ecdf } from "./ecdf";
-import { fillBetween } from "./fill-between";
-import { regressionPlot } from "./regression";
-import { stackPlot } from "./stack-plot";
-import { stairs } from "./stairs";
-import type { CurveItem } from "./test-items";
-import { drawing, itemsAt, rounded } from "./test-items";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { regression } from "../math/regression.js";
+import { gaussianKde } from "../math/violin.js";
+import { mount } from "../test-harness.js";
+import { density } from "./density.js";
+import { ecdf } from "./ecdf.js";
+import { fillBetween } from "./fill-between.js";
+import { regressionPlot } from "./regression.js";
+import { stackPlot } from "./stack-plot.js";
+import { stairs } from "./stairs.js";
+import type { CurveItem } from "./test-items.js";
+import { drawing, itemsAt, rounded } from "./test-items.js";
 
 /** The paint order the mark under test is drawn at, so axes are left out. */
 const Z = 7;

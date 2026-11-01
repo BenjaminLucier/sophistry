@@ -1,11 +1,11 @@
 import { describe, expect, it } from "vitest";
-import { boundsOf, boundsUnder, unionBounds } from "./bounds";
-import type { Polyline } from "./path/types";
+import { boundsOf, boundsUnder, unionBounds } from "./bounds.js";
+import type { Polyline } from "./path/types.js";
 import {
 	applyToPolyline,
 	fromTranslationRotationScale,
 	IDENTITY,
-} from "./transform";
+} from "./transform.js";
 
 describe("boundsUnder", () => {
 	const lines: Polyline[] = [

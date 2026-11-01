@@ -28,8 +28,8 @@ import {
 	easeSinInOut,
 	easeSinOut,
 } from "d3-ease";
-import { progressIn } from "../geometry/lerp";
-import { createResolver } from "../geometry/resolver";
+import { progressIn } from "../geometry/lerp.js";
+import { createResolver } from "../geometry/resolver.js";
 
 /**
  * Maps linear progress `t` in 0..1 to eased progress (0 at 0, 1 at 1 for most curves).

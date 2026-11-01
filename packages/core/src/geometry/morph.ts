@@ -10,13 +10,13 @@
  * - `morphCurvePaths`: split segments until counts match, then lerp.
  */
 
-import { boundsOf } from "./bounds";
-import { lerpCurvePath, lerpPolyline, pathAlongArc } from "./lerp";
-import { measure, pointAtT, resample, ringArea } from "./path/arclength";
-import { cubicArcLength, lineSegment, splitCubicAt } from "./path/cubic";
-import { closePolyline, flattenPath } from "./path/svg-path";
-import type { CurvePath, CurveSegment, Point, Polyline } from "./path/types";
-import { createResolver } from "./resolver";
+import { boundsOf } from "./bounds.js";
+import { lerpCurvePath, lerpPolyline, pathAlongArc } from "./lerp.js";
+import { measure, pointAtT, resample, ringArea } from "./path/arclength.js";
+import { cubicArcLength, lineSegment, splitCubicAt } from "./path/cubic.js";
+import { closePolyline, flattenPath } from "./path/svg-path.js";
+import type { CurvePath, CurveSegment, Point, Polyline } from "./path/types.js";
+import { createResolver } from "./resolver.js";
 
 /**
  * Samples a morph at `t` in 0..1 (clamped), returning the in-between polyline.
@@ -585,7 +585,7 @@ export function morphPathData(
  * Straight-line interpolation between two points, re-exported for callers
  * that reach for `lerpPoint` from `"./morph"`. Defined in `./lerp.ts`.
  */
-export { lerpPoint } from "./lerp";
+export { lerpPoint } from "./lerp.js";
 
 /** Arc length of one segment, given the anchor point it starts from. */
 function segmentLength(cursor: Point, segment: CurveSegment): number {

@@ -1,7 +1,7 @@
 /** `errorbar(x, y, yerr, xerr)` — a marker plus optional error bars for each finite `(x, y)` pair. */
 
 import type { Point } from "@sophistry/core/geometry";
-import { pairCount } from "./shared/pairs";
+import { pairCount } from "./shared/pairs.js";
 
 /**
  * Symmetric errors as one magnitude per index, or asymmetric ones as a

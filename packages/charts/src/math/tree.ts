@@ -8,7 +8,7 @@
 import type { Point } from "@sophistry/core/geometry";
 import type { HierarchyNode } from "d3-hierarchy";
 import { cluster, hierarchy, tree } from "d3-hierarchy";
-import type { HierarchyNodeInfo, HierarchyOptions } from "./hierarchy";
+import type { HierarchyNodeInfo, HierarchyOptions } from "./hierarchy.js";
 
 /**
  * Node-link layout: `"tidy"` places each level at its own depth with parents

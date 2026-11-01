@@ -16,7 +16,7 @@
  * ranges never reads the frame at all.
  */
 
-import type { ColorInput } from "../color";
+import type { ColorInput } from "../color/index.js";
 import type {
 	Bounds,
 	CurvePath,
@@ -25,7 +25,7 @@ import type {
 	Range,
 	TipShape,
 	VectorFn,
-} from "../geometry";
+} from "../geometry/index.js";
 import {
 	fieldJitter,
 	polylineToCurvePath,
@@ -34,36 +34,36 @@ import {
 	tickValues,
 	tipIsClosed,
 	tipPolylines,
-} from "../geometry";
-import { isFinitePoint } from "../geometry/num";
-import type { Readable } from "../reactive";
-import { derive, track } from "../reactive";
+} from "../geometry/index.js";
+import { isFinitePoint } from "../geometry/num.js";
+import type { Readable } from "../reactive/index.js";
+import { derive, track } from "../reactive/index.js";
 import type {
 	Changes,
 	CompositeContext,
 	CompositeNode,
-} from "../scene/composite";
-import { defineComposite } from "../scene/composite";
-import { frameContext, Invalidate, themeContext } from "../scene/context";
-import type { ShapeNode, ShapeProps } from "../scene/shape";
-import { shapeProps } from "../scene/shape";
-import type { Definition, PropsDescriptor, SceneNode } from "../scene/types";
+} from "../scene/composite.js";
+import { defineComposite } from "../scene/composite.js";
+import { frameContext, Invalidate, themeContext } from "../scene/context.js";
+import type { ShapeNode, ShapeProps } from "../scene/shape.js";
+import { shapeProps } from "../scene/shape.js";
+import type { Definition, PropsDescriptor, SceneNode } from "../scene/types.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
-} from "../shapes/forward";
-import type { ShapeGeometry } from "../spec/bake";
-import type { ColorRampSpec } from "../spec/colorRampProp";
-import { isStopList } from "../spec/colorRampProp";
-import type { PaintSpec } from "../spec/gradient";
-import { isGradientSpec } from "../spec/gradient";
-import { colorRamp, resolveColormap } from "../themes";
-import type { Theme } from "../themes/types";
-import type { CoordinateSystem } from "./coords";
-import { coordsContext, UNDER_AXES_Z_INDEX } from "./coords";
-import type { OutlineProps } from "./function-graph";
-import { needsRebuild, outline } from "./function-graph";
+} from "../shapes/forward.js";
+import type { ShapeGeometry } from "../spec/bake.js";
+import type { ColorRampSpec } from "../spec/colorRampProp.js";
+import { isStopList } from "../spec/colorRampProp.js";
+import type { PaintSpec } from "../spec/gradient.js";
+import { isGradientSpec } from "../spec/gradient.js";
+import { colorRamp, resolveColormap } from "../themes/index.js";
+import type { Theme } from "../themes/types.js";
+import type { CoordinateSystem } from "./coords.js";
+import { coordsContext, UNDER_AXES_Z_INDEX } from "./coords.js";
+import type { OutlineProps } from "./function-graph.js";
+import { needsRebuild, outline } from "./function-graph.js";
 
 /** Target samples across x when no step is named. */
 const DEFAULT_COLUMNS = 12;

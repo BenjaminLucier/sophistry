@@ -3,20 +3,20 @@
  * elbow at a bearing you give. Built where they sit.
  */
 
-import type { AngleArcOptions, Point } from "../geometry";
+import type { AngleArcOptions, Point } from "../geometry/index.js";
 import {
 	angleArcCurvePath,
 	elbowPolyline,
 	polylineToCurvePath,
 	rightAngleMarkPolyline,
-} from "../geometry";
-import { Invalidate } from "../scene/context";
+} from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /**
  * A segment, in the shape `line` already takes.

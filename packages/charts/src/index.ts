@@ -9,26 +9,26 @@
  */
 
 // Families (each owns its barrel).
-export * from "./bars/index";
+export * from "./bars/index.js";
 export type {
 	BatchedMark,
 	BatchedMarkOptions,
 	BatchItem,
 	MarkTransition,
-} from "./batch";
-export { createBatchedMark } from "./batch";
-export { chart, chartHandle } from "./chart";
-export type { ChartLayer } from "./context";
-export { chartContext, chartLayer, chartLayersContext } from "./context";
-export * from "./curves/index";
-export * from "./data/channels";
-export type * from "./frame/types";
-export * from "./grids/index";
-export * from "./guides/index";
-export * from "./hierarchy/index";
-export * from "./math/index";
-export * from "./multiview/index";
-export * from "./points/index";
+} from "./batch.js";
+export { createBatchedMark } from "./batch.js";
+export { chart, chartHandle } from "./chart.js";
+export type { ChartLayer } from "./context.js";
+export { chartContext, chartLayer, chartLayersContext } from "./context.js";
+export * from "./curves/index.js";
+export * from "./data/channels.js";
+export type * from "./frame/types.js";
+export * from "./grids/index.js";
+export * from "./guides/index.js";
+export * from "./hierarchy/index.js";
+export * from "./math/index.js";
+export * from "./multiview/index.js";
+export * from "./points/index.js";
 export type {
 	AnyDatum,
 	BarReveal,
@@ -42,9 +42,9 @@ export type {
 	StackReveal,
 	StaggerOrder,
 	TransitionProps,
-} from "./props";
-export * from "./radial/index";
-export * from "./statistics/index";
+} from "./props.js";
+export * from "./radial/index.js";
+export * from "./statistics/index.js";
 export type {
 	ActiveTooltip,
 	TooltipAnchor,
@@ -57,5 +57,5 @@ export type {
 	TooltipRow,
 	TooltipSpec,
 	TooltipState,
-} from "./tooltip";
-export { createTooltipState, tooltipContext, tooltipLabel } from "./tooltip";
+} from "./tooltip.js";
+export { createTooltipState, tooltipContext, tooltipLabel } from "./tooltip.js";

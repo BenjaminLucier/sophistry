@@ -6,10 +6,10 @@
  * order, so a multi-part shape draws part by part rather than all at once.
  */
 
-import type { Animatable } from "../tween";
-import { lagged, sequence } from "./sequence";
-import type { Animation, AnimOptions } from "./types";
-import { driveTrack } from "./types";
+import type { Animatable } from "../tween/index.js";
+import { lagged, sequence } from "./sequence.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveTrack } from "./types.js";
 
 /** `lagRatio` wins when given and `lag` is then ignored; otherwise `lag`, defaulting to 0.12 s. */
 function lagOptions(lag?: number, lagRatio?: number) {

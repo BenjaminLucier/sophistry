@@ -32,8 +32,8 @@ import type {
 	TooltipPoint,
 	TooltipRow,
 	TooltipState,
-} from "../tooltip";
-import { nearestXIndex, placeTooltip } from "../tooltip";
+} from "../tooltip.js";
+import { nearestXIndex, placeTooltip } from "../tooltip.js";
 
 const TIP_FONT_SIZE = 0.26;
 const TIP_PAD = 0.12;

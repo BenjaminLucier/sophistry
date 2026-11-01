@@ -2,14 +2,14 @@
 
 import type { Range } from "@sophistry/core/geometry";
 import { extent } from "d3-array";
-import { DEFAULT_BIN_COUNT } from "./histogram";
+import { DEFAULT_BIN_COUNT } from "./histogram.js";
 import {
 	binEdges,
 	binIndex,
 	resolveBinning,
 	widenDegenerate,
-} from "./shared/binning";
-import { pairCount } from "./shared/pairs";
+} from "./shared/binning.js";
+import { pairCount } from "./shared/pairs.js";
 
 /** @category Math */
 export interface Histogram2D {

@@ -20,20 +20,25 @@ import {
 } from "@sophistry/core";
 import type { Matrix } from "@sophistry/core/geometry";
 import { applyToPoint, invert } from "@sophistry/core/geometry";
-import { chartContext } from "../context";
-import type { ChartFrame } from "../frame/types";
-import { textWidth } from "../text-width";
-import type { BrushCell, ChartZoomBox } from "./brush";
+import { chartContext } from "../context.js";
+import type { ChartFrame } from "../frame/types.js";
+import { textWidth } from "../text-width.js";
+import type { BrushCell, ChartZoomBox } from "./brush.js";
 import {
 	chartZoomActions,
 	chartZoomDrag,
 	WHEEL_LINE,
 	WHEEL_PAGE,
-} from "./brush";
-import type { BrushAxisOption } from "./chart-link";
-import { brushAxisOption, isNumber, isPair, requireFrame } from "./chart-link";
+} from "./brush.js";
+import type { BrushAxisOption } from "./chart-link.js";
+import {
+	brushAxisOption,
+	isNumber,
+	isPair,
+	requireFrame,
+} from "./chart-link.js";
 
-export type { ChartZoomBox } from "./brush";
+export type { ChartZoomBox } from "./brush.js";
 
 /**
  * Props for {@link chartZoom}.

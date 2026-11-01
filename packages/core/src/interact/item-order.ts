@@ -10,14 +10,14 @@
  * Home and End go to the ends, PageUp and PageDown jump a tenth of the way.
  */
 
-import type { Bounds, Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
+import type { Bounds, Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
 import type {
 	DrawSpec,
 	ImageSpec,
 	MarkOutline,
 	MarksSpec,
-} from "../spec/types";
+} from "../spec/types.js";
 
 /** How many items a node walks: a marks node's items, an image's pixels, else 0. */
 export function itemCount(spec: DrawSpec): number {

@@ -5,27 +5,27 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { Bounds, Point } from "../geometry";
-import { polylineToCurvePath, tipPolylines } from "../geometry";
-import type { Readable } from "../reactive";
-import { track } from "../reactive";
-import { frameContext, Invalidate, themeContext } from "../scene/context";
-import { SceneGraph } from "../scene/graph";
-import type { ShapeSpec } from "../spec/types";
-import { axes } from "./axes";
-import type { CoordinateSystem } from "./coords";
+import type { Bounds, Point } from "../geometry/index.js";
+import { polylineToCurvePath, tipPolylines } from "../geometry/index.js";
+import type { Readable } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
+import { frameContext, Invalidate, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import type { ShapeSpec } from "../spec/types.js";
+import { axes } from "./axes.js";
+import type { CoordinateSystem } from "./coords.js";
 import {
 	coordsContext,
 	createCartesianCoords,
 	UNDER_AXES_Z_INDEX,
-} from "./coords";
-import { mount, theme } from "./test-scene";
+} from "./coords.js";
+import { mount, theme } from "./test-scene.js";
 import {
 	createFieldEngine,
 	fieldHandle,
 	streamLines,
 	vectorField,
-} from "./vector-field";
+} from "./vector-field.js";
 
 const swirl = (p: Point) => ({ x: -p.y, y: p.x });
 

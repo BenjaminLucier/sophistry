@@ -4,12 +4,12 @@
  */
 
 import { describe, expect, it, vi } from "vitest";
-import { boxplotStats } from "../math/boxplot";
-import { mount } from "../test-harness";
-import { boxPlot } from "./box-plot";
-import type { Mounted } from "./test-picture";
-import { bodies, boxOf, itemBox, items, pathItems } from "./test-picture";
-import { violinPlot } from "./violin-plot";
+import { boxplotStats } from "../math/boxplot.js";
+import { mount } from "../test-harness.js";
+import { boxPlot } from "./box-plot.js";
+import type { Mounted } from "./test-picture.js";
+import { bodies, boxOf, itemBox, items, pathItems } from "./test-picture.js";
+import { violinPlot } from "./violin-plot.js";
 
 const RANGE = ["#111111", "#222222", "#333333"];
 

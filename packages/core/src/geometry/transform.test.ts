@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { lineSegment } from "./path/cubic";
-import type { CurvePath, Point } from "./path/types";
-import type { Matrix } from "./transform";
+import { lineSegment } from "./path/cubic.js";
+import type { CurvePath, Point } from "./path/types.js";
+import type { Matrix } from "./transform.js";
 import {
 	about,
 	applyToCurvePath,
@@ -20,7 +20,7 @@ import {
 	scale,
 	scaleFactorOf,
 	translate,
-} from "./transform";
+} from "./transform.js";
 
 function expectPointClose(a: Point, b: Point) {
 	expect(a.x).toBeCloseTo(b.x, 9);

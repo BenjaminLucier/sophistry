@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { stemPoints3 } from "./stem3d";
+import { stemPoints3 } from "./stem3d.js";
 
 describe("stemPoints3", () => {
 	it("drops along y (height) from the baseline to each point", () => {

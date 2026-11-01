@@ -4,9 +4,9 @@
  * `(t) => string` (told apart by `Array.isArray` and `typeof`).
  */
 
-import type { ColorInput } from "../color";
-import type { Colormap, ColormapSpec } from "../themes";
-import { colorRamp, resolveColormap } from "../themes";
+import type { ColorInput } from "../color/index.js";
+import type { Colormap, ColormapSpec } from "../themes/index.js";
+import { colorRamp, resolveColormap } from "../themes/index.js";
 
 /**
  * An explicit stop list, a published colormap's name, or a caller's own ramp function.

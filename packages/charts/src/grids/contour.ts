@@ -15,23 +15,23 @@ import type {
 import { defineComposite, Invalidate, pathBatch } from "@sophistry/core";
 import { clamp01 } from "@sophistry/core/internal";
 import type { Colormap } from "@sophistry/core/themes";
-import type { ColorNorm, RampScaleProps } from "../color-norm";
-import { colorNorm, normLevels } from "../color-norm";
-import type { ChartLayer } from "../context";
-import { chartLayer } from "../context";
-import type { ContourLine } from "../math/contour";
-import { contourLines } from "../math/contour";
-import { dataExtent } from "../math/shared/gridExtent";
-import { staggered } from "../stagger";
-import { keyedMemo } from "../util";
-import type { PlacedLine } from "./contour-shared";
+import type { ColorNorm, RampScaleProps } from "../color-norm.js";
+import { colorNorm, normLevels } from "../color-norm.js";
+import type { ChartLayer } from "../context.js";
+import { chartLayer } from "../context.js";
+import type { ContourLine } from "../math/contour.js";
+import { contourLines } from "../math/contour.js";
+import { dataExtent } from "../math/shared/gridExtent.js";
+import { staggered } from "../stagger.js";
+import { keyedMemo } from "../util.js";
+import type { PlacedLine } from "./contour-shared.js";
 import {
 	contourRamp,
 	levelColor,
 	placeLines,
 	revealLines,
-} from "./contour-shared";
-import { levelRanks } from "./tri-shared";
+} from "./contour-shared.js";
+import { levelRanks } from "./tri-shared.js";
 
 const DEFAULT_LEVELS = 8;
 

@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { polarAreaSlices } from "./polarArea";
+import { polarAreaSlices } from "./polarArea.js";
 
 describe("polarAreaSlices", () => {
 	it("splits the turn evenly across n values, regardless of their size", () => {

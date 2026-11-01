@@ -1,6 +1,6 @@
 import { hashUnit } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { jitterOffsets } from "./jitter";
+import { jitterOffsets } from "./jitter.js";
 
 describe("hashUnit", () => {
 	it("is a pure function of key and seed, in [0, 1)", () => {

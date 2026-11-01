@@ -1,22 +1,22 @@
 /** Family barrel: bars and their kin. Owned by its family; re-exported from the package entry. */
 
-export type { BarChartHandle, BarChartProps } from "./bar-chart";
-export { barChart, barChartHandle } from "./bar-chart";
-export type { BarLabelOptions } from "./bar-labels";
-export type { BarsHandle, BarsProps } from "./bars";
-export { bars, barsHandle } from "./bars";
-export type { BulletProps } from "./bullet";
-export { bullet, bulletTooltip } from "./bullet";
-export type { CandlestickProps } from "./candlestick";
-export { candlestick } from "./candlestick";
-export type { FunnelProps } from "./funnel";
-export { funnel } from "./funnel";
-export type { HistogramProps } from "./histogram";
-export { histogram } from "./histogram";
-export type { RankRaceOptions } from "./race";
-export { rankRace } from "./race";
-export type { RuleBaseProps, RuleXProps, RuleYProps } from "./rules";
-export { ruleX, ruleY } from "./rules";
+export type { BarChartHandle, BarChartProps } from "./bar-chart.js";
+export { barChart, barChartHandle } from "./bar-chart.js";
+export type { BarLabelOptions } from "./bar-labels.js";
+export type { BarsHandle, BarsProps } from "./bars.js";
+export { bars, barsHandle } from "./bars.js";
+export type { BulletProps } from "./bullet.js";
+export { bullet, bulletTooltip } from "./bullet.js";
+export type { CandlestickProps } from "./candlestick.js";
+export { candlestick } from "./candlestick.js";
+export type { FunnelProps } from "./funnel.js";
+export { funnel } from "./funnel.js";
+export type { HistogramProps } from "./histogram.js";
+export { histogram } from "./histogram.js";
+export type { RankRaceOptions } from "./race.js";
+export { rankRace } from "./race.js";
+export type { RuleBaseProps, RuleXProps, RuleYProps } from "./rules.js";
+export { ruleX, ruleY } from "./rules.js";
 export type {
 	BinnedRow,
 	BinOptions,
@@ -31,7 +31,7 @@ export type {
 	StackOptions,
 	SummarizeOptions,
 	SummaryRow,
-} from "./transforms";
+} from "./transforms.js";
 export {
 	bin,
 	dodge,
@@ -41,6 +41,6 @@ export {
 	rolling,
 	stack,
 	summarize,
-} from "./transforms";
-export type { WaterfallProps } from "./waterfall";
-export { waterfall } from "./waterfall";
+} from "./transforms.js";
+export type { WaterfallProps } from "./waterfall.js";
+export { waterfall } from "./waterfall.js";

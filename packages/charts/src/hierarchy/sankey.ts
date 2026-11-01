@@ -34,31 +34,35 @@ import {
 	clamp01,
 	cssColor,
 } from "@sophistry/core/internal";
-import type { BatchItem } from "../batch";
-import { createBatchedMark } from "../batch";
-import type { Channel, ColorChannel, RequiredUnless } from "../data/channels";
+import type { BatchItem } from "../batch.js";
+import { createBatchedMark } from "../batch.js";
+import type {
+	Channel,
+	ColorChannel,
+	RequiredUnless,
+} from "../data/channels.js";
 import {
 	identity,
 	numberValues,
 	resolveChannel,
 	resolveColor,
-} from "../data/channels";
-import { itemTooltipHandlers } from "../item-tooltip";
+} from "../data/channels.js";
+import { itemTooltipHandlers } from "../item-tooltip.js";
 import type {
 	SankeyAlign,
 	SankeyId,
 	SankeyLayout,
 	SankeyLink,
 	SankeyNode,
-} from "../math/sankey";
-import { sankeyLayout, sankeyRibbon } from "../math/sankey";
-import type { AnyDatum } from "../props";
-import { staggered } from "../stagger";
-import type { TooltipSpec, TooltipState } from "../tooltip";
-import { tooltipText } from "../tooltip";
-import type { KeyedLabel } from "./labels";
-import { labelList } from "./labels";
-import { createOwnTooltip } from "./own-tooltip";
+} from "../math/sankey.js";
+import { sankeyLayout, sankeyRibbon } from "../math/sankey.js";
+import type { AnyDatum } from "../props.js";
+import { staggered } from "../stagger.js";
+import type { TooltipSpec, TooltipState } from "../tooltip.js";
+import { tooltipText } from "../tooltip.js";
+import type { KeyedLabel } from "./labels.js";
+import { labelList } from "./labels.js";
+import { createOwnTooltip } from "./own-tooltip.js";
 
 const DEFAULT_NODE_WIDTH = 0.2;
 const DEFAULT_NODE_PADDING = 0.2;

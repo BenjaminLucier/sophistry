@@ -5,9 +5,9 @@
  * `useTheme()` for a component outside any stage, tests for a known theme.
  */
 
-import { colorMode } from "./mode";
-import { paletteTheme, resolvePalette } from "./palette";
-import type { ColorMode, PaletteSpec, Theme } from "./types";
+import { colorMode } from "./mode.js";
+import { paletteTheme, resolvePalette } from "./palette.js";
+import type { ColorMode, PaletteSpec, Theme } from "./types.js";
 
 /**
  * Inputs to {@link resolveTheme}, and the shape of the `theme` / `palette` /

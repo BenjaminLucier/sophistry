@@ -14,11 +14,14 @@
  * Nothing re-renders and nothing diffs a tree.
  */
 
-import type { Bounds, Point } from "../geometry";
-import type { Matrix } from "../geometry/transform";
-import type { SceneNodeWheelEvent, ScenePointerEvent } from "../interact/types";
-import type { Readable } from "../reactive";
-import type { ClipRegion } from "../spec/types";
+import type { Bounds, Point } from "../geometry/index.js";
+import type { Matrix } from "../geometry/transform.js";
+import type {
+	SceneNodeWheelEvent,
+	ScenePointerEvent,
+} from "../interact/types.js";
+import type { Readable } from "../reactive/index.js";
+import type { ClipRegion } from "../spec/types.js";
 
 /**
  * A set of stage bits (see `Invalidate`): which cached computations of a node a

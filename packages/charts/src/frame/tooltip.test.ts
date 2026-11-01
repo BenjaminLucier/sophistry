@@ -21,20 +21,20 @@ import type {
 import { pointerContext, track } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { bars } from "../bars/bars";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import { scatter } from "../points/scatter";
-import { mount } from "../test-harness";
-import type { TooltipConfig, TooltipField } from "../tooltip";
+import { bars } from "../bars/bars.js";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import { scatter } from "../points/scatter.js";
+import { mount } from "../test-harness.js";
+import type { TooltipConfig, TooltipField } from "../tooltip.js";
 import {
 	createTooltipState,
 	nearestX,
 	nearestXIndex,
 	placeTooltip,
 	tooltipText,
-} from "../tooltip";
+} from "../tooltip.js";
 
 const DAY = 86_400_000;
 const JAN_1 = Date.UTC(2024, 0, 1);

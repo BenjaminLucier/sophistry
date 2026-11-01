@@ -6,14 +6,14 @@
  */
 
 import { describe, expect, it } from "vitest";
-import type { DrawSpec, TextSpec } from "../spec/types";
-import { resolveTheme } from "../themes";
-import { defineComposite } from "./composite";
-import { themeContext } from "./context";
-import { SceneGraph } from "./graph";
-import { group } from "./group";
-import type { BaseNode } from "./node";
-import { label } from "./text";
+import type { DrawSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/index.js";
+import { defineComposite } from "./composite.js";
+import { themeContext } from "./context.js";
+import { SceneGraph } from "./graph.js";
+import { group } from "./group.js";
+import type { BaseNode } from "./node.js";
+import { label } from "./text.js";
 
 function manualGraph() {
 	const frames: (readonly DrawSpec[])[] = [];

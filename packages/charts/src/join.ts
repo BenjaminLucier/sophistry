@@ -13,26 +13,30 @@
 
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
-import type { Channel, DateSink } from "./data/channels";
-import { channelValues } from "./data/channels";
-import type { AxisExtent, ColorExtent, LayerTransition } from "./frame/types";
-import type { JoinStages, JoinStaging, KeyedJoin } from "./math/join";
+import type { Channel, DateSink } from "./data/channels.js";
+import { channelValues } from "./data/channels.js";
+import type {
+	AxisExtent,
+	ColorExtent,
+	LayerTransition,
+} from "./frame/types.js";
+import type { JoinStages, JoinStaging, KeyedJoin } from "./math/join.js";
 import {
 	joinStages,
 	keyedJoin,
 	stageProgress,
 	staggeredStageProgress,
-} from "./math/join";
-import { datumKeys, uniqueKeys } from "./math/ordinal";
+} from "./math/join.js";
+import { datumKeys, uniqueKeys } from "./math/ordinal.js";
 import {
 	clipPolylineToX,
 	clipRingToX,
 	revealCutoff,
 	xExtent,
-} from "./math/reveal";
-import type { Category, GroupKey } from "./series";
-import { slotsOf, WHOLE } from "./series";
-import { shallowEqual } from "./util";
+} from "./math/reveal.js";
+import type { Category, GroupKey } from "./series.js";
+import { slotsOf, WHOLE } from "./series.js";
+import { shallowEqual } from "./util.js";
 
 /** One update's view of a keyed join. See {@link createJoin}. */
 export interface JoinState {

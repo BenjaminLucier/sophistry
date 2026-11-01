@@ -4,14 +4,14 @@
  * update (matched nodes move), then enter. Pure in `t`, so it scrubs.
  */
 
-import type { HierarchyNodeInfo } from "./hierarchy";
-import type { JoinStaging } from "./join";
+import type { HierarchyNodeInfo } from "./hierarchy.js";
+import type { JoinStaging } from "./join.js";
 import {
 	joinStages,
 	keyedJoin,
 	stageProgress,
 	staggeredStageProgress,
-} from "./join";
+} from "./join.js";
 
 /**
  * Where a node of a joined layout came from, and how present it is.

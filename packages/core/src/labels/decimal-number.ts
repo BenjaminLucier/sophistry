@@ -6,45 +6,45 @@
  * `digitStyle`.
  */
 
-import type { ColorInput } from "../color";
-import { cssColor } from "../color";
-import type { Bounds, Point, Polyline } from "../geometry";
-import { progressIn } from "../geometry/lerp";
-import type { Matrix } from "../geometry/transform";
+import type { ColorInput } from "../color/index.js";
+import { cssColor } from "../color/index.js";
+import type { Bounds, Point, Polyline } from "../geometry/index.js";
+import { progressIn } from "../geometry/lerp.js";
+import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToPoint,
 	applyToPolyline,
 	compose,
 	fromTranslationRotationScale,
 	scaleFactorOf,
-} from "../geometry/transform";
-import { Invalidate, themeContext } from "../scene/context";
-import { BaseNode, memo } from "../scene/node";
-import { definePrimitive } from "../scene/primitive";
-import { boundsOfPolylines, lastMatrix } from "../scene/shape";
-import type { LabelProps, TextNode } from "../scene/text";
-import { label } from "../scene/text";
+} from "../geometry/transform.js";
+import { Invalidate, themeContext } from "../scene/context.js";
+import { BaseNode, memo } from "../scene/node.js";
+import { definePrimitive } from "../scene/primitive.js";
+import { boundsOfPolylines, lastMatrix } from "../scene/shape.js";
+import type { LabelProps, TextNode } from "../scene/text.js";
+import { label } from "../scene/text.js";
 import type {
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
 	SceneNode,
-} from "../scene/types";
-import { SpaceChange } from "../scene/types";
-import { bakeTextFont, bakeTextStyle, textRotation } from "../spec/bake";
-import { clipOf } from "../spec/clip";
-import type { BoxStyle } from "../spec/metrics";
-import { fontLoads, labelBox } from "../spec/metrics";
-import type { ClipRegion, TextSpec, TextStyle } from "../spec/types";
-import type { Theme } from "../themes/types";
+} from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
+import { bakeTextFont, bakeTextStyle, textRotation } from "../spec/bake.js";
+import { clipOf } from "../spec/clip.js";
+import type { BoxStyle } from "../spec/metrics.js";
+import { fontLoads, labelBox } from "../spec/metrics.js";
+import type { ClipRegion, TextSpec, TextStyle } from "../spec/types.js";
+import type { Theme } from "../themes/types.js";
 import type {
 	FormattedNumber,
 	GlyphRun,
 	GlyphSlot,
 	NumberFormat,
-} from "./digits";
-import { formatDecimal, layoutGlyphs } from "./digits";
-import { boxPolyline, leftEdgeOf, TextLayoutNode } from "./text-layout";
+} from "./digits.js";
+import { formatDecimal, layoutGlyphs } from "./digits.js";
+import { boxPolyline, leftEdgeOf, TextLayoutNode } from "./text-layout.js";
 
 /**
  * What `digitStyle` is asked about. One entry per drawn character.

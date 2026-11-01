@@ -12,22 +12,22 @@
 import type { SceneNode } from "@sophistry/core";
 import { derive, track } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import { bars } from "../bars/bars";
-import { chart, chartHandle } from "../chart";
-import { linePlot } from "../curves/line-plot";
-import type { ChartHandle } from "../frame/types";
-import type { ChartZoomBox } from "./brush";
+import { bars } from "../bars/bars.js";
+import { chart, chartHandle } from "../chart.js";
+import { linePlot } from "../curves/line-plot.js";
+import type { ChartHandle } from "../frame/types.js";
+import type { ChartZoomBox } from "./brush.js";
 import {
 	boxBrushDrags,
 	brushDrags,
 	brushWheel,
 	chartZoomActions,
 	chartZoomDrag,
-} from "./brush";
-import { brushedCategories, rangeBrush } from "./chart-link";
-import type { ChartZoomDragMode } from "./chart-zoom";
-import { chartZoom } from "./chart-zoom";
-import { at, boxOf, press, stage, values, wheelAt } from "./test-utils";
+} from "./brush.js";
+import { brushedCategories, rangeBrush } from "./chart-link.js";
+import type { ChartZoomDragMode } from "./chart-zoom.js";
+import { chartZoom } from "./chart-zoom.js";
+import { at, boxOf, press, stage, values, wheelAt } from "./test-utils.js";
 
 type Cell = ReturnType<typeof track<number>>;
 const range = (from: Cell, to: Cell) =>

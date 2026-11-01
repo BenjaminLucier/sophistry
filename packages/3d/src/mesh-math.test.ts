@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { isFrontFacing } from "./mesh-math";
+import { isFrontFacing } from "./mesh-math.js";
 
 describe("isFrontFacing", () => {
 	it("is front-facing when the normal points toward the eye", () => {

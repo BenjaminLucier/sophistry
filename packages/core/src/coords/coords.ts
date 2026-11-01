@@ -19,13 +19,19 @@
  * with {@link coordsOf} (or follows it with {@link coordsReadable}).
  */
 
-import type { Bounds, Point, Range, Scale, ScaleSpec } from "../geometry";
-import { resolveScale } from "../geometry";
-import { progressIn } from "../geometry/lerp";
-import type { Readable, Track } from "../reactive";
-import { derive, track } from "../reactive";
-import { createContextKey } from "../scene/context";
-import type { ContextKey, SceneNode } from "../scene/types";
+import type {
+	Bounds,
+	Point,
+	Range,
+	Scale,
+	ScaleSpec,
+} from "../geometry/index.js";
+import { resolveScale } from "../geometry/index.js";
+import { progressIn } from "../geometry/lerp.js";
+import type { Readable, Track } from "../reactive/index.js";
+import { derive, track } from "../reactive/index.js";
+import { createContextKey } from "../scene/context.js";
+import type { ContextKey, SceneNode } from "../scene/types.js";
 
 /**
  * The mapping between **data** coordinates (the numbers on the axes) and

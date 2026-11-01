@@ -6,32 +6,32 @@
  * made, placed and dropped by `update`.
  */
 
-import type { ColorInput } from "../color";
-import type { Bounds, Point } from "../geometry";
-import { boundsFromCenter } from "../geometry/bounds";
-import { braceRings, braceSpan, braceTip } from "../geometry/brace";
-import { scaleFactorOf } from "../geometry/transform";
-import { type CompositeContext, defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { BaseNode } from "../scene/node";
+import type { ColorInput } from "../color/index.js";
+import { boundsFromCenter } from "../geometry/bounds.js";
+import { braceRings, braceSpan, braceTip } from "../geometry/brace.js";
+import type { Bounds, Point } from "../geometry/index.js";
+import { scaleFactorOf } from "../geometry/transform.js";
+import { type CompositeContext, defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type { BaseNode } from "../scene/node.js";
 import {
 	defineShape,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
-import { label } from "../scene/text";
-import type { PropsDescriptor, SceneNode } from "../scene/types";
-import { DEFAULT_FONT_WEIGHT } from "../spec/bake";
-import { nextTo, type Vec2 } from "../spec/layout";
-import { labelBox, measureLabel } from "../spec/metrics";
-import type { Theme } from "../themes/types";
+} from "../scene/shape.js";
+import { label } from "../scene/text.js";
+import type { PropsDescriptor, SceneNode } from "../scene/types.js";
+import { DEFAULT_FONT_WEIGHT } from "../spec/bake.js";
+import { nextTo, type Vec2 } from "../spec/layout.js";
+import { labelBox, measureLabel } from "../spec/metrics.js";
+import type { Theme } from "../themes/types.js";
 import {
 	forwardedProps,
 	forwardHandlers,
 	forwardProps,
 	rawProp,
-} from "./forward";
+} from "./forward.js";
 
 const DEFAULT_LABEL_FONT_SIZE = 0.32;
 const DEFAULT_LABEL_GAP = 0.15;

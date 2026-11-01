@@ -25,7 +25,7 @@
  * computes `Infinity * 0`.
  */
 
-import type { EasingFunction } from "./easing";
+import type { EasingFunction } from "./easing.js";
 
 /**
  * Physical parameters of a spring, plus the start velocity and rest threshold

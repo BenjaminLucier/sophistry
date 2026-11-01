@@ -10,7 +10,7 @@ import type {
 } from "@sophistry/core";
 import { instancesDefinition } from "@sophistry/core/internal";
 import { createElement, type ReactNode, type Ref } from "react";
-import { wrap } from "./wrap";
+import { wrap } from "./wrap.js";
 
 const InstancesHost = wrap(instancesDefinition) as unknown as string;
 

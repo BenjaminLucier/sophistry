@@ -11,11 +11,11 @@
  * on the next pick, and a layer that is never hovered never builds one.
  */
 
-import type { Point } from "../geometry";
-import { distanceToSegment } from "../geometry/path/cubic";
-import { revealedOutline } from "../geometry/path/outline-reveal";
-import type { ImageSpec, MarkOutline, MarksSpec } from "../spec/types";
-import { windingNumber } from "./hit";
+import type { Point } from "../geometry/index.js";
+import { distanceToSegment } from "../geometry/path/cubic.js";
+import { revealedOutline } from "../geometry/path/outline-reveal.js";
+import type { ImageSpec, MarkOutline, MarksSpec } from "../spec/types.js";
+import { windingNumber } from "./hit.js";
 
 /** Items bucketed by cell: `start[c]..start[c + 1]` indexes `items` for cell `c`. */
 interface Grid {

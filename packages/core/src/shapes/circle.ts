@@ -4,16 +4,16 @@
  * the shape's `offset`, so moving one changes a matrix, never its outline.
  */
 
-import type { Point } from "../geometry";
-import { arcCurvePath, ellipseCurvePath } from "../geometry";
-import { Invalidate } from "../scene/context";
+import type { Point } from "../geometry/index.js";
+import { arcCurvePath, ellipseCurvePath } from "../geometry/index.js";
+import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
 	type ShapeGeometry,
 	type ShapeInstanceable,
 	type ShapeProps,
 	shapeProps,
-} from "../scene/shape";
+} from "../scene/shape.js";
 
 /** The radius {@link lastCircle} was built for. */
 let lastRadius = Number.NaN;

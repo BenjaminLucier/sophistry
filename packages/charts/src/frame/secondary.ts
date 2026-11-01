@@ -5,28 +5,28 @@
 
 import type { Range } from "@sophistry/core/geometry";
 import { isRangeTransition } from "@sophistry/core/geometry";
-import { keyedMemo, stableValue } from "../util";
+import { keyedMemo, stableValue } from "../util.js";
 import type {
 	AxisFit,
 	AxisFitInput,
 	GivenRange,
 	MergedAxisOptions,
 	ResolvedAxis,
-} from "./fit";
+} from "./fit.js";
 import {
 	alignedToPrimary,
 	createAxisFit,
 	linearScale,
 	resolveAxis,
 	sameRangeEnds,
-} from "./fit";
+} from "./fit.js";
 import type {
 	AxisExtent,
 	ChartAxisOptions,
 	ChartLayerExtent,
 	ChartProps,
 	LayerTransition,
-} from "./types";
+} from "./types.js";
 
 /** Which secondary axes a context maps through. */
 export interface SecondaryFlags {

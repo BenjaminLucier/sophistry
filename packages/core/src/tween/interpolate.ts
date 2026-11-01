@@ -12,7 +12,7 @@ export {
 	lerpPoint3,
 	progressIn,
 	remap,
-} from "../geometry/lerp";
+} from "../geometry/lerp.js";
 
 /**
  * Produces a sampler between two values of the same shape.

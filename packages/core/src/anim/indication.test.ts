@@ -1,15 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { Polyline } from "../geometry";
-import { track } from "../reactive";
-import { createClock } from "../tween/clock";
+import type { Polyline } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { createClock } from "../tween/clock.js";
 import {
 	applyWave,
 	blink,
 	focusOn,
 	passingFlash,
 	showPassingFlash,
-} from "./indication";
-import { timeline } from "./timeline";
+} from "./indication.js";
+import { timeline } from "./timeline.js";
 
 beforeEach(() => {
 	vi.stubGlobal("requestAnimationFrame", () => 0);

@@ -9,12 +9,12 @@
 import type { SceneNode } from "@sophistry/core";
 import { linearGradient } from "@sophistry/core";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle } from "../chart";
-import { chart, chartHandle } from "../chart";
-import { stackPlot } from "../curves/stack-plot";
-import { scatter } from "../points/scatter";
-import { stem } from "../points/stem";
-import { markItems, mount } from "../test-harness";
+import type { ChartHandle } from "../chart.js";
+import { chart, chartHandle } from "../chart.js";
+import { stackPlot } from "../curves/stack-plot.js";
+import { scatter } from "../points/scatter.js";
+import { stem } from "../points/stem.js";
+import { markItems, mount } from "../test-harness.js";
 
 /** A 10 × 10 chart over [0, 10]², mounted, with its handle. */
 function plot(...children: SceneNode[]) {

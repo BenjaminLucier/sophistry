@@ -9,9 +9,9 @@
 import { render } from "@solidjs/web";
 import type { Scene } from "@sophistry/core";
 import { describe, expect, it, vi } from "vitest";
-import { Circle } from "./generated/core.gen";
-import { Stage } from "./stage";
-import { installDom, mountPoint } from "./test/dom";
+import { Circle } from "./generated/core.gen.js";
+import { Stage } from "./stage.js";
+import { installDom, mountPoint } from "./test/dom.js";
 
 vi.mock("@solidjs/web", async (importOriginal) => ({
 	...(await importOriginal<typeof import("@solidjs/web")>()),

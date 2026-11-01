@@ -9,23 +9,23 @@
  * all of it bunched at the top.
  */
 
-import type { ImplicitCurveOptions, Range } from "../geometry";
-import { implicitCurve, polylineToCurvePath } from "../geometry";
-import { defineComposite } from "../scene/composite";
-import { Invalidate } from "../scene/context";
-import type { ShapeNode, ShapeProps } from "../scene/shape";
-import { forwardHandlers, forwardProps } from "../shapes/forward";
-import type { ShapeGeometry } from "../spec/bake";
-import type { CoordinateSystem } from "./coords";
-import { requireCoords } from "./coords";
-import type { OutlineProps } from "./function-graph";
+import type { ImplicitCurveOptions, Range } from "../geometry/index.js";
+import { implicitCurve, polylineToCurvePath } from "../geometry/index.js";
+import { defineComposite } from "../scene/composite.js";
+import { Invalidate } from "../scene/context.js";
+import type { ShapeNode, ShapeProps } from "../scene/shape.js";
+import { forwardHandlers, forwardProps } from "../shapes/forward.js";
+import type { ShapeGeometry } from "../spec/bake.js";
+import type { CoordinateSystem } from "./coords.js";
+import { requireCoords } from "./coords.js";
+import type { OutlineProps } from "./function-graph.js";
 import {
 	forwardedShapeProps,
 	needsRebuild,
 	onlyChild,
 	outline,
 	SHAPE_KEYS,
-} from "./function-graph";
+} from "./function-graph.js";
 
 /**
  * Props for {@link implicitFunction}: the shape style props, the resolution

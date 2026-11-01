@@ -7,7 +7,7 @@
 import { createCartesianCoords } from "@sophistry/core";
 import type { Range } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { affineFrame, projectPoints, projectRun } from "./raster";
+import { affineFrame, projectPoints, projectRun } from "./raster.js";
 
 const coordsOf = (
 	xRange: Range,

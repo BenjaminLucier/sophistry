@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import type { CurveKind } from "./curves";
+import type { CurveKind } from "./curves.js";
 import {
 	areaCurvePath,
 	clipClosedCurvePathToX,
@@ -7,9 +7,9 @@ import {
 	closedCurvePath,
 	curvePath,
 	reverseCurvePath,
-} from "./curves";
-import { curvePathToPolyline, polylineToCurvePath } from "./path/svg-path";
-import type { CurvePath, Point } from "./path/types";
+} from "./curves.js";
+import { curvePathToPolyline, polylineToCurvePath } from "./path/svg-path.js";
+import type { CurvePath, Point } from "./path/types.js";
 
 const DATA: Point[] = [
 	{ x: 0, y: 0 },

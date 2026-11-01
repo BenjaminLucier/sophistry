@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { binEdges, binIndex, widenDegenerate } from "./binning";
+import { binEdges, binIndex, widenDegenerate } from "./binning.js";
 
 describe("widenDegenerate", () => {
 	it("passes through a real range", () => {

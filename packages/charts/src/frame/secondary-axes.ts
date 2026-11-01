@@ -8,12 +8,12 @@
 
 import type { CompositeContext, SceneNode } from "@sophistry/core";
 import { defineComposite, Invalidate, publishCoords } from "@sophistry/core";
-import { secondaryLiftContext } from "../chart";
-import { chartContext, chartLayersContext } from "../context";
-import type { DateSink } from "../data/channels";
-import { dateSinkContext } from "../data/channels";
-import { onSecondary } from "./secondary";
-import type { ChartLayers } from "./types";
+import { secondaryLiftContext } from "../chart.js";
+import { chartContext, chartLayersContext } from "../context.js";
+import type { DateSink } from "../data/channels.js";
+import { dateSinkContext } from "../data/channels.js";
+import { onSecondary } from "./secondary.js";
+import type { ChartLayers } from "./types.js";
 
 /**
  * Props for {@link secondaryY}.

@@ -3,15 +3,15 @@
  * and its surroundings are described in.
  */
 
-import type { Bounds } from "../geometry";
-import type { ScenePointer } from "../interact/pointer";
-import type { Readable } from "../reactive";
-import { track } from "../reactive";
-import { resolveTheme } from "../themes/theme";
-import type { Theme } from "../themes/types";
-import type { Clock } from "../tween/clock";
-import { defaultClock } from "../tween/clock";
-import type { ContextKey } from "./types";
+import type { Bounds } from "../geometry/index.js";
+import type { ScenePointer } from "../interact/pointer.js";
+import type { Readable } from "../reactive/index.js";
+import { track } from "../reactive/index.js";
+import { resolveTheme } from "../themes/theme.js";
+import type { Theme } from "../themes/types.js";
+import type { Clock } from "../tween/clock.js";
+import { defaultClock } from "../tween/clock.js";
+import type { ContextKey } from "./types.js";
 
 /**
  * The stage bits a prop write can invalidate. A node kind decides what each

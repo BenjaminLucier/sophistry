@@ -6,8 +6,8 @@
  * arc length has to measure the closing segment for a reveal to draw it.
  */
 
-import { polarPoint } from "./num";
-import type { Point, Polyline } from "./path/types";
+import { polarPoint } from "./num.js";
+import type { Point, Polyline } from "./path/types.js";
 
 /** A usable segment count: whole, at least 1; non-finite input falls back to 1 (no divide-by-zero NaN points). */
 function wholeCount(n: number): number {

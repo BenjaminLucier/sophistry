@@ -1,6 +1,6 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import type { Point } from "../geometry";
-import { parallel, sequence } from "./sequence";
+import type { Point } from "../geometry/index.js";
+import { parallel, sequence } from "./sequence.js";
 import {
 	arcMotion,
 	circleSlots,
@@ -10,9 +10,9 @@ import {
 	rowSlots,
 	type SlotPlan,
 	type Slots,
-} from "./slots";
-import { timeline } from "./timeline";
-import type { Animation } from "./types";
+} from "./slots.js";
+import { timeline } from "./timeline.js";
+import type { Animation } from "./types.js";
 
 beforeEach(() => {
 	vi.stubGlobal("requestAnimationFrame", () => 0);
@@ -373,7 +373,7 @@ describe("replay", () => {
 	it("replaying from the end rewinds every later step, not only the first", async () => {
 		const s = make(["a", "b", "c"]);
 		const plan = s.plan();
-		const { createClock } = await import("../tween/clock");
+		const { createClock } = await import("../tween/clock.js");
 		const clock = createClock();
 		const tl = timeline(sequence(plan.swapAt(0, 1), plan.swapAt(1, 2)), {
 			clock,

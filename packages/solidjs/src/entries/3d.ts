@@ -12,9 +12,9 @@ import {
 	orbitControls3D,
 } from "@sophistry/3d";
 import { onCleanup } from "solid-js";
-import { useScene } from "../context";
+import { useScene } from "../context.js";
 
-export * from "../generated/3d.gen";
+export * from "../generated/3d.gen.js";
 
 /**
  * Attaches `orbitControls3D` to the enclosing `<Stage>`'s scene for the

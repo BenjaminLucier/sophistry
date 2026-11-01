@@ -20,7 +20,7 @@ import {
 	type SceneOptions,
 	track,
 } from "@sophistry/core";
-import { onCleanup, onSettled } from "solid-js";
+import { onSettled } from "solid-js";
 import type { BenchSceneProps } from "./harness";
 
 /** Cell centres of a grid filling the default 16 × 9 stage (as in `../scenes.tsx`). */
@@ -74,7 +74,7 @@ function NextStage(props: {
 			step(frame);
 			scene.commit();
 		});
-		onCleanup(() => scene.dispose());
+		return () => scene.dispose();
 	});
 	return <div ref={host} style={{ width: "100%" }} />;
 }

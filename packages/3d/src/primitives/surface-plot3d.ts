@@ -7,8 +7,8 @@
 
 import { Invalidate } from "@sophistry/core";
 import type { Point3 } from "@sophistry/core/internal";
-import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh";
-import type { MeshFace } from "../mesh-math";
+import { defineMesh3D, type Mesh3DProps, mesh3DProps } from "../mesh.js";
+import type { MeshFace } from "../mesh-math.js";
 
 /** @category Plots */
 export interface SurfacePlot3DProps extends Mesh3DProps {

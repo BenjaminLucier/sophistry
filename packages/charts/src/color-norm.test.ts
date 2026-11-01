@@ -1,6 +1,6 @@
 import { divergingScale } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { colorNorm, normLevels } from "./color-norm";
+import { colorNorm, normLevels } from "./color-norm.js";
 
 describe("divergingScale", () => {
 	it("puts the centre mid-way over an asymmetric range", () => {

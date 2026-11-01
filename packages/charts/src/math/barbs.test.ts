@@ -1,6 +1,6 @@
 import type { Point } from "@sophistry/core/geometry";
 import { describe, expect, it } from "vitest";
-import { barbGlyph } from "./barbs";
+import { barbGlyph } from "./barbs.js";
 
 function isFinitePoint(point: Point): boolean {
 	return Number.isFinite(point.x) && Number.isFinite(point.y);

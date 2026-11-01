@@ -6,4 +6,4 @@
  * @module @sophistry/react/charts/3d
  */
 
-export * from "../generated/charts3d.gen";
+export * from "../generated/charts3d.gen.js";

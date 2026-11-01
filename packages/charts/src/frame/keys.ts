@@ -12,12 +12,12 @@ import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey } from "@sophistry/core/geometry";
 import { cssColor } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import type { JoinStages, StageWindow } from "../math/join";
-import { keyWindow } from "../math/join";
-import type { OrdinalColorScale } from "../math/ordinal";
-import { ordinalColorScale, uniqueKeys } from "../math/ordinal";
-import { keyedMemo, shallowEqual, stableValue } from "../util";
-import { sameData } from "./reports";
+import type { JoinStages, StageWindow } from "../math/join.js";
+import { keyWindow } from "../math/join.js";
+import type { OrdinalColorScale } from "../math/ordinal.js";
+import { ordinalColorScale, uniqueKeys } from "../math/ordinal.js";
+import { keyedMemo, shallowEqual, stableValue } from "../util.js";
+import { sameData } from "./reports.js";
 import type {
 	ChartLayerExtent,
 	ChartProps,
@@ -26,7 +26,7 @@ import type {
 	RampExtent,
 	SharedSizeDomain,
 	SizeExtent,
-} from "./types";
+} from "./types.js";
 
 /** One legend entry (as `legend` takes it). */
 export interface FrameLegendEntry {

@@ -4,7 +4,7 @@
  * every bar or one per bar; arrays pair by index up to the shortest.
  */
 
-import { pairCount } from "../shared/pairs";
+import { pairCount } from "../shared/pairs.js";
 
 /** @category Math */
 export interface BarSlotBox3D {

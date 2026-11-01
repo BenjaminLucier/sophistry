@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { curvePathToPolyline } from "./path/svg-path";
-import type { Point } from "./path/types";
-import type { TipShape } from "./tips";
-import { tipIsClosed, tipPolylines } from "./tips";
+import { curvePathToPolyline } from "./path/svg-path.js";
+import type { Point } from "./path/types.js";
+import type { TipShape } from "./tips.js";
+import { tipIsClosed, tipPolylines } from "./tips.js";
 
 function expectPointClose(a: Point, b: Point, digits = 6) {
 	expect(a.x).toBeCloseTo(b.x, digits);

@@ -15,12 +15,12 @@ import { mixColor, toCss } from "@sophistry/core/color";
 import { circlePolyline } from "@sophistry/core/geometry";
 import type { Point3 } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
-import type { Camera3DValue } from "../context";
-import { depthZ, projectPoint, projectScale } from "../project";
-import type { Shape3DProps } from "../props3d";
-import { shape3DProps } from "../props3d";
-import type { ProjectedPiece } from "../shape3d";
-import { defineShape3D } from "../shape3d";
+import type { Camera3DValue } from "../context.js";
+import { depthZ, projectPoint, projectScale } from "../project.js";
+import type { Shape3DProps } from "../props3d.js";
+import { shape3DProps } from "../props3d.js";
+import type { ProjectedPiece } from "../shape3d.js";
+import { defineShape3D } from "../shape3d.js";
 
 /** @category Primitives */
 export interface Sphere3DProps extends Shape3DProps {

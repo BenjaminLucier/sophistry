@@ -7,13 +7,13 @@
 
 import { itemAt } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import { chartHandle } from "../chart";
-import type { ChartProps } from "../frame/types";
-import { symbolPolygon } from "../math/symbol";
-import { hashRanks } from "../stagger";
-import { markItems } from "../test-harness";
-import { scatter } from ".";
-import { plot, rounded } from "./test-utils";
+import { chartHandle } from "../chart.js";
+import type { ChartProps } from "../frame/types.js";
+import { symbolPolygon } from "../math/symbol.js";
+import { hashRanks } from "../stagger.js";
+import { markItems } from "../test-harness.js";
+import { scatter } from "./index.js";
+import { plot, rounded } from "./test-utils.js";
 
 const Z = 7;
 const frame: Partial<ChartProps> = { xRange: [0, 5], yRange: [0, 5] };

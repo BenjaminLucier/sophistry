@@ -7,14 +7,14 @@
 import type { SceneNode } from "@sophistry/core";
 import type { TextSpec } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
-import type { ChartHandle, ChartProps } from "../chart";
-import { chart as chartDefinition, chartHandle } from "../chart";
-import { decimalsOf } from "../math/barLabels";
-import type { AnyDatum } from "../props";
-import { mount as mountGraph } from "../test-harness";
-import type { BarsProps } from "./bars";
-import { bars } from "./bars";
-import { boxes, specsOf } from "./test-helpers";
+import type { ChartHandle, ChartProps } from "../chart.js";
+import { chart as chartDefinition, chartHandle } from "../chart.js";
+import { decimalsOf } from "../math/barLabels.js";
+import type { AnyDatum } from "../props.js";
+import { mount as mountGraph } from "../test-harness.js";
+import type { BarsProps } from "./bars.js";
+import { bars } from "./bars.js";
+import { boxes, specsOf } from "./test-helpers.js";
 
 type Scene = ReturnType<typeof mountGraph>;
 

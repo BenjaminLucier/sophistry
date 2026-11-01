@@ -25,7 +25,8 @@ export default defineConfig({
 				alt: "",
 			},
 			favicon: "/favicon.svg",
-			customCss: ["./src/styles/theme.css"],
+			// KaTeX's stylesheet lays out every formula @sophistry/text typesets.
+			customCss: ["./src/styles/theme.css", "katex/dist/katex.css"],
 			components: {
 				Hero: "./src/components/Hero.astro",
 				Banner: "./src/components/Banner.astro",

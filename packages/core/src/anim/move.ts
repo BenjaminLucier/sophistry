@@ -5,15 +5,15 @@
  * `driveTrack` with the matching `resolveInterpolator` entry.
  */
 
-import type { ColorSpace } from "../color";
-import type { Point, Polyline } from "../geometry";
-import { measure, pointAtT } from "../geometry";
-import { pathAlongArc } from "../geometry/lerp";
-import type { Animatable, Interpolator } from "../tween";
-import { resolveInterpolator } from "../tween";
-import { cssColorInterpolator } from "../tween/interpolators";
-import type { Animation, AnimOptions } from "./types";
-import { driveProgress, driveTrack } from "./types";
+import type { ColorSpace } from "../color/index.js";
+import type { Point, Polyline } from "../geometry/index.js";
+import { measure, pointAtT } from "../geometry/index.js";
+import { pathAlongArc } from "../geometry/lerp.js";
+import type { Animatable, Interpolator } from "../tween/index.js";
+import { resolveInterpolator } from "../tween/index.js";
+import { cssColorInterpolator } from "../tween/interpolators.js";
+import type { Animation, AnimOptions } from "./types.js";
+import { driveProgress, driveTrack } from "./types.js";
 
 /**
  * Tweens a position track to an absolute point, in scene units.

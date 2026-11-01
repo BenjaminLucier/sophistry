@@ -15,13 +15,17 @@ import { render } from "@solidjs/web";
 import type { Scene } from "@sophistry/core";
 import { createClock, track } from "@sophistry/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import barsRecording from "../../../react/src/examples/specs/bars.json";
-import shapesRecording from "../../../react/src/examples/specs/shapes.json";
-import type { DomHarness } from "../test/dom";
-import { installDom, mountPoint } from "../test/dom";
-import { BarsExample } from "./bars";
-import { createRecorder } from "./normalize";
-import { ShapesExample } from "./shapes";
+import barsRecording from "../../../react/src/examples/specs/bars.json" with {
+	type: "json",
+};
+import shapesRecording from "../../../react/src/examples/specs/shapes.json" with {
+	type: "json",
+};
+import type { DomHarness } from "../test/dom.js";
+import { installDom, mountPoint } from "../test/dom.js";
+import { BarsExample } from "./bars.js";
+import { createRecorder } from "./normalize.js";
+import { ShapesExample } from "./shapes.js";
 
 /** Where the React side reads the recordings, from this package's root. */
 const SPECS = "../react/src/examples/specs";

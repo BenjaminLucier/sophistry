@@ -1,8 +1,8 @@
 import { describe, expect, it } from "vitest";
-import { track } from "../reactive";
-import { draggable } from "./drag";
-import { DEFAULT_SLOP } from "./slop";
-import type { ScenePointerEvent } from "./types";
+import { track } from "../reactive/index.js";
+import { draggable } from "./drag.js";
+import { DEFAULT_SLOP } from "./slop.js";
+import type { ScenePointerEvent } from "./types.js";
 
 function ev(x: number, y: number, id = 1): ScenePointerEvent {
 	return {

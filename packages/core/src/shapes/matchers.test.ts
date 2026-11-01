@@ -5,18 +5,18 @@
  */
 
 import { describe, expect, it } from "vitest";
-import { polylineToCurvePath, rectPolyline } from "../geometry";
-import { track } from "../reactive";
-import { LEFT } from "../spec/layout";
-import { brace, braceOutline } from "./brace";
-import { circle } from "./circle";
+import { polylineToCurvePath, rectPolyline } from "../geometry/index.js";
+import { track } from "../reactive/index.js";
+import { LEFT } from "../spec/layout.js";
+import { brace, braceOutline } from "./brace.js";
+import { circle } from "./circle.js";
 import {
 	backgroundRectangle,
 	cross,
 	surroundingRectangle,
 	underline,
-} from "./matchers";
-import { openRing } from "./rect";
+} from "./matchers.js";
+import { openRing } from "./rect.js";
 import {
 	darkTheme,
 	expectBaked,
@@ -25,7 +25,7 @@ import {
 	shapeSpecsOf,
 	specsOf,
 	textSpecsOf,
-} from "./test-graph";
+} from "./test-graph.js";
 
 const box = { minX: -1.5, minY: -0.5, maxX: 1.5, maxY: 0.5 };
 

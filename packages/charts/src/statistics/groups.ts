@@ -9,12 +9,12 @@
 import type { SceneNode } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Point, Range } from "@sophistry/core/geometry";
-import type { Channel } from "../data/channels";
-import { identity, resolveChannel } from "../data/channels";
-import type { ChartProps, ChartYAxisOptions } from "../frame/types";
-import type { JoinStaging } from "../math/join";
-import { autoRange } from "../math/range";
-import { deepEqual, shallowEqual } from "../util";
+import type { Channel } from "../data/channels.js";
+import { identity, resolveChannel } from "../data/channels.js";
+import type { ChartProps, ChartYAxisOptions } from "../frame/types.js";
+import type { JoinStaging } from "../math/join.js";
+import { autoRange } from "../math/range.js";
+import { deepEqual, shallowEqual } from "../util.js";
 
 /** Gap between dodged boxes or violins, as a fraction of each one's sub-slot. */
 export const DODGE_GAP = 0.1;

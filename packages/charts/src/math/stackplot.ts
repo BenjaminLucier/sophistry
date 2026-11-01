@@ -2,9 +2,9 @@
 
 import type { Point } from "@sophistry/core/geometry";
 import { finiteOrZero } from "@sophistry/core/internal";
-import { fillBetweenRings } from "./fillBetween";
-import type { StackOffset, StackOrder } from "./stack";
-import { stackColumns } from "./stack";
+import { fillBetweenRings } from "./fillBetween.js";
+import type { StackOffset, StackOrder } from "./stack.js";
+import { stackColumns } from "./stack.js";
 
 /** @category Math */
 export interface StackedBand {

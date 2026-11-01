@@ -1,6 +1,6 @@
 /** 3D scatter geometry: one marker per finite `(x, y, z)` triple. */
 
-import { pairCount } from "../shared/pairs";
+import { pairCount } from "../shared/pairs.js";
 
 /** @category Math */
 export interface ScatterPoint3 {
