@@ -51,8 +51,9 @@ export interface LayoutInline {
 	inline: { width: number; ascent: number; descent: number };
 }
 
-const isInline = (run: LayoutRun | LayoutInline | undefined): run is LayoutInline =>
-	run !== undefined && "inline" in run;
+const isInline = (
+	run: LayoutRun | LayoutInline | undefined,
+): run is LayoutInline => run !== undefined && "inline" in run;
 
 /** The font size of a text run; 0 for an inline one. */
 const sizeOf = (run: LayoutRun | LayoutInline | undefined): number =>
