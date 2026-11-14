@@ -7,6 +7,7 @@
  */
 
 import { layoutFlex } from "./flexbox.js";
+import { layoutGrid } from "./grid.js";
 import type {
 	AvailableSpace,
 	Entry,
@@ -128,6 +129,8 @@ export function computeNode(entry: Entry, inputs: SizingInputs): Size {
 }
 
 function run(entry: Entry, inputs: SizingInputs): Size {
+	if (entry.style.display === "grid")
+		return layoutGrid(entry, inputs, computeNode);
 	if (entry.children.length === 0) return layoutLeaf(entry, inputs);
 	return layoutFlex(entry, inputs, computeNode);
 }

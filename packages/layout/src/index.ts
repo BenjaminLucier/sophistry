@@ -1,5 +1,5 @@
 /**
- * A flexbox layout engine in plain TypeScript. Describe a tree of nodes with
+ * A flexbox and grid layout engine in plain TypeScript. Describe a tree of nodes with
  * CSS-like styles, give leaves a way to measure their content, and
  * {@link computeLayout} returns every node's box. No DOM, no dependencies.
  */
@@ -16,10 +16,18 @@ export type {
 	Edges,
 	FlexDirection,
 	FlexWrap,
+	GridAutoFlow,
+	GridPlacement,
 	JustifyContent,
+	JustifyItems,
+	JustifySelf,
 	LayoutStyle,
 	Length,
 	Overflow,
 	Position,
 	Size,
+	TrackBreadth,
+	TrackList,
+	TrackRepeat,
+	TrackSize,
 } from "./style.js";

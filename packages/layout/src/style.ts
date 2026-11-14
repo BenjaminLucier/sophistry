@@ -27,8 +27,8 @@ export interface Size<T = number> {
 	height: T;
 }
 
-/** How a node takes part in layout. */
-export type Display = "flex" | "none";
+/** How a node lays out its children, or `"none"` to leave it out of layout entirely. */
+export type Display = "flex" | "grid" | "none";
 
 /** `"absolute"` takes a node out of flow, placed by its insets against its parent's padding box. */
 export type Position = "relative" | "absolute";
@@ -63,6 +63,62 @@ export type AlignContent =
 	| "space-between"
 	| "space-around"
 	| "space-evenly";
+
+/** The size of a grid track, or one end of a `minmax`: a length, `"auto"`, an intrinsic size, or a share of the free space. */
+export type TrackBreadth =
+	| Length
+	| "auto"
+	| "min-content"
+	| "max-content"
+	| { fr: number };
+
+/**
+ * The size of one grid track: a {@link TrackBreadth}, `{ minmax: [min, max] }`
+ * (the minimum cannot be a fraction), or `{ fitContent: limit }`, which sizes
+ * to the content but no larger than `limit`.
+ */
+export type TrackSize =
+	| TrackBreadth
+	| {
+			minmax: readonly [
+				min: Exclude<TrackBreadth, { fr: number }>,
+				max: TrackBreadth,
+			];
+	  }
+	| { fitContent: Length };
+
+/**
+ * Tracks repeated `repeat` times. `"auto-fill"` repeats as often as fits the
+ * container; `"auto-fit"` does too, then collapses the repeated tracks no item
+ * occupies. Both need tracks with a definite size on at least one end.
+ */
+export interface TrackRepeat {
+	repeat: number | "auto-fill" | "auto-fit";
+	tracks: readonly TrackSize[];
+}
+
+/** The tracks of one axis of an explicit grid, in order. */
+export type TrackList = readonly (TrackSize | TrackRepeat)[];
+
+/**
+ * Where an item sits along one axis of a grid: a line number (1 is the first
+ * line; negative numbers count from the last line of the explicit grid), or
+ * `start` and `end` lines and a `span` of tracks. Anything left out is
+ * automatic: `{ span: 2 }` takes two tracks wherever auto-placement puts it,
+ * `{ start: 2 }` takes one track starting at line 2.
+ */
+export type GridPlacement =
+	| number
+	| { start?: number; end?: number; span?: number };
+
+/** How items that name no position are placed, and whether they fill earlier gaps (`"dense"`). */
+export type GridAutoFlow = "row" | "column" | "row dense" | "column dense";
+
+/** How a grid item sits within its area on the inline (horizontal) axis. */
+export type JustifyItems = "start" | "end" | "center" | "stretch";
+
+/** `justifySelf` adds `"auto"`: use the container's `justifyItems`. */
+export type JustifySelf = JustifyItems | "auto";
 
 /** `"hidden"` clips the node's content, and lets a flex item shrink below its content. */
 export type Overflow = "visible" | "hidden";
@@ -102,17 +158,32 @@ export interface LayoutStyle {
 	flexDirection?: FlexDirection;
 	/** @default "nowrap" */
 	flexWrap?: FlexWrap;
-	/** @default "flex-start" */
+	/**
+	 * In a flex container, where free space on the main axis goes; in a grid
+	 * container, how the columns share the container's width. Unset, a grid
+	 * stretches its `auto` columns to fill the width.
+	 * @default "flex-start"
+	 */
 	justifyContent?: JustifyContent;
-	/** @default "stretch" */
+	/**
+	 * Where an item sits on the cross axis of its flex line, or on the block
+	 * (vertical) axis of its grid area, where `"flex-start"` and `"flex-end"`
+	 * mean the start and end of the area.
+	 * @default "stretch"
+	 */
 	alignItems?: AlignItems;
 	/** @default "auto" */
 	alignSelf?: AlignSelf;
-	/** @default "stretch" */
+	/**
+	 * In a flex container, how lines share the cross axis; in a grid container,
+	 * how the rows share the container's height. `"stretch"` grows `auto` rows
+	 * and lines.
+	 * @default "stretch"
+	 */
 	alignContent?: AlignContent;
-	/** Space between rows of items (between lines in a row container). @default 0 */
+	/** Space between rows of items (between lines in a row container, between grid rows). @default 0 */
 	rowGap?: Length;
-	/** Space between columns of items. @default 0 */
+	/** Space between columns of items (between grid columns). @default 0 */
 	columnGap?: Length;
 	/** @default 0 */
 	flexGrow?: number;
@@ -120,6 +191,41 @@ export interface LayoutStyle {
 	flexShrink?: number;
 	/** @default "auto" */
 	flexBasis?: Dimension;
+
+	/**
+	 * The columns of a grid container's explicit grid. Columns an item needs
+	 * beyond these are sized by {@link LayoutStyle.gridAutoColumns}.
+	 * @default []
+	 */
+	gridTemplateColumns?: TrackList;
+	/** The rows of a grid container's explicit grid. @default [] */
+	gridTemplateRows?: TrackList;
+	/**
+	 * Sizes of the columns that are not in the explicit grid, repeating in
+	 * order for as many as there are.
+	 * @default ["auto"]
+	 */
+	gridAutoColumns?: readonly TrackSize[];
+	/**
+	 * Sizes of the rows that are not in the explicit grid, repeating in order
+	 * for as many as there are.
+	 * @default ["auto"]
+	 */
+	gridAutoRows?: readonly TrackSize[];
+	/** How a grid container places the items that have no position of their own. @default "row" */
+	gridAutoFlow?: GridAutoFlow;
+	/** The columns a grid item occupies. @default automatic: one column */
+	gridColumn?: GridPlacement;
+	/** The rows a grid item occupies. @default automatic: one row */
+	gridRow?: GridPlacement;
+	/**
+	 * How a grid container's items sit within their areas on the inline
+	 * (horizontal) axis.
+	 * @default "stretch"
+	 */
+	justifyItems?: JustifyItems;
+	/** Overrides the container's `justifyItems` for one grid item. @default "auto" */
+	justifySelf?: JustifySelf;
 }
 
 /* ------------------------------------------------------------- resolving */
@@ -198,7 +304,8 @@ export interface ResolvedStyle {
 	overflow: Overflow;
 	flexDirection: FlexDirection;
 	flexWrap: FlexWrap;
-	justifyContent: JustifyContent;
+	/** `undefined` when unset: a flex container packs to the start, a grid stretches. */
+	justifyContent: JustifyContent | undefined;
 	alignItems: AlignItems;
 	alignSelf: AlignSelf;
 	alignContent: AlignContent;
@@ -206,6 +313,146 @@ export interface ResolvedStyle {
 	flexGrow: number;
 	flexShrink: number;
 	flexBasis: Resolved;
+	gridTemplateColumns: ParsedTemplate;
+	gridTemplateRows: ParsedTemplate;
+	gridAutoColumns: ParsedTrack[];
+	gridAutoRows: ParsedTrack[];
+	gridAutoFlow: GridAutoFlow;
+	gridColumn: ParsedPlacement;
+	gridRow: ParsedPlacement;
+	justifyItems: JustifyItems;
+	justifySelf: JustifySelf;
+}
+
+/**
+ * One end of a parsed track size.
+ *
+ * @internal
+ */
+export type ParsedBreadth =
+	| { kind: "length"; value: number }
+	| { kind: "percent"; value: number }
+	| { kind: "auto" }
+	| { kind: "min-content" }
+	| { kind: "max-content" }
+	| { kind: "fr"; value: number }
+	| { kind: "fit-content"; limit: Resolved };
+
+/**
+ * A parsed track size.
+ *
+ * @internal
+ */
+export interface ParsedTrack {
+	min: ParsedBreadth;
+	max: ParsedBreadth;
+}
+
+/**
+ * A parsed track list: tracks and repeats, in order.
+ *
+ * @internal
+ */
+export type ParsedTemplate = readonly (
+	| { kind: "track"; track: ParsedTrack }
+	| {
+			kind: "repeat";
+			count: number | "auto-fill" | "auto-fit";
+			tracks: ParsedTrack[];
+	  }
+)[];
+
+/**
+ * A grid placement along one axis: every part optional, lines nonzero integers.
+ *
+ * @internal
+ */
+export interface ParsedPlacement {
+	start?: number;
+	end?: number;
+	span?: number;
+}
+
+const AUTO_BREADTH: ParsedBreadth = { kind: "auto" };
+
+function parseBreadth(value: TrackBreadth): ParsedBreadth {
+	if (typeof value === "object") {
+		if (!(value.fr >= 0) || !Number.isFinite(value.fr)) {
+			throw new RangeError("layout: a fraction must be a finite number ≥ 0");
+		}
+		return { kind: "fr", value: value.fr };
+	}
+	if (value === "min-content" || value === "max-content") {
+		return { kind: value };
+	}
+	const parsed = parseDimension(value);
+	if (parsed.kind === "length" && parsed.value < 0) {
+		throw new RangeError("layout: a track size cannot be negative");
+	}
+	return parsed;
+}
+
+function parseTrack(value: TrackSize): ParsedTrack {
+	if (typeof value === "object" && "minmax" in value) {
+		const [min, max] = value.minmax;
+		return { min: parseBreadth(min), max: parseBreadth(max) };
+	}
+	if (typeof value === "object" && "fitContent" in value) {
+		const limit = parseDimension(value.fitContent);
+		if (limit.kind === "auto") {
+			throw new RangeError("layout: fitContent needs a length");
+		}
+		return { min: AUTO_BREADTH, max: { kind: "fit-content", limit } };
+	}
+	const breadth = parseBreadth(value);
+	// A fraction is minmax(auto, fr); every other size is both ends.
+	return { min: breadth.kind === "fr" ? AUTO_BREADTH : breadth, max: breadth };
+}
+
+function parseTemplate(list: TrackList | undefined): ParsedTemplate {
+	return (list ?? []).map((entry) => {
+		if (typeof entry === "object" && "repeat" in entry) {
+			const { repeat } = entry;
+			if (
+				typeof repeat === "number" &&
+				!(Number.isInteger(repeat) && repeat >= 1)
+			) {
+				throw new RangeError("layout: a repeat count must be an integer ≥ 1");
+			}
+			return {
+				kind: "repeat" as const,
+				count: repeat,
+				tracks: entry.tracks.map(parseTrack),
+			};
+		}
+		return { kind: "track" as const, track: parseTrack(entry) };
+	});
+}
+
+function parseAutoTracks(
+	list: readonly TrackSize[] | undefined,
+): ParsedTrack[] {
+	const tracks = (list ?? []).map(parseTrack);
+	return tracks.length > 0
+		? tracks
+		: [{ min: AUTO_BREADTH, max: AUTO_BREADTH }];
+}
+
+function parsePlacement(value: GridPlacement | undefined): ParsedPlacement {
+	if (value === undefined) return {};
+	const placement = typeof value === "number" ? { start: value } : value;
+	for (const line of [placement.start, placement.end]) {
+		if (line !== undefined && !(Number.isInteger(line) && line !== 0)) {
+			throw new RangeError("layout: a grid line must be a nonzero integer");
+		}
+	}
+	if (
+		placement.span !== undefined &&
+		!(Number.isInteger(placement.span) && placement.span >= 1)
+	) {
+		throw new RangeError("layout: a grid span must be an integer ≥ 1");
+	}
+	return { ...placement };
 }
 
 function edges(
@@ -273,7 +520,7 @@ export function resolveStyle(style: LayoutStyle): ResolvedStyle {
 		overflow: style.overflow ?? "visible",
 		flexDirection: style.flexDirection ?? "row",
 		flexWrap: style.flexWrap ?? "nowrap",
-		justifyContent: style.justifyContent ?? "flex-start",
+		justifyContent: style.justifyContent,
 		alignItems: style.alignItems ?? "stretch",
 		alignSelf: style.alignSelf ?? "auto",
 		alignContent: style.alignContent ?? "stretch",
@@ -284,5 +531,14 @@ export function resolveStyle(style: LayoutStyle): ResolvedStyle {
 		flexGrow: nonNegative("flexGrow", style.flexGrow, 0),
 		flexShrink: nonNegative("flexShrink", style.flexShrink, 1),
 		flexBasis: parseDimension(style.flexBasis),
+		gridTemplateColumns: parseTemplate(style.gridTemplateColumns),
+		gridTemplateRows: parseTemplate(style.gridTemplateRows),
+		gridAutoColumns: parseAutoTracks(style.gridAutoColumns),
+		gridAutoRows: parseAutoTracks(style.gridAutoRows),
+		gridAutoFlow: style.gridAutoFlow ?? "row",
+		gridColumn: parsePlacement(style.gridColumn),
+		gridRow: parsePlacement(style.gridRow),
+		justifyItems: style.justifyItems ?? "stretch",
+		justifySelf: style.justifySelf ?? "auto",
 	};
 }

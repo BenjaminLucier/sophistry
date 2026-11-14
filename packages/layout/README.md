@@ -1,6 +1,6 @@
 # @sophistry/layout
 
-A flexbox layout engine in plain TypeScript. Describe a tree of nodes with CSS-like styles, give leaves a way to measure their content, and get every node's box back. No DOM, no dependencies.
+A flexbox and CSS grid layout engine in plain TypeScript. Describe a tree of nodes with CSS-like styles, give leaves a way to measure their content, and get every node's box back. No DOM, no dependencies.
 
 Part of [sophistry](https://sophistry.dev), which uses it to lay out boxes on a canvas, but it knows nothing about sophistry: numbers in, numbers out. Pre-1.0: minor releases may break.
 
@@ -32,12 +32,27 @@ const layout = computeLayout(
 
 Values follow CSS. A number is a length (the unit is yours), `"50%"` is a percentage of the containing block, and `"auto"` lets the algorithm decide. Every size is a border-box size. Defaults are CSS's, except that `display` defaults to `"flex"`.
 
-- `display`: `"flex"` or `"none"`
+- `display`: `"flex"`, `"grid"` or `"none"`
 - `position`: `"relative"` or `"absolute"`, with `top`, `right`, `bottom`, `left`
 - `width`, `height`, `minWidth`, `minHeight`, `maxWidth`, `maxHeight`, `aspectRatio`
 - `margin` (lengths or `"auto"`), `padding`, `border`: objects with `top`, `right`, `bottom`, `left`
 - `overflow`: `"visible"` or `"hidden"` (a hidden item may shrink below its content)
 - `flexDirection`, `flexWrap`, `justifyContent`, `alignItems`, `alignSelf`, `alignContent`, `rowGap`, `columnGap`, `flexGrow`, `flexShrink`, `flexBasis`
+- Grid containers: `gridTemplateColumns`, `gridTemplateRows` (lengths, percentages, `{ fr }`, `"auto"`, `"min-content"`, `"max-content"`, `{ minmax }`, `{ fitContent }`, and `{ repeat, tracks }` with a count, `"auto-fill"` or `"auto-fit"`), `gridAutoColumns`, `gridAutoRows`, `gridAutoFlow` (`"row"`, `"column"`, each optionally `dense`), `justifyItems`, plus `justifyContent`, `alignContent`, `alignItems` and the gaps
+- Grid items: `gridColumn`, `gridRow` (a line number, negative from the end, or `{ start, end, span }`), `justifySelf`, `alignSelf`, and margins, auto margins included
+
+```ts
+{
+	style: {
+		display: "grid",
+		gridTemplateColumns: [120, { repeat: "auto-fill", tracks: [{ minmax: [80, { fr: 1 }] }] }],
+		columnGap: 8,
+	},
+	children: [{ style: { gridColumn: { span: 2 } } }, {}],
+}
+```
+
+In a grid container `alignItems` and `alignSelf` place an item vertically within its area (`"flex-start"` is the start of the area), and `justifyItems` and `justifySelf` place it horizontally. Absolute children of a grid container are placed against its padding box. Grid lines have no names.
 
 ## Measuring leaves
 

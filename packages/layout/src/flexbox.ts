@@ -79,7 +79,7 @@ interface Item {
 }
 
 /** Start offset and extra space between items, for a distribution of `free` over `count` items. */
-function distribute(
+export function distribute(
 	mode: JustifyContent | AlignContent,
 	free: number,
 	count: number,
@@ -103,7 +103,7 @@ function distribute(
 }
 
 /** The fit-content size between two intrinsic sizes, for an available space. */
-function fitContent(
+export function fitContent(
 	available: AvailableSpace,
 	minContent: number,
 	maxContent: number,
@@ -698,7 +698,7 @@ export function layoutFlex(
 		const [start, between] =
 			autoCount > 0 && free > 0
 				? [0, 0]
-				: distribute(style.justifyContent, free, line.length);
+				: distribute(style.justifyContent ?? "flex-start", free, line.length);
 		let offset = start;
 		for (const item of line) {
 			const margins = { ...item.margin };
@@ -809,7 +809,7 @@ export function layoutFlex(
 		mainStart,
 		crossStart,
 		row,
-		justifyContent: style.justifyContent,
+		justifyContent: style.justifyContent ?? "flex-start",
 		alignItems: style.alignItems,
 	});
 
@@ -818,7 +818,7 @@ export function layoutFlex(
 }
 
 /** The shift a relatively positioned node's insets give it. */
-function relativeOffset(entry: Entry, containingBlock: MaybeSize): Size {
+export function relativeOffset(entry: Entry, containingBlock: MaybeSize): Size {
 	const inset = entry.style.inset;
 	const left = resolve(inset.left, containingBlock.width);
 	const right = resolve(inset.right, containingBlock.width);
@@ -913,7 +913,7 @@ function resolveFlexibleLengths(
 	}
 }
 
-interface AbsoluteContext {
+export interface AbsoluteContext {
 	width: number;
 	height: number;
 	border: Edges<number>;
@@ -930,7 +930,7 @@ interface AbsoluteContext {
  * box. An axis with neither inset set takes the static position: where the
  * child would sit as the container's only flex item.
  */
-function layoutAbsolute(
+export function layoutAbsolute(
 	children: Entry[],
 	compute: ComputeNode,
 	context: AbsoluteContext,

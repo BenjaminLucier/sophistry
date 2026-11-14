@@ -1,0 +1,601 @@
+{
+	"explicit lines": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 80,
+		"children": [
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"spans": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 92,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 196.65625,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 206.65625,
+				"y": 0,
+				"width": 93.34375,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 103.328125,
+				"y": 24,
+				"width": 196.671875,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 48,
+				"width": 196.65625,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"negative lines": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 60,
+		"children": [
+			{
+				"x": 300,
+				"y": 0,
+				"width": 0,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 300,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"end line only": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"reversed lines swap": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"items beyond the explicit grid make implicit tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 80,
+		"children": [
+			{
+				"x": 260,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 73.328125,
+				"y": 60,
+				"width": 73.328125,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"negative lines before the explicit grid": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 20,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 20,
+				"y": 20,
+				"width": 50,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"sparse auto-placement skips occupied cells": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 60,
+		"children": [
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"sparse placement continues past a wide item": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 60,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"dense placement backfills holes": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"column flow": {
+		"x": 0,
+		"y": 0,
+		"width": 150,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 20,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"column flow dense": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 60,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 40,
+				"width": 50,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"items locked to a row in sparse flow": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"items locked to a column": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 60,
+		"children": [
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"items locked to a column in dense flow": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"overlapping explicit items": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 200,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"spans wider than the explicit grid": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 300,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 50,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"display none items take no cell": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 0,
+				"height": 0,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	}
+}

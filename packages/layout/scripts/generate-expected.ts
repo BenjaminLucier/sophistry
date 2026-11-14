@@ -2,7 +2,7 @@
  * Records what Chrome lays out for every fixture.
  *
  * Each `test/fixtures/<name>.ts` module exports `fixtures`. This script turns
- * each fixture into HTML (every element `display: flex` and border-box, the
+ * each fixture into HTML (every element `display: flex` unless styled otherwise, and border-box, the
  * root absolutely positioned in a viewport of the fixture's `available`
  * size), opens it in Playwright's Chromium, reads every element's border box
  * relative to its parent's, and writes `test/fixtures/<name>.expected.json`.
@@ -15,7 +15,14 @@ import { readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import { chromium } from "@playwright/test";
-import type { Edges, LayoutStyle } from "../src/index.ts";
+import type {
+	Edges,
+	GridPlacement,
+	LayoutStyle,
+	TrackBreadth,
+	TrackList,
+	TrackSize,
+} from "../src/index.ts";
 import type { ExpectedBox, Fixture, FixtureNode } from "../test/fixture.ts";
 
 const directory = fileURLToPath(new URL("../test/fixtures/", import.meta.url));
@@ -24,6 +31,45 @@ const kebab = (name: string) =>
 	name.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
 const length = (value: number | string) =>
 	typeof value === "number" ? `${value}px` : value;
+
+const breadth = (value: TrackBreadth): string =>
+	typeof value === "object" ? `${value.fr}fr` : length(value);
+
+/** CSS for one track size. */
+function track(value: TrackSize): string {
+	if (typeof value === "object" && "minmax" in value) {
+		return `minmax(${breadth(value.minmax[0])}, ${breadth(value.minmax[1])})`;
+	}
+	if (typeof value === "object" && "fitContent" in value) {
+		return `fit-content(${length(value.fitContent)})`;
+	}
+	return breadth(value);
+}
+
+/** CSS for a track list, repeats included. */
+function trackList(list: TrackList): string {
+	return list
+		.map((entry) =>
+			typeof entry === "object" && "repeat" in entry
+				? `repeat(${entry.repeat}, ${entry.tracks.map(track).join(" ")})`
+				: track(entry),
+		)
+		.join(" ");
+}
+
+/** CSS for a grid placement: `a / b`, `span n`, or a mix. */
+function placement(value: GridPlacement): string {
+	if (typeof value === "number") return `${value}`;
+	const { start, end, span } = value;
+	if (start !== undefined && end !== undefined) return `${start} / ${end}`;
+	if (start !== undefined) {
+		return span === undefined ? `${start}` : `${start} / span ${span}`;
+	}
+	if (end !== undefined) {
+		return span === undefined ? `auto / ${end}` : `span ${span} / ${end}`;
+	}
+	return span === undefined ? "auto" : `span ${span}`;
+}
 
 /** Inline CSS for a style. */
 function css(style: LayoutStyle = {}): string {
@@ -50,6 +96,20 @@ function css(style: LayoutStyle = {}): string {
 				break;
 			case "border":
 				edges("border", "-width", value);
+				break;
+			case "gridTemplateColumns":
+			case "gridTemplateRows":
+				out.push(`${kebab(key)}: ${trackList(value as TrackList)}`);
+				break;
+			case "gridAutoColumns":
+			case "gridAutoRows":
+				out.push(
+					`${kebab(key)}: ${(value as TrackSize[]).map(track).join(" ")}`,
+				);
+				break;
+			case "gridColumn":
+			case "gridRow":
+				out.push(`${kebab(key)}: ${placement(value as GridPlacement)}`);
 				break;
 			case "aspectRatio":
 			case "flexGrow":
