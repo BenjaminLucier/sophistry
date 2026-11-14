@@ -1,5 +1,12 @@
 # @sophistry/3d
 
+## 0.2.0
+
+### Patch Changes
+
+- Updated dependencies [[`2ee6b3b`](https://github.com/BenjaminLucier/sophistry/commit/2ee6b3bd87cc9ec2dbe0e51961db3611a10567f3), [`2ee6b3b`](https://github.com/BenjaminLucier/sophistry/commit/2ee6b3bd87cc9ec2dbe0e51961db3611a10567f3), [`2ee6b3b`](https://github.com/BenjaminLucier/sophistry/commit/2ee6b3bd87cc9ec2dbe0e51961db3611a10567f3), [`2ee6b3b`](https://github.com/BenjaminLucier/sophistry/commit/2ee6b3bd87cc9ec2dbe0e51961db3611a10567f3)]:
+  - @sophistry/core@0.2.0
+
 ## 0.1.0
 
 ### Patch Changes

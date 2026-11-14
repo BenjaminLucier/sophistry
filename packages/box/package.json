@@ -1,6 +1,6 @@
 {
 	"name": "@sophistry/box",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"type": "module",
 	"license": "MIT",
 	"description": "Boxes for Sophistry scenes: flexbox layout, rich text and paint, drawn on the canvas with everything else.",
