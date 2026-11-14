@@ -1,6 +1,6 @@
 import type { PaletteSpec } from "@sophistry/core";
 import { definePalette, derive, resolvePalette } from "@sophistry/core";
-import { Circle, Label, Rect, Stage, useScene } from "@sophistry/solidjs";
+import { Circle, Rect, Stage, Text, useScene } from "@sophistry/solidjs";
 import { createSignal, For } from "solid-js";
 
 export const meta = {
@@ -77,7 +77,7 @@ function Scene(props: { selected: () => number; select: (i: number) => void }) {
 							cursor="pointer"
 							onTap={() => props.select(i())}
 						/>
-						<Label
+						<Text
 							text={choice.name}
 							x={(i() - 1) * 2.6}
 							y={-2.5}

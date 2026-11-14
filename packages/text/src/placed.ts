@@ -36,4 +36,6 @@ export interface PlacedLatex {
 	width: number;
 	/** Height of the formula's box, in scene units. */
 	height: number;
+	/** The first line's baseline: its y in scene units, y up, about the centre. */
+	baseline?: number;
 }

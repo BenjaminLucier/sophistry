@@ -121,7 +121,7 @@ function next() {
 }
 ```
 
-Bind `scale={tokenScale}` on the token and `opacity={promptOpacity}` on the prompt's `<Label>`, and the animations reach the scene directly.
+Bind `scale={tokenScale}` on the token and `opacity={promptOpacity}` on the prompt's `<Text>`, and the animations reach the scene directly.
 
 A wrong drop could instead spring home: `springTo(token, HOME, { stiffness: 300, damping: 15 })` overshoots a little and settles, which reads as a bounce rather than a slide. It is an ordinary animation, so it goes in `play` the same way.
 

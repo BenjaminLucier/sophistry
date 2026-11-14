@@ -1,10 +1,10 @@
 import { hold, track, unwrite, write } from "@sophistry/core";
 import {
 	Circle,
-	Label,
 	Polygon,
 	Square,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
@@ -43,7 +43,7 @@ export default function WriteAndErase() {
 				sides={3}
 				progress={drawn[2]}
 			/>
-			<Label text={caption} y={-2.4} />
+			<Text text={caption} y={-2.4} />
 		</Stage>
 	);
 }

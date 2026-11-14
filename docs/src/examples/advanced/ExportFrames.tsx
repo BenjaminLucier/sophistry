@@ -1,6 +1,6 @@
 import type { Readable, Scene } from "@sophistry/core";
 import { derive, exportFrames, rotateTo, track } from "@sophistry/core";
-import { Circle, Label, Stage, usePlayer, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer, useScene } from "@sophistry/solidjs";
 import { createSignal, For, onCleanup } from "solid-js";
 
 export const meta = {
@@ -33,7 +33,7 @@ function Orbit(props: { angle: Readable<number> }) {
 				radius={0.4}
 				fill={derive(palette, (palette) => palette.series[0])}
 			/>
-			<Label
+			<Text
 				text="rendered frame by frame"
 				y={-3.4}
 				color={derive(palette, (palette) => palette.muted)}

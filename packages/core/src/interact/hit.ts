@@ -181,7 +181,7 @@ export { boundsContain };
 
 /**
  * A text run's box in scene units, before the run's rotation, hanging off its
- * anchor: `labelBox`, oriented for the view (the same box a `<Label>`'s `ref`
+ * anchor: `labelBox`, oriented for the view (the same box a `<Text>`'s `ref`
  * handle reports).
  *
  * @param spec - The text spec (scene units).
@@ -190,7 +190,11 @@ export { boundsContain };
  * @category Interaction plumbing
  */
 export function textBoxAt(spec: TextSpec, yUp = true): Bounds {
-	const box = labelBox(spec.text, spec.style, yUp);
+	const box = spec.box
+		? yUp
+			? spec.box
+			: { ...spec.box, minY: -spec.box.maxY, maxY: -spec.box.minY }
+		: labelBox(spec.text, spec.style, yUp);
 	return {
 		minX: spec.at.x + box.minX,
 		minY: spec.at.y + box.minY,

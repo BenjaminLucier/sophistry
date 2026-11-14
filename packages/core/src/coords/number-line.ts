@@ -34,7 +34,7 @@ import { measuresText } from "../scene/fonts.js";
 import type { ShapeProps } from "../scene/shape.js";
 import { shapeProps } from "../scene/shape.js";
 import type { TextHalo } from "../scene/text.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type {
 	PropDescriptor,
 	PropsDescriptor,
@@ -801,7 +801,7 @@ function layout(
 	const numbers = ctx.list("numbers", numberTicks, {
 		key: (tick) => tick.value,
 		create: (tick) =>
-			label.create({
+			text.create({
 				...anchoredLabelProps(numberOptions(tick), fontFamily),
 				opacity: opacityOf(tick),
 				progress: state.numbersShown,

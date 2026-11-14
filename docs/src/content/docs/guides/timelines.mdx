@@ -300,7 +300,7 @@ Choose the mode per clock, per stage or per run:
 
 ```tsx
 import { createClock, fadeIn, track } from "@sophistry/core";
-import { Label, Stage, usePlayer, useScene, useTrackValue } from "@sophistry/solidjs";
+import { Text, Stage, usePlayer, useScene, useTrackValue } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 const clock = createClock({ reducedMotion: "auto" }); // default; or "reduce" / "no-preference"
@@ -317,7 +317,7 @@ function Script() {
     })();
   });
   const reduced = useTrackValue(useScene().reducedMotion); // for Solid logic or DOM text
-  return <Label text={reduced() ? "Static" : "Animated"} opacity={opacity} />;
+  return <Text text={reduced() ? "Static" : "Animated"} opacity={opacity} />;
 }
 
 export const Scene = () => (

@@ -1,5 +1,5 @@
 import { derive, draggable, toBounds, trackPoint } from "@sophistry/core";
-import { Dot, Label, Rect, Stage, useTheme } from "@sophistry/solidjs";
+import { Dot, Rect, Stage, Text, useTheme } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Keyboard-accessible dragging",
@@ -22,7 +22,7 @@ export default function KeyboardAccessible() {
 		<Stage units={10}>
 			<Rect width={6} height={3} stroke={palette().grid} />
 			<Dot center={position} radius={0.2} label="point" {...handle} />
-			<Label
+			<Text
 				text={derive(
 					position,
 					({ x, y }) => `(${x.toFixed(1)}, ${y.toFixed(1)})`,
@@ -30,7 +30,7 @@ export default function KeyboardAccessible() {
 				y={2.1}
 				color={palette().muted}
 			/>
-			<Label
+			<Text
 				text="Tab to focus, then arrow keys (Shift = fine)"
 				y={-2.4}
 				color={palette().muted}

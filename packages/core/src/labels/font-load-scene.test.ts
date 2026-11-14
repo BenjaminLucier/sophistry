@@ -22,7 +22,7 @@ import type { Scene } from "../scene/scene.js";
 import { createScene, sceneInternals } from "../scene/scene.js";
 import type { DomHarness } from "../scene/test-dom.js";
 import { installDom, mountPoint } from "../scene/test-dom.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import { circle } from "../shapes/circle.js";
 
 const fonts = new EventTarget();
@@ -55,7 +55,7 @@ function mount(): Scene {
 describe("font loads in a scene", () => {
 	it("invalidate the renderer of a scene with text, which repaints", () => {
 		const scene = mount();
-		scene.add(label.create({ text: "Hello" }));
+		scene.add(text.create({ text: "Hello" }));
 		dom.drain();
 		const renderer = sceneInternals(scene)?.renderer;
 		if (!renderer) throw new Error("expected a renderer");

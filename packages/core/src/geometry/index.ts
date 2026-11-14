@@ -141,6 +141,11 @@ export type {
 } from "./path/types.js";
 export type { Resolver } from "./resolver.js";
 export { createResolver } from "./resolver.js";
+export type { CornerRadii, CornerRadius } from "./rounded-rect.js";
+export {
+	resolveCornerRadii,
+	roundedRectCurvePath,
+} from "./rounded-rect.js";
 export type {
 	RangeTransition,
 	WeightedTick,

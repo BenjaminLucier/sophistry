@@ -216,7 +216,7 @@ describe("keyed transitions on labels", () => {
 					(node as { children?: readonly SceneNode[] }).children ?? [];
 				for (const child of children) {
 					if (
-						child.type === "Label" &&
+						child.type === "Text" &&
 						(child as SceneNode<{ text: string }>).get("text") === text
 					)
 						return child;

@@ -1,5 +1,5 @@
 import { draggable, dropTarget, trackPoint } from "@sophistry/core";
-import { Circle, Label, Rect, Stage, useTheme } from "@sophistry/solidjs";
+import { Circle, Rect, Stage, Text, useTheme } from "@sophistry/solidjs";
 import { createSignal } from "solid-js";
 
 export const meta = {
@@ -40,14 +40,14 @@ export default function DropTargets() {
 				fill={overRight() ? palette().highlight : palette().surface}
 				{...zone(setOverRight, "right box")}
 			/>
-			<Label
+			<Text
 				text="left box"
 				x={-2.5}
 				y={0.8}
 				color={palette().muted}
 				fontSize={0.35}
 			/>
-			<Label
+			<Text
 				text="right box"
 				x={2.5}
 				y={0.8}
@@ -61,13 +61,13 @@ export default function DropTargets() {
 				label="token"
 				{...drag}
 			/>
-			<Label
+			<Text
 				text={`dropped on: ${chosen()}`}
 				y={2.3}
 				color={palette().muted}
 				fontSize={0.4}
 			/>
-			<Label
+			<Text
 				text="drag the token onto a box"
 				y={-2.5}
 				color={palette().muted}

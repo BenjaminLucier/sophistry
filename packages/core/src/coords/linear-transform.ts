@@ -31,7 +31,7 @@ import { Invalidate } from "../scene/context.js";
 import { memo, ROOT_SPACE } from "../scene/node.js";
 import { definePrimitive } from "../scene/primitive.js";
 import { lastMatrix } from "../scene/shape.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { InvalidateBits, SceneNode, Space } from "../scene/types.js";
 import { SpaceChange } from "../scene/types.js";
 import { vector } from "../shapes/line.js";
@@ -174,7 +174,14 @@ export class LinearTransformNode extends BaseContainer<LinearTransformProps> {
 		if (penScale !== previous.penScale) change |= SpaceChange.PEN_SCALE;
 		if (yUp !== previous.yUp) change |= SpaceChange.Y_UP;
 		if (change === 0) return;
-		this.ownSpace = { matrix, opacity, clip, penScale, yUp };
+		this.ownSpace = {
+			matrix,
+			opacity,
+			clip,
+			penScale,
+			yUp,
+			lengthScale: parent.lengthScale,
+		};
 		for (const child of this.childNodes) child.spaceChanged(change);
 	}
 }
@@ -367,9 +374,9 @@ function basisChildren(ctx: CompositeContext<BasisVectorsProps>): SceneNode[] {
 	}
 	if (ctx.props.labels) {
 		if (nodes.iCaption) nodes.iCaption.update(next.iCaption as never);
-		else nodes.iCaption = label.create(next.iCaption);
+		else nodes.iCaption = text.create(next.iCaption);
 		if (nodes.jCaption) nodes.jCaption.update(next.jCaption as never);
-		else nodes.jCaption = label.create(next.jCaption);
+		else nodes.jCaption = text.create(next.jCaption);
 		return [nodes.iArrow, nodes.jArrow, nodes.iCaption, nodes.jCaption];
 	}
 	nodes.iCaption?.dispose();

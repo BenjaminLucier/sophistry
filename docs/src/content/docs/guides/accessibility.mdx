@@ -119,14 +119,14 @@ Tree order is tab order. In the bindings that is JSX order, and reordering a `<F
 
 ```tsx
 import { derive, draggable, trackPoint } from "@sophistry/core";
-import { Dot, Label, Stage, useScene } from "@sophistry/solidjs";
+import { Dot, Text, Stage, useScene } from "@sophistry/solidjs";
 
 function FocusHint() {
   const focus = useScene().focus.state;
   const hint = derive(focus, (state) =>
     state.id !== null && state.source === "keyboard" ? "arrow keys nudge" : "press Tab",
   );
-  return <Label text={hint} y={-3} />;
+  return <Text text={hint} y={-3} />;
 }
 
 export function Demo() {

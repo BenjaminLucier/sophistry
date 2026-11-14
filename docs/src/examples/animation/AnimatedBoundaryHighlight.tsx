@@ -1,5 +1,5 @@
 import { rectPolyline } from "@sophistry/core/geometry";
-import { AnimatedBoundary, Label, Stage } from "@sophistry/solidjs";
+import { AnimatedBoundary, Stage, Text } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Animated boundary",
@@ -10,7 +10,7 @@ export const meta = {
 export default function AnimatedBoundaryHighlight() {
 	return (
 		<Stage units={8}>
-			<Label text="the key step" fontSize={0.5} />
+			<Text text="the key step" fontSize={0.5} />
 			<AnimatedBoundary
 				points={rectPolyline(-2, -0.6, 4, 1.2, 0.2)}
 				strokeWidth={0.06}

@@ -15,11 +15,11 @@ import {
 	defineComposite,
 	Invalidate,
 	LEFT,
-	label,
 	line,
 	measuresText,
 	phaseProgress,
 	RIGHT,
+	text,
 	UP,
 } from "@sophistry/core";
 import type { BandKey, BandScale, Point } from "@sophistry/core/geometry";
@@ -44,7 +44,7 @@ export interface BandAxisProps {
 	/** A category name's opacity, 0..1 (a keyed transition fading it in or out). @default 1 */
 	weight?: (key: BandKey) => number;
 	options: MergedAxisOptions;
-	/** An outline around each name; see `LabelProps.halo`. */
+	/** An outline around each name; see `TextNodeProps.halo`. */
 	halo?: AxisOptions["numberHalo"];
 	coords: CoordinateSystem;
 	along: "x" | "y";
@@ -185,14 +185,14 @@ function build(ctx: CompositeContext<BandAxisProps>): SceneNode[] {
 		};
 		const names = ctx.list("names", shown, {
 			key: (item) => item.key,
-			create: (item) => label.create(propsFor(item, undefined) as never),
+			create: (item) => text.create(propsFor(item, undefined) as never),
 			update: (node, item) => node.update(propsFor(item, node) as never),
 		});
 		for (const node of names) nodes.push(node);
 	} else {
 		ctx.list("names", [] as { key: BandKey }[], {
 			key: (item) => item.key,
-			create: () => label.create({ text: "" } as never),
+			create: () => text.create({ text: "" } as never),
 		});
 	}
 	return nodes;

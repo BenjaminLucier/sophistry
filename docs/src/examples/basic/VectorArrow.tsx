@@ -1,9 +1,9 @@
 import { derive, draw, track } from "@sophistry/core";
 import {
 	DashedLine,
-	Label,
 	NumberPlane,
 	Stage,
+	Text,
 	usePlayer,
 	Vector,
 } from "@sophistry/solidjs";
@@ -35,10 +35,10 @@ export default function VectorArrow() {
 			<DashedLine from={{ x: 3, y: 2 }} to={{ x: 3, y: 0 }} progress={parts} />
 			<DashedLine from={{ x: 3, y: 2 }} to={{ x: 0, y: 2 }} progress={parts} />
 			{/* Each beside its own dashed line, clear of the axes' numbers and the shaft. */}
-			<Label text="x = 3" x={3.65} y={1} opacity={parts} />
-			<Label text="y = 2" x={1.5} y={2.35} opacity={parts} />
+			<Text text="x = 3" x={3.65} y={1} opacity={parts} />
+			<Text text="y = 2" x={1.5} y={2.35} opacity={parts} />
 			{/* Arrives with the tip it names. */}
-			<Label
+			<Text
 				text="v = (3, 2)"
 				x={3.95}
 				y={2.45}

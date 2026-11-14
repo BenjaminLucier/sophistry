@@ -1,0 +1,128 @@
+{
+	"absolute with insets": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 200,
+		"children": [
+			{
+				"x": 22,
+				"y": 32,
+				"width": 50,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 243,
+				"y": 153,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"absolute stretched by opposite insets": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 200,
+		"children": [
+			{
+				"x": 10,
+				"y": 30,
+				"width": 270,
+				"height": 130,
+				"children": []
+			}
+		]
+	},
+	"absolute percentages": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 200,
+		"children": [
+			{
+				"x": 30,
+				"y": 100,
+				"width": 150,
+				"height": 50,
+				"children": []
+			}
+		]
+	},
+	"absolute static position centred": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 200,
+		"children": [
+			{
+				"x": 125,
+				"y": 80,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"absolute static position end": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 200,
+		"children": [
+			{
+				"x": 240,
+				"y": 140,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"absolute text shrinks to fit": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 200,
+		"children": [
+			{
+				"x": 10,
+				"y": 10,
+				"width": 90,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"absolute does not take space": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 100,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			}
+		]
+	}
+}

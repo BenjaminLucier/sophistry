@@ -13,7 +13,7 @@
 
 import { cssColor } from "../color/parse.js";
 import type { ColorInput } from "../color/types.js";
-import type { CurvePath, Point, Polyline } from "../geometry/index.js";
+import type { Bounds, CurvePath, Point, Polyline } from "../geometry/index.js";
 import { boundsOf, centerOf, curvePathToPolyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
 import {
@@ -29,12 +29,14 @@ import { writeLagRatio } from "../geometry/write-phase.js";
 import type { Theme } from "../themes/types.js";
 import type { PaintFrame, PaintSpec } from "./gradient.js";
 import { isGradientSpec, resolvePaint } from "./gradient.js";
+import { layoutText } from "./text-layout.js";
 import type {
 	AlongStroke,
 	ClipRegion,
 	Paint,
 	ShapeSpec,
 	StrokeStyle,
+	TextFragment,
 	TextSpec,
 	TextStyle,
 } from "./types.js";
@@ -393,6 +395,7 @@ export interface StrokeStyleInput {
  * @param penScale - Scene units per authored unit, used for widths and dashes.
  * @param spaceOpacity - Opacity inherited from enclosing groups, multiplied into `opacity`.
  * @param paintFrame - Thunk building the gradient frame, called only if a gradient is present.
+ * @param lengthScale - The space's `lengthScale`: the theme's default width, a scene value, is divided by it.
  * @returns The scene-space style.
  *
  * @category Baking
@@ -403,6 +406,7 @@ export function bakeStrokeStyle(
 	penScale: number,
 	spaceOpacity: number,
 	paintFrame: () => PaintFrame,
+	lengthScale = 1,
 ): StrokeStyle {
 	let frame: PaintFrame | null = null;
 	const resolve = (paint: PaintSpec | undefined): Paint | null => {
@@ -422,7 +426,9 @@ export function bakeStrokeStyle(
 	};
 	return {
 		stroke: resolve(input.stroke) ?? theme.palette.foreground,
-		strokeWidth: (input.strokeWidth ?? theme.defaults.strokeWidth) * penScale,
+		strokeWidth:
+			(input.strokeWidth ?? theme.defaults.strokeWidth / lengthScale) *
+			penScale,
 		fill: resolve(input.fill),
 		along: alongStroke(),
 		opacity: (input.opacity ?? 1) * spaceOpacity,
@@ -463,7 +469,7 @@ export interface TextHalo {
 }
 
 /**
- * The style-affecting subset of `<Label>`'s props — everything `bakeTextStyle` reads.
+ * The style-affecting subset of `<Text>`'s props — everything `bakeTextStyle` reads.
  *
  * @category Baking
  */
@@ -517,6 +523,7 @@ export type TextFont = Pick<
  * @param input - Authored font, in scene units.
  * @param theme - Supplies the default size and family.
  * @param unitScale - Scene units per authored unit. Defaults to 1.
+ * @param lengthScale - The space's `lengthScale`: the theme's default size is divided by it.
  * @returns The resolved font.
  *
  * @category Baking
@@ -528,9 +535,11 @@ export function bakeTextFont(
 	>,
 	theme: Theme,
 	unitScale = 1,
+	lengthScale = 1,
 ): TextFont {
 	return {
-		fontSize: (input.fontSize ?? theme.defaults.fontSize) * unitScale,
+		fontSize:
+			(input.fontSize ?? theme.defaults.fontSize / lengthScale) * unitScale,
 		fontFamily: input.fontFamily ?? theme.defaults.fontFamily,
 		fontWeight: input.fontWeight ?? DEFAULT_FONT_WEIGHT,
 		italic: input.italic ?? false,
@@ -546,6 +555,7 @@ export function bakeTextFont(
  * @param theme - Supplies default colour, size and font.
  * @param unitScale - Scene units per authored unit.
  * @param spaceOpacity - Opacity inherited from enclosing groups.
+ * @param lengthScale - The space's `lengthScale`: the theme's default size is divided by it.
  * @returns The scene-space `TextStyle`.
  *
  * @category Baking
@@ -555,10 +565,11 @@ export function bakeTextStyle(
 	theme: Theme,
 	unitScale: number,
 	spaceOpacity: number,
+	lengthScale = 1,
 ): TextStyle {
 	const style: TextStyle = {
 		fill: cssColor(input.fill ?? theme.palette.foreground),
-		...bakeTextFont(input, theme, unitScale),
+		...bakeTextFont(input, theme, unitScale, lengthScale),
 		align: input.align ?? "center",
 		baseline: input.baseline ?? "middle",
 		opacity: (input.opacity ?? 1) * spaceOpacity,
@@ -570,7 +581,8 @@ export function bakeTextStyle(
 			color: cssColor(own.color ?? theme.palette.background),
 			width:
 				(own.width ??
-					(input.fontSize ?? theme.defaults.fontSize) * HALO_WIDTH) * unitScale,
+					(input.fontSize ?? theme.defaults.fontSize / lengthScale) *
+						HALO_WIDTH) * unitScale,
 		};
 	}
 	return style;
@@ -597,6 +609,130 @@ export function textRotation(matrix: Matrix, rotation = 0): number {
 }
 
 /**
+ * One styled run of a text block, its style already baked.
+ *
+ * @category Baking
+ */
+export interface TextBlockRun {
+	text: string;
+	style: TextStyle;
+	underline?: boolean;
+	strikethrough?: boolean;
+	/** A CSS colour behind the run. */
+	highlight?: string;
+}
+
+/**
+ * Room for something inline in a text block, in scene units: its width and
+ * how far it reaches above and below the baseline.
+ *
+ * @category Baking
+ */
+export interface TextBlockInline {
+	inline: { width: number; ascent: number; descent: number };
+}
+
+/**
+ * Where a block put an inline run: the index of its run, and its left end
+ * on the baseline, from the anchor (y up).
+ *
+ * @category Baking
+ */
+export interface PlacedInline {
+	run: number;
+	at: { x: number; y: number };
+}
+
+/**
+ * Lays out runs into a block anchored the way one line of text is: `align`
+ * places the block across the anchor (and each line within the block),
+ * `baseline` places it vertically, `"alphabetic"` putting the first line's
+ * baseline on the anchor.
+ *
+ * @param runs - The runs, in scene units.
+ * @param options - Wrap width (scene units), line height multiple, align and baseline.
+ * @returns The fragments and the block's box, relative to the anchor, y up on screen.
+ *
+ * @category Baking
+ */
+export function bakeTextBlock(
+	runs: readonly (TextBlockRun | TextBlockInline)[],
+	options: {
+		width?: number;
+		lineHeight?: number;
+		/** Pixels per scene unit, the size the text is measured at. */
+		pixelsPerUnit?: number;
+		align: CanvasTextAlign;
+		/** Where lines sit within the block. Defaults to `align`. */
+		textAlign?: CanvasTextAlign;
+		baseline: CanvasTextBaseline;
+	},
+): { fragments: TextFragment[]; box: Bounds; inlines: PlacedInline[] } {
+	const layout = layoutText(
+		runs.map((run) =>
+			"inline" in run ? run : { text: run.text, font: run.style },
+		),
+		{
+			width: options.width,
+			lineHeight: options.lineHeight,
+			align: options.textAlign ?? options.align,
+			pixelsPerUnit: options.pixelsPerUnit,
+		},
+	);
+	const { width, height } = layout;
+	const left =
+		options.align === "left" || options.align === "start"
+			? 0
+			: options.align === "right" || options.align === "end"
+				? -width
+				: -width / 2;
+	let top: number;
+	switch (options.baseline) {
+		case "top":
+		case "hanging":
+			top = 0;
+			break;
+		case "middle":
+			top = height / 2;
+			break;
+		case "bottom":
+		case "ideographic":
+			top = height;
+			break;
+		default:
+			top = layout.firstBaseline;
+	}
+	const fragments: TextFragment[] = [];
+	const inlines: PlacedInline[] = [];
+	for (const laid of layout.fragments) {
+		const placed = runs[laid.run];
+		if (placed && "inline" in placed) {
+			inlines.push({
+				run: laid.run,
+				at: { x: left + laid.x, y: top - laid.baseline },
+			});
+			continue;
+		}
+		const run = placed as TextBlockRun;
+		const fragment: TextFragment = {
+			text: laid.text,
+			offset: { x: left + laid.x, y: top - laid.baseline },
+			style: { ...run.style, align: "left", baseline: "alphabetic" },
+			width: laid.width,
+		};
+		if (run.underline) fragment.underline = true;
+		if (run.strikethrough) fragment.strikethrough = true;
+		if (run.highlight) fragment.highlight = run.highlight;
+		fragments.push(fragment);
+	}
+	return {
+		fragments,
+		box: { minX: left, minY: top - height, maxX: left + width, maxY: top },
+		inlines,
+	};
+}
+
+/**
  * Assembles a `TextSpec`, or `null` when there is nothing to draw (empty text,
  * `progress <= 0`). `at` is already in scene units.
  *
@@ -618,6 +754,8 @@ export function bakeTextSpec(options: {
 	progress?: number;
 	/** The enclosing clip regions (`SceneSpaceValue.clip`), if any. */
 	clip?: readonly ClipRegion[];
+	/** A laid-out block from {@link bakeTextBlock}, for rich or wrapped text. */
+	block?: { fragments: readonly TextFragment[]; box: Bounds };
 }): TextSpec | null {
 	if (!options.text) return null;
 	const progress = options.progress ?? 1;
@@ -634,6 +772,9 @@ export function bakeTextSpec(options: {
 		style: options.style,
 		progress: Math.min(1, progress),
 		...(options.clip ? { clip: options.clip } : {}),
+		...(options.block
+			? { fragments: options.block.fragments, box: options.block.box }
+			: {}),
 	};
 }
 

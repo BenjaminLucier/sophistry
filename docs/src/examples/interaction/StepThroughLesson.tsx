@@ -10,9 +10,9 @@ import {
 } from "@sophistry/core";
 import {
 	Circle,
-	Label,
 	Rect,
 	Stage,
+	Text,
 	usePlayer,
 	useTheme,
 } from "@sophistry/solidjs";
@@ -109,7 +109,7 @@ export default function StepThroughLesson() {
 							onTap={() => answer(i)}
 							{...dropTarget({ over: over[i][1], onDrop: () => answer(i) })}
 						/>
-						<Label
+						<Text
 							text={finished() ? "" : String(question().options[i])}
 							x={x}
 							y={0.8}
@@ -117,7 +117,7 @@ export default function StepThroughLesson() {
 						/>
 					</>
 				))}
-				<Label
+				<Text
 					text={finished() ? "All done!" : question().prompt}
 					y={2.4}
 					fontSize={0.6}

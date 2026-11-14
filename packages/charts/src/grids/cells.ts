@@ -17,7 +17,7 @@ import type {
 import {
 	defineComposite,
 	Invalidate,
-	label,
+	text,
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { BandKey, Bounds } from "@sophistry/core/geometry";
@@ -521,7 +521,7 @@ function draw(ctx: CompositeContext<CellsProps<AnyDatum>>): SceneNode[] {
 	});
 	const labels = ctx.list("labels", written, {
 		key: (item) => item.key,
-		create: (item) => label.create(textOf(item)),
+		create: (item) => text.create(textOf(item)),
 		update: (node, item) => node.update(textOf(item)),
 	});
 	return [state.rects.node, ...labels];

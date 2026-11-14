@@ -9,9 +9,9 @@ import {
 } from "@sophistry/core";
 import {
 	Dot,
-	Label,
 	NumberPlane,
 	Stage,
+	Text,
 	usePlayer,
 	useTheme,
 } from "@sophistry/solidjs";
@@ -65,7 +65,7 @@ export default function CameraFlight() {
 			{LANDMARKS.map((landmark, i) => (
 				<>
 					<Dot center={landmark.at} radius={0.3} color={palette().series[i]} />
-					<Label
+					<Text
 						text={landmark.name}
 						x={landmark.at.x}
 						y={landmark.at.y + 0.9}

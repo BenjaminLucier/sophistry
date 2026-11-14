@@ -334,6 +334,7 @@ export class MarksNode<P extends MarksProps = MarksProps> extends BaseNode<P> {
 				toScene: (at) => at,
 				sceneUnitsPerUnit: 1,
 			}),
+			space.lengthScale,
 		);
 		return this.style;
 	}

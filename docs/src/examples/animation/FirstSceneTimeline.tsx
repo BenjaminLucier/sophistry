@@ -10,9 +10,9 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 	useTrackValue,
@@ -73,7 +73,7 @@ export default function FirstSceneTimeline() {
 		<>
 			<Stage units={10} aspect={4 / 3}>
 				<Ring drawn={drawn} theta={theta} />
-				<Label text={derive(tl.time, (t) => `t = ${t.toFixed(1)} s`)} y={-3} />
+				<Text text={derive(tl.time, (t) => `t = ${t.toFixed(1)} s`)} y={-3} />
 			</Stage>
 			<div
 				style={{

@@ -4,7 +4,7 @@
  *
  * The wedges draw as one path batch (each item the native outline of a
  * `sector`, with its own fill); per-wedge picking and accessible names
- * go through its items. Wedge labels stay `label` nodes. Inside a chart the
+ * go through its items. Wedge labels stay `text` nodes. Inside a chart the
  * layer reports its series (for the legend) and its transition (for the
  * staging); it fits no axes.
  */

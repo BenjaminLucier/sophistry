@@ -121,6 +121,10 @@ export function placeOutline(source: LatexOutline, scale: number): PlacedLatex {
 		parts,
 		width: source.width * scale,
 		height: source.height * scale,
+		baseline:
+			source.baseline === undefined
+				? undefined
+				: (halfHeight - source.baseline) * scale,
 	};
 }
 

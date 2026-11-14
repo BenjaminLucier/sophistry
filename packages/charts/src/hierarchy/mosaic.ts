@@ -5,7 +5,7 @@
  * Every segment is one `rect` instance of one instances node, keyed by its
  * (column, row) pair; per-segment picking and tooltips go through
  * `event.item`. Columns grow from the bottom edge (geometry).
- * Segment and column names are `label` nodes, one per name that fits.
+ * Segment and column names are `text` nodes, one per name that fits.
  */
 
 import type { CompositeContext, RectProps, SceneNode } from "@sophistry/core";

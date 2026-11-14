@@ -53,6 +53,7 @@ class FixedSpace extends BaseContainer<{ children?: readonly SceneNode[] }> {
 		clip: undefined,
 		penScale: undefined,
 		yUp: true,
+		lengthScale: 1,
 	};
 	override get childSpace(): Space {
 		return this.fixed;

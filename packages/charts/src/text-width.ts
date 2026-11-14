@@ -7,7 +7,7 @@ import { DEFAULT_FONT_WEIGHT, measureLabel } from "@sophistry/core/internal";
  * draws it: measured on a canvas where there is one, else estimated.
  *
  * @param fontFamily - The theme's `defaults.fontFamily`.
- * @param fontWeight - Defaults to `label`'s, 500.
+ * @param fontWeight - Defaults to `text`'s, 500.
  */
 export function textWidth(
 	text: string,

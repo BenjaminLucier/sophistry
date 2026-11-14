@@ -258,10 +258,10 @@ describe("children", () => {
 		expect(caught()).toMatch(/<Circle> takes no children/);
 	});
 
-	it("rejects text with a pointer to <Label>", () => {
+	it("rejects text with a pointer to <Text>", () => {
 		vi.spyOn(console, "error").mockImplementation(() => {});
 		const caught = renderCaught(<>hello</>);
-		expect(caught()).toMatch(/<Label text=/);
+		expect(caught()).toMatch(/<Text text=/);
 	});
 
 	it("rejects DOM elements", () => {

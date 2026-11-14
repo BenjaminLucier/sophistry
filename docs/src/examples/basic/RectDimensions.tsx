@@ -1,5 +1,5 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
-import { DoubleArrow, Label, Rect, Stage, usePlayer } from "@sophistry/solidjs";
+import { DoubleArrow, Rect, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -34,7 +34,7 @@ export default function RectDimensions() {
 				from={derive(width, (w) => ({ x: -w / 2, y: -1.5 }))}
 				to={derive(width, (w) => ({ x: w / 2, y: -1.5 }))}
 			/>
-			<Label text={derive(width, (w) => `width = ${w.toFixed(1)}`)} y={-2.1} />
+			<Text text={derive(width, (w) => `width = ${w.toFixed(1)}`)} y={-2.1} />
 		</Stage>
 	);
 }

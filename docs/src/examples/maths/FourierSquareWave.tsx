@@ -2,8 +2,8 @@ import { derive, track, valueTo } from "@sophistry/core";
 import {
 	Axes,
 	FunctionGraph,
-	Label,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
@@ -43,7 +43,7 @@ export default function FourierSquareWave() {
 			>
 				<FunctionGraph function={derive(count, squareWave)} samples={600} />
 			</Axes>
-			<Label
+			<Text
 				text={derive(
 					count,
 					(n) => `${n} ${n === 1 ? "harmonic" : "harmonics"}`,

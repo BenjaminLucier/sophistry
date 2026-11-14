@@ -5,7 +5,7 @@
  * of a `sector` (or `annularSector`, with a hole), with its own
  * fill; the stroke, its width and the fill opacity are shared. Per-wedge
  * picking and accessible names go through the batch's items (`event.item`,
- * `itemLabel`). Slice labels stay `label` nodes, one per present slice.
+ * `itemLabel`). Slice labels stay `text` nodes, one per present slice.
  */
 
 import type {

@@ -1,5 +1,5 @@
 import { derive, track, valueTo } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { Chart, Scatter } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -71,7 +71,7 @@ export default function AnimatedScatterTrails() {
 					fillOpacity={0.85}
 				/>
 			</Chart>
-			<Label
+			<Text
 				text={derive(year, (time) => String(Math.floor(time)))}
 				x={1.9}
 				y={-1.8}

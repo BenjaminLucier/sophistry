@@ -3,17 +3,17 @@
  * hierarchy chart draws for its own `breadcrumbs` prop.
  *
  * A trail is a handful of words, each its own tap target and tab stop, so
- * every crumb, separator and the back control stay `label` nodes (keyed by
+ * every crumb, separator and the back control stay `text` nodes (keyed by
  * the crumb's path, so a crumb cross-fading through a zoom keeps its node).
  */
 
 import type {
 	CompositeContext,
 	KeyboardBehaviour,
-	LabelProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
-import { defineComposite, Invalidate, label } from "@sophistry/core";
+import { defineComposite, Invalidate, text } from "@sophistry/core";
 import type { Bounds, Point } from "@sophistry/core/geometry";
 import { clamp01 } from "@sophistry/core/internal";
 import type { BreadcrumbItem, HierarchyPathSpec } from "../math/breadcrumbs.js";
@@ -31,7 +31,7 @@ const DEFAULT_BACK = "←";
 const GAP = 0.35;
 /** A crumb's tap target reaches this far past its text, as a fraction of the font size. */
 const HIT_PAD = 0.25;
-/** The weight crumbs are measured at: `label`'s. */
+/** The weight crumbs are measured at: `text`'s. */
 const CRUMB_WEIGHT = 500;
 
 /** @category Charts */
@@ -112,7 +112,7 @@ export interface BreadcrumbsProps {
 /** One keyed label of the trail. */
 interface CrumbLabel {
 	key: string;
-	props: LabelProps;
+	props: TextNodeProps;
 }
 
 /** What a trail's handlers read on each event. */
@@ -269,7 +269,7 @@ function drawBreadcrumbs(
 	}
 	return ctx.list("crumbs", labels, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

@@ -3,8 +3,8 @@
  * outline is built about the origin and the centre is the shape's `offset`.
  */
 
-import type { Point, Polyline } from "../geometry/index.js";
-import { polylineToCurvePath, rectPolyline } from "../geometry/index.js";
+import type { CornerRadii, Point, Polyline } from "../geometry/index.js";
+import { roundedRectCurvePath } from "../geometry/index.js";
 import { Invalidate } from "../scene/context.js";
 import {
 	defineShape,
@@ -29,26 +29,39 @@ export function openRing(points: Polyline): Polyline {
 		: points;
 }
 
-/** A `width` by `height` box about the origin, with rounded corners when `cornerRadius` is set. */
+/**
+ * A `width` by `height` box about the origin. Corners are true curves:
+ * `cornerRadii` gives each its own radius, otherwise `cornerRadius` rounds
+ * all four.
+ */
 function boxGeometry(
 	width: number,
 	height: number,
 	cornerRadius = 0,
+	cornerRadii?: CornerRadii,
 ): ShapeGeometry {
-	const ring = rectPolyline(
-		-width / 2,
-		-height / 2,
-		width,
-		height,
-		cornerRadius,
-	);
-	// A plain rect (radius 0) is a clean native win: 4 line segments. A
-	// rounded rect's corners are still the faceted `rectPolyline` output
-	// wrapped as-is (not a native curve at the corners yet).
 	return {
 		closed: true,
-		curvePaths: [polylineToCurvePath(openRing(ring), true)],
+		curvePaths: [
+			roundedRectCurvePath(
+				-width / 2,
+				-height / 2,
+				width,
+				height,
+				cornerRadii ?? cornerRadius,
+			),
+		],
 	};
+}
+
+/** Whether a box has any rounded corner. */
+function isRounded(cornerRadius = 0, cornerRadii?: CornerRadii): boolean {
+	if (cornerRadii) {
+		return cornerRadii.some((radius) =>
+			typeof radius === "number" ? radius > 0 : radius.x > 0 && radius.y > 0,
+		);
+	}
+	return cornerRadius > 0;
 }
 
 /** @category Shapes */
@@ -64,6 +77,12 @@ export interface RectProps extends ShapeProps {
 	 * @default 0
 	 */
 	cornerRadius?: number;
+	/**
+	 * A radius per corner, clockwise from the top left (as seen on a y-up
+	 * stage); each may be `{ x, y }` for an elliptical corner. Overrides
+	 * `cornerRadius`. Radii too large for the box shrink together, as in CSS.
+	 */
+	cornerRadii?: CornerRadii;
 }
 
 /**
@@ -101,15 +120,21 @@ export const rect = defineShape<
 			invalidates: Invalidate.GEOMETRY,
 			instanceable: true,
 		},
+		cornerRadii: { invalidates: Invalidate.GEOMETRY },
 	},
 	// The outline about the origin, rebuilt only when the size or corners change.
 	geometry: (props) =>
-		boxGeometry(props.width, props.height, props.cornerRadius),
+		boxGeometry(
+			props.width,
+			props.height,
+			props.cornerRadius,
+			props.cornerRadii,
+		),
 	// The centre is read on its own, so a move never reruns the outline.
 	offset: (props) => props.center,
 	// Square-cornered boxes draw as rect marks: the renderer's splat fast path.
 	instanceMark: (props) =>
-		props.cornerRadius
+		isRounded(props.cornerRadius, props.cornerRadii)
 			? null
 			: {
 					kind: "rect",
@@ -151,11 +176,13 @@ export const square = defineShape<
 			invalidates: Invalidate.GEOMETRY,
 			instanceable: true,
 		},
+		cornerRadii: { invalidates: Invalidate.GEOMETRY },
 	},
-	geometry: (props) => boxGeometry(props.size, props.size, props.cornerRadius),
+	geometry: (props) =>
+		boxGeometry(props.size, props.size, props.cornerRadius, props.cornerRadii),
 	offset: (props) => props.center,
 	instanceMark: (props) =>
-		props.cornerRadius
+		isRounded(props.cornerRadius, props.cornerRadii)
 			? null
 			: { kind: "rect", halfWidth: props.size / 2, halfHeight: props.size / 2 },
 });

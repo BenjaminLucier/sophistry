@@ -21,6 +21,7 @@
 		"@solidjs/vite-plugin": "catalog:",
 		"@solidjs/web": "catalog:",
 		"@sophistry/3d": "workspace:*",
+		"@sophistry/box": "workspace:*",
 		"@sophistry/charts": "workspace:*",
 		"@sophistry/core": "workspace:*",
 		"@sophistry/solidjs": "workspace:*",

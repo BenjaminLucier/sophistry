@@ -21,7 +21,7 @@
 		"format": "biome check --write",
 		"changeset": "changeset",
 		"version": "changeset version",
-		"build": "pnpm --filter @sophistry/core --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build",
+		"build": "pnpm --filter @sophistry/layout --filter @sophistry/core --filter @sophistry/box --filter @sophistry/text --filter @sophistry/charts --filter @sophistry/3d --filter @sophistry/solidjs --filter @sophistry/react build",
 		"release": "pnpm build && changeset publish",
 		"smoke:consumer": "node scripts/consumer-smoke.mjs",
 		"check:playwright": "node scripts/check-playwright-image.mjs"

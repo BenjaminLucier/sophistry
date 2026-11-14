@@ -9,7 +9,7 @@ import {
 	track,
 	trackPoint,
 } from "@sophistry/core";
-import { Label, Line, Rect, Stage } from "@sophistry/solidjs";
+import { Line, Rect, Stage, Text } from "@sophistry/solidjs";
 import { MathTex } from "@sophistry/solidjs/text";
 import { createSignal, For, onSettled, Show } from "solid-js";
 
@@ -245,7 +245,7 @@ const scenes: Record<string, () => unknown> = {
 		return (
 			<div class="box" data-stage="text">
 				<Stage units={units} yUp={yUp}>
-					<Label text="T" fontSize={4} fontWeight={700} color="#000000" />
+					<Text text="T" fontSize={4} fontWeight={700} color="#000000" />
 				</Stage>
 			</div>
 		);

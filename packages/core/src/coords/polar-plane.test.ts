@@ -47,10 +47,10 @@ describe("polarPlane structure", () => {
 			"Line",
 			"Line",
 			"NumberLine",
-			"Label",
-			"Label",
-			"Label",
-			"Label",
+			"Text",
+			"Text",
+			"Text",
+			"Text",
 			"Circle",
 		]);
 		expect(scene.texts().map((t) => t.text)).toEqual(["0", "π/2", "π", "3π/2"]);

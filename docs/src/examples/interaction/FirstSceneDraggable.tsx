@@ -11,9 +11,9 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useTheme,
 } from "@sophistry/solidjs";
@@ -62,7 +62,7 @@ function Scene() {
 				})}
 			/>
 			{/* Beside the circle: below it would fall off the 16:9 stage. */}
-			<Label
+			<Text
 				text={derive(degrees, (value) => `θ = ${value}°`)}
 				x={3.8}
 				y={-2.2}

@@ -1,5 +1,5 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { BarChart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -44,7 +44,7 @@ export default function BarChartMorph() {
 				width={8}
 				height={4}
 			/>
-			<Label text="same chart, new data" y={2.5} fontSize={0.4} />
+			<Text text="same chart, new data" y={2.5} fontSize={0.4} />
 		</Stage>
 	);
 }

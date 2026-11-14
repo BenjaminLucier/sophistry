@@ -11,8 +11,8 @@ import type { CompositeContext } from "../scene/composite.js";
 import { defineComposite } from "../scene/composite.js";
 import { Invalidate } from "../scene/context.js";
 import { measuresText } from "../scene/fonts.js";
-import type { LabelProps, TextNode } from "../scene/text.js";
-import { label } from "../scene/text.js";
+import type { TextNode, TextNodeProps } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { PropsDescriptor, SceneNode } from "../scene/types.js";
 import { LEFT, ORIGIN, RIGHT, UP } from "../spec/layout.js";
 import {
@@ -197,8 +197,8 @@ export interface AxesState {
 	) => CoordinateSystem;
 	xLine: SceneNode<NumberLineProps> | null;
 	yLine: SceneNode<NumberLineProps> | null;
-	xLabel: TextNode<LabelProps> | null;
-	yLabel: TextNode<LabelProps> | null;
+	xLabel: TextNode<TextNodeProps> | null;
+	yLabel: TextNode<TextNodeProps> | null;
 }
 
 /** The cartesian system of one set of axes values. Immutable. */
@@ -438,20 +438,20 @@ export function axesLayout<P extends object>(
 
 	/** One end label: kept while its text is set, disposed when it is cleared. */
 	const endLabel = (
-		current: TextNode<LabelProps> | null,
-		text: string | undefined,
+		current: TextNode<TextNodeProps> | null,
+		content: string | undefined,
 		at: Point,
 		direction: Point,
 		halo: AxisOptions["numberHalo"],
-	): TextNode<LabelProps> | null => {
-		if (!text) {
+	): TextNode<TextNodeProps> | null => {
+		if (!content) {
 			current?.dispose();
 			return null;
 		}
 		measuresText(ctx);
 		const options = anchoredLabelProps(
 			{
-				text,
+				text: content,
 				at,
 				direction,
 				gap: AXIS_LABEL_GAP,
@@ -468,7 +468,7 @@ export function axesLayout<P extends object>(
 			current.update(next);
 			return current;
 		}
-		return label.create(next);
+		return text.create(next);
 	};
 	state.xLabel = endLabel(
 		state.xLabel,

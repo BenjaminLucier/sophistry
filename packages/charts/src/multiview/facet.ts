@@ -20,7 +20,7 @@ import {
 	defineComposite,
 	group as groupNode,
 	Invalidate,
-	label,
+	text,
 } from "@sophistry/core";
 import type {
 	BandKey,
@@ -679,7 +679,7 @@ function drawFacet(
 	// The row titles, in the right margin, reading downward (as seaborn and ggplot write them).
 	const titledRows = marginTitled ? rowKeys : [];
 	state.rowTitles = ctx.list("rowTitles", titledRows, {
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	titledRows.forEach((key, index) => {
 		const cell = grid.cells[index]?.[layout.columns - 1];

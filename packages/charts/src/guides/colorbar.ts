@@ -11,19 +11,19 @@ import type {
 	ColorRampSpec,
 	CompositeContext,
 	GradientSpec,
-	LabelProps,
 	LineProps,
 	RectProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
 import {
 	defineComposite,
 	Invalidate,
-	label,
 	line,
 	linearGradient,
 	measuresText,
 	rect,
+	text,
 } from "@sophistry/core";
 import type {
 	DivergingKind,
@@ -233,7 +233,7 @@ export function colorbarWidth(
 /** The nodes one tick draws. */
 interface TickNodes {
 	line: SceneNode<LineProps>;
-	label: SceneNode<LabelProps>;
+	label: SceneNode<TextNodeProps>;
 }
 
 /** What a colour bar keeps between updates. */
@@ -242,7 +242,7 @@ interface ColorbarState {
 	fill: (deps: readonly unknown[], make: () => GradientSpec) => GradientSpec;
 	ticks: (deps: readonly unknown[], make: () => ColorbarTicks) => ColorbarTicks;
 	bar: SceneNode<RectProps> | undefined;
-	title: SceneNode<LabelProps> | undefined;
+	title: SceneNode<TextNodeProps> | undefined;
 	nodes: Map<number, TickNodes>;
 }
 
@@ -392,7 +392,7 @@ function renderColorbar(
 			zIndex,
 			visible: showNumbers,
 		};
-		const labelProps: Partial<LabelProps> = {
+		const labelProps: Partial<TextNodeProps> = {
 			text: bar.format(value),
 			x: numberAt.x,
 			y: numberAt.y - (vertical ? 0 : fontSize * 0.45),
@@ -410,7 +410,7 @@ function renderColorbar(
 		} else {
 			nodes = {
 				line: line.create(lineProps as LineProps),
-				label: label.create(labelProps as LabelProps),
+				label: text.create(labelProps as TextNodeProps),
 			};
 		}
 		kept.set(value, nodes);
@@ -420,7 +420,7 @@ function renderColorbar(
 	state.nodes = kept;
 
 	if (props.label) {
-		const titleProps: Partial<LabelProps> = {
+		const titleProps: Partial<TextNodeProps> = {
 			text: props.label,
 			x: vertical ? at.x : at.x + length + fontSize * 0.5,
 			y: vertical ? at.y + length + fontSize * 0.9 : at.y - thickness / 2,
@@ -432,7 +432,7 @@ function renderColorbar(
 			visible: showNumbers,
 		};
 		if (state.title) write(state.title, titleProps);
-		else state.title = label.create(titleProps as LabelProps);
+		else state.title = text.create(titleProps as TextNodeProps);
 		children.push(state.title);
 	} else {
 		state.title = undefined;

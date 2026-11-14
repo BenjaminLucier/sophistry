@@ -49,7 +49,12 @@ import {
 	writeLagRatio,
 } from "@sophistry/core";
 import type { Bounds, Polyline } from "@sophistry/core/geometry";
-import { boundsOf, centerOf, compose } from "@sophistry/core/geometry";
+import {
+	applyToPoint,
+	boundsOf,
+	centerOf,
+	compose,
+} from "@sophistry/core/geometry";
 import {
 	bakeLocalTransform,
 	bakePolylines,
@@ -296,6 +301,22 @@ export class MathTexNode
 		return boundsOf(bakePolylines(part.polylines, matrix));
 	}
 
+	/**
+	 * The y of the formula's first baseline, in its parent's units (where
+	 * `x`/`y` live): text the formula is set into sits on it. Null before
+	 * the formula lands.
+	 */
+	override textBaseline(): number | null {
+		const placed = this.latex.placed();
+		if (!placed || placed.baseline === undefined) return null;
+		const props = this.props;
+		const local = bakeLocalTransform(props, readDelta(props.place), () =>
+			this.flatPolylines(placed),
+		);
+		const point = { x: 0, y: placed.baseline };
+		return local ? applyToPoint(local, point).y : point.y;
+	}
+
 	/* ------------------------------------------------------------ stages */
 
 	protected override propChanged<K extends keyof MathTexProps>(
@@ -511,7 +532,7 @@ const mathTexOptions: CompositeOptions<MathTexProps> = {
  * scripts should `await node.ready()` before animating. The node is the
  * handle: `pending()`, `ready()`, `error()`, `status`, `placed()`, `parts()`,
  * `partBounds(index)`, plus every node handle (`bounds()`, ...). See the
- * module doc for pending and error behaviour. Use `label` for prose.
+ * module doc for pending and error behaviour. Use `text` for prose.
  *
  * @see {@link https://sophistry.dev/guides/math-and-latex/}
  * @see {@link mathTransform}

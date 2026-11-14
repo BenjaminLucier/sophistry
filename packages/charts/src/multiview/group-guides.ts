@@ -10,7 +10,7 @@
  */
 
 import type { SceneNode } from "@sophistry/core";
-import { DOWN, label, UP } from "@sophistry/core";
+import { DOWN, text, UP } from "@sophistry/core";
 import type { Bounds, Point } from "@sophistry/core/geometry";
 import { anchoredLabelProps } from "@sophistry/core/internal";
 import type { Theme } from "@sophistry/core/themes";
@@ -331,7 +331,7 @@ export function createGroupGuides(): GroupGuides {
 					: 0;
 			const anchored = (
 				role: string,
-				text: string | undefined,
+				content: string | undefined,
 				point: Point,
 				direction: typeof UP,
 				gap: number,
@@ -340,11 +340,11 @@ export function createGroupGuides(): GroupGuides {
 				push(
 					keep(
 						role,
-						text
+						content
 							? {
 									...anchoredLabelProps(
 										{
-											text,
+											text: content,
 											at: point,
 											direction,
 											gap,
@@ -359,7 +359,7 @@ export function createGroupGuides(): GroupGuides {
 									visible: at.visible,
 								}
 							: null,
-						(props) => label.create(props as never),
+						(props) => text.create(props as never),
 					),
 				);
 			anchored(
@@ -395,7 +395,7 @@ export function createGroupGuides(): GroupGuides {
 								progress: at.frameProgress,
 							}
 						: null,
-					(props) => label.create(props as never),
+					(props) => text.create(props as never),
 				),
 			);
 			/** The keys' top-left corner: the legend's, and the size key's without one. */

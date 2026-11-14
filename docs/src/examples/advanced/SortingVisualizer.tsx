@@ -8,9 +8,9 @@ import {
 	track,
 } from "@sophistry/core";
 import {
-	Label,
 	Rect,
 	Stage,
+	Text,
 	usePlayer,
 	useTrackValue,
 } from "@sophistry/solidjs";
@@ -76,7 +76,7 @@ export default function SortingVisualizer() {
 					);
 				}}
 			</For>
-			<Label text="bubble sort" y={2.8} />
+			<Text text="bubble sort" y={2.8} />
 		</Stage>
 	);
 }

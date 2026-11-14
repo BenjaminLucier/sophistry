@@ -1,0 +1,352 @@
+{
+	"auto-width rows nest": {
+		"x": 0,
+		"y": 0,
+		"width": 125,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 105,
+				"height": 10,
+				"children": [
+					{
+						"x": 0,
+						"y": 0,
+						"width": 60,
+						"height": 10,
+						"children": []
+					},
+					{
+						"x": 65,
+						"y": 0,
+						"width": 40,
+						"height": 10,
+						"children": [
+							{
+								"x": 0,
+								"y": 0,
+								"width": 40,
+								"height": 10,
+								"children": []
+							}
+						]
+					}
+				]
+			},
+			{
+				"x": 105,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"root min width": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"root max width wraps text": {
+		"x": 0,
+		"y": 0,
+		"width": 70,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 70,
+				"height": 30,
+				"children": []
+			}
+		]
+	},
+	"percentage child of auto-sized parent": {
+		"x": 0,
+		"y": 0,
+		"width": 60,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 20,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"percentage margins and padding": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 100,
+		"children": [
+			{
+				"x": 40,
+				"y": 20,
+				"width": 50,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"nested percentage widths": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 200,
+				"height": 100,
+				"children": [
+					{
+						"x": 0,
+						"y": 0,
+						"width": 100,
+						"height": 10,
+						"children": []
+					}
+				]
+			}
+		]
+	},
+	"column auto height with zero bases": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"column align center fits text": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 30,
+				"y": 20,
+				"width": 40,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"column justify center auto height": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"row height from column child": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": [
+					{
+						"x": 0,
+						"y": 0,
+						"width": 60,
+						"height": 20,
+						"children": []
+					}
+				]
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 140,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"shrinking text items": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 40,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 40,
+				"height": 30,
+				"children": []
+			}
+		]
+	},
+	"max width smaller than text in column": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"stretch with cross margins": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 10,
+				"width": 50,
+				"height": 70,
+				"children": []
+			}
+		]
+	},
+	"width percentage as flex basis": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 50,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 50,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 50,
+				"children": []
+			},
+			{
+				"x": 200,
+				"y": 0,
+				"width": 100,
+				"height": 50,
+				"children": []
+			}
+		]
+	},
+	"deep fit content": {
+		"x": 0,
+		"y": 0,
+		"width": 90,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 90,
+				"height": 20,
+				"children": [
+					{
+						"x": 0,
+						"y": 0,
+						"width": 90,
+						"height": 20,
+						"children": [
+							{
+								"x": 0,
+								"y": 0,
+								"width": 90,
+								"height": 20,
+								"children": []
+							}
+						]
+					}
+				]
+			}
+		]
+	}
+}

@@ -98,6 +98,8 @@ const LOOPS: Record<string, number> = {
 	"basic/GroupTransforms": 1,
 	"basic/RectDimensions": 1.9,
 	"basic/UnitCircle": 2.5,
+	// Mid-reorder: the tiles sliding past each other.
+	"basic/LayoutTransition": 1.1,
 	"interaction/CameraFlight": 3,
 	"maths/ComplexMultiplication": 4.25,
 	// Halfway through the map, the grid half bent.
@@ -277,7 +279,11 @@ for (const [path, id, name] of examples) {
 	}) => {
 		test.setTimeout(120_000);
 		const errors: string[] = [];
-		page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
+		page.on("pageerror", (e) => {
+			errors.push(`pageerror: ${e.message}`);
+			// The stack goes to the log: the message alone rarely says where.
+			console.log(`pageerror in ${id}: ${e.stack ?? e.message}`);
+		});
 		page.on("console", (m) => {
 			if (m.type() === "error") errors.push(`console.error: ${m.text()}`);
 		});

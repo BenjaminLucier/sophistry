@@ -1,7 +1,7 @@
 // Typechecks every fenced code block under an `@example` tag in the JSDoc of
 // the `@sophistry/*` packages. Each block must be a self-contained module
 // (its own imports from "@sophistry/core[/geometry|/color|/themes]",
-// "@sophistry/text", "@sophistry/charts[/3d]", "@sophistry/3d",
+// "@sophistry/text", "@sophistry/box", "@sophistry/charts[/3d]", "@sophistry/3d",
 // "@sophistry/solidjs[/...]" or "@sophistry/react[/...]"), so what
 // an editor shows on hover is code a reader can paste and compile.
 //
@@ -31,7 +31,7 @@ import { fileURLToPath } from "node:url";
 
 const packages = join(dirname(fileURLToPath(import.meta.url)), "../..");
 const repo = join(packages, "..");
-const SOURCES = ["core", "text", "charts", "3d", "solidjs", "react"];
+const SOURCES = ["core", "text", "box", "charts", "3d", "solidjs", "react"];
 const filters = process.argv.slice(2);
 
 /** Where each package's blocks compile: the binding whose JSX they use. */

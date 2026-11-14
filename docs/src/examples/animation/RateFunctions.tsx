@@ -10,9 +10,9 @@ import {
 } from "@sophistry/core";
 import {
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";
@@ -68,7 +68,7 @@ function Trips() {
 		return (
 			<>
 				<Line from={{ x: START, y }} to={{ x: END, y }} opacity={0.25} />
-				<Label
+				<Text
 					text={curve.name}
 					x={-5.6}
 					y={y}

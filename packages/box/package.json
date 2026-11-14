@@ -1,0 +1,68 @@
+{
+	"name": "@sophistry/box",
+	"version": "0.1.0",
+	"type": "module",
+	"license": "MIT",
+	"description": "Boxes for Sophistry scenes: flexbox layout, rich text and paint, drawn on the canvas with everything else.",
+	"keywords": [
+		"layout",
+		"flexbox",
+		"motion graphics",
+		"animation",
+		"canvas"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/box"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts",
+		"./definitions": "./src/entries/definitions.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			},
+			"./definitions": {
+				"types": "./dist/entries/definitions.d.ts",
+				"default": "./dist/entries/definitions.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json"
+	},
+	"dependencies": {
+		"@sophistry/layout": "workspace:^"
+	},
+	"peerDependencies": {
+		"@sophistry/core": "workspace:^"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@sophistry/core": "workspace:*",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	}
+}

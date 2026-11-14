@@ -50,8 +50,8 @@ describe("axes descriptor and structure", () => {
 		expect(node.children.map((c) => c.type)).toEqual([
 			"NumberLine",
 			"NumberLine",
-			"Label",
-			"Label",
+			"Text",
+			"Text",
 			"Circle",
 		]);
 		node.set("xLabel", undefined);

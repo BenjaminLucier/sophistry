@@ -1,5 +1,5 @@
 import { hold, track, valueTo } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { MathTransform } from "@sophistry/solidjs/text";
 import type { MathTransformNode } from "@sophistry/text";
 import { onSettled } from "solid-js";
@@ -32,7 +32,7 @@ export function LatexMorphDemo() {
 
 	return (
 		<Stage units={10}>
-			<Label text="completing the square" y={2.4} />
+			<Text text="completing the square" y={2.4} />
 			<MathTransform
 				from="x^2 + 2x + 1"
 				to="(x + 1)^2"

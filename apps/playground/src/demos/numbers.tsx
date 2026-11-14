@@ -1,5 +1,5 @@
 import { track, valueTo } from "@sophistry/core";
-import { Integer, Label, Stage, usePlayer, Variable } from "@sophistry/solidjs";
+import { Integer, Stage, Text, usePlayer, Variable } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 /**
@@ -21,7 +21,7 @@ export function NumbersDemo() {
 
 	return (
 		<Stage units={10}>
-			<Label text="bytes written" y={2.6} />
+			<Text text="bytes written" y={2.6} />
 			<Integer
 				value={count}
 				x={0}

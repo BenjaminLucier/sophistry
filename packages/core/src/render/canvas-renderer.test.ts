@@ -137,6 +137,9 @@ function mockCtx() {
 		rotate(angle: number) {
 			calls.push({ op: "rotate", args: [angle] });
 		},
+		scale(x: number, y: number) {
+			calls.push({ op: "scale", args: [x, y] });
+		},
 		setLineDash(dash: number[]) {
 			calls.push({ op: "setLineDash", args: [...dash] });
 		},
@@ -927,6 +930,81 @@ describe("drawText", () => {
 			.map((c) => c.op)
 			.filter((op) => op === "clip" || op === "fillText");
 		expect(ops).toEqual(["clip", "fillText", "clip", "fillText"]);
+	});
+
+	function fragmentSpec(progress = 1): TextSpec {
+		const base = textSpec({ text: "ab cd", progress });
+		const style = { ...base.style, align: "left" as const };
+		return {
+			...base,
+			fragments: [
+				{
+					text: "ab",
+					offset: { x: -2, y: 1 },
+					style,
+					width: 2,
+					highlight: "#ff0",
+				},
+				{
+					text: "cd",
+					offset: { x: 1, y: -1 },
+					style: { ...style, fill: "#f00" },
+					width: 2,
+					underline: true,
+				},
+			],
+			box: { minX: -2, minY: -2, maxX: 3, maxY: 2 },
+		};
+	}
+
+	/** One pixel a glyph: each fragment draws exactly as wide as laid out. */
+	function glyphWide(ctx: CanvasRenderingContext2D): void {
+		ctx.measureText = (text: string) =>
+			({ width: Array.from(text).length }) as TextMetrics;
+	}
+
+	it("draws each fragment at its offset from the anchor, y flipped to the canvas", () => {
+		const { ctx, calls } = mockCtx();
+		glyphWide(ctx);
+		paintSpecs(ctx, [fragmentSpec()], new Map(), createPaintCache());
+		expect(calls.find((c) => c.op === "setTransform")?.args).toEqual([
+			1, 0, -0, 1, 5, 5,
+		]);
+		expect(calls.filter((c) => c.op === "fillText").map((c) => c.args)).toEqual(
+			[
+				["ab", -2, -1],
+				["cd", 1, 1],
+			],
+		);
+		const rects = calls.filter((c) => c.op === "fillRect").map((c) => c.args);
+		// The highlight under "ab", then the underline under "cd".
+		expect(rects).toHaveLength(2);
+		expect(rects[0]?.[0]).toBe(-2);
+		expect(rects[1]?.[0]).toBe(1);
+		expect(calls.findIndex((c) => c.op === "fillRect")).toBeLessThan(
+			calls.findIndex((c) => c.op === "fillText"),
+		);
+	});
+
+	it("fits a fragment the font draws wider than laid out to its width", () => {
+		const { ctx, calls } = mockCtx();
+		// Drawn 2.5 px a glyph: "ab" is 5 wide, laid out 2.
+		ctx.measureText = (text: string) =>
+			({ width: 2.5 * Array.from(text).length }) as TextMetrics;
+		paintSpecs(ctx, [fragmentSpec()], new Map(), createPaintCache());
+		const fill = calls.findIndex((c) => c.op === "fillText");
+		expect(calls[fill]?.args).toEqual(["ab", 0, 0]);
+		expect(calls[fill - 1]).toEqual({ op: "scale", args: [0.4, 1] });
+		expect(calls[fill - 2]).toEqual({ op: "translate", args: [-2, -1] });
+	});
+
+	it("reveals fragments in order by width", () => {
+		const { ctx, calls } = mockCtx();
+		glyphWide(ctx);
+		paintSpecs(ctx, [fragmentSpec(0.5)], new Map(), createPaintCache());
+		expect(
+			calls.filter((c) => c.op === "fillText").map((c) => c.args[0]),
+		).toEqual(["ab"]);
 	});
 
 	it("at progress 0: draws nothing, not a one-pixel sliver", () => {

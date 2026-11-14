@@ -10,7 +10,7 @@ import {
 	DOWN,
 	defineComposite,
 	Invalidate,
-	label,
+	text,
 } from "@sophistry/core";
 import type { BandKey, Point } from "@sophistry/core/geometry";
 import { anchoredLabelProps, clamp01 } from "@sophistry/core/internal";
@@ -411,10 +411,10 @@ function drawPairPlot(
 	const name = (variable: string) =>
 		props.variableLabels?.[variable] ?? variable;
 	const bottoms = ctx.list("bottomLabels", variables, {
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	const lefts = ctx.list("leftLabels", variables, {
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	variables.forEach((variable, index) => {
 		const bottom = grid.cells[n - 1]?.[index];

@@ -24,9 +24,9 @@ import {
 	easings,
 	formatDecimal,
 	Invalidate,
-	label,
 	line,
 	pathBatch,
+	text,
 } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
@@ -158,9 +158,9 @@ interface GaugeNodes {
 	needle: ReturnType<typeof line.create>;
 	hub: ReturnType<typeof circle.create>;
 	readout: ReturnType<typeof decimalNumber.create>;
-	caption: ReturnType<typeof label.create>;
-	minLabel: ReturnType<typeof label.create>;
-	maxLabel: ReturnType<typeof label.create>;
+	caption: ReturnType<typeof text.create>;
+	minLabel: ReturnType<typeof text.create>;
+	maxLabel: ReturnType<typeof text.create>;
 	tooltip: ReturnType<typeof createOwnTooltip>;
 	/** The value arc's tooltip text and anchor, as of the last update. */
 	tip: { text: () => string | undefined; at: () => Point };
@@ -456,9 +456,9 @@ export const gauge = defineComposite<GaugeProps>({
 			needle: line.create({ from: { x: 0, y: 0 }, to: { x: 0, y: 0 } }),
 			hub: circle.create({ radius: 0 }),
 			readout: decimalNumber.create({ value: 0 }),
-			caption: label.create({ text: "" }),
-			minLabel: label.create({ text: "" }),
-			maxLabel: label.create({ text: "" }),
+			caption: text.create({ text: "" }),
+			minLabel: text.create({ text: "" }),
+			maxLabel: text.create({ text: "" }),
 			tooltip: createOwnTooltip(),
 			tip: { text: () => undefined, at: () => ({ x: 0, y: 0 }) },
 			handlers: undefined,

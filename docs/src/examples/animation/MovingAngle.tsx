@@ -1,11 +1,11 @@
 import { derive, forever, sequence, track, valueTo } from "@sophistry/core";
-import { Angle, Dot, Label, Line, Stage, usePlayer } from "@sophistry/solidjs";
+import { Angle, Dot, Line, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
 	title: "Moving angle",
 	description:
-		"One ray swings around a fixed one while an Angle arc and a Label readout follow it, all driven by a single tracked number.",
+		"One ray swings around a fixed one while an Angle arc and a Text readout follow it, all driven by a single tracked number.",
 };
 
 const VERTEX = { x: -1.75, y: -1.5 };
@@ -37,7 +37,7 @@ export default function MovingAngle() {
 			<Line from={VERTEX} to={tip} />
 			<Dot center={tip} radius={0.12} />
 			<Angle vertex={VERTEX} from={FIXED} to={tip} radius={0.9} />
-			<Label
+			<Text
 				text={derive(
 					theta,
 					(theta) => `θ = ${Math.round((theta * 180) / Math.PI)}°`,

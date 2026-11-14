@@ -4,10 +4,10 @@ import {
 	createScene,
 	dot,
 	draw,
-	label,
 	line,
 	moveTo,
 	sequence,
+	text,
 	track,
 	trackPoint,
 } from "@sophistry/core";
@@ -28,7 +28,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	scene.add(circle.create({ radius: 2.4, progress: drawn }));
 	scene.add(line.create({ from: { x: 0, y: 0 }, to: tip, stroke: "#89b4fa" }));
 	scene.add(dot.create({ center: tip }));
-	scene.add(label.create({ text: "hello", y: -3.2 }));
+	scene.add(text.create({ text: "hello", y: -3.2 }));
 
 	void scene.play(
 		sequence(

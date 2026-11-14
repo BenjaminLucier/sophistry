@@ -19,7 +19,7 @@ Reveals that draw a shape's outline. Bind the track to a shape's `progress` prop
 | `unwrite(progresses, { lag, reverse })` | Staggered `erase`, last stroke first by default. |
 | `drawBorderThenFill(progress, fillOpacity)` | Traces the outline (65%), then fades the fill in (35%). |
 
-`draw` is an arc-length reveal: the renderer measures the shape's polylines and trims them to the current progress. A shape's polylines share one reveal budget, spent in order, so a multi-part shape draws part by part. An arrow's shaft finishes before its head starts. `<Label>` is the exception: canvas cannot trim a glyph outline, so text is written glyph by glyph instead, each glyph fading in whole. For maths, `@sophistry/text` turns LaTeX into real geometry that does reveal stroke by stroke (see [Math and LaTeX](/guides/math-and-latex/)).
+`draw` is an arc-length reveal: the renderer measures the shape's polylines and trims them to the current progress. A shape's polylines share one reveal budget, spent in order, so a multi-part shape draws part by part. An arrow's shaft finishes before its head starts. `<Text>` is the exception: canvas cannot trim a glyph outline, so text is written glyph by glyph instead, each glyph fading in whole. For maths, `@sophistry/text` turns LaTeX into real geometry that does reveal stroke by stroke (see [Math and LaTeX](/guides/math-and-latex/)).
 
 <Example name="animation/WriteAndErase" />
 

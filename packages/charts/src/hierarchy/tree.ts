@@ -5,7 +5,7 @@
  * node's path of names; per-node picking, tooltips and drilling go through
  * `event.item`. The links are one path batch (each an open polyline with
  * its branch's stroke and its own opacity); a link draws in along its
- * length with its item's `progress`. Names are `label` nodes, one per named node; with drill
+ * length with its item's `progress`. Names are `text` nodes, one per named node; with drill
  * or tooltips on, a name answers the same tap as its dot.
  *
  * Work is cached in steps: each end's depth fit is measured once

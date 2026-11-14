@@ -32,17 +32,16 @@ import {
 	functionGraph,
 	group,
 	horizontalLineToGraph,
+	image,
 	implicitFunction,
 	integer,
 	interactionGroup,
-	label,
 	labeledDot,
 	line,
 	linearTransform,
 	networkGraph,
 	numberLine,
 	numberPlane,
-	paragraph,
 	parametricGraph,
 	path,
 	pathBatch,
@@ -64,6 +63,7 @@ import {
 	surroundingRectangle,
 	tangentLine,
 	tangentToGraph,
+	text,
 	title,
 	tracedPath,
 	transformMatchingShapes,
@@ -467,6 +467,19 @@ export const HorizontalLineToGraph = wrap(horizontalLineToGraph);
 export type HorizontalLineToGraphProps = ComponentProps<typeof horizontalLineToGraph>;
 
 /**
+ * `image` from `@sophistry/core` as a component.
+ *
+ * @category Components
+ */
+export const Image = wrap(image);
+/**
+ * Props of {@link Image}.
+ *
+ * @category Components
+ */
+export type ImageProps = ComponentProps<typeof image>;
+
+/**
  * `implicitFunction` from `@sophistry/core` as a component.
  *
  * @category Components
@@ -504,19 +517,6 @@ export const InteractionGroup = wrap(interactionGroup);
  * @category Components
  */
 export type InteractionGroupProps = ComponentProps<typeof interactionGroup>;
-
-/**
- * `label` from `@sophistry/core` as a component.
- *
- * @category Components
- */
-export const Label = wrap(label);
-/**
- * Props of {@link Label}.
- *
- * @category Components
- */
-export type LabelProps = ComponentProps<typeof label>;
 
 /**
  * `labeledDot` from `@sophistry/core` as a component.
@@ -595,19 +595,6 @@ export const NumberPlane = wrap(numberPlane);
  * @category Components
  */
 export type NumberPlaneProps = ComponentProps<typeof numberPlane>;
-
-/**
- * `paragraph` from `@sophistry/core` as a component.
- *
- * @category Components
- */
-export const Paragraph = wrap(paragraph);
-/**
- * Props of {@link Paragraph}.
- *
- * @category Components
- */
-export type ParagraphProps = ComponentProps<typeof paragraph>;
 
 /**
  * `parametricGraph` from `@sophistry/core` as a component.
@@ -881,6 +868,19 @@ export const TangentToGraph = wrap(tangentToGraph);
  * @category Components
  */
 export type TangentToGraphProps = ComponentProps<typeof tangentToGraph>;
+
+/**
+ * `text` from `@sophistry/core` as a component.
+ *
+ * @category Components
+ */
+export const Text = wrap(text);
+/**
+ * Props of {@link Text}.
+ *
+ * @category Components
+ */
+export type TextProps = ComponentProps<typeof text>;
 
 /**
  * `title` from `@sophistry/core` as a component.

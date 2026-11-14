@@ -15,8 +15,8 @@ import {
 	createContextKey,
 	defineComposite,
 	Invalidate,
-	label,
 	rect,
+	text,
 } from "@sophistry/core";
 import type { Matrix } from "@sophistry/core/geometry";
 import { applyToPoint, invert } from "@sophistry/core/geometry";
@@ -403,7 +403,7 @@ function drawZoom(
 			create: () => rect.create({ width: 0, height: 0 }),
 		});
 		ctx.list("toolbarText", [] as Button[], {
-			create: () => label.create({ text: "" }),
+			create: () => text.create({ text: "" }),
 		});
 	}
 
@@ -524,7 +524,7 @@ function toolbar(
 	});
 	const texts = ctx.list("toolbarText", buttons, {
 		key: (button) => button.key,
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	const nodes: SceneNode[] = [];
 	buttons.forEach((button, i) => {

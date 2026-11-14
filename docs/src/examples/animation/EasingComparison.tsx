@@ -8,9 +8,9 @@ import {
 } from "@sophistry/core";
 import {
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";
@@ -75,7 +75,7 @@ function Race() {
 				return (
 					<>
 						<Line from={{ x: START, y }} to={{ x: END, y }} opacity={0.25} />
-						<Label
+						<Text
 							text={name}
 							x={-4.6}
 							y={y}

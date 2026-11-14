@@ -8,9 +8,9 @@ import {
 } from "@sophistry/core";
 import {
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 	useTrackValue,
@@ -37,8 +37,8 @@ function Knob(props: { x: Track<number> }) {
 				label="value"
 				{...draggable(props.x, { param })}
 			/>
-			<Label text={derive(props.x, (x) => `x = ${x.toFixed(2)}`)} y={1.2} />
-			<Label
+			<Text text={derive(props.x, (x) => `x = ${x.toFixed(2)}`)} y={1.2} />
+			<Text
 				text="drag it, tween it, or slide it"
 				y={-1.2}
 				fontSize={0.28}

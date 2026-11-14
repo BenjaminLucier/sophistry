@@ -73,6 +73,7 @@
 		"build": "vite build && tsc -p tsconfig.build.json"
 	},
 	"dependencies": {
+		"@chenglou/pretext": "^1.0.0",
 		"@types/d3-ease": "catalog:",
 		"d3-color": "^3.1.0",
 		"d3-ease": "^3.0.1",

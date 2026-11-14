@@ -1,5 +1,5 @@
 import { draw, moveTo, track, trackPoint } from "@sophistry/core";
-import { Circle, Dot, Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Dot, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -42,7 +42,7 @@ export default function UnitCircle() {
 			<Circle center={{ x: 0, y: 0 }} radius={2} progress={drawn} />
 			{/* Both arrive with the circle they belong to. */}
 			<Dot center={dot} opacity={drawn} />
-			<Label text="unit circle" y={0} opacity={drawn} />
+			<Text text="unit circle" y={0} opacity={drawn} />
 		</Stage>
 	);
 }

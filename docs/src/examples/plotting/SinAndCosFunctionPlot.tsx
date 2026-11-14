@@ -2,8 +2,8 @@ import { draw, RED, TEAL, track } from "@sophistry/core";
 import {
 	Axes,
 	FunctionGraph,
-	Label,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
@@ -28,8 +28,8 @@ export default function SinAndCosFunctionPlot() {
 				<FunctionGraph function={Math.sin} stroke={RED} progress={drawn} />
 				<FunctionGraph function={Math.cos} stroke={TEAL} progress={drawn} />
 			</Axes>
-			<Label text="sin x" x={2} y={2.6} color={RED} />
-			<Label text="cos x" x={-0.6} y={2.6} color={TEAL} />
+			<Text text="sin x" x={2} y={2.6} color={RED} />
+			<Text text="cos x" x={-0.6} y={2.6} color={TEAL} />
 		</Stage>
 	);
 }

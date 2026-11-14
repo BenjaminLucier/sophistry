@@ -3,9 +3,9 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Label,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";
@@ -58,7 +58,7 @@ function Scene() {
 				stroke={derive(palette, (p) => p.series[1])}
 			/>
 			{/* On the angle's bisector, fading in as the angle opens. */}
-			<Label
+			<Text
 				text="θ"
 				x={derive(theta, (theta) => 1.15 * Math.cos(theta / 2))}
 				y={derive(theta, (theta) => 1.15 * Math.sin(theta / 2))}

@@ -71,7 +71,7 @@ export function isGradientSpec(
 
 /**
  * The paint as a plain colour, for the places that genuinely need a string —
- * a `<Label>`'s `color`, a `<Dot>`'s. A gradient answers with the fallback
+ * a `<Text>`'s `color`, a `<Dot>`'s. A gradient answers with the fallback
  * rather than with its first stop: a caption tinted to match a gradient's low
  * end would be a guess, and a wrong one half the time.
  *

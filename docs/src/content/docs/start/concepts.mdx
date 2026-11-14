@@ -15,21 +15,21 @@ The core, `@sophistry/core`, is plain TypeScript. The Solid and React bindings a
 A **scene** is a canvas plus the tree of nodes painted into it. `createScene` makes one in a host element; `<Stage>` does the same from JSX. The scene owns the canvas, the renderer, the pointer driver and the accessibility mirror.
 
 ```ts
-import { circle, createScene, label } from "@sophistry/core";
+import { circle, createScene, text } from "@sophistry/core";
 
 const scene = createScene({ host: document.querySelector<HTMLElement>("#figure")!, units: 10 });
 scene.add(circle.create({ radius: 1.5 }));
-scene.add(label.create({ text: "hello", y: -2.2 }));
+scene.add(text.create({ text: "hello", y: -2.2 }));
 ```
 
 ```tsx
-import { Circle, Label, Stage } from "@sophistry/solidjs";
+import { Circle, Text, Stage } from "@sophistry/solidjs";
 
 export function Hello() {
   return (
     <Stage units={10}>
       <Circle radius={1.5} />
-      <Label text="hello" y={-2.2} />
+      <Text text="hello" y={-2.2} />
     </Stage>
   );
 }

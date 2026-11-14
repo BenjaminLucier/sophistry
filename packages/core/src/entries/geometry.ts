@@ -156,6 +156,11 @@ export type {
 	Polyline,
 	Subpath,
 } from "../geometry/path/types.js";
+export type { CornerRadii, CornerRadius } from "../geometry/rounded-rect.js";
+export {
+	resolveCornerRadii,
+	roundedRectCurvePath,
+} from "../geometry/rounded-rect.js";
 export type {
 	RangeTransition,
 	WeightedTick,

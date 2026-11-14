@@ -1,5 +1,5 @@
 import { derive } from "@sophistry/core";
-import { Circle, Label, Stage, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {
@@ -33,7 +33,7 @@ function Swatches() {
 							fill={color}
 							fillOpacity={0.4}
 						/>
-						<Label text={token} x={(i() - 2.5) * 1.9} y={-1.4} fontSize={0.3} />
+						<Text text={token} x={(i() - 2.5) * 1.9} y={-1.4} fontSize={0.3} />
 					</>
 				);
 			}}

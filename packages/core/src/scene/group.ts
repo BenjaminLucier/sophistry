@@ -14,17 +14,19 @@ import type { Matrix } from "../geometry/transform.js";
 import {
 	compose,
 	fromTranslationRotationScale,
+	scale as scaleMatrix,
 } from "../geometry/transform.js";
 import type { ClipShape } from "../spec/clip.js";
 import { nestClip } from "../spec/clip.js";
 import type { Placement } from "../spec/layout.js";
 import { readDelta } from "../spec/layout.js";
 import { BaseContainer } from "./container.js";
-import { Invalidate } from "./context.js";
-import { memo, ROOT_SPACE } from "./node.js";
+import type { LengthUnit } from "./context.js";
+import { Invalidate, lengthScaleOf, pixelsPerUnitContext } from "./context.js";
+import { ANY_CONTEXT, memo, ROOT_SPACE } from "./node.js";
 import { definePrimitive } from "./primitive.js";
 import { lastMatrix } from "./shape.js";
-import type { InvalidateBits, SceneNode, Space } from "./types.js";
+import type { ContextKey, InvalidateBits, SceneNode, Space } from "./types.js";
 import { SpaceChange } from "./types.js";
 
 /** @category Shapes */
@@ -60,6 +62,14 @@ export interface GroupProps {
 	 * Pivot for rotation and scale, in the group's own coordinates. Defaults to the origin (0, 0).
 	 */
 	origin?: Point;
+	/**
+	 * What the children's lengths are measured in: `"scene"` for scene units,
+	 * `"px"` for design pixels (a scene is 1920 wide). Scales the children,
+	 * their strokes and their text; the group's own `x`/`y` stay in its
+	 * parent's units. Theme defaults (stroke width, font size) keep their
+	 * size. Omitted, the children use the parent's unit.
+	 */
+	lengthUnit?: LengthUnit;
 	/**
 	 * Multiplies into every descendant's opacity, 0..1.
 	 * @default 1
@@ -117,6 +127,11 @@ export class GroupNode extends BaseContainer<GroupProps> {
 			}),
 	);
 	private readonly matrixOf = lastMatrix();
+	private readonly originOf = memo((x: number, y: number): Point => ({ x, y }));
+	private readonly unitOf = memo(
+		(trs: Matrix, unit: number): Matrix =>
+			unit === 1 ? trs : compose(trs, scaleMatrix(unit, unit)),
+	);
 	private readonly composed = memo((parent: Matrix, local: Matrix) =>
 		// A group that does not transform hands its parent's matrix on as is.
 		isIdentity(local) ? parent : compose(parent, local),
@@ -128,6 +143,15 @@ export class GroupNode extends BaseContainer<GroupProps> {
 
 	override get childSpace(): Space {
 		return this.ownSpace;
+	}
+
+	protected override stagesForContext(
+		key: ContextKey<unknown>,
+	): InvalidateBits {
+		return this.props.lengthUnit !== undefined &&
+			(key === pixelsPerUnitContext || key === ANY_CONTEXT)
+			? Invalidate.SPACE
+			: 0;
 	}
 
 	protected override run(dirty: InvalidateBits): void {
@@ -147,7 +171,18 @@ export class GroupNode extends BaseContainer<GroupProps> {
 		const parent = this.space;
 		const props = this.props;
 		const delta = readDelta(props.place);
-		const local = this.localOf(
+		// A unit is one more scale, inside the group's own: the children's
+		// numbers become scene units (or pixels) whatever the parent's were.
+		const lengthScale =
+			props.lengthUnit === undefined
+				? parent.lengthScale
+				: lengthScaleOf(props.lengthUnit, this.context(pixelsPerUnitContext));
+		const unit = lengthScale / parent.lengthScale;
+		const origin =
+			unit === 1 || !props.origin
+				? props.origin
+				: this.originOf(props.origin.x * unit, props.origin.y * unit);
+		const trs = this.localOf(
 			props.x,
 			props.y,
 			delta.x,
@@ -155,8 +190,9 @@ export class GroupNode extends BaseContainer<GroupProps> {
 			props.rotation,
 			props.scale,
 			props.scaleY,
-			props.origin,
+			origin,
 		);
+		const local = this.unitOf(trs, unit);
 		const matrix = this.matrixOf(this.composed(parent.matrix, local));
 		const opacity = parent.opacity * (props.opacity ?? 1);
 		const clip = this.clipOf(parent.clip, props.clip, matrix);
@@ -167,7 +203,7 @@ export class GroupNode extends BaseContainer<GroupProps> {
 		const penScale =
 			parent.penScale === undefined
 				? undefined
-				: parent.penScale * (props.scale ?? 1);
+				: parent.penScale * (props.scale ?? 1) * unit;
 		const yUp = parent.yUp;
 
 		const previous = this.ownSpace;
@@ -177,8 +213,11 @@ export class GroupNode extends BaseContainer<GroupProps> {
 		if (clip !== previous.clip) change |= SpaceChange.CLIP;
 		if (penScale !== previous.penScale) change |= SpaceChange.PEN_SCALE;
 		if (yUp !== previous.yUp) change |= SpaceChange.Y_UP;
+		if (lengthScale !== previous.lengthScale) {
+			change |= SpaceChange.LENGTH_SCALE;
+		}
 		if (change === 0) return;
-		this.ownSpace = { matrix, opacity, clip, penScale, yUp };
+		this.ownSpace = { matrix, opacity, clip, penScale, yUp, lengthScale };
 		for (const child of this.childNodes) child.spaceChanged(change);
 	}
 }
@@ -219,6 +258,7 @@ export const group = definePrimitive<GroupProps, GroupNode>({
 		scale: { default: 1, invalidates: Invalidate.SPACE },
 		scaleY: { invalidates: Invalidate.SPACE },
 		origin: { invalidates: Invalidate.SPACE },
+		lengthUnit: { invalidates: Invalidate.SPACE },
 		opacity: { default: 1, invalidates: Invalidate.SPACE },
 		clip: { invalidates: Invalidate.SPACE },
 		children: { kind: "children", invalidates: Invalidate.NONE },

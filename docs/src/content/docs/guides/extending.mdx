@@ -150,7 +150,7 @@ Three more helpers cover the other kinds of drawable node, each with its own sha
 
 - **`defineMarks({ name, props, marks(props) })`**: one node for thousands of small items of one outline (a dense point cloud, a grid of cells). `marks` returns typed arrays in your own units, mapped through the enclosing space in one pass. Handlers still resolve per item: `event.item` is the index under the pointer.
 - **`defineImage({ name, props, image(props) })`**: a raster, RGBA pixels plus the frame they land in.
-- **`defineText({ name, props, text(props) })`**: a single run of text with the shared `textProps`, measured and laid out like `label`.
+- **`defineText({ name, props, text(props) })`**: text with the shared `textProps`, measured and laid out like `text`.
 
 ```ts
 import { defineMarks, defineText, type MarksProps, marksProps, Invalidate, type TextProps, textProps } from "@sophistry/core";
@@ -196,7 +196,7 @@ A subtree built from other nodes is a **composite**, not a primitive. `defineCom
 A composite does not transform: its children live in its own space (put a `group` inside for a transform). Between `setup` and `update`, children can follow the composite's props with no `update` at all, by binding to `ctx.prop(key)`:
 
 ```ts
-import { type CompositeContext, circle, defineComposite, label, type SceneNode, Invalidate } from "@sophistry/core";
+import { type CompositeContext, circle, defineComposite, text, type SceneNode, Invalidate } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 
 interface PinsProps {
@@ -208,7 +208,7 @@ interface PinsProps {
 
 /** What one Pins node keeps between `setup` and `update`. */
 interface PinsState {
-  caption: ReturnType<typeof label.create>;
+  caption: ReturnType<typeof text.create>;
   captionAt: (points: readonly Point[]) => Point;
 }
 const states = new WeakMap<SceneNode, PinsState>();
@@ -217,7 +217,7 @@ function pinsChildren(ctx: CompositeContext<PinsProps>) {
   let state = states.get(ctx.node);
   if (!state) {
     state = {
-      caption: label.create({ text: "" }),
+      caption: text.create({ text: "" }),
       // A last-input cache: the same points array (by identity) skips the loop.
       captionAt: ctx.memo((points: readonly Point[]) => ({
         x: points.reduce((sum, point) => sum + point.x, 0) / Math.max(1, points.length),

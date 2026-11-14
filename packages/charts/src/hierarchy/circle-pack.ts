@@ -6,7 +6,7 @@
  * are tinted and outlined, leaves filled); per-node picking, tooltips and
  * drilling go through `event.item`. Circles grow from their centres
  * (radius). While zoomed, the node and the leaf names sit in
- * a `group` clipped to the root's disc. Names are `label` nodes, one per
+ * a `group` clipped to the root's disc. Names are `text` nodes, one per
  * leaf whose name fits.
  */
 

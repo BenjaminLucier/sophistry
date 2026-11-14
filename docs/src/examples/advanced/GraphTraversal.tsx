@@ -1,9 +1,9 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
 import { edgeKey } from "@sophistry/core/geometry";
 import {
-	Label,
 	NetworkGraph,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";
@@ -99,7 +99,7 @@ function Traversal() {
 				vertexConfigs={vertexConfigs}
 				edgeConfigs={edgeConfigs}
 			/>
-			<Label
+			<Text
 				text={derive(
 					visited,
 					(visited) => `visited: ${visited.join(" ") || "-"}`,

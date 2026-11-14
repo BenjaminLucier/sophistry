@@ -25,6 +25,7 @@
 	"exports": {
 		".": "./src/index.ts",
 		"./text": "./src/entries/text.ts",
+		"./box": "./src/entries/box.ts",
 		"./charts": "./src/entries/charts.ts",
 		"./charts/3d": "./src/entries/charts3d.ts",
 		"./3d": "./src/entries/3d.ts"
@@ -39,6 +40,10 @@
 			"./text": {
 				"types": "./dist/entries/text.d.ts",
 				"default": "./dist/entries/text.js"
+			},
+			"./box": {
+				"types": "./dist/entries/box.d.ts",
+				"default": "./dist/entries/box.js"
 			},
 			"./charts": {
 				"types": "./dist/entries/charts.d.ts",
@@ -71,11 +76,13 @@
 		"@sophistry/core": "workspace:^",
 		"@sophistry/text": "workspace:^",
 		"react": "^19.3.0",
-		"@sophistry/3d": "workspace:^"
+		"@sophistry/3d": "workspace:^",
+		"@sophistry/box": "workspace:^"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@sophistry/3d": "workspace:*",
+		"@sophistry/box": "workspace:*",
 		"@sophistry/charts": "workspace:*",
 		"@sophistry/core": "workspace:*",
 		"@sophistry/text": "workspace:*",
@@ -102,6 +109,9 @@
 			"optional": true
 		},
 		"@sophistry/3d": {
+			"optional": true
+		},
+		"@sophistry/box": {
 			"optional": true
 		}
 	}

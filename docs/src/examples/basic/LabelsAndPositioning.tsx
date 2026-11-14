@@ -1,6 +1,6 @@
 import type { Placement, SceneNode } from "@sophistry/core";
 import { arrange, DOWN, nextTo, RIGHT } from "@sophistry/core";
-import { Circle, Label, Square, Stage, Star } from "@sophistry/solidjs";
+import { Circle, Square, Stage, Star, Text } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -34,7 +34,7 @@ export default function LabelsAndPositioning() {
 			<Circle ref={(node) => shapes.push(node)} radius={0.7} />
 			<Square ref={(node) => shapes.push(node)} size={1.4} />
 			<Star ref={(node) => shapes.push(node)} outerRadius={0.8} />
-			<Label
+			<Text
 				ref={(node) => (caption = node)}
 				text="arrange(RIGHT), then nextTo(DOWN)"
 			/>

@@ -1,6 +1,6 @@
 import type { Scene } from "@sophistry/core";
 import { captureFrame, derive, rotateBy, track } from "@sophistry/core";
-import { Circle, Label, Stage, usePlayer, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer, useScene } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -33,7 +33,7 @@ function Orbit() {
 				radius={0.4}
 				fill={derive(palette, (palette) => palette.series[0])}
 			/>
-			<Label
+			<Text
 				text="a moving frame, saved on click"
 				y={-3.4}
 				color={derive(palette, (palette) => palette.muted)}

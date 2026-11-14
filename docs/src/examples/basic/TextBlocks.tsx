@@ -1,17 +1,17 @@
-import { lagged, track, valueTo } from "@sophistry/core";
+import { BLUE, lagged, track, valueTo } from "@sophistry/core";
 import {
 	BulletedList,
-	Paragraph,
 	Stage,
+	Text,
 	Title,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
-	title: "Paragraphs, lists and titles",
+	title: "Text blocks, lists and titles",
 	description:
-		"A title with its rule, a paragraph wrapped to a measure and a bulleted list, each written in a line or an item at a time.",
+		"A title with its rule, rich text wrapped to a measure and a bulleted list, each written in reading order or an item at a time.",
 };
 
 export default function TextBlocks() {
@@ -34,12 +34,21 @@ export default function TextBlocks() {
 	return (
 		<Stage units={14}>
 			<Title text="Continuity" progress={title} />
-			<Paragraph
+			<Text
 				x={-3}
 				y={0.6}
 				width={6}
 				fontSize={0.36}
-				text="A function is continuous at a point when small changes in its input give small changes in its output. Nothing jumps, and nothing is missing."
+				textAlign="left"
+				text={[
+					"A function is ",
+					{ text: "continuous", fontWeight: 700, color: BLUE },
+					" at a point when small changes in its input give small changes in its output. Nothing ",
+					{ text: "jumps", italic: true },
+					", and nothing is ",
+					{ text: "missing", underline: true },
+					".",
+				]}
 				progress={paragraph}
 			/>
 			<BulletedList

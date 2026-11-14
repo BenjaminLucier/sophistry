@@ -180,7 +180,7 @@ export interface AnchoredLabelOptions {
 	zIndex?: number;
 	opacity?: number;
 	progress?: number;
-	/** An outline around the glyphs; see `LabelProps.halo`. */
+	/** An outline around the glyphs; see `TextNodeProps.halo`. */
 	halo?: boolean | TextHalo;
 }
 
@@ -249,7 +249,7 @@ export function stablePlace(
 }
 
 /**
- * The `label` props of an anchored label (see {@link anchoredLabelPlace}).
+ * The `text` props of an anchored label (see {@link anchoredLabelPlace}).
  * Pass the label's current `place` as `previous` when updating a kept one,
  * so an unmoved label keeps its placement object.
  *

@@ -1,5 +1,5 @@
 import { derive, draggable, trackPoint } from "@sophistry/core";
-import { Dot, Label, Polygon, Stage, useTheme } from "@sophistry/solidjs";
+import { Dot, Polygon, Stage, Text, useTheme } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Linked dots",
@@ -31,11 +31,11 @@ export default function LinkedDots() {
 					{...handles[i]}
 				/>
 			))}
-			<Label
+			<Text
 				text={derive(area, (value) => `area = ${value.toFixed(2)}`)}
 				y={-1.9}
 			/>
-			<Label
+			<Text
 				text="drag the corners"
 				y={-2.45}
 				color={palette().muted}

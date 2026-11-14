@@ -56,7 +56,7 @@ describe("numberLine structure", () => {
 		expect(types[0]).toBe("Line");
 		// 5 majors, 4 minors, 5 numbers.
 		expect(types.slice(1, 10)).toEqual(Array(9).fill("Line"));
-		expect(types.slice(10, 15)).toEqual(Array(5).fill("Label"));
+		expect(types.slice(10, 15)).toEqual(Array(5).fill("Text"));
 		expect(node.children.at(-1)).toBe(child);
 	});
 

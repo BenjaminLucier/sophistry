@@ -108,7 +108,7 @@ export interface HierarchyChartBaseProps<T> {
 export interface HierarchyTransitionProps<T> {
 	/**
 	 * The tree to transition to (same shape and channels as `data`); give
-	 * siblings unique `label`s so they match. Matched nodes move in straight
+	 * siblings unique `text` nodes so they match. Matched nodes move in straight
 	 * lines, so tiles reordering between the ends slide across each other;
 	 * `sort: false`, an order-keeping treemap `tile` or `tile: "resquarify"`
 	 * keep every frame a clean tiling. See {@link TransitionProps}.

@@ -118,7 +118,7 @@ const defaultTextStyle: TextStyle = {
 	letterSpacing: 0,
 };
 
-/** A `TextSpec` — the same shape `label` bakes. */
+/** A `TextSpec` — the same shape `text` bakes. */
 function textSpec(options: {
 	text: string;
 	x?: number;

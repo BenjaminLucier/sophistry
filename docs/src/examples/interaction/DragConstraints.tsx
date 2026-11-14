@@ -1,5 +1,5 @@
 import { draggable, onCircle, snapToGrid, trackPoint } from "@sophistry/core";
-import { Circle, Dot, Label, Stage, useTheme } from "@sophistry/solidjs";
+import { Circle, Dot, Stage, Text, useTheme } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Drag constraints",
@@ -43,28 +43,22 @@ export default function DragConstraints() {
 				label="snapped to a grid"
 				{...gridDrag}
 			/>
-			<Label
-				text="free"
-				x={-4}
-				y={-2}
-				color={palette().muted}
-				fontSize={0.35}
-			/>
-			<Label
+			<Text text="free" x={-4} y={-2} color={palette().muted} fontSize={0.35} />
+			<Text
 				text="onCircle"
 				x={0}
 				y={-2}
 				color={palette().muted}
 				fontSize={0.35}
 			/>
-			<Label
+			<Text
 				text="snapToGrid"
 				x={4}
 				y={-2}
 				color={palette().muted}
 				fontSize={0.35}
 			/>
-			<Label
+			<Text
 				text="drag the dots"
 				y={-3}
 				color={palette().muted}

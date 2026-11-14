@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { Bars, Chart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -66,8 +66,8 @@ export default function GroupedAndStackedBars() {
 					layout="stack"
 				/>
 			</Chart>
-			<Label text="dodge" x={-4} y={-3.2} fontSize={0.4} />
-			<Label text="stack" x={4} y={-3.2} fontSize={0.4} />
+			<Text text="dodge" x={-4} y={-3.2} fontSize={0.4} />
+			<Text text="stack" x={4} y={-3.2} fontSize={0.4} />
 		</Stage>
 	);
 }

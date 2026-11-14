@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { Beeswarm, Chart, Strip } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -61,8 +61,8 @@ export default function StripAndSwarm() {
 					stagger={0.6}
 				/>
 			</Chart>
-			<Label text="Strip" x={-4} y={-3.2} fontSize={0.4} />
-			<Label text="Beeswarm" x={4} y={-3.2} fontSize={0.4} />
+			<Text text="Strip" x={-4} y={-3.2} fontSize={0.4} />
+			<Text text="Beeswarm" x={4} y={-3.2} fontSize={0.4} />
 		</Stage>
 	);
 }

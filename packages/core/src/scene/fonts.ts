@@ -65,10 +65,11 @@ export function watchFontLoads(graph: SceneGraph): void {
  * import {
  * 	type CompositeContext,
  * 	defineComposite,
- * 	label,
+ * 	text,
  * 	measuresText,
  * 	Invalidate,
- * 	wrapText,
+ * 	layoutText,
+ * 	rect,
  * } from "@sophistry/core";
  *
  * interface CaptionProps {
@@ -86,12 +87,14 @@ export function watchFontLoads(graph: SceneGraph): void {
  * 	update: (changed, ctx) => layout(ctx),
  * });
  *
- * // One label per line, wrapped with the current font's measured widths.
+ * // The text on a card sized to it, measured with the current font.
  * function layout(ctx: CompositeContext<CaptionProps>) {
- * 	const style = { fontSize: 0.4, fontFamily: "sans-serif", fontWeight: 400, italic: false, letterSpacing: 0 };
- * 	return wrapText(ctx.props.text, style, 4).map((line, index) =>
- * 		label.create({ text: line, y: -0.5 * index, fontSize: 0.4 }),
- * 	);
+ * 	const font = { fontSize: 0.4, fontFamily: "sans-serif", fontWeight: 400, italic: false, letterSpacing: 0 };
+ * 	const size = layoutText([{ text: ctx.props.text, font }], { width: 4 });
+ * 	return [
+ * 		rect.create({ width: size.width + 0.4, height: size.height + 0.4 }),
+ * 		text.create({ text: ctx.props.text, width: 4, fontSize: 0.4, fontWeight: 400, fontFamily: "sans-serif" }),
+ * 	];
  * }
  * ```
  *

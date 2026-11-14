@@ -115,8 +115,8 @@ describe("basisVectors", () => {
 		expect(node.children.map((c) => c.type)).toEqual([
 			"Vector",
 			"Vector",
-			"Label",
-			"Label",
+			"Text",
+			"Text",
 		]);
 		expect(node.children[0]?.get("to" as never)).toEqual({ x: 1.5, y: 0 });
 		expect(node.children[1]?.get("to" as never)).toEqual({ x: 0.5, y: 1.5 });

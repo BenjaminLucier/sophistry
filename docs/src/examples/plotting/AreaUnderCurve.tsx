@@ -3,9 +3,9 @@ import {
 	AreaUnderGraph,
 	Axes,
 	FunctionGraph,
-	Label,
 	RiemannRectangles,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
@@ -39,7 +39,7 @@ export default function AreaUnderCurve() {
 				/>
 				<FunctionGraph function={f} />
 			</Axes>
-			<Label
+			<Text
 				text={derive(count, (value) => `${Math.round(value)} rectangles`)}
 				y={3.5}
 			/>

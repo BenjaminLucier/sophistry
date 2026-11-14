@@ -24,7 +24,7 @@ import type { Scene, SceneOptions } from "./scene.js";
 import { createScene } from "./scene.js";
 import type { Call, DomHarness } from "./test-dom.js";
 import { installDom, mountPoint } from "./test-dom.js";
-import { label } from "./text.js";
+import { text } from "./text.js";
 
 let dom: DomHarness;
 let messages: string[] = [];
@@ -60,7 +60,7 @@ function populate(scene: Scene) {
 	);
 	const inner = scene.add(group.create({ x: 1, scale: 2 }));
 	inner.add(circle.create({ radius: 0.5 }));
-	scene.add(label.create({ text: "hello", y: -2 }));
+	scene.add(text.create({ text: "hello", y: -2 }));
 	return position;
 }
 

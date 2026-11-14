@@ -8,11 +8,11 @@
 
 import type {
 	CompositeContext,
-	LabelProps,
 	PathBatchItem,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
-import { frameContext, label, pointerContext } from "@sophistry/core";
+import { frameContext, pointerContext, text } from "@sophistry/core";
 import type { BandKey } from "@sophistry/core/geometry";
 import {
 	annularSectorCurvePath,
@@ -108,11 +108,11 @@ export function createItemCache<I>(): {
 /** One label of a keyed list: its key and the label's props. */
 export interface KeyedLabel {
 	key: unknown;
-	props: LabelProps;
+	props: TextNodeProps;
 }
 
 /**
- * Keyed `label` nodes for one list (`slot`): a node per key, created once
+ * Keyed `text` nodes for one list (`slot`): a node per key, created once
  * and updated in place (equal values are no-ops on the node), disposed when
  * its key leaves.
  */
@@ -123,7 +123,7 @@ export function labelList<P>(
 ): SceneNode[] {
 	return ctx.list(slot, labels, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

@@ -12,7 +12,7 @@
  * series has a wedge of its own. The grid rings and spokes stay
  * `polygon` / `line` nodes: they reveal by tracing their stroke
  * (`progress`), which a path batch does not do per item, and there are a
- * handful of them. Axis names are `label` nodes.
+ * handful of them. Axis names are `text` nodes.
  */
 
 import type {

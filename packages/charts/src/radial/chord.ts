@@ -4,7 +4,7 @@
  * Two path batches: the ribbons (each its own fill and fade, paint order
  * under the ring) and the group arcs (each its own fill). Hover, taps,
  * tooltips and accessible names resolve per ribbon and per arc through
- * `event.item` / `itemLabel`. Group names are anchored `label` nodes.
+ * `event.item` / `itemLabel`. Group names are anchored `text` nodes.
  */
 
 import type {

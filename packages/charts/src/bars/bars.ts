@@ -28,8 +28,8 @@ import type {
 import {
 	defineComposite,
 	Invalidate,
-	label,
 	rect,
+	text,
 	UNDER_AXES_Z_INDEX,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
@@ -933,7 +933,7 @@ function draw(ctx: CompositeContext<BarsProps<AnyDatum>>): SceneNode[] {
 	);
 	const labelNodes = ctx.list("labels", labelEntries, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

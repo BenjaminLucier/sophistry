@@ -7,7 +7,7 @@ import {
 	track,
 	valueTo,
 } from "@sophistry/core";
-import { Circle, Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -56,7 +56,7 @@ export default function CustomAnimationLeaf() {
 				radius={0.5}
 				fill="#58c4dd"
 			/>
-			<Label
+			<Text
 				text={derive(count, (count) => `ticks: ${count}`)}
 				y={-1.2}
 				fontSize={0.5}

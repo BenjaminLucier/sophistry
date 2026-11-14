@@ -1,10 +1,10 @@
 import { draggable, toBounds, trackPoint } from "@sophistry/core";
 import {
 	Dot,
-	Label,
 	MultiStage,
 	NumberPlane,
 	PictureInPicture,
+	Text,
 	useTheme,
 } from "@sophistry/solidjs";
 
@@ -25,7 +25,7 @@ export default function PictureInPictureViews() {
 		<MultiStage units={10}>
 			<NumberPlane xRange={[-6, 6]} yRange={[-4, 4]} width={12} height={8} />
 			<Dot center={dot} radius={0.2} label="dot" {...handle} />
-			<Label
+			<Text
 				text="drag the dot"
 				x={3}
 				y={-2.4}

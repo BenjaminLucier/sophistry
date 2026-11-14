@@ -15,7 +15,7 @@ import { resolveTheme } from "../themes/index.js";
 import { themeContext } from "./context.js";
 import { SceneGraph } from "./graph.js";
 import { group } from "./group.js";
-import { label } from "./text.js";
+import { text } from "./text.js";
 
 const unit = { minX: 0, minY: 0, maxX: 1, maxY: 1 };
 
@@ -51,21 +51,21 @@ describe("group clip", () => {
 	it("nested clips stack outermost first; siblings share the list", () => {
 		const { graph, commit } = manualGraph();
 		const box = rect.create({ width: 1, height: 1 });
-		const text = label.create({ text: "hi" });
+		const caption = text.create({ text: "hi" });
 		graph.root.add(
 			group.create({
 				clip: unit,
 				children: [
 					group.create({
 						clip: { minX: 0.5, minY: 0, maxX: 2, maxY: 2 },
-						children: [box, group.create({ x: 3, children: [text] })],
+						children: [box, group.create({ x: 3, children: [caption] })],
 					}),
 				],
 			}),
 		);
 		commit();
 		const rectSpec = box.spec as ShapeSpec;
-		const textSpec = text.spec as TextSpec;
+		const textSpec = caption.spec as TextSpec;
 		expect(rectSpec.clip).toHaveLength(2);
 		expect(rectSpec.clip?.[0]?.rings[0]?.[1]).toEqual({ x: 1, y: 0 });
 		// A transform-only group between adds nothing and passes the list on.
@@ -75,10 +75,10 @@ describe("group clip", () => {
 	it("an unclipped node carries no clip at all", () => {
 		const { graph, commit } = manualGraph();
 		const box = graph.root.add(rect.create({ width: 1, height: 1 }));
-		const text = graph.root.add(label.create({ text: "a" }));
+		const caption = graph.root.add(text.create({ text: "a" }));
 		commit();
 		expect("clip" in (box.spec as ShapeSpec)).toBe(false);
-		expect("clip" in (text.spec as TextSpec)).toBe(false);
+		expect("clip" in (caption.spec as TextSpec)).toBe(false);
 	});
 
 	it("follows a bound region, and moves with the group without rebuilding the outline", () => {

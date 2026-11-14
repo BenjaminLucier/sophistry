@@ -1,0 +1,1149 @@
+{
+	"fixed columns and rows": {
+		"x": 0,
+		"y": 0,
+		"width": 230,
+		"height": 70,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 150,
+				"y": 0,
+				"width": 80,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 30,
+				"width": 100,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 30,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"empty grid takes its tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 110,
+		"height": 55,
+		"children": []
+	},
+	"gaps between tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 48,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 92,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 104,
+				"y": 0,
+				"width": 92,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 208,
+				"y": 0,
+				"width": 92,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 28,
+				"width": 92,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 104,
+				"y": 28,
+				"width": 92,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"fractions share the free space": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 100,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 75,
+				"height": 100,
+				"children": []
+			},
+			{
+				"x": 175,
+				"y": 0,
+				"width": 225,
+				"height": 100,
+				"children": []
+			}
+		]
+	},
+	"fractions below one": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"percentage tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 200,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 80,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 200,
+				"height": 80,
+				"children": []
+			}
+		]
+	},
+	"percentage tracks of an auto-height grid": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"auto tracks stretch": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 125,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 175,
+				"y": 0,
+				"width": 125,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto columns size to content": {
+		"x": 0,
+		"y": 0,
+		"width": 160,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"min-content and max-content tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 20,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 20,
+				"y": 0,
+				"width": 80,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"minmax with a fraction": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 150,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 150,
+				"y": 0,
+				"width": 150,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"minmax fraction wins over minimum when space is short": {
+		"x": 0,
+		"y": 0,
+		"width": 150,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"minmax with zero minimum stops content blowout": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"fraction tracks grow to unbreakable content": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 10,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"fraction tracks and a width larger than the content": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 10,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"minmax auto and a fixed maximum": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 40,
+				"height": 30,
+				"children": []
+			}
+		]
+	},
+	"fit-content tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 130,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 80,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"repeat with a count": {
+		"x": 0,
+		"y": 0,
+		"width": 180,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 120,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 160,
+				"y": 0,
+				"width": 20,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 40,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"repeat of fractions": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 67.5,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 77.5,
+				"y": 0,
+				"width": 67.5,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 155,
+				"y": 0,
+				"width": 67.5,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 232.5,
+				"y": 0,
+				"width": 67.5,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 67.5,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fill columns": {
+		"x": 0,
+		"y": 0,
+		"width": 350,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fit collapses empty tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 350,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 170,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 180,
+				"y": 0,
+				"width": 170,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fill keeps empty tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 350,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fill with a maximum width": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fill with a minimum width": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fill of an auto-width grid is one track": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fit with a fixed column before": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 30,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 30,
+				"y": 0,
+				"width": 60,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"implicit rows from gridAutoRows": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 75,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 35,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 20,
+				"width": 100,
+				"height": 35,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 55,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 55,
+				"width": 100,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"implicit columns from gridAutoColumns": {
+		"x": 0,
+		"y": 0,
+		"width": 110,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 30,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 30,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 30,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 30,
+				"y": 20,
+				"width": 50,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 30,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"rows share an auto height": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"fraction rows in a tall grid": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 300,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 90,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 90,
+				"width": 100,
+				"height": 180,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 270,
+				"width": 100,
+				"height": 30,
+				"children": []
+			}
+		]
+	},
+	"fraction rows of an auto-height grid size to content": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 80,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"min height grows fraction rows": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 100,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"padding and border around tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 44,
+		"children": [
+			{
+				"x": 17,
+				"y": 12,
+				"width": 80,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 103,
+				"y": 12,
+				"width": 80,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"percentage gaps": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 90,
+				"height": 45,
+				"children": []
+			},
+			{
+				"x": 110,
+				"y": 0,
+				"width": 90,
+				"height": 45,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 55,
+				"width": 90,
+				"height": 45,
+				"children": []
+			},
+			{
+				"x": 110,
+				"y": 55,
+				"width": 90,
+				"height": 45,
+				"children": []
+			}
+		]
+	},
+	"auto-fit collapses a gap in the middle": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 50,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fit with items spanning tracks": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 170,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"auto-fit rows collapse": {
+		"x": 0,
+		"y": 0,
+		"width": 40,
+		"height": 300,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 50,
+				"width": 40,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"mixed track types in one list": {
+		"x": 0,
+		"y": 0,
+		"width": 500,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 48,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 156,
+				"y": 0,
+				"width": 73.328125,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 237.328125,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 305.328125,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 353.328125,
+				"y": 0,
+				"width": 146.671875,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"minmax with min-content and max-content": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 120,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 120,
+				"y": 0,
+				"width": 60,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"minmax percentage": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 120,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 120,
+				"y": 0,
+				"width": 280,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"fraction tracks with gaps and a fixed track": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 66.65625,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 86.65625,
+				"y": 0,
+				"width": 60,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 166.65625,
+				"y": 0,
+				"width": 133.34375,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"fractions overflow when fixed tracks exceed the container": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 80,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 60,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 140,
+				"y": 0,
+				"width": 0,
+				"height": 10,
+				"children": []
+			}
+		]
+	}
+}

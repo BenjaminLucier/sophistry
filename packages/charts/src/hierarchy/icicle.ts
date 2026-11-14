@@ -4,7 +4,7 @@
  * Every band is one `rect` instance of one instances node, keyed by the
  * node's path of names; per-node picking, tooltips and drilling go through
  * `event.item`. The level-by-level reveal grows each rectangle from its
- * parent side (geometry). Names are `label` nodes, one per
+ * parent side (geometry). Names are `text` nodes, one per
  * rectangle whose name fits.
  */
 

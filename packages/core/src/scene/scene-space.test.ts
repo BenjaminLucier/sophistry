@@ -22,7 +22,7 @@ import { frameContext, themeContext } from "./context.js";
 import { SceneGraph } from "./graph.js";
 import { group } from "./group.js";
 import { definePrimitive } from "./primitive.js";
-import { label } from "./text.js";
+import { text } from "./text.js";
 import type { SceneNode, Space } from "./types.js";
 
 const theme = resolveTheme({ mode: "dark" });
@@ -90,6 +90,7 @@ function linearTransform(space: Partial<Space>, children: SceneNode[]) {
 		clip: undefined,
 		penScale: undefined,
 		yUp: true,
+		lengthScale: 1,
 		...space,
 	};
 	node.setChildren(children);
@@ -105,7 +106,7 @@ describe("camera, size and frame never reach a spec", () => {
 		const box = rect.create({ width: 1, height: 1 });
 		const drawables: SceneNode[] = [
 			circle.create({ center: { x: 1, y: 2 }, radius: 3, fill: "#ff0000" }),
-			label.create({ text: "hi", x: 1, y: 1 }),
+			text.create({ text: "hi", x: 1, y: 1 }),
 			box,
 		];
 		const t = mount([
@@ -298,7 +299,7 @@ describe("geometry and ink are in scene units", () => {
 	});
 
 	it("text size, spacing and anchor are scene units scaled only by groups", () => {
-		const node = label.create({
+		const node = text.create({
 			text: "x",
 			x: 1,
 			fontSize: 0.5,

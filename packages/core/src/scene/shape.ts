@@ -532,7 +532,10 @@ export class ShapeNode<P extends ShapeProps = ShapeProps> extends BaseNode<P> {
 		if (change & (SpaceChange.MATRIX | SpaceChange.PEN_SCALE)) {
 			bits |= Invalidate.TRANSFORM;
 		}
-		if (change & SpaceChange.OPACITY) bits |= Invalidate.STYLE;
+		// The theme's default stroke width is divided by the length scale.
+		if (change & (SpaceChange.OPACITY | SpaceChange.LENGTH_SCALE)) {
+			bits |= Invalidate.STYLE;
+		}
 		if (change & SpaceChange.CLIP) bits |= Invalidate.SPEC;
 		return bits;
 	}
@@ -749,6 +752,7 @@ export class ShapeNode<P extends ShapeProps = ShapeProps> extends BaseNode<P> {
 						scale,
 						opacity,
 						() => bakePaintFrame(this.flatPolylines(shape), matrix),
+						this.space.lengthScale,
 					),
 			),
 			lines: memo(bakePolylines),
@@ -818,6 +822,7 @@ export class ShapeNode<P extends ShapeProps = ShapeProps> extends BaseNode<P> {
 			1,
 			this.space.opacity,
 			() => bakePaintFrame(this.flatPolylines(shape), IDENTITY),
+			this.space.lengthScale,
 		);
 		return this.baseStyle;
 	}

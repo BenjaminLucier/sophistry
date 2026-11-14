@@ -3,9 +3,9 @@ import {
 	circle,
 	createScene,
 	follow,
-	label,
 	sequence,
 	springTo,
+	text,
 	track,
 	trackPoint,
 } from "@sophistry/core";
@@ -38,9 +38,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 			stroke: "none",
 		}),
 	);
-	scene.add(
-		label.create({ text: "springTo (pink) · follow (green)", y: -3.2 }),
-	);
+	scene.add(text.create({ text: "springTo (pink) · follow (green)", y: -3.2 }));
 
 	// A live follower on the scene's clock: retargets keep the velocity.
 	const stop = follow(

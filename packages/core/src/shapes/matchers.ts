@@ -231,10 +231,10 @@ function surroundingGeometry(
  *
  * @example
  * ```ts
- * import { createScene, label, surroundingRectangle } from "@sophistry/core";
+ * import { createScene, text, surroundingRectangle } from "@sophistry/core";
  *
  * const scene = createScene({ host: document.body });
- * const caption = scene.root.add(label.create({ text: "x = 1" }));
+ * const caption = scene.root.add(text.create({ text: "x = 1" }));
  * scene.root.add(surroundingRectangle.create({ target: caption })); // follows the label
  * ```
  *
@@ -283,10 +283,10 @@ export interface BackgroundRectangleProps extends SurroundingRectangleProps {
  *
  * @example
  * ```ts
- * import { backgroundRectangle, createScene, label } from "@sophistry/core";
+ * import { backgroundRectangle, createScene, text } from "@sophistry/core";
  *
  * const scene = createScene({ host: document.body });
- * const caption = scene.root.add(label.create({ text: "peak" }));
+ * const caption = scene.root.add(text.create({ text: "peak" }));
  * scene.root.add(backgroundRectangle.create({ target: caption }));
  * ```
  *
@@ -416,10 +416,10 @@ export interface UnderlineProps extends Omit<MatcherProps, "padding"> {
  *
  * @example
  * ```ts
- * import { createScene, label, underline } from "@sophistry/core";
+ * import { createScene, text, underline } from "@sophistry/core";
  *
  * const scene = createScene({ host: document.body });
- * const word = scene.root.add(label.create({ text: "important" }));
+ * const word = scene.root.add(text.create({ text: "important" }));
  * scene.root.add(underline.create({ target: word }));
  * ```
  *

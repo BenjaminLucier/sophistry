@@ -5,7 +5,7 @@
  * label on each update and keeps the label nodes in a keyed list.
  */
 
-import type { CoordinateSystem, LabelProps } from "@sophistry/core";
+import type { CoordinateSystem, TextNodeProps } from "@sophistry/core";
 import { DOWN, LEFT, RIGHT, UP } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import { mixColor as mixRgb, toCss } from "@sophistry/core/color";
@@ -170,7 +170,7 @@ export interface BarLabelState<T> {
 /** One label to draw: its key in the list and its props. */
 export interface BarLabelEntry {
 	key: string;
-	props: LabelProps;
+	props: TextNodeProps;
 }
 
 /**
