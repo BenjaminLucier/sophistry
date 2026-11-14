@@ -35,11 +35,11 @@ export interface SizingInputs {
 	/** Whether to lay out the subtree and record boxes, or only report a size. */
 	perform: boolean;
 	/**
-	 * `"content"` ignores the node's own size, min and max (not its
-	 * descendants'): the size of its content alone, for a flex item's
-	 * content-based minimum. Defaults to `"inherent"`.
+	 * An axis along which to ignore the node's own size, min and max (not its
+	 * descendants'): the size of its content alone, as a flex item's base size
+	 * and content-based minimum need. The other axis keeps its constraints.
 	 */
-	sizing?: "inherent" | "content";
+	contentAxis?: "width" | "height";
 }
 
 /** Sizes (and with `perform`, lays out) one node. */

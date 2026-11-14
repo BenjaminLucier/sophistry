@@ -174,7 +174,8 @@ export function layoutFlex(
 	const own = (
 		value: Parameters<typeof resolve>[0],
 		basis: number | undefined,
-	) => (inputs.sizing === "content" ? undefined : resolve(value, basis));
+		axis: "width" | "height",
+	) => (inputs.contentAxis === axis ? undefined : resolve(value, basis));
 	const padding = resolveEdges(style.padding, parentSize.width);
 	const border = resolveEdges(style.border, parentSize.width);
 	const inset: Size = {
@@ -182,31 +183,31 @@ export function layoutFlex(
 		height: padding.top + padding.bottom + border.top + border.bottom,
 	};
 	const min: MaybeSize = {
-		width: own(style.minSize.width, parentSize.width),
-		height: own(style.minSize.height, parentSize.height),
+		width: own(style.minSize.width, parentSize.width, "width"),
+		height: own(style.minSize.height, parentSize.height, "height"),
 	};
 	const max: MaybeSize = {
-		width: own(style.maxSize.width, parentSize.width),
-		height: own(style.maxSize.height, parentSize.height),
+		width: own(style.maxSize.width, parentSize.width, "width"),
+		height: own(style.maxSize.height, parentSize.height, "height"),
 	};
 	const styled = applyAspectRatio(
 		{
 			width:
 				known.width ??
 				maybeClamp(
-					own(style.size.width, parentSize.width),
+					own(style.size.width, parentSize.width, "width"),
 					min.width,
 					max.width,
 				),
 			height:
 				known.height ??
 				maybeClamp(
-					own(style.size.height, parentSize.height),
+					own(style.size.height, parentSize.height, "height"),
 					min.height,
 					max.height,
 				),
 		},
-		inputs.sizing === "content" ? undefined : style.aspectRatio,
+		inputs.contentAxis ? undefined : style.aspectRatio,
 	);
 	const outerWidth =
 		styled.width === undefined
@@ -316,19 +317,75 @@ export function layoutFlex(
 		return Math.max(clamped, childInset) + outerMargin;
 	};
 
-	// A column container settles its width first, as block layout does.
-	if (!row && inner.width === undefined) {
+	// The width is settled first, as block layout settles the inline size
+	// before anything else, so percentages inside resolve against it.
+	if (inner.width === undefined) {
 		let minContent = 0;
 		let maxContent = 0;
-		for (const child of flow) {
-			minContent = Math.max(
-				minContent,
-				contribution(child, "width", "min-content", undefined),
-			);
-			maxContent = Math.max(
-				maxContent,
-				contribution(child, "width", "max-content", undefined),
-			);
+		const heightLimit = inner.height ?? innerMax.height;
+		if (row) {
+			const gap = resolve(style.gap.width, undefined) ?? 0;
+			const gaps = gap * Math.max(0, flow.length - 1);
+			maxContent = gaps;
+			minContent = wrap ? 0 : gaps;
+			for (const child of flow) {
+				maxContent += contribution(child, "width", "max-content", undefined);
+				const smallest = contribution(child, "width", "min-content", undefined);
+				minContent = wrap
+					? Math.max(minContent, smallest)
+					: minContent + smallest;
+			}
+		} else if (wrap && heightLimit !== undefined) {
+			// A wrapping column is as wide as its lines, broken at its height.
+			const mainGap = resolve(style.gap.height, inner.height) ?? 0;
+			const crossGap = resolve(style.gap.width, undefined) ?? 0;
+			let lineCount = 0;
+			let lineWidth = 0;
+			let used = 0;
+			let total = 0;
+			for (const child of flow) {
+				const childWidth = contribution(
+					child,
+					"width",
+					"max-content",
+					undefined,
+				);
+				const childHeight = contribution(
+					child,
+					"height",
+					"max-content",
+					undefined,
+				);
+				if (
+					lineCount > 0 &&
+					used + mainGap + childHeight > heightLimit + EPSILON
+				) {
+					total += lineWidth;
+					lineWidth = 0;
+					used = 0;
+					lineCount++;
+				} else if (lineCount === 0) {
+					lineCount = 1;
+				} else {
+					used += mainGap;
+				}
+				used += childHeight;
+				lineWidth = Math.max(lineWidth, childWidth);
+			}
+			total += lineWidth + crossGap * Math.max(0, lineCount - 1);
+			minContent = total;
+			maxContent = total;
+		} else {
+			for (const child of flow) {
+				minContent = Math.max(
+					minContent,
+					contribution(child, "width", "min-content", undefined),
+				);
+				maxContent = Math.max(
+					maxContent,
+					contribution(child, "width", "max-content", undefined),
+				);
+			}
 		}
 		inner.width = clamp(
 			fitContent(availableInner.width, minContent, maxContent),
@@ -418,7 +475,7 @@ export function layoutFlex(
 	const measureMain = (
 		item: Item,
 		mode: AvailableSpace,
-		sizing: "inherent" | "content" = "inherent",
+		ignoreOwnSize = false,
 	): number =>
 		mainOf(
 			compute(item.entry, {
@@ -429,7 +486,7 @@ export function layoutFlex(
 					item.definiteCross ?? shrinkSpace(availableCross, marginCross(item)),
 				),
 				perform: false,
-				sizing,
+				contentAxis: ignoreOwnSize ? (row ? "width" : "height") : undefined,
 			}),
 		);
 
@@ -462,6 +519,7 @@ export function layoutFlex(
 			base = measureMain(
 				item,
 				availableMain === "min-content" ? "min-content" : "max-content",
+				true,
 			);
 		}
 		item.flexBase = Math.max(base, insetMain);
@@ -475,7 +533,7 @@ export function layoutFlex(
 		} else if (cs.overflow === "hidden") {
 			minMain = 0;
 		} else {
-			const content = measureMain(item, "min-content", "content");
+			const content = measureMain(item, "min-content", true);
 			const specified = mainOf(item.size);
 			const transferred =
 				item.definiteCross === undefined
@@ -490,41 +548,15 @@ export function layoutFlex(
 
 	/* --------------------------------------------- the container's main size */
 
-	let mainInner: number;
-	if (initialMainInner !== undefined) {
-		mainInner = initialMainInner;
-	} else {
-		const gaps = mainGap * Math.max(0, items.length - 1);
-		let size: number;
-		if (row) {
-			let maxContent = gaps;
-			let minContent = wrap ? 0 : gaps;
-			for (const item of items) {
-				const maxOuter =
-					clamp(
-						mainOf(item.size) ?? measureMain(item, "max-content"),
-						item.minMain,
-						item.maxMain,
-					) + marginMain(item);
-				const minOuter =
-					clamp(
-						mainOf(item.size) ?? measureMain(item, "min-content"),
-						item.minMain,
-						item.maxMain,
-					) + marginMain(item);
-				maxContent += maxOuter;
-				minContent = wrap
-					? Math.max(minContent, minOuter)
-					: minContent + minOuter;
-			}
-			size = fitContent(availableMain, minContent, maxContent);
-		} else {
-			size =
-				gaps +
-				sum(items.map((item) => item.hypotheticalMain + marginMain(item)));
-		}
-		mainInner = clamp(size, mainOf(innerMin), mainOf(innerMax));
-	}
+	// Only a column's height can still be unknown: it is the content's.
+	let mainInner =
+		initialMainInner ??
+		clamp(
+			mainGap * Math.max(0, items.length - 1) +
+				sum(items.map((item) => item.hypotheticalMain + marginMain(item))),
+			mainOf(innerMin),
+			mainOf(innerMax),
+		);
 
 	/* ------------------------------------------------------------- lines */
 
@@ -545,6 +577,20 @@ export function layoutFlex(
 			line.push(item);
 		}
 		lines.push(line);
+		// Lines broke at the largest height allowed; the container is then as
+		// tall as its longest line.
+		if (initialMainInner === undefined) {
+			const lengths = lines.map(
+				(line) =>
+					mainGap * Math.max(0, line.length - 1) +
+					sum(line.map((item) => item.hypotheticalMain + marginMain(item))),
+			);
+			mainInner = clamp(
+				Math.max(...lengths),
+				mainOf(innerMin),
+				mainOf(innerMax),
+			);
+		}
 	}
 
 	/* ---------------------------------------- §9.7 resolving flexible lengths */

@@ -1,0 +1,277 @@
+{
+	"wrap grows within each line": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 40,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 100,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 200,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"wrap lines take tallest item": {
+		"x": 0,
+		"y": 0,
+		"width": 150,
+		"height": 80,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 60,
+				"height": 50,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 50,
+				"width": 60,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 50,
+				"width": 60,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"column wrap with max height": {
+		"x": 0,
+		"y": 0,
+		"width": 90,
+		"height": 80,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 30,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 40,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"column wrap with fixed height": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 30,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 40,
+				"width": 40,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 100,
+				"y": 0,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"min height stretches lines": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 110,
+				"width": 60,
+				"height": 90,
+				"children": []
+			}
+		]
+	},
+	"align content with gaps": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 90,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 90,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 180,
+				"width": 60,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"item wider than line gets its own": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 10,
+				"width": 150,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 40,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"grow hits max then others take rest": {
+		"x": 0,
+		"y": 0,
+		"width": 400,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 60,
+				"y": 0,
+				"width": 80,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 140,
+				"y": 0,
+				"width": 260,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"grow with min violation": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 150,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 150,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			}
+		]
+	}
+}

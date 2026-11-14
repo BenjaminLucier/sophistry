@@ -105,8 +105,8 @@ export function computeLayout(
 }
 
 function cacheKey(inputs: SizingInputs): string {
-	const { known, available, parentSize, sizing } = inputs;
-	return `${known.width}|${known.height}|${available.width}|${available.height}|${parentSize.width}|${parentSize.height}|${sizing}`;
+	const { known, available, parentSize, contentAxis } = inputs;
+	return `${known.width}|${known.height}|${available.width}|${available.height}|${parentSize.width}|${parentSize.height}|${contentAxis}`;
 }
 
 /**
@@ -136,7 +136,6 @@ function run(entry: Entry, inputs: SizingInputs): Size {
 function layoutLeaf(entry: Entry, inputs: SizingInputs): Size {
 	const style = entry.style;
 	const { known, parentSize, available } = inputs;
-	const content = inputs.sizing === "content";
 	const padding = resolveEdges(style.padding, parentSize.width);
 	const border = resolveEdges(style.border, parentSize.width);
 	const insetW = padding.left + padding.right + border.left + border.right;
@@ -144,33 +143,34 @@ function layoutLeaf(entry: Entry, inputs: SizingInputs): Size {
 	const own = (
 		value: Parameters<typeof resolve>[0],
 		basis: number | undefined,
-	) => (content ? undefined : resolve(value, basis));
+		axis: "width" | "height",
+	) => (inputs.contentAxis === axis ? undefined : resolve(value, basis));
 	const min = {
-		width: own(style.minSize.width, parentSize.width),
-		height: own(style.minSize.height, parentSize.height),
+		width: own(style.minSize.width, parentSize.width, "width"),
+		height: own(style.minSize.height, parentSize.height, "height"),
 	};
 	const max = {
-		width: own(style.maxSize.width, parentSize.width),
-		height: own(style.maxSize.height, parentSize.height),
+		width: own(style.maxSize.width, parentSize.width, "width"),
+		height: own(style.maxSize.height, parentSize.height, "height"),
 	};
 	const styled = applyAspectRatio(
 		{
 			width:
 				known.width ??
 				maybeClamp(
-					own(style.size.width, parentSize.width),
+					own(style.size.width, parentSize.width, "width"),
 					min.width,
 					max.width,
 				),
 			height:
 				known.height ??
 				maybeClamp(
-					own(style.size.height, parentSize.height),
+					own(style.size.height, parentSize.height, "height"),
 					min.height,
 					max.height,
 				),
 		},
-		content ? undefined : style.aspectRatio,
+		inputs.contentAxis ? undefined : style.aspectRatio,
 	);
 
 	let width = styled.width;
@@ -198,7 +198,7 @@ function layoutLeaf(entry: Entry, inputs: SizingInputs): Size {
 		width ??= clamp(content.width + insetW, min.width, max.width);
 		if (height === undefined) {
 			const fromRatio =
-				content || style.aspectRatio === undefined
+				inputs.contentAxis || style.aspectRatio === undefined
 					? undefined
 					: width / style.aspectRatio;
 			height = clamp(
