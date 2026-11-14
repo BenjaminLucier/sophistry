@@ -136,6 +136,39 @@ export const frameContext: ContextKey<Readable<Bounds>> = createContextKey<
 >("frame", track(DEFAULT_FRAME));
 
 /**
+ * Design pixels per scene unit: how a `lengthUnit` of `"px"` is sized. A
+ * scene is 1920 design pixels wide (its `designWidth`), so at the default 16
+ * units a scene unit is 120 px. Fixed when the scene is created, so a scene
+ * that zooms its `units` zooms pixel-sized things with everything else.
+ *
+ * @category Scene graph
+ */
+export const pixelsPerUnitContext: ContextKey<number> =
+	createContextKey<number>("pixelsPerUnit", 120);
+
+/**
+ * What lengths are measured in: `"scene"` for scene units, `"px"` for design
+ * pixels (see {@link pixelsPerUnitContext}). Only ever scales: it never flips
+ * an axis.
+ *
+ * @category Scene graph
+ */
+export type LengthUnit = "scene" | "px";
+
+/**
+ * Scene units per authored unit for `unit`.
+ *
+ * @param unit - The length unit.
+ * @param pixelsPerUnit - Design pixels per scene unit.
+ * @returns 1 for scene units, `1 / pixelsPerUnit` for pixels.
+ *
+ * @category Scene graph
+ */
+export function lengthScaleOf(unit: LengthUnit, pixelsPerUnit: number): number {
+	return unit === "px" ? 1 / pixelsPerUnit : 1;
+}
+
+/**
  * Where the pointer is over the scene's canvas (`scene.pointer`), for
  * composites that follow it (a chart's tooltip, a crosshair). Null outside a
  * scene (a hand-committed graph), and its value null while no pointer is

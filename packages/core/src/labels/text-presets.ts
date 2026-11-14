@@ -25,6 +25,7 @@ import type {
 	PropsDescriptor,
 	SceneNode,
 } from "../scene/types.js";
+import { SpaceChange } from "../scene/types.js";
 import { type LineProps, line } from "../shapes/line.js";
 import type { TextFont } from "../spec/bake.js";
 import { bakeTextFont } from "../spec/bake.js";
@@ -131,10 +132,15 @@ interface ListLayout {
  * @category Text & numbers
  */
 export class BulletedListNode extends TextLayoutNode<BulletedListProps> {
-	/** The list is laid out in its own units: the groups' scale scales it whole. */
-	protected override readonly spaceFields: number = 0;
+	/**
+	 * The list is laid out in its own units: the groups' scale scales it
+	 * whole. Only a length unit changes it, through the default font size.
+	 */
+	protected override readonly spaceFields: number = SpaceChange.LENGTH_SCALE;
 
 	private list: ListLayout | null = null;
+	/** The font the list was measured with. */
+	private listFont: TextFont | null = null;
 	private nodes: TextNode<TextNodeProps>[] = [];
 	private readonly fontOf = memo(
 		(
@@ -143,8 +149,14 @@ export class BulletedListNode extends TextLayoutNode<BulletedListProps> {
 			fontWeight: string | number | undefined,
 			italic: boolean | undefined,
 			theme: Theme,
+			lengthScale: number,
 		): TextFont =>
-			bakeTextFont({ fontSize, fontFamily, fontWeight, italic }, theme),
+			bakeTextFont(
+				{ fontSize, fontFamily, fontWeight, italic },
+				theme,
+				1,
+				lengthScale,
+			),
 	);
 	private readonly boxOf = memo((width: number, height: number): Polyline[] => [
 		boxPolyline(-width / 2, -height / 2, width / 2, height / 2),
@@ -199,12 +211,14 @@ export class BulletedListNode extends TextLayoutNode<BulletedListProps> {
 			props.fontWeight,
 			props.italic,
 			this.context(themeContext),
+			this.space.lengthScale,
 		);
 		const indent = props.indent ?? font.fontSize * 0.6;
 		// Measuring is the expensive half: only a font, item or measure change
 		// (or a web font arriving) re-measures; a reveal or a move reuses it.
-		if (!this.list || dirty & Invalidate.GEOMETRY) {
+		if (!this.list || dirty & Invalidate.GEOMETRY || font !== this.listFont) {
 			this.list = this.measure(font, indent);
+			this.listFont = font;
 		}
 		const list = this.list;
 		const anchor = this.anchor();

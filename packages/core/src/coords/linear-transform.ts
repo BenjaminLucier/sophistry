@@ -174,7 +174,14 @@ export class LinearTransformNode extends BaseContainer<LinearTransformProps> {
 		if (penScale !== previous.penScale) change |= SpaceChange.PEN_SCALE;
 		if (yUp !== previous.yUp) change |= SpaceChange.Y_UP;
 		if (change === 0) return;
-		this.ownSpace = { matrix, opacity, clip, penScale, yUp };
+		this.ownSpace = {
+			matrix,
+			opacity,
+			clip,
+			penScale,
+			yUp,
+			lengthScale: parent.lengthScale,
+		};
 		for (const child of this.childNodes) child.spaceChanged(change);
 	}
 }

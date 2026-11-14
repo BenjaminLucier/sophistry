@@ -63,6 +63,7 @@ export const ROOT_SPACE: Space = Object.freeze({
 	clip: undefined,
 	penScale: undefined,
 	yUp: true,
+	lengthScale: 1,
 });
 
 /**

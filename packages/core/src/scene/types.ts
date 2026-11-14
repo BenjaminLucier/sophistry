@@ -204,6 +204,14 @@ export interface Space {
 	readonly penScale: number | undefined;
 	/** Whether scene `y` runs up the screen (the scene's `yUp`). */
 	readonly yUp: boolean;
+	/**
+	 * Scene units per authored unit that come from a `lengthUnit`: 1 where
+	 * lengths are scene units, `1 / pixelsPerUnit` where they are design
+	 * pixels. Part of the matrix's scale already; theme defaults (stroke
+	 * width, font size) are scene values, so they are divided by it to stay
+	 * the same size whatever unit surrounds them.
+	 */
+	readonly lengthScale: number;
 }
 
 /**
@@ -218,7 +226,8 @@ export const SpaceChange = {
 	CLIP: 4,
 	PEN_SCALE: 8,
 	Y_UP: 16,
-	ALL: 31,
+	LENGTH_SCALE: 32,
+	ALL: 63,
 } as const;
 
 /**

@@ -73,10 +73,15 @@ import { createCameraList } from "./cameras.js";
 import {
 	clockContext,
 	frameContext,
+	pixelsPerUnitContext,
 	pointerContext,
 	reducedMotionContext,
 	themeContext,
 } from "./context.js";
+
+/** Design pixels across a scene, when `designWidth` is not given. */
+const DEFAULT_DESIGN_WIDTH = 1920;
+
 import { SceneGraph } from "./graph.js";
 import {
 	createFocusChannel,
@@ -175,6 +180,17 @@ export interface SceneOptions {
 	 * @default 16
 	 */
 	units?: number | Readable<number>;
+	/**
+	 * How many design pixels span the full width, for lengths given in
+	 * pixels (`lengthUnit: "px"`). Fixed against `units` when the scene is
+	 * created: at the defaults a scene unit is 120 px, and a scene that later
+	 * zooms its `units` zooms its pixel-sized things with everything else.
+	 * A design pixel is not a screen pixel: the same layout renders at any
+	 * canvas size.
+	 *
+	 * @default 1920
+	 */
+	designWidth?: number;
 	/**
 	 * The scene point shown at the middle of the canvas, in scene units. A
 	 * `Readable` binds, so a moving point pans the view.
@@ -694,6 +710,10 @@ export function createScene(options: SceneOptions = {}): Scene {
 	root.provide(clockContext, clock);
 	root.provide(reducedMotionContext, reducedMotion);
 	root.provide(frameContext, frame);
+	root.provide(
+		pixelsPerUnitContext,
+		(options.designWidth ?? DEFAULT_DESIGN_WIDTH) / units.peek(),
+	);
 
 	/* ------------------------------------------------------------- DOM */
 

@@ -34,7 +34,13 @@ import type {
 	TextSpec,
 	TextStyle,
 } from "../spec/types.js";
-import { Invalidate, themeContext } from "./context.js";
+import type { LengthUnit } from "./context.js";
+import {
+	Invalidate,
+	lengthScaleOf,
+	pixelsPerUnitContext,
+	themeContext,
+} from "./context.js";
 import { fontEpochContext, watchFontLoads } from "./fonts.js";
 import type { SceneGraph } from "./graph.js";
 import { interactionProps } from "./interaction-props.js";
@@ -142,6 +148,13 @@ export interface TextProps extends InteractionProps {
 	 */
 	letterSpacing?: number;
 	/**
+	 * What the text's sizes (`fontSize`, `letterSpacing`, `width`) are
+	 * measured in: `"scene"` for scene units, `"px"` for design pixels (a
+	 * scene is 1920 wide). Its `x`/`y` stay in the parent's units. Omitted,
+	 * the text uses its surroundings' unit.
+	 */
+	lengthUnit?: LengthUnit;
+	/**
 	 * Wrap lines at this width, in the node's units. Omitted, only newlines
 	 * break. `align` places the block on the anchor and each line within it.
 	 */
@@ -213,6 +226,7 @@ export const textProps: PropsDescriptor<TextProps> = Object.freeze({
 		invalidates: Invalidate.STYLE,
 		instanceable: true,
 	},
+	lengthUnit: { invalidates: Invalidate.STYLE },
 	width: { invalidates: Invalidate.GEOMETRY },
 	textAlign: { invalidates: Invalidate.GEOMETRY },
 	lineHeight: { default: 1.3, invalidates: Invalidate.GEOMETRY },
@@ -374,7 +388,9 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		// The spec folds in the groups' matrix; the style their scale, which
 		// it checks for itself, so a group's move keeps the style.
 		if (change & SpaceChange.MATRIX) bits |= Invalidate.TRANSFORM;
-		if (change & SpaceChange.OPACITY) bits |= Invalidate.STYLE;
+		if (change & (SpaceChange.OPACITY | SpaceChange.LENGTH_SCALE)) {
+			bits |= Invalidate.STYLE;
+		}
 		if (change & SpaceChange.CLIP) bits |= Invalidate.SPEC;
 		// Only the handle's box is oriented by `yUp`; it re-measures on read.
 		if (change & SpaceChange.Y_UP) bits |= Invalidate.GEOMETRY;
@@ -385,6 +401,9 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		key: ContextKey<unknown>,
 	): InvalidateBits {
 		if (key === themeContext || key === ANY_CONTEXT) return Invalidate.STYLE;
+		if (key === pixelsPerUnitContext) {
+			return this.props.lengthUnit === undefined ? 0 : Invalidate.STYLE;
+		}
 		// A web font loaded: the handle's box re-measures (it is keyed on the
 		// font epoch), and anything measuring through `text` reruns.
 		return key === fontEpochContext ? Invalidate.GEOMETRY : 0;
@@ -440,7 +459,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		) {
 			return undefined;
 		}
-		const scale = scaleFactorOf(this.space.matrix);
+		const { scale } = this.units();
 		return this.blockOf(
 			content,
 			this.currentStyle(),
@@ -457,7 +476,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		const input = this.styleInput();
 		const theme = this.context(themeContext);
 		const space = this.space;
-		const scale = scaleFactorOf(space.matrix);
+		const { scale, lengthScale } = this.units();
 		return content.map((part): TextBlockRun => {
 			if (typeof part === "string") return { text: part, style: base };
 			const style = bakeTextStyle(
@@ -474,6 +493,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 				theme,
 				scale,
 				space.opacity,
+				lengthScale,
 			);
 			const run: TextBlockRun = { text: part.text, style };
 			if (part.underline) run.underline = true;
@@ -501,16 +521,31 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		};
 	}
 
-	private currentStyle(): TextStyle {
+	/**
+	 * Scene units per authored size: the groups' scale times the text's own
+	 * `lengthUnit`, if it has one, and the length scale its theme defaults
+	 * are divided by.
+	 */
+	private units(): { scale: number; lengthScale: number } {
 		const space = this.space;
-		const scale = scaleFactorOf(space.matrix);
+		const groups = scaleFactorOf(space.matrix);
+		const unit = this.props.lengthUnit;
+		if (unit === undefined)
+			return { scale: groups, lengthScale: space.lengthScale };
+		const lengthScale = lengthScaleOf(unit, this.context(pixelsPerUnitContext));
+		return { scale: (groups * lengthScale) / space.lengthScale, lengthScale };
+	}
+
+	private currentStyle(): TextStyle {
+		const { scale, lengthScale } = this.units();
 		if (this.style && scale === this.styleScale) return this.style;
 		this.styleScale = scale;
 		this.style = bakeTextStyle(
 			this.styleInput(),
 			this.context(themeContext),
 			scale,
-			space.opacity,
+			this.space.opacity,
+			lengthScale,
 		);
 		return this.style;
 	}

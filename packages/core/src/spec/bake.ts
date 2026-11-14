@@ -395,6 +395,7 @@ export interface StrokeStyleInput {
  * @param penScale - Scene units per authored unit, used for widths and dashes.
  * @param spaceOpacity - Opacity inherited from enclosing groups, multiplied into `opacity`.
  * @param paintFrame - Thunk building the gradient frame, called only if a gradient is present.
+ * @param lengthScale - The space's `lengthScale`: the theme's default width, a scene value, is divided by it.
  * @returns The scene-space style.
  *
  * @category Baking
@@ -405,6 +406,7 @@ export function bakeStrokeStyle(
 	penScale: number,
 	spaceOpacity: number,
 	paintFrame: () => PaintFrame,
+	lengthScale = 1,
 ): StrokeStyle {
 	let frame: PaintFrame | null = null;
 	const resolve = (paint: PaintSpec | undefined): Paint | null => {
@@ -424,7 +426,9 @@ export function bakeStrokeStyle(
 	};
 	return {
 		stroke: resolve(input.stroke) ?? theme.palette.foreground,
-		strokeWidth: (input.strokeWidth ?? theme.defaults.strokeWidth) * penScale,
+		strokeWidth:
+			(input.strokeWidth ?? theme.defaults.strokeWidth / lengthScale) *
+			penScale,
 		fill: resolve(input.fill),
 		along: alongStroke(),
 		opacity: (input.opacity ?? 1) * spaceOpacity,
@@ -519,6 +523,7 @@ export type TextFont = Pick<
  * @param input - Authored font, in scene units.
  * @param theme - Supplies the default size and family.
  * @param unitScale - Scene units per authored unit. Defaults to 1.
+ * @param lengthScale - The space's `lengthScale`: the theme's default size is divided by it.
  * @returns The resolved font.
  *
  * @category Baking
@@ -530,9 +535,11 @@ export function bakeTextFont(
 	>,
 	theme: Theme,
 	unitScale = 1,
+	lengthScale = 1,
 ): TextFont {
 	return {
-		fontSize: (input.fontSize ?? theme.defaults.fontSize) * unitScale,
+		fontSize:
+			(input.fontSize ?? theme.defaults.fontSize / lengthScale) * unitScale,
 		fontFamily: input.fontFamily ?? theme.defaults.fontFamily,
 		fontWeight: input.fontWeight ?? DEFAULT_FONT_WEIGHT,
 		italic: input.italic ?? false,
@@ -548,6 +555,7 @@ export function bakeTextFont(
  * @param theme - Supplies default colour, size and font.
  * @param unitScale - Scene units per authored unit.
  * @param spaceOpacity - Opacity inherited from enclosing groups.
+ * @param lengthScale - The space's `lengthScale`: the theme's default size is divided by it.
  * @returns The scene-space `TextStyle`.
  *
  * @category Baking
@@ -557,10 +565,11 @@ export function bakeTextStyle(
 	theme: Theme,
 	unitScale: number,
 	spaceOpacity: number,
+	lengthScale = 1,
 ): TextStyle {
 	const style: TextStyle = {
 		fill: cssColor(input.fill ?? theme.palette.foreground),
-		...bakeTextFont(input, theme, unitScale),
+		...bakeTextFont(input, theme, unitScale, lengthScale),
 		align: input.align ?? "center",
 		baseline: input.baseline ?? "middle",
 		opacity: (input.opacity ?? 1) * spaceOpacity,
@@ -572,7 +581,8 @@ export function bakeTextStyle(
 			color: cssColor(own.color ?? theme.palette.background),
 			width:
 				(own.width ??
-					(input.fontSize ?? theme.defaults.fontSize) * HALO_WIDTH) * unitScale,
+					(input.fontSize ?? theme.defaults.fontSize / lengthScale) *
+						HALO_WIDTH) * unitScale,
 		};
 	}
 	return style;

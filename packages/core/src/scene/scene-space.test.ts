@@ -90,6 +90,7 @@ function linearTransform(space: Partial<Space>, children: SceneNode[]) {
 		clip: undefined,
 		penScale: undefined,
 		yUp: true,
+		lengthScale: 1,
 		...space,
 	};
 	node.setChildren(children);
