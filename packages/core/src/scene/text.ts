@@ -19,11 +19,20 @@ import type { Bounds, Point, Polyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
 import {
 	applyToPoint,
+	compose,
 	fromTranslationRotationScale,
 	scaleFactorOf,
+	scale as scaleMatrix,
+	translate,
 } from "../geometry/transform.js";
 import type { InteractionProps } from "../interact/types.js";
-import type { TextBlockRun, TextHalo, TextStyleInput } from "../spec/bake.js";
+import type {
+	PlacedInline,
+	TextBlockInline,
+	TextBlockRun,
+	TextHalo,
+	TextStyleInput,
+} from "../spec/bake.js";
 import { bakeTextBlock, bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
 import type { Placement } from "../spec/layout.js";
 import { readDelta } from "../spec/layout.js";
@@ -35,6 +44,7 @@ import type {
 	TextSpec,
 	TextStyle,
 } from "../spec/types.js";
+import { BaseContainer } from "./container.js";
 import type { LengthUnit } from "./context.js";
 import {
 	createContextKey,
@@ -54,6 +64,8 @@ import type {
 	Definition,
 	InvalidateBits,
 	PropsDescriptor,
+	SceneNode,
+	Space,
 } from "./types.js";
 import { SpaceChange } from "./types.js";
 
@@ -85,12 +97,37 @@ export interface TextSpan {
 }
 
 /**
- * What a text node draws: a string, or strings and {@link TextSpan}s in
- * reading order. `"\n"` starts a new line.
+ * A scene node set into a line of text like one wide glyph: a formula in a
+ * sentence, a dot in a legend. It keeps scene units (scaled with the text's
+ * group), lines break around it as around a word, and its line grows to hold
+ * it. The text owns it: dropped from the text, it is disposed.
  *
  * @category Text & numbers
  */
-export type RichText = string | readonly (string | TextSpan)[];
+export interface TextInline {
+	inline: SceneNode;
+	/**
+	 * How far above the node's bottom edge the text's baseline crosses it,
+	 * in the node's units. Omitted, the node is centred on the text, a
+	 * little above the baseline.
+	 */
+	baseline?: number;
+}
+
+/**
+ * What a text node draws: a string, or strings, {@link TextSpan}s and
+ * {@link TextInline} nodes in reading order. `"\n"` starts a new line.
+ *
+ * @category Text & numbers
+ */
+export type RichText = string | readonly (string | TextSpan | TextInline)[];
+
+/** Where an inline node is centred when it gives no baseline, in ems above the baseline. */
+const INLINE_MIDDLE = 0.3;
+
+function isInline(part: string | TextSpan | TextInline): part is TextInline {
+	return typeof part !== "string" && "inline" in part;
+}
 
 /**
  * Text style a container hands down to the text inside it (a box's text
@@ -298,7 +335,9 @@ export interface TextOptions<P extends TextProps> {
 function plainText(content: RichText): string {
 	if (typeof content === "string") return content;
 	return content
-		.map((part) => (typeof part === "string" ? part : part.text))
+		.map((part) =>
+			typeof part === "string" ? part : isInline(part) ? "" : part.text,
+		)
 		.join("");
 }
 
@@ -323,7 +362,9 @@ function boxCorners(box: Bounds, perUnit = 1): Polyline {
  *
  * @category Text & numbers
  */
-export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
+export class TextNode<
+	P extends TextProps = TextProps,
+> extends BaseContainer<P> {
 	override readonly producesSpec = true;
 
 	private readonly options: TextOptions<P>;
@@ -354,7 +395,8 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			pixelsPerUnit: number,
 			_fontEpoch: number,
 			_decorations: string,
-		): { fragments: TextFragment[]; box: Bounds } =>
+			_inlineEpoch: number,
+		): TextBlock =>
 			bakeTextBlock(this.runsOf(content, style), {
 				width,
 				lineHeight,
@@ -374,7 +416,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			progress: number | undefined,
 			zIndex: number | undefined,
 			clip: readonly ClipRegion[] | undefined,
-			block: { fragments: TextFragment[]; box: Bounds } | undefined,
+			block: TextBlock | undefined,
 		): TextSpec | null =>
 			bakeTextSpec({
 				id: this.id,
@@ -416,6 +458,12 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	 * from its anchor at the top left, lines aligned by `textAlign`.
 	 */
 	private layoutWidth: number | null | undefined = undefined;
+	/** Inline nodes' boxes in their own units, as last measured. */
+	private inlineBounds = new Map<BaseNode, Bounds | null>();
+	/** Bumped when an inline node's box changes, so the block lays out again. */
+	private inlineEpoch = 0;
+	/** The space each inline node was handed, as of the last placement. */
+	private inlineSpaces = new Map<BaseNode, Space>();
 
 	constructor(definition: Definition<P>, options: TextOptions<P>) {
 		super(definition);
@@ -450,10 +498,9 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		if (!(scale > 0)) return { width: 0, height: 0 };
 		const style = this.currentStyle();
 		const layout = layoutText(
-			this.runsOf(this.currentContent(), style).map((run) => ({
-				text: run.text,
-				font: run.style,
-			})),
+			this.runsOf(this.currentContent(), style).map((run) =>
+				"inline" in run ? run : { text: run.text, font: run.style },
+			),
 			{
 				width: width === undefined ? undefined : width * scale,
 				lineHeight: this.lineHeight(),
@@ -473,12 +520,14 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 
 	/* ------------------------------------------------------------ stages */
 
-	protected run(dirty: InvalidateBits): void {
+	protected override run(dirty: InvalidateBits): void {
 		const content = this.content;
 		const style = this.style;
 		if (dirty & Invalidate.GEOMETRY) this.content = null;
 		if (dirty & Invalidate.STYLE) this.style = null;
-		this.publish(this.assemble());
+		const spec = this.assemble();
+		this.publish(spec);
+		if (this.childNodes.length > 0) this.placeInline(spec);
 		// A container laying this text out sizes it from its content and style.
 		if (
 			this.layoutWidth !== undefined &&
@@ -545,8 +594,27 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	}
 
 	private currentContent(): RichText {
-		this.content ??= this.options.text(this.props);
+		if (this.content === null) {
+			this.content = this.options.text(this.props);
+			this.adoptInline(this.content);
+		}
 		return this.content;
+	}
+
+	/** Makes the inline nodes in `content` this node's children. */
+	private adoptInline(content: RichText): void {
+		const nodes: SceneNode[] =
+			typeof content === "string"
+				? []
+				: content.filter(isInline).map((part) => part.inline);
+		if (nodes.length === 0 && this.childNodes.length === 0) return;
+		super.setChildren(nodes);
+		for (const node of [...this.inlineBounds.keys()]) {
+			if (node.parentNode !== this) {
+				this.inlineBounds.delete(node);
+				this.inlineSpaces.delete(node);
+			}
+		}
 	}
 
 	/** The plain text: every run's text together. */
@@ -558,9 +626,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	 * The laid-out block, or undefined for one plain line (no spans, no
 	 * newline, no width), which is drawn and measured as a single run.
 	 */
-	private currentBlock():
-		| { fragments: TextFragment[]; box: Bounds }
-		| undefined {
+	private currentBlock(): TextBlock | undefined {
 		const content = this.currentContent();
 		const laidOut = this.layoutWidth !== undefined;
 		const width = laidOut ? (this.layoutWidth ?? undefined) : this.props.width;
@@ -588,11 +654,15 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			fontLoads.peek(),
 			// The runs read these; a change keeps the content's identity.
 			`${this.props.underline ?? inherited?.underline},${this.props.strikethrough ?? inherited?.strikethrough}`,
+			this.inlineEpoch,
 		);
 	}
 
 	/** The runs of `content`, each span's style baked over the node's. */
-	private runsOf(content: RichText, base: TextStyle): TextBlockRun[] {
+	private runsOf(
+		content: RichText,
+		base: TextStyle,
+	): (TextBlockRun | TextBlockInline)[] {
 		const inherited = this.context(textStyleContext);
 		const underline = this.props.underline ?? inherited?.underline;
 		const strikethrough = this.props.strikethrough ?? inherited?.strikethrough;
@@ -607,8 +677,9 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		const theme = this.context(themeContext);
 		const space = this.space;
 		const { scale, lengthScale } = this.units();
-		return content.map((part): TextBlockRun => {
+		return content.map((part): TextBlockRun | TextBlockInline => {
 			if (typeof part === "string") return plain(part);
+			if (isInline(part)) return this.inlineRun(part, base);
 			const style = bakeTextStyle(
 				{
 					...input,
@@ -632,6 +703,124 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 				run.highlight = cssColor(part.highlight);
 			return run;
 		});
+	}
+
+	/* ------------------------------------------------------ inline nodes */
+
+	/** Scene units per unit of an inline node: the text's groups' scale, its own unit aside. */
+	private inlineScale(): number {
+		const space = this.space;
+		return scaleFactorOf(space.matrix) / (space.lengthScale || 1);
+	}
+
+	/** Where the text's baseline crosses an inline node, up from its bottom, in its units. */
+	private inlineBaseline(
+		part: TextInline,
+		bounds: Bounds,
+		base: TextStyle,
+	): number {
+		if (part.baseline !== undefined) return part.baseline;
+		const own = (part.inline as BaseNode).textBaseline();
+		if (own !== null) {
+			return this.space.yUp ? own - bounds.minY : bounds.maxY - own;
+		}
+		const height = bounds.maxY - bounds.minY;
+		return height / 2 - (INLINE_MIDDLE * base.fontSize) / this.inlineScale();
+	}
+
+	/** The room an inline node takes in its line, in scene units. */
+	private inlineRun(part: TextInline, base: TextStyle): TextBlockInline {
+		const node = part.inline as BaseNode;
+		const bounds = node.ownBounds();
+		this.inlineBounds.set(node, bounds);
+		if (!bounds) return { inline: { width: 0, ascent: 0, descent: 0 } };
+		const scale = this.inlineScale();
+		const height = (bounds.maxY - bounds.minY) * scale;
+		const descent = this.inlineBaseline(part, bounds, base) * scale;
+		return {
+			inline: {
+				width: (bounds.maxX - bounds.minX) * scale,
+				ascent: height - descent,
+				descent,
+			},
+		};
+	}
+
+	/** Hands each inline node the space that puts it where the block placed it. */
+	private placeInline(spec: TextSpec | null): void {
+		const content = this.currentContent();
+		const block = this.currentBlock();
+		const space = this.space;
+		const scale = this.inlineScale();
+		const base = this.currentStyle();
+		const flip = space.yUp ? 1 : -1;
+		const parts = typeof content === "string" ? [] : content;
+		const placed = new Map<BaseNode, PlacedInline>();
+		for (const inline of block?.inlines ?? []) {
+			const part = parts[inline.run];
+			if (part && isInline(part)) placed.set(part.inline as BaseNode, inline);
+		}
+		for (const child of this.childNodes) {
+			const at = placed.get(child);
+			const bounds = this.inlineBounds.get(child) ?? null;
+			let matrix = space.matrix;
+			if (at && bounds && spec) {
+				const part = parts[at.run] as TextInline;
+				const baseline = this.inlineBaseline(part, bounds, base);
+				const onBaseline = space.yUp
+					? bounds.minY + baseline
+					: bounds.maxY - baseline;
+				matrix = compose(
+					fromTranslationRotationScale({
+						x: spec.at.x,
+						y: spec.at.y,
+						rotation: spec.rotation,
+					}),
+					compose(
+						translate(at.at.x, flip * at.at.y),
+						compose(scaleMatrix(scale), translate(-bounds.minX, -onBaseline)),
+					),
+				);
+			}
+			const next: Space = {
+				matrix,
+				opacity: spec && at ? space.opacity * (this.props.opacity ?? 1) : 0,
+				clip: space.clip,
+				penScale:
+					space.penScale === undefined
+						? undefined
+						: (space.penScale * scale * (space.lengthScale || 1)) /
+							(scaleFactorOf(space.matrix) || 1),
+				yUp: space.yUp,
+				lengthScale: 1,
+			};
+			const before = this.inlineSpaces.get(child);
+			const change = spaceChange(before, next);
+			if (change === 0) continue;
+			this.inlineSpaces.set(child, next);
+			child.spaceChanged(change);
+		}
+	}
+
+	override childSpaceFor(child: BaseNode): Space {
+		return this.inlineSpaces.get(child) ?? this.space;
+	}
+
+	/** Inline nodes are sized by their boxes, so the text hears them change. */
+	override get watchesChildGeometry(): boolean {
+		return true;
+	}
+
+	/** An inline node's box changed: lay the block out again. */
+	override childGeometryChanged(child: BaseNode): void {
+		if (child.parentNode !== this || !this.inlineBounds.has(child)) return;
+		const before = this.inlineBounds.get(child) ?? null;
+		if (sameBounds(before, child.ownBounds())) return;
+		this.inlineEpoch++;
+		this.invalidate(Invalidate.GEOMETRY);
+		if (this.layoutWidth !== undefined) {
+			this.parentNode?.childContentChanged(this);
+		}
 	}
 
 	/** The node's own style props, as the baker takes them. */
@@ -724,6 +913,59 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			}),
 		);
 	}
+
+	/** The measured box, as for any drawn node (inline nodes are inside it). */
+	override bounds(): Bounds | null {
+		return BaseNode.prototype.bounds.call(this);
+	}
+
+	override localBounds(): Bounds | null {
+		return BaseNode.prototype.localBounds.call(this);
+	}
+}
+
+/** A laid-out block: its fragments, its box, and where it put inline nodes. */
+interface TextBlock {
+	fragments: TextFragment[];
+	box: Bounds;
+	inlines: PlacedInline[];
+}
+
+/** Which parts of a space changed. */
+function spaceChange(previous: Space | undefined, next: Space): number {
+	if (!previous) return SpaceChange.ALL;
+	const a = previous.matrix;
+	const b = next.matrix;
+	let change = 0;
+	if (
+		a.a !== b.a ||
+		a.b !== b.b ||
+		a.c !== b.c ||
+		a.d !== b.d ||
+		a.e !== b.e ||
+		a.f !== b.f
+	) {
+		change |= SpaceChange.MATRIX;
+	}
+	if (previous.opacity !== next.opacity) change |= SpaceChange.OPACITY;
+	if (previous.clip !== next.clip) change |= SpaceChange.CLIP;
+	if (previous.penScale !== next.penScale) change |= SpaceChange.PEN_SCALE;
+	if (previous.yUp !== next.yUp) change |= SpaceChange.Y_UP;
+	if (previous.lengthScale !== next.lengthScale) {
+		change |= SpaceChange.LENGTH_SCALE;
+	}
+	return change;
+}
+
+/** Whether two boxes are the same. */
+function sameBounds(a: Bounds | null, b: Bounds | null): boolean {
+	if (!a || !b) return a === b;
+	return (
+		a.minX === b.minX &&
+		a.minY === b.minY &&
+		a.maxX === b.maxX &&
+		a.maxY === b.maxY
+	);
 }
 
 /**

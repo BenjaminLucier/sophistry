@@ -14,7 +14,7 @@
 import { boundsUnder } from "../geometry/bounds.js";
 import type { Bounds, Point, Polyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
-import { compose, IDENTITY } from "../geometry/transform.js";
+import { compose, IDENTITY, invert } from "../geometry/transform.js";
 import type {
 	InteractionHandlers,
 	InteractionProps,
@@ -706,6 +706,38 @@ export abstract class BaseNode<P extends object = object>
 			? this.composeCache(this.space.matrix, own)
 			: this.space.matrix;
 		return this.boundsCache(matrix, outline);
+	}
+
+	/**
+	 * @internal The node's box in its own units: its outline under its own
+	 * transform, without the space it is in. A container, which has no
+	 * outline of its own, takes its scene box back through its space. What a
+	 * layout measures before it decides the space.
+	 */
+	ownBounds(): Bounds | null {
+		this.refresh();
+		const outline = this.localOutline();
+		if (outline) return boundsUnder(this.localMatrix() ?? IDENTITY, outline);
+		const scene = this.bounds();
+		if (!scene) return null;
+		return boundsUnder(invert(this.space.matrix), [
+			[
+				{ x: scene.minX, y: scene.minY },
+				{ x: scene.maxX, y: scene.minY },
+				{ x: scene.maxX, y: scene.maxY },
+				{ x: scene.minX, y: scene.maxY },
+			],
+		]);
+	}
+
+	/**
+	 * Where text should cross this node when it is set inline in a line of
+	 * text: the baseline's y in the node's own units (those of
+	 * {@link BaseNode.ownBounds}), or null to be centred on the text. A
+	 * formula gives its first baseline.
+	 */
+	textBaseline(): number | null {
+		return null;
 	}
 
 	localBounds(): Bounds | null {

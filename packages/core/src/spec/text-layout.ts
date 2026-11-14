@@ -17,6 +17,7 @@
 import { clearCache as clearPretextCache } from "@chenglou/pretext";
 import type {
 	PreparedRichInline,
+	RichInlineBox,
 	RichInlineCursor,
 	RichInlineItem,
 } from "@chenglou/pretext/rich-inline";
@@ -38,6 +39,24 @@ export interface LayoutRun {
 	text: string;
 	font: MetricsStyle;
 }
+
+/**
+ * Something laid out inline like one wide glyph (a formula in a sentence):
+ * its width, and how far it reaches above and below the baseline, in the
+ * runs' unit. Lines break around it as around a word.
+ *
+ * @category Text & numbers
+ */
+export interface LayoutInline {
+	inline: { width: number; ascent: number; descent: number };
+}
+
+const isInline = (run: LayoutRun | LayoutInline | undefined): run is LayoutInline =>
+	run !== undefined && "inline" in run;
+
+/** The font size of a text run; 0 for an inline one. */
+const sizeOf = (run: LayoutRun | LayoutInline | undefined): number =>
+	run === undefined || isInline(run) ? 0 : run.font.fontSize;
 
 /**
  * Options for {@link layoutText}.
@@ -72,7 +91,7 @@ export interface TextLayoutOptions {
  * @category Text & numbers
  */
 export interface LaidOutFragment {
-	/** Index of the run it came from. */
+	/** Index of the run it came from. An inline run's fragment has no text. */
 	run: number;
 	text: string;
 	/** Left end, from the block's left edge. */
@@ -147,7 +166,9 @@ const prepared = new Map<string, PreparedRichInline>();
 let listening = false;
 
 /** Prepared runs, cached by their text and fonts; dropped when a web font loads. */
-function prepare(items: RichInlineItem[]): PreparedRichInline {
+function prepare(
+	items: (RichInlineItem | RichInlineBox)[],
+): PreparedRichInline {
 	if (!listening) {
 		listening = true;
 		fontLoads.subscribe(() => {
@@ -175,21 +196,28 @@ function prepare(items: RichInlineItem[]): PreparedRichInline {
 
 /** Lines of one paragraph through Pretext. */
 function breakWithPretext(
-	runs: readonly LayoutRun[],
+	runs: readonly (LayoutRun | LayoutInline)[],
 	pieces: Piece[],
 	width: number | undefined,
 	pixelsPerUnit: number | undefined,
 ): Line[] {
 	const largest = Math.max(
-		...pieces.map((piece) => runs[piece.run]?.font.fontSize ?? 0),
+		...pieces.map((piece) => {
+			const run = runs[piece.run];
+			return isInline(run)
+				? run.inline.ascent + run.inline.descent
+				: sizeOf(run);
+		}),
 	);
 	if (!(largest > 0)) return [];
 	const k =
 		pixelsPerUnit !== undefined && pixelsPerUnit > 0
 			? pixelsPerUnit
 			: REFERENCE_SIZE / largest;
-	const items: RichInlineItem[] = pieces.map((piece) => {
-		const font = (runs[piece.run] as LayoutRun).font;
+	const items: (RichInlineItem | RichInlineBox)[] = pieces.map((piece) => {
+		const run = runs[piece.run];
+		if (isInline(run)) return { width: run.inline.width * k };
+		const font = (run as LayoutRun).font;
 		const item: RichInlineItem = {
 			text: piece.text,
 			font: fontString({ ...font, fontSize: font.fontSize * k }),
@@ -236,13 +264,23 @@ interface Atom {
 
 /** Lines of one paragraph without a canvas: greedy, breaking at spaces only. */
 function breakGreedily(
-	runs: readonly LayoutRun[],
+	runs: readonly (LayoutRun | LayoutInline)[],
 	pieces: Piece[],
 	width: number | undefined,
 ): Line[] {
 	const atoms: Atom[] = [];
 	for (const piece of pieces) {
-		const font = (runs[piece.run] as LayoutRun).font;
+		const run = runs[piece.run];
+		if (isInline(run)) {
+			atoms.push({
+				run: piece.run,
+				text: "",
+				width: run.inline.width,
+				space: false,
+			});
+			continue;
+		}
+		const font = (run as LayoutRun).font;
 		for (const part of piece.text.split(/(\s+)/)) {
 			if (!part) continue;
 			const space = /^\s+$/.test(part);
@@ -294,7 +332,7 @@ function breakGreedily(
 		let x = 0;
 		for (const atom of line) {
 			const last = fragments.at(-1);
-			if (last && last.run === atom.run) {
+			if (last && last.run === atom.run && atom.text !== "") {
 				last.text += atom.text;
 				last.width += atom.width;
 			} else {
@@ -313,10 +351,17 @@ function breakGreedily(
 
 /** The runs split at newlines: one list of pieces per paragraph. */
 function paragraphs(
-	runs: readonly LayoutRun[],
+	runs: readonly (LayoutRun | LayoutInline)[],
 ): { pieces: Piece[]; run: number }[] {
 	const result: { pieces: Piece[]; run: number }[] = [{ pieces: [], run: 0 }];
 	runs.forEach((run, index) => {
+		if (isInline(run)) {
+			(result.at(-1) as { pieces: Piece[] }).pieces.push({
+				run: index,
+				text: "",
+			});
+			return;
+		}
 		const parts = run.text.split("\n");
 		parts.forEach((part, partIndex) => {
 			if (partIndex > 0) result.push({ pieces: [], run: index });
@@ -353,7 +398,7 @@ function paragraphs(
  * @category Text & numbers
  */
 export function layoutText(
-	runs: readonly LayoutRun[],
+	runs: readonly (LayoutRun | LayoutInline)[],
 	options: TextLayoutOptions = {},
 ): TextLayout {
 	const lineHeight = options.lineHeight ?? 1.3;
@@ -383,14 +428,26 @@ export function layoutText(
 	let top = 0;
 	let firstBaseline = 0;
 	lines.forEach((line, index) => {
+		const texts = line.fragments.filter((f) => !isInline(runs[f.run]));
 		const sizes =
 			line.fragments.length > 0
-				? line.fragments.map((f) => runs[f.run]?.font.fontSize ?? 0)
-				: [runs[line.emptyRun]?.font.fontSize ?? 0];
+				? texts.map((f) => sizeOf(runs[f.run]))
+				: [sizeOf(runs[line.emptyRun])];
 		const largest = Math.max(0, ...sizes);
 		const glyphs = largest * (ASCENT + DESCENT);
-		const height = Math.max(largest * lineHeight, glyphs);
-		const baseline = top + (height - glyphs) / 2 + largest * ASCENT;
+		const textHeight = Math.max(largest * lineHeight, glyphs);
+		// Above and below the baseline: the text's line box, grown to hold
+		// anything inline.
+		let above = (textHeight - glyphs) / 2 + largest * ASCENT;
+		let below = textHeight - above;
+		for (const fragment of line.fragments) {
+			const run = runs[fragment.run];
+			if (!isInline(run)) continue;
+			above = Math.max(above, run.inline.ascent);
+			below = Math.max(below, run.inline.descent);
+		}
+		const height = above + below;
+		const baseline = top + above;
 		if (index === 0) firstBaseline = baseline;
 		const free = blockWidth - line.width;
 		const shift =

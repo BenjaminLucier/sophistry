@@ -180,11 +180,21 @@ boundaries.
 
 ### Inline nodes
 
-Maths inside a sentence ("let *x* be real") is common in maths explainers. A run is
-either text or a measured node: the core asks only for its width, height and
-baseline, so `mathTex` can sit inline without the core importing
-`@sophistry/text`. The `content` type allows node runs from the start; they
-ship after text runs.
+Maths inside a sentence ("let *x* be real") is common in maths explainers. A
+run is text or `{ inline: node, baseline? }`. Layout asks only for the node's
+width, and how far it reaches above and below the baseline: a Pretext atomic
+box, so lines break around it as around a word, and its line grows to hold it.
+
+- `Text` is a container: its inline nodes are its children, placed in scene
+  units scaled with the text's group, and disposed when dropped from the text.
+- Nodes are measured by their own box (`ownBounds`). A node that says where
+  its baseline is (`textBaseline()`) sits on it; `mathTex` reports its first
+  baseline from the typesetter, so the core never imports `@sophistry/text`.
+  Other nodes are centred a little above the baseline unless the run gives
+  `baseline`.
+- A node that changes size lays the text out again, through the same geometry
+  watching a box uses.
+- `progress` writes the text's glyphs only; inline nodes animate themselves.
 
 ## Box
 

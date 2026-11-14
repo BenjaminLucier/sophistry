@@ -98,6 +98,7 @@ export * from "./spec/gradient.js";
 export * from "./spec/layout.js";
 export type {
 	LaidOutFragment,
+	LayoutInline,
 	LayoutRun,
 	TextLayout,
 	TextLayoutOptions,

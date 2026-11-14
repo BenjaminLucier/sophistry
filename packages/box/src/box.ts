@@ -41,14 +41,12 @@ import type {
 	Bounds,
 	CornerRadius,
 	Matrix,
-	Point,
 } from "@sophistry/core/geometry";
 import {
 	applyToPoint,
 	boundsOf,
 	compose,
 	fromTranslationRotationScale,
-	invert,
 	scaleFactorOf,
 	scale as scaleMatrix,
 	translate,
@@ -149,42 +147,6 @@ function spaceChange(previous: Space | undefined, next: Space): number {
 		change |= SpaceChange.LENGTH_SCALE;
 	}
 	return change;
-}
-
-/** The parts of a node that say where it is in its own units. */
-interface Outlined {
-	localOutline(): readonly Point[][] | null;
-	localMatrix(): Matrix | null;
-}
-
-/**
- * A node's box in its own units: its outline under its own transform, not
- * the space it is in (which the box is about to set). A container has no
- * outline of its own: its scene box is taken back through its space.
- */
-function ownBounds(node: BaseNode): Bounds | null {
-	node.refresh();
-	const outlined = node as unknown as Outlined;
-	const outline = outlined.localOutline();
-	if (outline) {
-		const own = outlined.localMatrix();
-		return boundsOf(
-			outline.map((line) =>
-				own ? line.map((point) => applyToPoint(own, point)) : line,
-			),
-		);
-	}
-	const scene = node.bounds();
-	const inverse = invert(node.space.matrix);
-	if (!scene || !inverse) return null;
-	return boundsOf([
-		[
-			applyToPoint(inverse, { x: scene.minX, y: scene.minY }),
-			applyToPoint(inverse, { x: scene.maxX, y: scene.minY }),
-			applyToPoint(inverse, { x: scene.maxX, y: scene.maxY }),
-			applyToPoint(inverse, { x: scene.minX, y: scene.maxY }),
-		],
-	]);
 }
 
 /** Whether two boxes are the same, to rounding. */
@@ -333,7 +295,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 			return;
 		}
 		const before = this.leafBounds.get(child) ?? null;
-		const after = ownBounds(child);
+		const after = child.ownBounds();
 		if (!sameBounds(before, after)) this.relayout();
 	}
 
@@ -437,7 +399,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 			} else if (child instanceof TextNode) {
 				children.push({ measure: this.measureText(child, unit) });
 			} else {
-				const bounds = ownBounds(child);
+				const bounds = child.ownBounds();
 				this.leafBounds.set(child, bounds);
 				const width = bounds ? (bounds.maxX - bounds.minX) * perSceneUnit : 0;
 				const height = bounds ? (bounds.maxY - bounds.minY) * perSceneUnit : 0;

@@ -44,6 +44,8 @@ export interface LatexOutline {
 	width: number;
 	/** Height of the formula's box, in em. */
 	height: number;
+	/** The first line's baseline, in em down from the box's top. */
+	baseline?: number;
 }
 
 /** Sutherland–Hodgman against one edge of the clip box. */
@@ -218,6 +220,10 @@ export async function outlineLatex(
 		parts,
 		width: measurement.box.width * scale,
 		height: measurement.box.height * scale,
+		baseline:
+			measurement.baseline === undefined
+				? undefined
+				: measurement.baseline * scale,
 	};
 }
 

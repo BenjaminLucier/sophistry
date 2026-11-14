@@ -164,6 +164,29 @@ Text is centred on `x`/`y`. `align` and `baseline` move the anchor (`baseline="a
 
 Lines break where the browser would, between words across spans, using the same measurements the canvas draws with. Without a canvas (server rendering, tests) the breaks fall at spaces from an estimate of each word's width. `layoutText(runs, { width })` is the layout on its own, if you place text yourself.
 
+Any scene node can sit inside a line, like one wide glyph: put `{ inline: node }` among the runs. A formula mid-sentence or a coloured dot as a legend key keeps scene units (scaled with the text's group), lines break around it as around a word, and its line grows to hold it. A formula sits on its own baseline; other nodes are centred on the text, or say where the baseline crosses them with `baseline` (up from their bottom edge). The text owns its inline nodes: one dropped from `text` is disposed, and one that changes size lays the text out again.
+
+```tsx
+import { circle, YELLOW } from "@sophistry/core";
+import { Text } from "@sophistry/solidjs";
+import { mathTex } from "@sophistry/text";
+
+export const Sentence = () => (
+  <Text
+    width={6}
+    text={[
+      "The roots of ",
+      { inline: mathTex.create({ tex: "ax^2 + bx + c", fontSize: 0.4 }) },
+      " are marked ",
+      { inline: circle.create({ radius: 0.08, fill: YELLOW, stroke: "none" }) },
+      ".",
+    ]}
+  />
+);
+```
+
+<Example name="basic/InlineFormula" />
+
 Two presets are built from `Text`:
 
 - `BulletedList` gives each of its `items` a bullet, with a hanging indent when an item wraps. `bullet`, `indent` and `itemGap` adjust it; items take spans too, and `progress` writes it an item at a time.

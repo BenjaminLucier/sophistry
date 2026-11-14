@@ -92,6 +92,8 @@ export interface Measurement {
 	atoms: MeasuredAtom[];
 	/** The `.katex` element's own box — the typesetter's idea of the extent. */
 	box: PixelRect;
+	/** The first line's baseline, in pixels down from the box's top. */
+	baseline?: number;
 }
 
 /**
@@ -442,7 +444,15 @@ export async function measureLatex(
 			}
 		}
 
-		return { atoms, box: relative(rootBox) };
+		// The first line's baseline: an empty inline-block's bottom edge, as
+		// for the runs, read last so it moves nothing that was measured.
+		const line = root.querySelector<HTMLElement>(".base") ?? root;
+		const marker = document.createElement("span");
+		marker.style.cssText = "display:inline-block;width:0;height:0";
+		line.prepend(marker);
+		const baseline = marker.getBoundingClientRect().bottom - origin.y;
+
+		return { atoms, box: relative(rootBox), baseline };
 	} finally {
 		host.remove();
 	}

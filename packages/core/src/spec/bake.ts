@@ -623,6 +623,27 @@ export interface TextBlockRun {
 }
 
 /**
+ * Room for something inline in a text block, in scene units: its width and
+ * how far it reaches above and below the baseline.
+ *
+ * @category Baking
+ */
+export interface TextBlockInline {
+	inline: { width: number; ascent: number; descent: number };
+}
+
+/**
+ * Where a block put an inline run: the index of its run, and its left end
+ * on the baseline, from the anchor (y up).
+ *
+ * @category Baking
+ */
+export interface PlacedInline {
+	run: number;
+	at: { x: number; y: number };
+}
+
+/**
  * Lays out runs into a block anchored the way one line of text is: `align`
  * places the block across the anchor (and each line within the block),
  * `baseline` places it vertically, `"alphabetic"` putting the first line's
@@ -635,7 +656,7 @@ export interface TextBlockRun {
  * @category Baking
  */
 export function bakeTextBlock(
-	runs: readonly TextBlockRun[],
+	runs: readonly (TextBlockRun | TextBlockInline)[],
 	options: {
 		width?: number;
 		lineHeight?: number;
@@ -646,9 +667,11 @@ export function bakeTextBlock(
 		textAlign?: CanvasTextAlign;
 		baseline: CanvasTextBaseline;
 	},
-): { fragments: TextFragment[]; box: Bounds } {
+): { fragments: TextFragment[]; box: Bounds; inlines: PlacedInline[] } {
 	const layout = layoutText(
-		runs.map((run) => ({ text: run.text, font: run.style })),
+		runs.map((run) =>
+			"inline" in run ? run : { text: run.text, font: run.style },
+		),
 		{
 			width: options.width,
 			lineHeight: options.lineHeight,
@@ -679,8 +702,18 @@ export function bakeTextBlock(
 		default:
 			top = layout.firstBaseline;
 	}
-	const fragments = layout.fragments.map((laid): TextFragment => {
-		const run = runs[laid.run] as TextBlockRun;
+	const fragments: TextFragment[] = [];
+	const inlines: PlacedInline[] = [];
+	for (const laid of layout.fragments) {
+		const placed = runs[laid.run];
+		if (placed && "inline" in placed) {
+			inlines.push({
+				run: laid.run,
+				at: { x: left + laid.x, y: top - laid.baseline },
+			});
+			continue;
+		}
+		const run = placed as TextBlockRun;
 		const fragment: TextFragment = {
 			text: laid.text,
 			offset: { x: left + laid.x, y: top - laid.baseline },
@@ -690,11 +723,12 @@ export function bakeTextBlock(
 		if (run.underline) fragment.underline = true;
 		if (run.strikethrough) fragment.strikethrough = true;
 		if (run.highlight) fragment.highlight = run.highlight;
-		return fragment;
-	});
+		fragments.push(fragment);
+	}
 	return {
 		fragments,
 		box: { minX: left, minY: top - height, maxX: left + width, maxY: top },
+		inlines,
 	};
 }
 

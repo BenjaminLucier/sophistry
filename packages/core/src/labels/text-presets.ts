@@ -12,11 +12,17 @@ import type { Matrix } from "../geometry/transform.js";
 import { fromTranslationRotationScale } from "../geometry/transform.js";
 import type { Readable } from "../reactive/index.js";
 import { frameContext, Invalidate, themeContext } from "../scene/context.js";
+import type { BaseNode } from "../scene/node.js";
 import { memo } from "../scene/node.js";
 import { definePrimitive } from "../scene/primitive.js";
 import type { ShapeNode } from "../scene/shape.js";
 import { lastMatrix } from "../scene/shape.js";
-import type { RichText, TextNode, TextNodeProps } from "../scene/text.js";
+import type {
+	RichText,
+	TextInline,
+	TextNode,
+	TextNodeProps,
+} from "../scene/text.js";
 import { text } from "../scene/text.js";
 import type {
 	ContextKey,
@@ -32,6 +38,7 @@ import { bakeTextFont } from "../spec/bake.js";
 import type { Placement } from "../spec/layout.js";
 import { readDelta } from "../spec/layout.js";
 import { measureLabel } from "../spec/metrics.js";
+import type { LayoutInline, LayoutRun } from "../spec/text-layout.js";
 import { layoutText } from "../spec/text-layout.js";
 import type { Theme } from "../themes/types.js";
 import { boxPolyline, TextLayoutNode } from "./text-layout.js";
@@ -163,6 +170,25 @@ export class BulletedListNode extends TextLayoutNode<BulletedListProps> {
 	]);
 	private readonly matrixOf = lastMatrix();
 
+	/** The room an inline node takes in an item, in local units; as `text` lays it out. */
+	private inlineRun(part: TextInline, font: TextFont): LayoutInline {
+		const bounds = (part.inline as BaseNode).ownBounds();
+		if (!bounds) return { inline: { width: 0, ascent: 0, descent: 0 } };
+		const perUnit = 1 / (this.space.lengthScale || 1);
+		const height = (bounds.maxY - bounds.minY) * perUnit;
+		const descent =
+			part.baseline !== undefined
+				? part.baseline * perUnit
+				: height / 2 - 0.3 * font.fontSize;
+		return {
+			inline: {
+				width: (bounds.maxX - bounds.minX) * perUnit,
+				ascent: height - descent,
+				descent,
+			},
+		};
+	}
+
 	/** Measures every item, in local units, down from the list's top. */
 	private measure(font: TextFont, indent: number): ListLayout {
 		const props = this.props;
@@ -177,20 +203,22 @@ export class BulletedListNode extends TextLayoutNode<BulletedListProps> {
 			const runs =
 				typeof item === "string"
 					? [{ text: item, font }]
-					: item.map((part) =>
+					: item.map((part): LayoutRun | LayoutInline =>
 							typeof part === "string"
 								? { text: part, font }
-								: {
-										text: part.text,
-										font: {
-											...font,
-											fontSize: part.fontSize ?? font.fontSize,
-											fontWeight: part.fontWeight ?? font.fontWeight,
-											fontFamily: part.fontFamily ?? font.fontFamily,
-											italic: part.italic ?? font.italic,
-											letterSpacing: part.letterSpacing ?? font.letterSpacing,
+								: "inline" in part
+									? this.inlineRun(part, font)
+									: {
+											text: part.text,
+											font: {
+												...font,
+												fontSize: part.fontSize ?? font.fontSize,
+												fontWeight: part.fontWeight ?? font.fontWeight,
+												fontFamily: part.fontFamily ?? font.fontFamily,
+												italic: part.italic ?? font.italic,
+												letterSpacing: part.letterSpacing ?? font.letterSpacing,
+											},
 										},
-									},
 						);
 			const laid = layoutText(runs, {
 				width: measure,

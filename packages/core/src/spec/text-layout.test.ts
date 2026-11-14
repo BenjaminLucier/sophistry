@@ -113,3 +113,57 @@ describe("layoutText with a canvas", () => {
 		expect(layout.firstBaseline).toBeCloseTo(19);
 	});
 });
+
+describe("layoutText with inline runs", () => {
+	beforeEach(() => {
+		vi.stubGlobal("OffscreenCanvas", StubCanvas);
+		resetTextMeasuring();
+	});
+	afterEach(() => {
+		vi.unstubAllGlobals();
+		resetTextMeasuring();
+	});
+
+	it("places an inline run like a word, and grows its line to hold it", () => {
+		const layout = layoutText([
+			{ text: "let ", font },
+			{ inline: { width: 30, ascent: 20, descent: 5 } },
+			{ text: " be", font },
+		]);
+		expect(layout.lineCount).toBe(1);
+		const [, inline, after] = layout.fragments;
+		expect(inline?.run).toBe(1);
+		expect(inline?.x).toBeCloseTo(20);
+		expect(inline?.width).toBeCloseTo(30);
+		expect(after?.x).toBeCloseTo(50 + 5);
+		// Taller than the text's 13: 20 above the baseline, 5 below.
+		expect(layout.height).toBeCloseTo(25);
+		expect(layout.firstBaseline).toBeCloseTo(20);
+	});
+
+	it("wraps before an inline run that does not fit", () => {
+		const layout = layoutText(
+			[
+				{ text: "aaaa ", font },
+				{ inline: { width: 30, ascent: 8, descent: 2 } },
+			],
+			{ width: 40 },
+		);
+		expect(layout.lineCount).toBe(2);
+		expect(layout.fragments[1]?.x).toBe(0);
+	});
+});
+
+describe("layoutText with inline runs and no canvas", () => {
+	beforeEach(() => resetTextMeasuring());
+
+	it("keeps an inline run beside the text it touches", () => {
+		const layout = layoutText([
+			{ text: "x", font },
+			{ inline: { width: 30, ascent: 8, descent: 2 } },
+			{ text: ".", font },
+		]);
+		expect(layout.fragments.map((f) => f.run)).toEqual([0, 1, 2]);
+		expect(layout.fragments[1]?.width).toBe(30);
+	});
+});

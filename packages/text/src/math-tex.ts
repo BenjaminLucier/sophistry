@@ -49,7 +49,12 @@ import {
 	writeLagRatio,
 } from "@sophistry/core";
 import type { Bounds, Polyline } from "@sophistry/core/geometry";
-import { boundsOf, centerOf, compose } from "@sophistry/core/geometry";
+import {
+	applyToPoint,
+	boundsOf,
+	centerOf,
+	compose,
+} from "@sophistry/core/geometry";
 import {
 	bakeLocalTransform,
 	bakePolylines,
@@ -294,6 +299,22 @@ export class MathTexNode
 		const space = this.space.matrix;
 		const matrix = local ? compose(space, local) : space;
 		return boundsOf(bakePolylines(part.polylines, matrix));
+	}
+
+	/**
+	 * The y of the formula's first baseline, in its parent's units (where
+	 * `x`/`y` live): text the formula is set into sits on it. Null before
+	 * the formula lands.
+	 */
+	override textBaseline(): number | null {
+		const placed = this.latex.placed();
+		if (!placed || placed.baseline === undefined) return null;
+		const props = this.props;
+		const local = bakeLocalTransform(props, readDelta(props.place), () =>
+			this.flatPolylines(placed),
+		);
+		const point = { x: 0, y: placed.baseline };
+		return local ? applyToPoint(local, point).y : point.y;
 	}
 
 	/* ------------------------------------------------------------ stages */
