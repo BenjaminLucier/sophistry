@@ -11,6 +11,9 @@ export type {
 	BoxLength,
 	BoxSpacing,
 	BoxStyle,
+	BoxTrackBreadth,
+	BoxTrackList,
+	BoxTrackSize,
 } from "./style.js";
 export type { LayoutChange } from "./transition.js";
 export { layoutTo } from "./transition.js";

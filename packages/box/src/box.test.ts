@@ -64,6 +64,40 @@ describe("box", () => {
 		expect(a?.minY).toBeCloseTo((outer?.maxY ?? 0) - 0.6);
 	});
 
+	it("lays children out on a grid, with tracks in design pixels", () => {
+		const { graph, commit } = manualGraph();
+		const cells = Array.from({ length: 4 }, () =>
+			box.create({ style: { height: 50 } }),
+		);
+		const wide = box.create({ style: { height: 50, gridColumn: { span: 2 } } });
+		const root = graph.root.add(
+			box.create({
+				style: {
+					display: "grid",
+					width: 400,
+					gridTemplateColumns: [100, { fr: 1 }, "1u"],
+					gap: 10,
+				},
+				children: [...cells, wide],
+			}),
+		);
+		commit();
+		const outer = root.bounds();
+		const left = (node: (typeof cells)[number]) =>
+			(node.bounds()?.minX ?? 0) - (outer?.minX ?? 0);
+		const width = (node: (typeof cells)[number]) =>
+			(node.bounds()?.maxX ?? 0) - (node.bounds()?.minX ?? 0);
+		// 100, then 400 - 100 - 100 - 20 = 180, then 1u = 100 px.
+		expect(left(cells[1] as (typeof cells)[number])).toBeCloseTo(1.1);
+		expect(width(cells[1] as (typeof cells)[number])).toBeCloseTo(1.8);
+		expect(left(cells[2] as (typeof cells)[number])).toBeCloseTo(3);
+		// The fourth wraps to the second row; the wide one spans two columns.
+		expect(left(cells[3] as (typeof cells)[number])).toBeCloseTo(0);
+		expect(left(wide)).toBeCloseTo(1.1);
+		expect(width(wide)).toBeCloseTo(2.9);
+		expect((outer?.maxY ?? 0) - (outer?.minY ?? 0)).toBeCloseTo(1.1);
+	});
+
 	it("wraps text at the box's width and grows to fit it", () => {
 		const { graph, commit } = manualGraph();
 		const words = text.create({

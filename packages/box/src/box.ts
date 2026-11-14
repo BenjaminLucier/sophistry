@@ -37,11 +37,7 @@ import {
 	textStyleContext,
 	themeContext,
 } from "@sophistry/core";
-import type {
-	Bounds,
-	CornerRadius,
-	Matrix,
-} from "@sophistry/core/geometry";
+import type { Bounds, CornerRadius, Matrix } from "@sophistry/core/geometry";
 import {
 	applyToPoint,
 	boundsOf,

@@ -258,11 +258,11 @@ or `"auto"`.
 | Paint | `background` (colour or gradient), `borderWidth`, `borderColor`, `borderRadius` (per corner), `opacity`, `overflow` (`"visible"`, `"hidden"`) |
 | Text (inherited) | `color`, `fontFamily`, `fontSize`, `fontWeight`, `italic`, `letterSpacing`, `lineHeight`, `textAlign`, `underline`, `strikethrough` |
 
-Grid comes with step 6 below: `display: "grid"`, `gridTemplateColumns` and
-`gridTemplateRows` (lengths, `fr`, `auto`, `minContent`, `maxContent`,
-`minmax`, `repeat`), `gridAutoColumns`, `gridAutoRows`, `gridAutoFlow`,
-`gridColumn`, `gridRow`, `justifyItems` and `justifySelf`. Templates are typed
-values, not CSS strings:
+Grid: `display: "grid"`, `gridTemplateColumns` and `gridTemplateRows`
+(lengths, `fr`, `"auto"`, `"min-content"`, `"max-content"`, `minmax`,
+`fitContent`, `repeat` with a count, `"auto-fill"` or `"auto-fit"`),
+`gridAutoColumns`, `gridAutoRows`, `gridAutoFlow`, `gridColumn`, `gridRow`,
+`justifyItems` and `justifySelf`. Templates are typed values, not CSS strings:
 
 ```ts
 gridTemplateColumns: [{ fr: 1 }, 240, { minmax: [120, { fr: 2 }] }]
@@ -278,7 +278,7 @@ CSS change costs in a browser:
 
 | Change | Cost |
 |---|---|
-| A size, spacing, flex or text property | The root lays out its tree again. |
+| A size, spacing, flex, grid or text property | The root lays out its tree again. |
 | `background`, `border*`, `opacity`, `color` | That node's style stage only. |
 | `x`, `y`, `rotation`, `scale` | That node's transform only. |
 
@@ -364,8 +364,6 @@ script (layout before box). `@sophistry/box` adds one target to codegen.
 
 - **Pretext's licence and measuring context.** Confirm the licence, and how it
   is given a measuring context in headless scenes and tests.
-- **Inline maths baselines.** `@sophistry/text` measures glyph baselines while
-  typesetting; check that a placed formula can report one.
 - **Pinned to the screen.** Cameras move everything, and nothing stays fixed to
   the screen during a camera move. A title that holds still needs a small layer
   of its own, useful without `Box` as well.

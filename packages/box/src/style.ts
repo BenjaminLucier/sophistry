@@ -18,9 +18,16 @@ import type {
 	Edges,
 	FlexDirection,
 	FlexWrap,
+	GridAutoFlow,
+	GridPlacement,
 	JustifyContent,
+	JustifyItems,
+	JustifySelf,
 	LayoutStyle,
 	Length,
+	TrackBreadth,
+	TrackList,
+	TrackSize,
 } from "@sophistry/layout";
 
 /**
@@ -50,13 +57,60 @@ export type BoxSpacing<T = BoxLength> =
 	| readonly [top: T, right: T, bottom: T, left: T];
 
 /**
+ * A grid track's minimum or maximum: a length, `"auto"`, an intrinsic size,
+ * or a share of the free space (`{ fr: 1 }`).
+ *
+ * @category Box
+ */
+export type BoxTrackBreadth =
+	| BoxLength
+	| "auto"
+	| "min-content"
+	| "max-content"
+	| { fr: number };
+
+/**
+ * One grid track: a breadth, `{ minmax: [min, max] }`, or
+ * `{ fitContent: length }`.
+ *
+ * @category Box
+ */
+export type BoxTrackSize =
+	| BoxTrackBreadth
+	| {
+			minmax: readonly [
+				min: Exclude<BoxTrackBreadth, { fr: number }>,
+				max: BoxTrackBreadth,
+			];
+	  }
+	| { fitContent: BoxLength };
+
+/**
+ * The tracks of one axis of a grid, in order; `{ repeat, tracks }` repeats
+ * some, a number of times or as many as fit (`"auto-fill"`, `"auto-fit"`).
+ *
+ * @category Box
+ */
+export type BoxTrackList = readonly (
+	| BoxTrackSize
+	| {
+			repeat: number | "auto-fill" | "auto-fit";
+			tracks: readonly BoxTrackSize[];
+	  }
+)[];
+
+/**
  * A box's style.
  *
  * @category Box
  */
 export interface BoxStyle {
-	/** `"none"` takes the box (and everything in it) out of the layout. */
-	display?: "flex" | "none";
+	/**
+	 * `"grid"` lays the children out on a grid; `"none"` takes the box (and
+	 * everything in it) out of the layout.
+	 * @default "flex"
+	 */
+	display?: "flex" | "grid" | "none";
 	/** `"absolute"` places the box by its insets, out of the flow. */
 	position?: "relative" | "absolute";
 	top?: BoxDimension;
@@ -100,6 +154,25 @@ export interface BoxStyle {
 	gap?: BoxLength | readonly [row: BoxLength, column: BoxLength];
 	rowGap?: BoxLength;
 	columnGap?: BoxLength;
+
+	/** The grid's columns, e.g. `[{ fr: 1 }, 240, { fr: 2 }]`. */
+	gridTemplateColumns?: BoxTrackList;
+	/** The grid's rows. */
+	gridTemplateRows?: BoxTrackList;
+	/** The size of columns made beyond the template. */
+	gridAutoColumns?: readonly BoxTrackSize[];
+	/** The size of rows made beyond the template. */
+	gridAutoRows?: readonly BoxTrackSize[];
+	/** How children without a place fill the grid. @default "row" */
+	gridAutoFlow?: GridAutoFlow;
+	/** Where this box sits across a grid's columns: a line, or `{ start, end, span }`. */
+	gridColumn?: GridPlacement;
+	/** Where this box sits across a grid's rows. */
+	gridRow?: GridPlacement;
+	/** How children sit across their grid areas. @default "stretch" */
+	justifyItems?: JustifyItems;
+	/** How this box sits across its grid area. @default "auto" */
+	justifySelf?: JustifySelf;
 
 	/** Fills the border box: a colour or a gradient. */
 	background?: PaintSpec;
@@ -153,6 +226,41 @@ function toDimension(
 ): Dimension | undefined {
 	if (value === undefined) return undefined;
 	return value === "auto" ? "auto" : toLength(value, scale);
+}
+
+function toBreadth(value: BoxTrackBreadth, scale: LengthScale): TrackBreadth {
+	if (typeof value === "object") return value;
+	if (value === "auto" || value === "min-content" || value === "max-content") {
+		return value;
+	}
+	return toLength(value, scale);
+}
+
+function toTrack(value: BoxTrackSize, scale: LengthScale): TrackSize {
+	if (typeof value === "object" && "minmax" in value) {
+		const [min, max] = value.minmax;
+		return {
+			minmax: [
+				toBreadth(min, scale) as Exclude<TrackBreadth, { fr: number }>,
+				toBreadth(max, scale),
+			],
+		};
+	}
+	if (typeof value === "object" && "fitContent" in value) {
+		return { fitContent: toLength(value.fitContent, scale) };
+	}
+	return toBreadth(value, scale);
+}
+
+function toTrackList(list: BoxTrackList, scale: LengthScale): TrackList {
+	return list.map((entry) =>
+		typeof entry === "object" && "repeat" in entry
+			? {
+					repeat: entry.repeat,
+					tracks: entry.tracks.map((track) => toTrack(track, scale)),
+				}
+			: toTrack(entry, scale),
+	);
 }
 
 /** Four sides from a shorthand. */
@@ -255,6 +363,23 @@ export function layoutStyleOf(
 	set("alignItems", style.alignItems);
 	set("alignSelf", style.alignSelf);
 	set("alignContent", style.alignContent);
+	if (style.gridTemplateColumns) {
+		out.gridTemplateColumns = toTrackList(style.gridTemplateColumns, scale);
+	}
+	if (style.gridTemplateRows) {
+		out.gridTemplateRows = toTrackList(style.gridTemplateRows, scale);
+	}
+	if (style.gridAutoColumns) {
+		out.gridAutoColumns = style.gridAutoColumns.map((t) => toTrack(t, scale));
+	}
+	if (style.gridAutoRows) {
+		out.gridAutoRows = style.gridAutoRows.map((t) => toTrack(t, scale));
+	}
+	set("gridAutoFlow", style.gridAutoFlow);
+	set("gridColumn", style.gridColumn);
+	set("gridRow", style.gridRow);
+	set("justifyItems", style.justifyItems);
+	set("justifySelf", style.justifySelf);
 
 	const flex = style.flex;
 	if (typeof flex === "number") {
