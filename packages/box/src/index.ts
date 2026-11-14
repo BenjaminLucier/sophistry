@@ -4,7 +4,7 @@
  * with the rest of a Sophistry scene.
  */
 
-export type { BoxProps } from "./box.js";
+export type { BoxProps, LayoutRect } from "./box.js";
 export { BoxNode, box } from "./box.js";
 export type {
 	BoxDimension,
@@ -12,3 +12,5 @@ export type {
 	BoxSpacing,
 	BoxStyle,
 } from "./style.js";
+export type { LayoutChange } from "./transition.js";
+export { layoutTo } from "./transition.js";

@@ -84,8 +84,32 @@ A box inside something else (a group, say) that is itself inside a box is an out
 - **Boxes** nest, as above.
 - **Any other node** (a circle, an axes, a LaTeX formula) keeps scene units and its own y direction. The box measures it and gives it a cell of that size, scaled from scene units to the box's pixels, so a node means the same inside a box as outside.
 
-Changing a nested box's style, a text's content or the children lays the tree out again. Animate a box's style by setting a new object, from a tween or a `derive`.
+Changing a nested box's style, a text's content, the children, or the size of a scene node inside lays the tree out again. To animate between layouts, see [layout transitions](#layout-transitions).
+
+## Layout transitions
+
+`layoutTo` from `@sophistry/box` is an animation that changes boxes' styles or children and moves everything to its new place. Each box's size and each node's position blend from where it was to where the new layout puts it, so reordered children slide past each other and a row can fold into a column.
+
+<Example name="basic/LayoutTransition" />
+
+```ts
+import { box, layoutTo } from "@sophistry/box";
+import { sequence, text } from "@sophistry/core";
+
+const [a, b, c] = ["sin", "cos", "tan"].map((label) => text.create({ text: label }));
+const row = box.create({ style: { gap: 24 }, children: [a, b, c] });
+const caption = box.create({ style: { width: 400 } });
+
+sequence(
+  // One box: a new order and a wider gap.
+  layoutTo(row, { children: [c, a, b], style: { gap: 48 } }, { duration: 1 }),
+  // Several boxes in one tree, moving together.
+  layoutTo([[row, { style: { flexDirection: "column" } }], [caption, { style: { width: 600 } }]], { duration: 0.8 }),
+);
+```
+
+It is an ordinary animation: it composes with `sequence` and `parallel`, scrubs, and puts the old styles and children back when rewound to its start. Nodes are matched by identity across the whole tree, so a node handed to another box in the same tree travels there. Styles themselves switch at the start: colours don't blend, and text wraps at its new width straight away. A node that only appears in the new layout is there from the start, and one that is dropped goes at once.
 
 ## Not here
 
-Grid, block and inline layout, shadows, blur, blend modes and scrolling are not supported. See [the design notes](/project/design-layout-text/) for how layout, text and units fit together.
+Block and inline layout, shadows, blur, blend modes and scrolling are not supported. See [the design notes](/project/design-layout-text/) for how layout, text and units fit together.

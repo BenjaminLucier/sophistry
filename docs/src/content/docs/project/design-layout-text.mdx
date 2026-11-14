@@ -272,8 +272,13 @@ CSS change costs in a browser:
 | `background`, `border*`, `opacity`, `color` | That node's style stage only. |
 | `x`, `y`, `rotation`, `scale` | That node's transform only. |
 
-Layout transitions (animating boxes between two layouts, keyed so reordering
-and resizing move smoothly) come after the rest.
+Layout transitions animate boxes between two layouts: `layoutTo(box, { style,
+children }, timing)` is a seekable leaf. When it starts it records every node's
+place in the tree (from the outermost box's top left), applies the change and
+lays out once; as it runs, the outermost box shows each box's size and each
+node's position blended from its old place to its new one. Nodes are matched
+by identity, so reordering and moving between boxes in the tree glide. Styles
+switch at the start, and rewinding to the start puts the old ones back.
 
 ## The layout engine
 

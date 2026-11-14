@@ -199,6 +199,24 @@ function sameBounds(a: Bounds | null, b: Bounds | null): boolean {
 	);
 }
 
+/** A box's place in its tree: its border box, from the outermost box's top left. */
+export interface LayoutRect {
+	x: number;
+	y: number;
+	width: number;
+	height: number;
+}
+
+function lerpRect(from: LayoutRect, to: LayoutRect, t: number): LayoutRect {
+	const mix = (a: number, b: number) => a + (b - a) * t;
+	return {
+		x: mix(from.x, to.x),
+		y: mix(from.y, to.y),
+		width: mix(from.width, to.width),
+		height: mix(from.height, to.height),
+	};
+}
+
 function sameMatrix(a: Matrix, b: Matrix): boolean {
 	return (
 		a.a === b.a &&
@@ -231,6 +249,13 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	private textStyle: InheritedTextStyle | null = null;
 	/** Set while the root lays out, so measuring text does not ask it to again. */
 	private laying = false;
+	/** At the root: every box laid out with it, as of the last layout. */
+	private treeBoxes: BoxNode[] = [];
+	/** At the root: every node's place in the tree, as of the last layout. */
+	private rects: Map<BaseNode, LayoutRect> | null = null;
+	/** At the root: a transition from earlier places, `t` of the way. */
+	private blend: { from: ReadonlyMap<BaseNode, LayoutRect>; t: number } | null =
+		null;
 
 	/* ----------------------------------------------------------- children */
 
@@ -386,6 +411,8 @@ export class BoxNode extends BaseContainer<BoxProps> {
 		try {
 			const boxes: BoxNode[] = [];
 			const tree = this.layoutTree(boxes);
+			this.treeBoxes = boxes;
+			this.rects = null;
 			const perUnit = this.context(pixelsPerUnitContext);
 			const frame = this.context(frameContext).peek();
 			const result = computeLayout(tree, {
@@ -468,6 +495,83 @@ export class BoxNode extends BaseContainer<BoxProps> {
 		if (moved || this !== this.root()) this.invalidate(Invalidate.SPACE);
 	}
 
+	/* -------------------------------------------------------- transitions */
+
+	/**
+	 * @internal Where every node in this box's tree is, from the outermost
+	 * box's top left, in layout pixels: the boxes, text and scene nodes.
+	 */
+	layoutRects(): ReadonlyMap<BaseNode, LayoutRect> {
+		const root = this.root();
+		root.refresh();
+		if (root.rects) return root.rects;
+		const rects = new Map<BaseNode, LayoutRect>();
+		const visit = (node: BoxNode, x: number, y: number) => {
+			const { width, height } = node.layoutBox;
+			rects.set(node, { x, y, width, height });
+			for (const [child, box] of node.childBoxes) {
+				if (child instanceof BoxNode) {
+					visit(child, x + box.x, y + box.y);
+				} else {
+					rects.set(child, {
+						x: x + box.x,
+						y: y + box.y,
+						width: box.width,
+						height: box.height,
+					});
+				}
+			}
+		};
+		visit(root, 0, 0);
+		root.rects = rects;
+		return rects;
+	}
+
+	/**
+	 * @internal Shows the tree `t` of the way from the places in `from` (as
+	 * {@link layoutRects} gave them) to its layout: sizes and positions
+	 * blend, and a node without an earlier place is where it is laid out.
+	 * Null shows the layout.
+	 */
+	setLayoutBlend(from: ReadonlyMap<BaseNode, LayoutRect> | null, t = 1): void {
+		const root = this.root();
+		root.blend = from && t < 1 ? { from, t } : null;
+		for (const node of root.treeBoxes) node.invalidate(Invalidate.SPACE);
+		root.invalidate(Invalidate.SPACE);
+	}
+
+	/** Where a node is shown: its laid-out place, or one blending towards it. */
+	private shownRect(node: BaseNode): LayoutRect | undefined {
+		const root = this.root();
+		const to = root.layoutRects().get(node);
+		const blend = root.blend;
+		const from = blend?.from.get(node);
+		if (!to || !blend || !from) return to;
+		return lerpRect(from, to, blend.t);
+	}
+
+	/** The border box's size as shown. */
+	private shownSize(): { width: number; height: number } {
+		if (!this.root().blend) return this.layoutBox;
+		return this.shownRect(this) ?? this.layoutBox;
+	}
+
+	/** A child's cell as shown, relative to this box's border box. */
+	private cellOf(child: BaseNode): LayoutBox {
+		const box = this.childBoxes.get(child) ?? ZERO_BOX;
+		if (!this.root().blend) return box;
+		const own = this.shownRect(this);
+		const shown = this.shownRect(child);
+		if (!own || !shown) return box;
+		return {
+			...box,
+			x: shown.x - own.x,
+			y: shown.y - own.y,
+			width: shown.width,
+			height: shown.height,
+		};
+	}
+
 	/* ---------------------------------------------------------- placement */
 
 	/** Scene units per layout pixel, before the parent's own scale. */
@@ -481,7 +585,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 		const props = this.props;
 		const unit = this.pixelScale(space);
 		const flip = space.yUp ? -1 : 1;
-		const { width, height } = this.layoutBox;
+		const { width, height } = this.shownSize();
 		const local = compose(
 			fromTranslationRotationScale({
 				x: props.x ?? 0,
@@ -527,7 +631,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 			};
 		}
 		const clip = this.contentClip(frame);
-		const box = this.childBoxes.get(child) ?? ZERO_BOX;
+		const box = this.cellOf(child);
 		if (child instanceof BoxNode) {
 			return {
 				...base,
@@ -571,6 +675,8 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	private clipCache: {
 		frame: Matrix;
 		parent: unknown;
+		width: number;
+		height: number;
 		clip: Space["clip"];
 	} | null = null;
 
@@ -578,11 +684,18 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	private contentClip(frame: Matrix): Space["clip"] {
 		const space = this.space;
 		if (this.props.style?.overflow !== "hidden") return space.clip;
+		const { width, height } = this.shownSize();
+		const border = this.layoutBox.border;
 		const cached = this.clipCache;
-		if (cached && cached.frame === frame && cached.parent === space.clip) {
+		if (
+			cached &&
+			cached.frame === frame &&
+			cached.parent === space.clip &&
+			cached.width === width &&
+			cached.height === height
+		) {
 			return cached.clip;
 		}
-		const { width, height, border } = this.layoutBox;
 		const clip = nestClip(
 			space.clip,
 			{
@@ -593,7 +706,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 			},
 			frame,
 		);
-		this.clipCache = { frame, parent: space.clip, clip };
+		this.clipCache = { frame, parent: space.clip, width, height, clip };
 		return clip;
 	}
 
@@ -623,7 +736,8 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	/** Makes, updates or drops the background and the border. */
 	private paint(): void {
 		const style = this.props.style ?? {};
-		const { width, height, border } = this.layoutBox;
+		const { width, height } = this.shownSize();
+		const border = this.layoutBox.border;
 		const unit = this.unitPixels();
 		const radii = cornerList(style.borderRadius).map((radius: CornerRadius) =>
 			typeof radius === "number"
@@ -720,7 +834,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	override bounds(): Bounds | null {
 		this.refresh();
 		const frame = this.currentFrame();
-		const { width, height } = this.layoutBox;
+		const { width, height } = this.shownSize();
 		return boundsOf([
 			[
 				applyToPoint(frame, { x: 0, y: 0 }),
@@ -736,7 +850,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
 		this.refresh();
 		const space = this.space;
 		const frame = this.currentFrame();
-		const { width, height } = this.layoutBox;
+		const { width, height } = this.shownSize();
 		// The frame relative to the parent's: undo the parent's matrix.
 		const parentScale = scaleFactorOf(space.matrix) || 1;
 		const corners = [
