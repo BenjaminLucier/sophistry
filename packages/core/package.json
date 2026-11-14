@@ -1,6 +1,6 @@
 {
 	"name": "@sophistry/core",
-	"version": "0.1.0",
+	"version": "0.2.0",
 	"type": "module",
 	"license": "MIT",
 	"description": "Framework-free animation and visualization engine: scenes, tweens, geometry, themes and a Canvas2D renderer. Pair it with a binding such as @sophistry/solidjs or @sophistry/react.",
