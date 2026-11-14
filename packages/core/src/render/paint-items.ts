@@ -164,7 +164,16 @@ export function mayBeVisible(spec: DrawSpec, visible: Bounds): boolean {
 			const { fontSize, halo } = spec.style;
 			// Generous: the widest glyphs run about one em, plus room for the
 			// anchor's alignment, rotation and a halo.
-			const reach = fontSize * (spec.text.length + 2) + (halo ? halo.width : 0);
+			const box = spec.box;
+			const reach =
+				(box
+					? Math.max(
+							Math.abs(box.minX),
+							Math.abs(box.maxX),
+							Math.abs(box.minY),
+							Math.abs(box.maxY),
+						) * Math.SQRT2
+					: fontSize * (spec.text.length + 2)) + (halo ? halo.width : 0);
 			return (
 				spec.at.x + reach >= visible.minX &&
 				spec.at.x - reach <= visible.maxX &&

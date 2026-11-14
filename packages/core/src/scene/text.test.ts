@@ -180,3 +180,69 @@ describe("defineText", () => {
 		expect((node.spec as TextSpec).text).toBe("7");
 	});
 });
+
+describe("rich text", () => {
+	it("keeps one plain line a single run", () => {
+		const { graph, commit } = manualGraph();
+		const node = graph.root.add(label.create({ text: "plain" }));
+		commit();
+		expect((node.spec as TextSpec).fragments).toBeUndefined();
+	});
+
+	it("lays out spans as fragments in their own styles", () => {
+		const { graph, commit } = manualGraph();
+		const node = graph.root.add(
+			label.create({
+				text: [
+					"a ",
+					{ text: "bold", fontWeight: 700, color: "#f00", underline: true },
+				],
+				fontSize: 0.5,
+			}),
+		);
+		commit();
+		const spec = node.spec as TextSpec;
+		expect(spec.text).toBe("a bold");
+		expect(spec.fragments?.map((f) => f.text)).toEqual(["a ", "bold"]);
+		const bold = spec.fragments?.[1];
+		expect(bold?.style.fontWeight).toBe(700);
+		expect(bold?.style.fill).toBe("#f00");
+		expect(bold?.style.fontSize).toBe(0.5);
+		expect(bold?.underline).toBe(true);
+		// Centred on the anchor, as one line would be.
+		const box = spec.box as { minX: number; maxX: number };
+		expect(box.minX).toBeCloseTo(-box.maxX);
+	});
+
+	it("wraps at a width in the node's units, scaled by its groups", () => {
+		const { graph, commit } = manualGraph();
+		const scaled = graph.root.add(group.create({ scale: 2 }));
+		const node = scaled.add(
+			label.create({
+				text: "one two three four",
+				width: 1.2,
+				fontSize: 0.3,
+				align: "left",
+			}),
+		);
+		commit();
+		const spec = node.spec as TextSpec;
+		const lines = new Set(spec.fragments?.map((f) => f.offset.y));
+		expect(lines.size).toBeGreaterThan(1);
+		expect(spec.box?.maxX).toBeCloseTo(2.4);
+		// The handle goes through the group back to the same scene box.
+		const bounds = node.bounds();
+		expect((bounds?.maxX ?? 0) - (bounds?.minX ?? 0)).toBeCloseTo(2.4);
+	});
+
+	it("breaks at newlines and puts the first baseline on the anchor", () => {
+		const { graph, commit } = manualGraph();
+		const node = graph.root.add(
+			label.create({ text: "a\nb", baseline: "alphabetic", fontSize: 1 }),
+		);
+		commit();
+		const spec = node.spec as TextSpec;
+		expect(spec.fragments?.[0]?.offset.y).toBeCloseTo(0);
+		expect(spec.fragments?.[1]?.offset.y).toBeCloseTo(-1.3);
+	});
+});

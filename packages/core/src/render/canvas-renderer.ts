@@ -21,6 +21,7 @@ import type {
 	Bounds,
 	CurveArcTable,
 	CurvePath,
+	Point,
 	Polyline,
 } from "../geometry/index.js";
 import {
@@ -46,7 +47,9 @@ import type {
 	DrawSpec,
 	ShapeSpec,
 	StrokeStyle,
+	TextFragment,
 	TextSpec,
+	TextStyle,
 } from "../spec/types.js";
 import { resolveTheme } from "../themes/theme.js";
 import type { Theme } from "../themes/types.js";
@@ -773,24 +776,23 @@ function applyClip(
 }
 
 /**
- * Draws one text run upright, in pixels, at the view-mapped anchor (a y-up view
- * would otherwise mirror glyphs); size and letter spacing are scaled by the
- * view.
+ * Draws text upright, in pixels, at the view-mapped anchor (a y-up view would
+ * otherwise mirror glyphs); size and letter spacing are scaled by the view.
+ * One run is drawn as is; a block's fragments each in their own style.
  */
 function drawText(
 	ctx: CanvasRenderingContext2D,
 	spec: TextSpec,
 	view: Matrix,
 ): void {
-	const { style } = spec;
 	const scale = scaleFactorOf(view);
-	if (!(scale > 0)) return;
+	if (!(scale > 0) || !(spec.progress > 0)) return;
 	ctx.save();
 
 	const anchor = applyToPoint(view, spec.at);
 	const rotation = textRotation(view, spec.rotation);
 	let at = anchor;
-	if (rotation) {
+	if (rotation || spec.fragments) {
 		const cos = Math.cos(rotation);
 		const sin = Math.sin(rotation);
 		ctx.setTransform(cos, sin, -sin, cos, anchor.x, anchor.y);
@@ -799,55 +801,90 @@ function drawText(
 		ctx.setTransform(1, 0, 0, 1, 0, 0);
 	}
 
-	// All font state is set before anything is measured: `measureText` reports
-	// the width under the *current* font, letter spacing and alignment, so
-	// measuring first would clip the wrong box for spaced or non-left text.
+	if (spec.fragments) {
+		drawFragments(ctx, spec, scale);
+	} else {
+		applyTextStyle(ctx, spec.style, scale);
+		revealText(ctx, spec.text, at, spec.style, scale, spec.progress, () =>
+			paintText(ctx, spec.text, at, spec.style, scale),
+		);
+	}
+	ctx.restore();
+}
+
+/** Font, alignment, colour, opacity and letter spacing for a text style. */
+function applyTextStyle(
+	ctx: CanvasRenderingContext2D,
+	style: TextStyle,
+	scale: number,
+	resetSpacing = false,
+): void {
 	ctx.font = fontString(style, scale);
 	ctx.textAlign = style.align;
 	ctx.textBaseline = style.baseline;
 	ctx.fillStyle = style.fill;
 	ctx.globalAlpha = style.opacity;
-	if (style.letterSpacing) {
-		ctx.letterSpacing = `${style.letterSpacing * scale}px`;
+	// Left alone when unspaced, unless an earlier fragment spaced it.
+	if (style.letterSpacing || resetSpacing) {
+		ctx.letterSpacing = `${(style.letterSpacing ?? 0) * scale}px`;
 	}
+}
 
-	// A halo is stroked first, under the fill, so it widens the glyphs only
-	// outward: the text stays its own weight over a knocked-out background.
-	const halo = style.halo;
-	const paint = () => {
-		if (halo && halo.width > 0) {
-			ctx.strokeStyle = halo.color;
-			ctx.lineWidth = halo.width * scale;
-			ctx.lineJoin = "round";
-			ctx.strokeText(spec.text, at.x, at.y);
-		}
-		ctx.fillText(spec.text, at.x, at.y);
-	};
+/**
+ * A halo is stroked first, under the fill, so it widens the glyphs only
+ * outward: the text stays its own weight over a knocked-out background.
+ */
+function paintText(
+	ctx: CanvasRenderingContext2D,
+	text: string,
+	at: Point,
+	style: TextStyle,
+	scale: number,
+	halo = true,
+	fill = true,
+): void {
+	if (halo && style.halo && style.halo.width > 0) {
+		ctx.strokeStyle = style.halo.color;
+		ctx.lineWidth = style.halo.width * scale;
+		ctx.lineJoin = "round";
+		ctx.strokeText(text, at.x, at.y);
+	}
+	if (fill) ctx.fillText(text, at.x, at.y);
+}
 
-	if (spec.progress >= 1) {
+/**
+ * Paints `text` revealed to `progress`. All font state must be set first:
+ * `measureText` reports the width under the *current* font, letter spacing
+ * and alignment. Canvas2D can't trim a glyph outline, so the text is written
+ * on glyph by glyph in the reading direction: those already written whole,
+ * the one being written faded in whole, in its own clip. A clip edge cut
+ * through a glyph would read as another letter ("h" as "l", "30" as "3").
+ */
+function revealText(
+	ctx: CanvasRenderingContext2D,
+	text: string,
+	at: Point,
+	style: TextStyle,
+	scale: number,
+	progress: number,
+	paint: () => void,
+): void {
+	if (progress >= 1) {
 		paint();
-		ctx.restore();
 		return;
 	}
-	// Nothing of the text is revealed yet.
-	if (!(spec.progress > 0)) {
-		ctx.restore();
-		return;
-	}
-	// Canvas2D can't trim a glyph outline, so the text is written on glyph by
-	// glyph in the reading direction: those already written whole, the one
-	// being written faded in whole, in its own clip. A clip edge cut through a
-	// glyph would read as another letter ("h" as "l", "30" as "3").
-	const width = ctx.measureText(spec.text).width;
+	if (!(progress > 0)) return;
+	const width = ctx.measureText(text).width;
 	const height = style.fontSize * scale * 2;
+	const align = ctx.textAlign;
 	const left =
-		style.align === "center"
+		align === "center"
 			? at.x - width / 2
-			: style.align === "right" || style.align === "end"
+			: align === "right" || align === "end"
 				? at.x - width
 				: at.x;
-	const glyphs = Array.from(spec.text);
-	const reached = width * spec.progress;
+	const glyphs = Array.from(text);
+	const reached = width * progress;
 	let done = 0;
 	let edge = 0;
 	for (let i = 1; i <= glyphs.length; i++) {
@@ -859,10 +896,11 @@ function drawText(
 		done = next;
 		edge = next;
 	}
-	const clipped = (from: number, to: number, alpha: number) => {
-		if (!(to > from) || !(alpha > 0)) return;
+	const alpha = ctx.globalAlpha;
+	const clipped = (from: number, to: number, fade: number) => {
+		if (!(to > from) || !(fade > 0)) return;
 		ctx.save();
-		ctx.globalAlpha = style.opacity * alpha;
+		ctx.globalAlpha = alpha * fade;
 		ctx.beginPath();
 		ctx.rect(left + from, at.y - height, to - from, height * 2);
 		ctx.clip();
@@ -871,7 +909,88 @@ function drawText(
 	};
 	clipped(0, done, 1);
 	clipped(done, edge, (reached - done) / (edge - done));
-	ctx.restore();
+}
+
+/**
+ * A block's fragments, in the frame `drawText` set up (origin at the anchor,
+ * x along the baseline, y down). Highlights go under everything, every halo
+ * under every fill (so one fragment's halo can't cover its neighbour), and
+ * decorations on top. `progress` runs through the fragments in order, by
+ * width: those before the edge whole, the one at the edge glyph by glyph.
+ */
+function drawFragments(
+	ctx: CanvasRenderingContext2D,
+	spec: TextSpec,
+	scale: number,
+): void {
+	const fragments = spec.fragments ?? [];
+	const total = fragments.reduce((sum, f) => sum + f.width, 0);
+	let budget = total * Math.min(1, spec.progress);
+	const shown: { index: number; progress: number }[] = [];
+	for (let index = 0; index < fragments.length; index++) {
+		const width = (fragments[index] as TextFragment).width;
+		if (spec.progress >= 1 || budget >= width) {
+			shown.push({ index, progress: 1 });
+			budget -= width;
+		} else {
+			if (budget > 0) shown.push({ index, progress: budget / width });
+			break;
+		}
+	}
+	const place = (fragment: TextFragment): Point => ({
+		x: fragment.offset.x * scale,
+		y: -fragment.offset.y * scale,
+	});
+
+	for (const { index, progress } of shown) {
+		const fragment = fragments[index] as TextFragment;
+		if (!fragment.highlight) continue;
+		const at = place(fragment);
+		const size = fragment.style.fontSize * scale;
+		ctx.globalAlpha = fragment.style.opacity;
+		ctx.fillStyle = fragment.highlight;
+		ctx.fillRect(
+			at.x,
+			at.y - size * 0.9,
+			fragment.width * scale * progress,
+			size * 1.15,
+		);
+	}
+	for (const pass of ["halo", "fill"] as const) {
+		for (const { index, progress } of shown) {
+			const fragment = fragments[index] as TextFragment;
+			if (pass === "halo" && !fragment.style.halo) continue;
+			const at = place(fragment);
+			applyTextStyle(ctx, fragment.style, scale, true);
+			revealText(ctx, fragment.text, at, fragment.style, scale, progress, () =>
+				paintText(
+					ctx,
+					fragment.text,
+					at,
+					fragment.style,
+					scale,
+					pass === "halo",
+					pass === "fill",
+				),
+			);
+		}
+	}
+	for (const { index, progress } of shown) {
+		const fragment = fragments[index] as TextFragment;
+		if (!fragment.underline && !fragment.strikethrough) continue;
+		const at = place(fragment);
+		const size = fragment.style.fontSize * scale;
+		const thickness = Math.max(1, size * 0.07);
+		const width = fragment.width * scale * progress;
+		ctx.globalAlpha = fragment.style.opacity;
+		ctx.fillStyle = fragment.style.fill;
+		if (fragment.underline) {
+			ctx.fillRect(at.x, at.y + size * 0.12, width, thickness);
+		}
+		if (fragment.strikethrough) {
+			ctx.fillRect(at.x, at.y - size * 0.3 - thickness / 2, width, thickness);
+		}
+	}
 }
 
 /**

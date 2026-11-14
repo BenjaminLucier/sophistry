@@ -929,6 +929,61 @@ describe("drawText", () => {
 		expect(ops).toEqual(["clip", "fillText", "clip", "fillText"]);
 	});
 
+	function fragmentSpec(progress = 1): TextSpec {
+		const base = textSpec({ text: "ab cd", progress });
+		const style = { ...base.style, align: "left" as const };
+		return {
+			...base,
+			fragments: [
+				{
+					text: "ab",
+					offset: { x: -2, y: 1 },
+					style,
+					width: 2,
+					highlight: "#ff0",
+				},
+				{
+					text: "cd",
+					offset: { x: 1, y: -1 },
+					style: { ...style, fill: "#f00" },
+					width: 2,
+					underline: true,
+				},
+			],
+			box: { minX: -2, minY: -2, maxX: 3, maxY: 2 },
+		};
+	}
+
+	it("draws each fragment at its offset from the anchor, y flipped to the canvas", () => {
+		const { ctx, calls } = mockCtx();
+		paintSpecs(ctx, [fragmentSpec()], new Map(), createPaintCache());
+		expect(calls.find((c) => c.op === "setTransform")?.args).toEqual([
+			1, 0, -0, 1, 5, 5,
+		]);
+		expect(calls.filter((c) => c.op === "fillText").map((c) => c.args)).toEqual(
+			[
+				["ab", -2, -1],
+				["cd", 1, 1],
+			],
+		);
+		const rects = calls.filter((c) => c.op === "fillRect").map((c) => c.args);
+		// The highlight under "ab", then the underline under "cd".
+		expect(rects).toHaveLength(2);
+		expect(rects[0]?.[0]).toBe(-2);
+		expect(rects[1]?.[0]).toBe(1);
+		expect(calls.findIndex((c) => c.op === "fillRect")).toBeLessThan(
+			calls.findIndex((c) => c.op === "fillText"),
+		);
+	});
+
+	it("reveals fragments in order by width", () => {
+		const { ctx, calls } = mockCtx();
+		paintSpecs(ctx, [fragmentSpec(0.5)], new Map(), createPaintCache());
+		expect(
+			calls.filter((c) => c.op === "fillText").map((c) => c.args[0]),
+		).toEqual(["ab"]);
+	});
+
 	it("at progress 0: draws nothing, not a one-pixel sliver", () => {
 		const { ctx, calls } = mockCtx();
 		paintSpecs(ctx, [textSpec({ progress: 0 })], new Map(), createPaintCache());

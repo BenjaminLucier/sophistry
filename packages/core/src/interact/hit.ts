@@ -190,7 +190,11 @@ export { boundsContain };
  * @category Interaction plumbing
  */
 export function textBoxAt(spec: TextSpec, yUp = true): Bounds {
-	const box = labelBox(spec.text, spec.style, yUp);
+	const box = spec.box
+		? yUp
+			? spec.box
+			: { ...spec.box, minY: -spec.box.maxY, maxY: -spec.box.minY }
+		: labelBox(spec.text, spec.style, yUp);
 	return {
 		minX: spec.at.x + box.minX,
 		minY: spec.at.y + box.minY,

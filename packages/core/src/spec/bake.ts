@@ -13,7 +13,12 @@
 
 import { cssColor } from "../color/parse.js";
 import type { ColorInput } from "../color/types.js";
-import type { CurvePath, Point, Polyline } from "../geometry/index.js";
+import type {
+	Bounds,
+	CurvePath,
+	Point,
+	Polyline,
+} from "../geometry/index.js";
 import { boundsOf, centerOf, curvePathToPolyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
 import {
@@ -29,12 +34,14 @@ import { writeLagRatio } from "../geometry/write-phase.js";
 import type { Theme } from "../themes/types.js";
 import type { PaintFrame, PaintSpec } from "./gradient.js";
 import { isGradientSpec, resolvePaint } from "./gradient.js";
+import { layoutText } from "./text-layout.js";
 import type {
 	AlongStroke,
 	ClipRegion,
 	Paint,
 	ShapeSpec,
 	StrokeStyle,
+	TextFragment,
 	TextSpec,
 	TextStyle,
 } from "./types.js";
@@ -597,6 +604,91 @@ export function textRotation(matrix: Matrix, rotation = 0): number {
 }
 
 /**
+ * One styled run of a text block, its style already baked.
+ *
+ * @category Baking
+ */
+export interface TextBlockRun {
+	text: string;
+	style: TextStyle;
+	underline?: boolean;
+	strikethrough?: boolean;
+	/** A CSS colour behind the run. */
+	highlight?: string;
+}
+
+/**
+ * Lays out runs into a block anchored the way one line of text is: `align`
+ * places the block across the anchor (and each line within the block),
+ * `baseline` places it vertically, `"alphabetic"` putting the first line's
+ * baseline on the anchor.
+ *
+ * @param runs - The runs, in scene units.
+ * @param options - Wrap width (scene units), line height multiple, align and baseline.
+ * @returns The fragments and the block's box, relative to the anchor, y up on screen.
+ *
+ * @category Baking
+ */
+export function bakeTextBlock(
+	runs: readonly TextBlockRun[],
+	options: {
+		width?: number;
+		lineHeight?: number;
+		align: CanvasTextAlign;
+		baseline: CanvasTextBaseline;
+	},
+): { fragments: TextFragment[]; box: Bounds } {
+	const layout = layoutText(
+		runs.map((run) => ({ text: run.text, font: run.style })),
+		{
+			width: options.width,
+			lineHeight: options.lineHeight,
+			align: options.align,
+		},
+	);
+	const { width, height } = layout;
+	const left =
+		options.align === "left" || options.align === "start"
+			? 0
+			: options.align === "right" || options.align === "end"
+				? -width
+				: -width / 2;
+	let top: number;
+	switch (options.baseline) {
+		case "top":
+		case "hanging":
+			top = 0;
+			break;
+		case "middle":
+			top = height / 2;
+			break;
+		case "bottom":
+		case "ideographic":
+			top = height;
+			break;
+		default:
+			top = layout.firstBaseline;
+	}
+	const fragments = layout.fragments.map((laid): TextFragment => {
+		const run = runs[laid.run] as TextBlockRun;
+		const fragment: TextFragment = {
+			text: laid.text,
+			offset: { x: left + laid.x, y: top - laid.baseline },
+			style: { ...run.style, align: "left", baseline: "alphabetic" },
+			width: laid.width,
+		};
+		if (run.underline) fragment.underline = true;
+		if (run.strikethrough) fragment.strikethrough = true;
+		if (run.highlight) fragment.highlight = run.highlight;
+		return fragment;
+	});
+	return {
+		fragments,
+		box: { minX: left, minY: top - height, maxX: left + width, maxY: top },
+	};
+}
+
+/**
  * Assembles a `TextSpec`, or `null` when there is nothing to draw (empty text,
  * `progress <= 0`). `at` is already in scene units.
  *
@@ -618,6 +710,8 @@ export function bakeTextSpec(options: {
 	progress?: number;
 	/** The enclosing clip regions (`SceneSpaceValue.clip`), if any. */
 	clip?: readonly ClipRegion[];
+	/** A laid-out block from {@link bakeTextBlock}, for rich or wrapped text. */
+	block?: { fragments: readonly TextFragment[]; box: Bounds };
 }): TextSpec | null {
 	if (!options.text) return null;
 	const progress = options.progress ?? 1;
@@ -634,6 +728,9 @@ export function bakeTextSpec(options: {
 		style: options.style,
 		progress: Math.min(1, progress),
 		...(options.clip ? { clip: options.clip } : {}),
+		...(options.block
+			? { fragments: options.block.fragments, box: options.block.box }
+			: {}),
 	};
 }
 

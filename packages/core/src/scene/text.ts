@@ -13,6 +13,7 @@
  */
 
 import type { ColorInput } from "../color/index.js";
+import { cssColor } from "../color/index.js";
 import type { Bounds, Point, Polyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
 import {
@@ -21,12 +22,17 @@ import {
 	scaleFactorOf,
 } from "../geometry/transform.js";
 import type { InteractionProps } from "../interact/types.js";
-import type { TextHalo } from "../spec/bake.js";
-import { bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
+import type { TextBlockRun, TextHalo, TextStyleInput } from "../spec/bake.js";
+import { bakeTextBlock, bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
 import type { Placement } from "../spec/layout.js";
 import { readDelta } from "../spec/layout.js";
 import { fontLoads, labelBox } from "../spec/metrics.js";
-import type { ClipRegion, TextSpec, TextStyle } from "../spec/types.js";
+import type {
+	ClipRegion,
+	TextFragment,
+	TextSpec,
+	TextStyle,
+} from "../spec/types.js";
 import { Invalidate, themeContext } from "./context.js";
 import { fontEpochContext, watchFontLoads } from "./fonts.js";
 import type { SceneGraph } from "./graph.js";
@@ -43,6 +49,39 @@ import type {
 import { SpaceChange } from "./types.js";
 
 export type { TextHalo } from "../spec/bake.js";
+
+/**
+ * A run of text with its own style. Anything it leaves out comes from the
+ * text node's props.
+ *
+ * @category Text & numbers
+ */
+export interface TextSpan {
+	text: string;
+	/** Font size in the node's units. */
+	fontSize?: number;
+	color?: ColorInput;
+	fontFamily?: string;
+	fontWeight?: string | number;
+	italic?: boolean;
+	letterSpacing?: number;
+	/** Multiplied with the node's opacity. */
+	opacity?: number;
+	/** A line under the run, in its colour. */
+	underline?: boolean;
+	/** A line through the run, in its colour. */
+	strikethrough?: boolean;
+	/** A colour behind the run. */
+	highlight?: ColorInput;
+}
+
+/**
+ * What a text node draws: a string, or strings and {@link TextSpan}s in
+ * reading order. `"\n"` starts a new line.
+ *
+ * @category Text & numbers
+ */
+export type RichText = string | readonly (string | TextSpan)[];
 
 /**
  * Props every text node accepts, besides what gives it its string.
@@ -102,6 +141,16 @@ export interface TextProps extends InteractionProps {
 	 */
 	letterSpacing?: number;
 	/**
+	 * Wrap lines at this width, in the node's units. Omitted, only newlines
+	 * break. `align` places the block on the anchor and each line within it.
+	 */
+	width?: number;
+	/**
+	 * Line height, as a multiple of the largest font size on each line.
+	 * @default 1.3
+	 */
+	lineHeight?: number;
+	/**
 	 * Opacity 0..1, multiplied with enclosing groups.
 	 * @default 1
 	 */
@@ -157,6 +206,8 @@ export const textProps: PropsDescriptor<TextProps> = Object.freeze({
 		invalidates: Invalidate.STYLE,
 		instanceable: true,
 	},
+	width: { invalidates: Invalidate.GEOMETRY },
+	lineHeight: { default: 1.3, invalidates: Invalidate.GEOMETRY },
 	opacity: { default: 1, invalidates: Invalidate.STYLE, instanceable: true },
 	halo: { invalidates: Invalidate.STYLE },
 	progress: { default: 1, invalidates: Invalidate.SPEC, instanceable: true },
@@ -177,10 +228,19 @@ export interface TextOptions<P extends TextProps> {
 	/** One entry per prop: `...textProps` plus the definition's own. */
 	props: PropsDescriptor<P>;
 	/**
-	 * The string to draw, from the props it reads; an empty string draws
-	 * nothing. Reruns when a prop invalidating `Invalidate.GEOMETRY` changes.
+	 * What to draw, from the props it reads: a string, or strings and spans
+	 * ({@link RichText}); empty draws nothing. Reruns when a prop
+	 * invalidating `Invalidate.GEOMETRY` changes.
 	 */
-	text: (props: Readonly<P>) => string;
+	text: (props: Readonly<P>) => RichText;
+}
+
+/** Every run's text together. */
+function plainText(content: RichText): string {
+	if (typeof content === "string") return content;
+	return content
+		.map((part) => (typeof part === "string" ? part : part.text))
+		.join("");
 }
 
 /** A box's four corners, divided by `perUnit`. */
@@ -208,8 +268,8 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	override readonly producesSpec = true;
 
 	private readonly options: TextOptions<P>;
-	/** The string, or null when a geometry prop changed since it was read. */
-	private content: string | null = null;
+	/** What to draw, or null when a geometry prop changed since it was read. */
+	private content: RichText | null = null;
 	/**
 	 * Scene units: the enclosing groups' scale is folded in, the camera's is
 	 * not (the renderer multiplies by the view's scale at paint time). Lazy: a
@@ -223,6 +283,23 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		(matrix: Matrix, x: number, y: number): Point =>
 			applyToPoint(matrix, { x, y }),
 	);
+	private readonly plainOf = memo(plainText);
+	/** The laid-out block, for rich, multi-line or wrapped text. */
+	private readonly blockOf = memo(
+		(
+			content: RichText,
+			style: TextStyle,
+			width: number | undefined,
+			lineHeight: number | undefined,
+			_fontEpoch: number,
+		): { fragments: TextFragment[]; box: Bounds } =>
+			bakeTextBlock(this.runsOf(content, style), {
+				width,
+				lineHeight,
+				align: style.align,
+				baseline: style.baseline,
+			}),
+	);
 	private readonly specOf = memo(
 		(
 			text: string,
@@ -233,6 +310,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			progress: number | undefined,
 			zIndex: number | undefined,
 			clip: readonly ClipRegion[] | undefined,
+			block: { fragments: TextFragment[]; box: Bounds } | undefined,
 		): TextSpec | null =>
 			bakeTextSpec({
 				id: this.id,
@@ -247,16 +325,24 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 				style,
 				progress,
 				clip,
+				block,
 			}),
 	);
 	private readonly boxOf = memo(
 		(
 			text: string,
 			style: TextStyle,
+			block: { box: Bounds } | undefined,
 			yUp: boolean,
 			perUnit: number,
 			_fontEpoch: number,
-		): Polyline[] => [boxCorners(labelBox(text, style, yUp), perUnit)],
+		): Polyline[] => {
+			let box: Bounds;
+			if (!block) box = labelBox(text, style, yUp);
+			else if (yUp) box = block.box;
+			else box = { ...block.box, minY: -block.box.maxY, maxY: -block.box.minY };
+			return [boxCorners(box, perUnit)];
+		},
 	);
 	private readonly handleMatrixOf = lastMatrix();
 
@@ -314,33 +400,103 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			props.progress,
 			props.zIndex,
 			this.space.clip,
+			this.currentBlock(),
 		);
 	}
 
-	private currentText(): string {
+	private currentContent(): RichText {
 		this.content ??= this.options.text(this.props);
 		return this.content;
 	}
 
-	private currentStyle(): TextStyle {
+	/** The plain text: every run's text together. */
+	private currentText(): string {
+		return this.plainOf(this.currentContent());
+	}
+
+	/**
+	 * The laid-out block, or undefined for one plain line (no spans, no
+	 * newline, no width), which is drawn and measured as a single run.
+	 */
+	private currentBlock():
+		| { fragments: TextFragment[]; box: Bounds }
+		| undefined {
+		const content = this.currentContent();
+		const width = this.props.width;
+		if (
+			typeof content === "string" &&
+			width === undefined &&
+			!content.includes("\n")
+		) {
+			return undefined;
+		}
+		const scale = scaleFactorOf(this.space.matrix);
+		return this.blockOf(
+			content,
+			this.currentStyle(),
+			width === undefined ? undefined : width * scale,
+			this.props.lineHeight,
+			fontLoads.peek(),
+		);
+	}
+
+	/** The runs of `content`, each span's style baked over the node's. */
+	private runsOf(content: RichText, base: TextStyle): TextBlockRun[] {
+		if (typeof content === "string") return [{ text: content, style: base }];
+		const input = this.styleInput();
+		const theme = this.context(themeContext);
+		const space = this.space;
+		const scale = scaleFactorOf(space.matrix);
+		return content.map((part): TextBlockRun => {
+			if (typeof part === "string") return { text: part, style: base };
+			const style = bakeTextStyle(
+				{
+					...input,
+					fill: part.color ?? input.fill,
+					fontSize: part.fontSize ?? input.fontSize,
+					fontFamily: part.fontFamily ?? input.fontFamily,
+					fontWeight: part.fontWeight ?? input.fontWeight,
+					italic: part.italic ?? input.italic,
+					letterSpacing: part.letterSpacing ?? input.letterSpacing,
+					opacity: (input.opacity ?? 1) * (part.opacity ?? 1),
+				},
+				theme,
+				scale,
+				space.opacity,
+			);
+			const run: TextBlockRun = { text: part.text, style };
+			if (part.underline) run.underline = true;
+			if (part.strikethrough) run.strikethrough = true;
+			if (part.highlight !== undefined)
+				run.highlight = cssColor(part.highlight);
+			return run;
+		});
+	}
+
+	/** The node's own style props, as the baker takes them. */
+	private styleInput(): TextStyleInput {
 		const props = this.props;
+		return {
+			fill: props.color,
+			fontSize: props.fontSize,
+			fontFamily: props.fontFamily,
+			fontWeight: props.fontWeight,
+			italic: props.italic,
+			align: props.align,
+			baseline: props.baseline,
+			opacity: props.opacity,
+			letterSpacing: props.letterSpacing,
+			halo: props.halo,
+		};
+	}
+
+	private currentStyle(): TextStyle {
 		const space = this.space;
 		const scale = scaleFactorOf(space.matrix);
 		if (this.style && scale === this.styleScale) return this.style;
 		this.styleScale = scale;
 		this.style = bakeTextStyle(
-			{
-				fill: props.color,
-				fontSize: props.fontSize,
-				fontFamily: props.fontFamily,
-				fontWeight: props.fontWeight,
-				italic: props.italic,
-				align: props.align,
-				baseline: props.baseline,
-				opacity: props.opacity,
-				letterSpacing: props.letterSpacing,
-				halo: props.halo,
-			},
+			this.styleInput(),
 			this.context(themeContext),
 			scale,
 			space.opacity,
@@ -368,6 +524,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		return this.boxOf(
 			this.currentText(),
 			this.currentStyle(),
+			this.currentBlock(),
 			space.yUp,
 			scaleFactorOf(space.matrix) || 1,
 			fontLoads.peek(),
@@ -426,8 +583,8 @@ export function defineText<P extends TextProps>(
 
 /** @category Text & numbers */
 export interface LabelProps extends TextProps {
-	/** The string to draw. An empty string draws nothing. */
-	text: string;
+	/** What to draw: a string, or strings and spans. Empty draws nothing. */
+	text: RichText;
 }
 
 /**
