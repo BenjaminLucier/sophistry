@@ -13,12 +13,7 @@
 
 import { cssColor } from "../color/parse.js";
 import type { ColorInput } from "../color/types.js";
-import type {
-	Bounds,
-	CurvePath,
-	Point,
-	Polyline,
-} from "../geometry/index.js";
+import type { Bounds, CurvePath, Point, Polyline } from "../geometry/index.js";
 import { boundsOf, centerOf, curvePathToPolyline } from "../geometry/index.js";
 import type { Matrix } from "../geometry/transform.js";
 import {
