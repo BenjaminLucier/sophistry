@@ -284,6 +284,43 @@ export interface TextSpec {
 	progress: number;
 	/** Clip regions from the enclosing `<Group clip>`s, as on {@link ShapeSpec.clip}. */
 	clip?: readonly ClipRegion[];
+	/**
+	 * Rich or wrapped text: the pieces to draw, each with its own style. When
+	 * present, `text` is the plain text (for reading and measuring) and
+	 * `style` the base style; the renderer draws the fragments instead.
+	 */
+	fragments?: readonly TextFragment[];
+	/**
+	 * With `fragments`: the block's box around `at`, in scene units, measured
+	 * with y pointing up on screen (as the glyphs are drawn, whatever the
+	 * stage's `yUp`).
+	 */
+	box?: Bounds;
+}
+
+/**
+ * One piece of rich text: a run of one style on one line.
+ *
+ * @category Scene registry & specs
+ */
+export interface TextFragment {
+	text: string;
+	/**
+	 * Where the fragment's left end sits on its baseline, relative to the
+	 * spec's `at`, in scene units along the text's own axes (x along the
+	 * baseline, y up on screen), before the spec's rotation.
+	 */
+	offset: Point;
+	/** Its style. `align` and `baseline` are always `"left"` and `"alphabetic"`. */
+	style: TextStyle;
+	/** The fragment's advance width in scene units, as laid out. */
+	width: number;
+	/** A line under the fragment, in its colour. */
+	underline?: boolean;
+	/** A line through the fragment, in its colour. */
+	strikethrough?: boolean;
+	/** A fill behind the fragment, as a CSS colour. */
+	highlight?: string;
 }
 
 /**

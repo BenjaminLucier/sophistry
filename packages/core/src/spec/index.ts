@@ -12,4 +12,5 @@ export * from "./compile.js";
 export * from "./gradient.js";
 export * from "./layout.js";
 export * from "./metrics.js";
+export * from "./text-layout.js";
 export * from "./types.js";

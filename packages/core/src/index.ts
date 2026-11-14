@@ -96,5 +96,12 @@ export type { ClipShape } from "./spec/clip.js";
 export type { ColorRampSpec } from "./spec/colorRampProp.js";
 export * from "./spec/gradient.js";
 export * from "./spec/layout.js";
+export type {
+	LaidOutFragment,
+	LayoutRun,
+	TextLayout,
+	TextLayoutOptions,
+} from "./spec/text-layout.js";
+export { layoutText } from "./spec/text-layout.js";
 export type { ImagePixels } from "./spec/types.js";
 export * from "./tween/index.js";
