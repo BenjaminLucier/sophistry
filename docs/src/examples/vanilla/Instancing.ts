@@ -1,5 +1,5 @@
 import type { Clock } from "@sophistry/core";
-import { circle, createScene, instances, label } from "@sophistry/core";
+import { circle, createScene, instances, text } from "@sophistry/core";
 
 export const meta = {
 	title: "Instancing: thousands of dots, one node",
@@ -46,7 +46,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	});
 	scene.add(dots);
 	scene.add(
-		label.create({
+		text.create({
 			text: "4,000 dots, one node: click to re-lay them",
 			y: -4.1,
 		}),

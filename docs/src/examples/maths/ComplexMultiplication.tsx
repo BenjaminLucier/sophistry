@@ -1,7 +1,7 @@
 import { derive, hold, track, valueTo } from "@sophistry/core";
 import {
 	ComplexPlane,
-	Label,
+	Text,
 	LabeledDot,
 	Stage,
 	usePlayer,
@@ -51,7 +51,7 @@ export default function ComplexMultiplication() {
 			<LabeledDot center={zw} text="z·w" visible={moved} />
 			<Vector to={Z} />
 			<LabeledDot center={Z} text="z" />
-			<Label text="w = 1 + i" x={-4.3} y={2} />
+			<Text text="w = 1 + i" x={-4.3} y={2} />
 		</Stage>
 	);
 }

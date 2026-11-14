@@ -56,7 +56,7 @@ The stage renders the scene with the tracks as props, on the same clock:
 <Stage units={10} clock={clock}>
   <Circle radius={2} progress={drawn} />
   <Dot center={dot} radius={0.2} opacity={dotOpacity} />
-  <Label text="orbit" opacity={labelOpacity} />
+  <Text text="orbit" opacity={labelOpacity} />
 </Stage>
 ```
 
@@ -111,7 +111,7 @@ const chapters = steps.map((step) => {
 const chapter = derive(tl.time, (t) => chapters.filter((c) => t >= c.start).pop() ?? chapters[0]);
 const current = useTrackValue(chapter); // for the DOM buttons
 
-<Label text={derive(chapter, (c) => c.title)} y={-2.5} fontSize={0.4} />; // in the scene
+<Text text={derive(chapter, (c) => c.title)} y={-2.5} fontSize={0.4} />; // in the scene
 ```
 
 Position a button for each chapter at `start / tl.duration` percent along the slider, and have it call `tl.pause(); tl.seek(c.start)`. `chapter` is a `derive` of `tl.time`, so the caption in the scene binds to it directly, and the highlighted button follows it through `current()`, as the timeline plays or is scrubbed.

@@ -11,7 +11,7 @@ import { circlePolyline } from "@sophistry/core/geometry";
 import {
 	Circle,
 	Dot,
-	Label,
+	Text,
 	Stage,
 	usePlayer,
 	useTrackValue,
@@ -70,8 +70,8 @@ export default function ScrubChapters() {
 			<Stage units={10}>
 				<Circle radius={2} progress={drawn} />
 				<Dot center={dot} radius={0.2} opacity={dotOpacity} />
-				<Label text="orbit" x={0} y={0} opacity={labelOpacity} />
-				<Label text={derive(chapter, (c) => c.title)} y={-2.5} fontSize={0.4} />
+				<Text text="orbit" x={0} y={0} opacity={labelOpacity} />
+				<Text text={derive(chapter, (c) => c.title)} y={-2.5} fontSize={0.4} />
 			</Stage>
 			<div
 				style={{

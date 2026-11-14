@@ -9,7 +9,7 @@ import {
 import {
 	Circle,
 	DashedLine,
-	Label,
+	Text,
 	Path,
 	Rect,
 	Stage,
@@ -55,7 +55,7 @@ function Swatches() {
 					}),
 				)}
 			/>
-			<Label text="radialGradient" x={-3.6} y={-1.3} fontSize={0.3} />
+			<Text text="radialGradient" x={-3.6} y={-1.3} fontSize={0.3} />
 
 			<Rect
 				center={{ x: 0, y: 0.6 }}
@@ -68,7 +68,7 @@ function Swatches() {
 				)}
 				stroke={derive(series, (s) => s[1])}
 			/>
-			<Label text="sheen, animated by at" y={-1.3} fontSize={0.3} />
+			<Text text="sheen, animated by at" y={-1.3} fontSize={0.3} />
 
 			<Path
 				points={wave.map((p) => ({ x: p.x + 3.6, y: p.y + 1.5 }))}
@@ -85,7 +85,7 @@ function Swatches() {
 				strokeWidth={0.06}
 				stroke={derive(series, (s) => s[3])}
 			/>
-			<Label text="strokeAlong + DashedLine" x={3.6} y={-1.3} fontSize={0.3} />
+			<Text text="strokeAlong + DashedLine" x={3.6} y={-1.3} fontSize={0.3} />
 		</>
 	);
 }

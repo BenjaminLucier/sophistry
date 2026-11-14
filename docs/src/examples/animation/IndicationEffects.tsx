@@ -14,7 +14,7 @@ import { measure, rectPolyline } from "@sophistry/core/geometry";
 import {
 	Circle,
 	Dot,
-	Label,
+	Text,
 	Path,
 	Stage,
 	usePlayer,
@@ -81,10 +81,10 @@ function Effects() {
 				visible={derive(flashed, (f) => f.visible)}
 			/>
 			<Path points={bar} closed fill={derive(palette, (p) => p.accent)} />
-			<Label text="focusOn" x={-4.5} y={-2} />
-			<Label text="blink" x={-1.5} y={-2} />
-			<Label text="showPassingFlash" x={1.6} y={-2} />
-			<Label text="applyWave" x={5} y={-2} />
+			<Text text="focusOn" x={-4.5} y={-2} />
+			<Text text="blink" x={-1.5} y={-2} />
+			<Text text="showPassingFlash" x={1.6} y={-2} />
+			<Text text="applyWave" x={5} y={-2} />
 		</>
 	);
 }

@@ -11,7 +11,7 @@ import {
 import { starPolygon } from "@sophistry/core/geometry";
 import {
 	Circle,
-	Label,
+	Text,
 	Polygon,
 	Square,
 	Stage,
@@ -68,9 +68,9 @@ export default function FadeAndGrow() {
 				scale={spin}
 				rotation={turn}
 			/>
-			<Label text="fadeIn" x={-4} y={-2} />
-			<Label text="growFromCenter" x={0} y={-2} />
-			<Label text="spinInFromNothing" x={4} y={-2} />
+			<Text text="fadeIn" x={-4} y={-2} />
+			<Text text="growFromCenter" x={0} y={-2} />
+			<Text text="spinInFromNothing" x={4} y={-2} />
 		</Stage>
 	);
 }

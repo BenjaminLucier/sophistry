@@ -15,7 +15,7 @@ The definitions (`camera3D`, `cube3D`, `sphere3D`, ...) live in `@sophistry/3d`;
 Put a `<Camera3D>` inside a `<Stage>`, and the 3D shapes inside the camera. The world is right-handed with **+y up**, and for the default camera +x points right and +z toward you.
 
 ```tsx
-import { Label, Stage } from "@sophistry/solidjs";
+import { Text, Stage } from "@sophistry/solidjs";
 import { Axes3D, Camera3D, Sphere3D, Vector3D } from "@sophistry/solidjs/3d";
 
 export const scene = (
@@ -25,7 +25,7 @@ export const scene = (
       <Sphere3D center={{ x: 1, y: 0, z: 0 }} radius={0.6} />
       <Vector3D to={{ x: 0, y: 2, z: 0 }} stroke="#e5484d" />
     </Camera3D>
-    <Label text="a 2D label over the 3D scene" y={-4.5} />
+    <Text text="a 2D label over the 3D scene" y={-4.5} />
   </Stage>
 );
 ```

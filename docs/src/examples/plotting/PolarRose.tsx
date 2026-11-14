@@ -1,6 +1,6 @@
 import { draw, track } from "@sophistry/core";
 import {
-	Label,
+	Text,
 	ParametricGraph,
 	PolarPlane,
 	Stage,
@@ -37,7 +37,7 @@ export default function PolarRose() {
 					progress={drawn}
 				/>
 			</PolarPlane>
-			<Label text="r = 3 cos 5θ" x={5} y={0} />
+			<Text text="r = 3 cos 5θ" x={5} y={0} />
 		</Stage>
 	);
 }

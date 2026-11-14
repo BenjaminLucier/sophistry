@@ -3,7 +3,7 @@ import {
 	createScene,
 	derive,
 	forever,
-	label,
+	text,
 	pathBatch,
 	track,
 	valueTo,
@@ -55,7 +55,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	);
 	scene.add(pathBatch.create({ items, stroke: "none" }));
 	scene.add(
-		label.create({ text: "600 outlines, one PathBatch node", y: -4.3 }),
+		text.create({ text: "600 outlines, one PathBatch node", y: -4.3 }),
 	);
 	void scene.play(
 		forever(

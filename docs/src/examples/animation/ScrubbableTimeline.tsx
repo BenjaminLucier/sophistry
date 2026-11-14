@@ -9,7 +9,7 @@ import {
 } from "@sophistry/core";
 import {
 	Circle,
-	Label,
+	Text,
 	Stage,
 	usePlayer,
 	useTrackValue,
@@ -43,7 +43,7 @@ export default function ScrubbableTimeline() {
 		<div>
 			<Stage units={10}>
 				<Circle center={position} radius={1} scale={scale} progress={drawn} />
-				<Label
+				<Text
 					text={derive(tl.time, (t) => `t = ${t.toFixed(2)} s`)}
 					y={-2.4}
 					fontSize={0.4}

@@ -4,7 +4,7 @@ import {
 	createScene,
 	derive,
 	draggable,
-	label,
+	text,
 	line,
 	trackPoint,
 } from "@sophistry/core";
@@ -38,7 +38,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	);
 	// The caption follows the handle: a derived position, no event code.
 	scene.add(
-		label.create({
+		text.create({
 			text: derive(handle, (p) => `(${p.x.toFixed(1)}, ${p.y.toFixed(1)})`),
 			x: derive(handle, (p) => p.x),
 			y: derive(handle, (p) => p.y + 0.6),
@@ -49,7 +49,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	knob.on("leave", () => knob.set("fill", "#89b4fa"));
 	knob.on("doubletap", () => handle.set({ x: 2, y: 1 }));
 	scene.add(
-		label.create({ text: "drag the dot · double-tap to reset", y: -3.2 }),
+		text.create({ text: "drag the dot · double-tap to reset", y: -3.2 }),
 	);
 	return () => scene.dispose();
 }

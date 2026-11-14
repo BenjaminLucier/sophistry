@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Label, NetworkGraph, Stage, usePlayer } from "@sophistry/solidjs";
+import { Text, NetworkGraph, Stage, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -51,9 +51,9 @@ export default function NetworkLayouts() {
 				center={{ x: 4.6, y: 0 }}
 				progress={drawn}
 			/>
-			<Label text="circular" x={-4.6} y={-3.2} />
-			<Label text="tree" x={0} y={-3.2} />
-			<Label text="grid" x={4.6} y={-3.2} />
+			<Text text="circular" x={-4.6} y={-3.2} />
+			<Text text="tree" x={0} y={-3.2} />
+			<Text text="grid" x={4.6} y={-3.2} />
 		</Stage>
 	);
 }

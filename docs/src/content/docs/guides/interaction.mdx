@@ -318,7 +318,7 @@ Because it is a `Readable`, a crosshair is a few `derive`s bound as props:
 
 ```tsx
 import { derive } from "@sophistry/core";
-import { Circle, Label, Stage, useScene } from "@sophistry/solidjs";
+import { Circle, Text, Stage, useScene } from "@sophistry/solidjs";
 
 function Crosshair() {
   const pointer = useScene().pointer;
@@ -328,7 +328,7 @@ function Crosshair() {
   return (
     <>
       <Circle center={at} radius={0.15} opacity={shown} />
-      <Label
+      <Text
         text={derive(at, (point) => `${point.x.toFixed(1)}, ${point.y.toFixed(1)}`)}
         x={derive(at, (point) => point.x)}
         y={derive(at, (point) => point.y + 0.5)}

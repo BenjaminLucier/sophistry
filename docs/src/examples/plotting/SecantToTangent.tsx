@@ -2,7 +2,7 @@ import { derive, track, valueTo } from "@sophistry/core";
 import {
 	Axes,
 	FunctionGraph,
-	Label,
+	Text,
 	SecantSlopeGroup,
 	Stage,
 	usePlayer,
@@ -31,7 +31,7 @@ export default function SecantToTangent() {
 				<FunctionGraph function={f} />
 				<SecantSlopeGroup function={f} x={3} dx={dx} length={4} />
 			</Axes>
-			<Label text={derive(dx, (value) => `dx = ${value.toFixed(2)}`)} y={3.5} />
+			<Text text={derive(dx, (value) => `dx = ${value.toFixed(2)}`)} y={3.5} />
 		</Stage>
 	);
 }

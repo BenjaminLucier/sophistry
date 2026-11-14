@@ -18,7 +18,7 @@ the package that uses them.
 
 | Import | What is in it |
 |---|---|
-| `@sophistry/core` | 2D scenes without a framework: `createScene`, the definitions (`circle`, `axes`, `label`, ...), groups, layout, tracks (`track`, `derive`, `watch`), clocks, animation verbs and timelines, springs, instancing, interaction, cameras, themes, export, and the custom-definition API |
+| `@sophistry/core` | 2D scenes without a framework: `createScene`, the definitions (`circle`, `axes`, `text`, ...), groups, layout, tracks (`track`, `derive`, `watch`), clocks, animation verbs and timelines, springs, instancing, interaction, cameras, themes, export, and the custom-definition API |
 | `@sophistry/core/geometry` | Pure path, arc, shape, transform, scale, morph, vector-field and graph-layout maths |
 | `@sophistry/core/color` | Colour conversion, interpolation, colormaps and ramps |
 | `@sophistry/core/themes` | Themes, palettes, colour mode and colormaps |

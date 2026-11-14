@@ -10,7 +10,7 @@ import {
 import {
 	Circle,
 	Dot,
-	Label,
+	Text,
 	Rect,
 	Square,
 	Stage,
@@ -54,17 +54,17 @@ export default function EmphasisEffects() {
 			<Square center={{ x: -1.4, y: 0 }} size={1.2} rotation={rotation} />
 			<Dot center={{ x: 1.4, y: 0 }} radius={0.15} />
 			<Circle center={{ x: 1.4, y: 0 }} radius={radius} opacity={opacity} />
-			<Label text="emphasis" x={4.2} fontSize={0.45} />
+			<Text text="emphasis" x={4.2} fontSize={0.45} />
 			<Rect
 				center={{ x: 4.2, y: 0 }}
 				width={3.2}
 				height={1.2}
 				progress={drawn}
 			/>
-			<Label text="indicate" x={-4.2} y={-2} />
-			<Label text="wiggle" x={-1.4} y={-2} />
-			<Label text="flash" x={1.4} y={-2} />
-			<Label text="circumscribe" x={4.2} y={-2} />
+			<Text text="indicate" x={-4.2} y={-2} />
+			<Text text="wiggle" x={-1.4} y={-2} />
+			<Text text="flash" x={1.4} y={-2} />
+			<Text text="circumscribe" x={4.2} y={-2} />
 		</Stage>
 	);
 }

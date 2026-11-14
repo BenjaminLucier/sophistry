@@ -13,7 +13,7 @@ import {
 	Axes,
 	Dot,
 	FunctionGraph,
-	Label,
+	Text,
 	Line,
 	Stage,
 	usePlayer,
@@ -79,7 +79,7 @@ function Tracker() {
 				radius={0.14}
 				color={derive(theme, (t) => t.palette.series[1])}
 			/>
-			<Label text={derive(x, (x) => `x = ${x.toFixed(2)}`)} y={3.4} />
+			<Text text={derive(x, (x) => `x = ${x.toFixed(2)}`)} y={3.4} />
 		</>
 	);
 }

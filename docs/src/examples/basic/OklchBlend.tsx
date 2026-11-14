@@ -1,5 +1,5 @@
 import { derive, mixColor, toCss } from "@sophistry/core";
-import { Label, Rect, Stage, useScene } from "@sophistry/solidjs";
+import { Text, Rect, Stage, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {
@@ -35,7 +35,7 @@ function Strip(props: {
 					/>
 				)}
 			</For>
-			<Label
+			<Text
 				text={props.name}
 				y={props.y - 0.95}
 				fontSize={0.3}

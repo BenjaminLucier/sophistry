@@ -2,7 +2,7 @@ import { draggable, onCircle, trackPoint } from "@sophistry/core";
 import {
 	Circle,
 	InteractionGroup,
-	Label,
+	Text,
 	LabeledDot,
 	Stage,
 	useTheme,
@@ -31,7 +31,7 @@ export default function RingDrag() {
 			<InteractionGroup {...ring}>
 				<LabeledDot center={position} text="drag" />
 			</InteractionGroup>
-			<Label
+			<Text
 				text="drag the dot, or Tab to it and use the arrow keys"
 				y={-2.5}
 				color={theme().palette.muted}

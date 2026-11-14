@@ -3,7 +3,7 @@ import {
 	circle,
 	createScene,
 	follow,
-	label,
+	text,
 	sequence,
 	springTo,
 	track,
@@ -39,7 +39,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 		}),
 	);
 	scene.add(
-		label.create({ text: "springTo (pink) · follow (green)", y: -3.2 }),
+		text.create({ text: "springTo (pink) · follow (green)", y: -3.2 }),
 	);
 
 	// A live follower on the scene's clock: retargets keep the velocity.

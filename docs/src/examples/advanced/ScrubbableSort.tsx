@@ -14,7 +14,7 @@ import {
 	timeline,
 	track,
 } from "@sophistry/core";
-import { Label, Rect, Stage, useTrackValue } from "@sophistry/solidjs";
+import { Text, Rect, Stage, useTrackValue } from "@sophistry/solidjs";
 import { For, onSettled } from "solid-js";
 
 export const meta = {
@@ -112,7 +112,7 @@ export default function ScrubbableSort() {
 						/>
 					)}
 				</For>
-				<Label
+				<Text
 					text={derive(stepIndex, (index) => `step ${index} / ${steps.length}`)}
 					y={2.8}
 					fontSize={0.4}

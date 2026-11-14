@@ -1,6 +1,6 @@
 import { rankRace } from "@sophistry/charts";
 import { derive, track, valueTo } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Text, Stage, usePlayer } from "@sophistry/solidjs";
 import { Bars, Chart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -72,7 +72,7 @@ export default function BarChartRace() {
 					labels={(d) => d.value.toFixed(0)}
 				/>
 			</Chart>
-			<Label text={caption} x={3.6} y={-1.9} fontSize={0.9} opacity={0.5} />
+			<Text text={caption} x={3.6} y={-1.9} fontSize={0.9} opacity={0.5} />
 		</Stage>
 	);
 }

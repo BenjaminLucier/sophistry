@@ -18,7 +18,7 @@ import {
 } from "@sophistry/core";
 import {
 	Arrow,
-	Label,
+	Text,
 	Rect,
 	Stage,
 	SurroundingRectangle,
@@ -94,7 +94,7 @@ function Diagram() {
 						fill={derive(series, (s) => s[i])}
 						fillOpacity={0.25}
 					/>
-					<Label
+					<Text
 						ref={(node) => captions.push(node)}
 						text={step}
 						fontSize={0.34}
@@ -118,7 +118,7 @@ function Diagram() {
 				dash={[0.15, 0.1]}
 				stroke={border}
 			/>
-			<Label
+			<Text
 				ref={(node) => (title = node)}
 				text="A tiny pipeline"
 				fontSize={0.4}

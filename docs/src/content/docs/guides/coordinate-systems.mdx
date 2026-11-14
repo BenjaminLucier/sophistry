@@ -369,7 +369,7 @@ Because `pointToCoords` is the inverse of `coordsToPoint`, turning a pointer pos
 ```tsx
 import { coordsOf, derive } from "@sophistry/core";
 import type { SceneNode } from "@sophistry/core";
-import { Axes, Label, useScene } from "@sophistry/solidjs";
+import { Axes, Text, useScene } from "@sophistry/solidjs";
 
 // Inside a <Stage>:
 function Readout() {
@@ -385,7 +385,7 @@ function Readout() {
   return (
     <>
       <Axes xRange={[-3, 3, 1]} yRange={[-2, 2, 1]} width={8} height={4.6} ref={(node) => (plot = node)} />
-      <Label text={text} x={0} y={3} />
+      <Text text={text} x={0} y={3} />
     </>
   );
 }

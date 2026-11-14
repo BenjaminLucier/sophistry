@@ -97,7 +97,7 @@ The same check runs when the node is made (a `TypeError` names the prop), so pla
 
 ```tsx
 import { circle, instances, track } from "@sophistry/core";
-import { Label, Stage } from "@sophistry/solidjs";
+import { Text, Stage } from "@sophistry/solidjs";
 
 const COLORS = ["#89b4fa", "#a6e3a1", "#f9e2af", "#f38ba8"];
 
@@ -124,7 +124,7 @@ export function Sunflower() {
     <>
       <Stage units={16}>
         {dots}
-        <Label text="4,000 dots, one node" y={-4.1} />
+        <Text text="4,000 dots, one node" y={-4.1} />
       </Stage>
       <button type="button" onClick={() => points.set(layout((spiral = !spiral)))}>
         Re-lay

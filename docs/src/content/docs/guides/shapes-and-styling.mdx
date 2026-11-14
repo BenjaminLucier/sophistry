@@ -23,7 +23,7 @@ Names follow Manim's where a Manim equivalent exists. The table lists the bindin
 | Curves | `CubicBezier`, `QuadraticBezier`, `Path` (`points`, `curvePoints` or an SVG `pathData`), `Plot` (a parametric `function(t)` in scene units) |
 | Angles | `Angle`, `RightAngle`, `Elbow` |
 | Matchers | `SurroundingRectangle`, `BackgroundRectangle`, `Cross`, `Underline`, `Brace` |
-| Text and numbers | `Label`, `Paragraph`, `BulletedList`, `Title`, `DecimalNumber`, `Integer`, `Variable` (LaTeX lives in [Math and LaTeX](/guides/math-and-latex/)) |
+| Text and numbers | `Text`, `BulletedList`, `Title`, `DecimalNumber`, `Integer`, `Variable` (LaTeX lives in [Math and LaTeX](/guides/math-and-latex/)) |
 | Containers | `Group`, `LinearTransform` |
 | Plotting | `Axes`, `NumberPlane`, `NumberLine`, `FunctionGraph`, ... see [Coordinate systems](/guides/coordinate-systems/) |
 
@@ -51,7 +51,7 @@ Every geometric shape accepts the same `ShapeProps`:
 
 Every prop takes a plain value or a `Readable`. Pass a track itself (`opacity={fade}`, or `circle.create({ opacity: fade })`) and the node binds to it: a write reruns only the stage that prop invalidates (an `opacity` write restyles; a `center` write only moves), with no framework code per frame. A Solid signal or a React re-render also works (the binding calls `node.set` for the changed key), which suits values the user changes rather than ones that animate. There is no `ref` handle object: the node a component returns, or `ref={(node) => ...}` receives, is itself the [handle](/guides/layout/#handles-and-bounds).
 
-Geometry takes `stroke` and `fill`; text and single-colour marks (`Dot`, `LabeledDot`, `Label`, `DecimalNumber`) take `color`, which fills the mark and is its default outline. No component takes both `fill` and `color`; see [Naming conventions](/start/concepts/#naming-conventions).
+Geometry takes `stroke` and `fill`; text and single-colour marks (`Dot`, `LabeledDot`, `Text`, `DecimalNumber`) take `color`, which fills the mark and is its default outline. No component takes both `fill` and `color`; see [Naming conventions](/start/concepts/#naming-conventions).
 
 ### `progress` and `blend`
 
@@ -148,15 +148,26 @@ A brace is a filled shape, so `fill` colors it (the theme's foreground by defaul
 
 ## Text and numbers
 
-`Label` draws a line of text. Canvas2D can't trim glyph outlines, so its `progress` writes it left to right glyph by glyph, each glyph fading in whole. `DecimalNumber`, `Integer` and `Variable` draw numbers that update when their `value` does, and `valueTo` makes them count. Typeset maths goes through [LaTeX as geometry](/guides/math-and-latex/).
+`Text` draws text: one line, several (a `"\n"` breaks), or a block wrapped to a `width` in scene units. `DecimalNumber`, `Integer` and `Variable` draw numbers that update when their `value` does, and `valueTo` makes them count. Typeset maths goes through [LaTeX as geometry](/guides/math-and-latex/).
 
-For more than one line there are three blocks, each a stack of labels:
+```tsx
+<Text text="x²" x={1} fontSize={0.5} />
+<Text
+  width={5}
+  text={["The ", { text: "derivative", fontWeight: 700, color: BLUE }, " measures ", { text: "change", italic: true, underline: true }, "."]}
+/>
+```
 
-- `Paragraph` wraps `text` to a `width` in scene units, breaking between words, and always at a newline. `align` sets each line left (the default), center or right within the block. Without a `width`, only newlines break.
-- `BulletedList` gives each of its `items` a bullet, with a hanging indent when an item wraps. `bullet`, `indent` and `itemGap` adjust it.
+`text` takes a string, or strings and spans in reading order. A span sets any of `fontSize`, `color`, `fontFamily`, `fontWeight`, `italic`, `letterSpacing` and `opacity` for its run, and can add an `underline`, a `strikethrough` or a `highlight` colour behind it; what it leaves out comes from the node. Each line is as tall as its largest font times `lineHeight` (1.3 by default).
+
+Text is centred on `x`/`y`. `align` and `baseline` move the anchor (`baseline="alphabetic"` puts the first line's baseline on it), and `align` also sets how lines sit in a block unless `textAlign` says otherwise: a centred block of left-aligned lines is `textAlign="left"`. The node measures as the box of the whole block, so `nextTo`, `arrange` and `SurroundingRectangle` treat it as one thing. Canvas2D can't trim glyph outlines, so `progress` writes text in reading order glyph by glyph, each glyph fading in whole.
+
+Lines break where the browser would, between words across spans, using the same measurements the canvas draws with. Without a canvas (server rendering, tests) the breaks fall at spaces from an estimate of each word's width. `layoutText(runs, { width })` is the layout on its own, if you place text yourself.
+
+Two presets are built from `Text`:
+
+- `BulletedList` gives each of its `items` a bullet, with a hanging indent when an item wraps. `bullet`, `indent` and `itemGap` adjust it; items take spans too, and `progress` writes it an item at a time.
 - `Title` is a heading at the top of the frame with a rule under it. The rule spans the frame, or only the text with `matchUnderlineToText`; `underline={false}` drops it.
-
-A `Paragraph` or `BulletedList` is centered on `x`/`y` and takes a `place`, and its node measures as the box of the whole block, so `nextTo`, `arrange` and `SurroundingRectangle` treat it as one thing. `progress` writes it a line at a time (a list, an item at a time), each line wiping in as a `Label` does. A word wider than the measure gets a line to itself, and there is no hyphenation, justification or mixed styling within a line. `wrapText(text, style, width)` is the line breaking on its own, if you lay text out yourself.
 
 <Example name="basic/TextBlocks" />
 

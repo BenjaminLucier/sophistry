@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Text, Stage, usePlayer } from "@sophistry/solidjs";
 import { PieChart, RadarChart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -50,8 +50,8 @@ export default function PieAndRadar() {
 				radius={2.2}
 				progress={progress}
 			/>
-			<Label text="doughnut" x={-3.6} y={-3.1} fontSize={0.4} />
-			<Label text="radar, two series" x={3.6} y={-3.1} fontSize={0.4} />
+			<Text text="doughnut" x={-3.6} y={-3.1} fontSize={0.4} />
+			<Text text="radar, two series" x={3.6} y={-3.1} fontSize={0.4} />
 		</Stage>
 	);
 }

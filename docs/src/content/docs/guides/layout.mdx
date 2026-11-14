@@ -18,12 +18,12 @@ Layout works in [scene units](/start/concepts/#scene-units-y-up-and-the-frame), 
 
 ```tsx
 import { derive, toCorner, UL } from "@sophistry/core";
-import { Label, Stage, useScene } from "@sophistry/solidjs";
+import { Text, Stage, useScene } from "@sophistry/solidjs";
 
 function Title() {
   const scene = useScene();
   return (
-    <Label
+    <Text
       text="Top left"
       ref={(title) => {
         const size = title.localBounds(); // `place` never changes it, so measure once
@@ -40,20 +40,20 @@ export const Scene = () => (
 );
 ```
 
-`useScene()` needs the stage's context, so call it in a child of `<Stage>`, as above. Without a framework the same is `title.set("place", derive(scene.frame, ...))` on the node `label.create(...)` returned.
+`useScene()` needs the stage's context, so call it in a child of `<Stage>`, as above. Without a framework the same is `title.set("place", derive(scene.frame, ...))` on the node `text.create(...)` returned.
 
 ## Handles and bounds
 
 **The node is the handle.** A component returns its node and `ref={(node) => ...}` receives it; in the core, `create` returns it. Every node measures itself in the stage's scene units:
 
 ```tsx
-import { Circle, Label, Stage } from "@sophistry/solidjs";
+import { Circle, Text, Stage } from "@sophistry/solidjs";
 
 export function Measured() {
   return (
     <Stage units={8}>
       <Circle radius={1.5} ref={(circle) => console.log(circle.width())} />
-      <Label text="width: 3.0" y={-2.4} />
+      <Text text="width: 3.0" y={-2.4} />
     </Stage>
   );
 }
@@ -100,14 +100,14 @@ Combine placements with `shiftBy(placement, { x, y })`, `sumShifts(a, b)`, `only
 ```tsx
 import type { SceneNode } from "@sophistry/core";
 import { nextTo, UP } from "@sophistry/core";
-import { Circle, Label, Stage } from "@sophistry/solidjs";
+import { Circle, Text, Stage } from "@sophistry/solidjs";
 
 export function Captioned() {
   let circle!: SceneNode;
   return (
     <Stage units={8}>
       <Circle ref={(node) => (circle = node)} radius={1.5} />
-      <Label
+      <Text
         text="unit circle"
         ref={(caption) => caption.set("place", nextTo(caption.localBounds(), circle.bounds(), UP))}
       />
@@ -119,11 +119,11 @@ export function Captioned() {
 The circle's `ref` runs first because it comes first in the tree. The same in the core:
 
 ```ts
-import { circle, createScene, label, nextTo, UP } from "@sophistry/core";
+import { circle, createScene, text, nextTo, UP } from "@sophistry/core";
 
 const scene = createScene({ host: document.body, units: 8 });
 const ring = scene.add(circle.create({ radius: 1.5 }));
-const caption = scene.add(label.create({ text: "unit circle" }));
+const caption = scene.add(text.create({ text: "unit circle" }));
 caption.set("place", nextTo(caption.localBounds(), ring.bounds(), UP));
 ```
 
@@ -142,18 +142,18 @@ caption.set("place", nextTo(caption.localBounds(), ring.bounds(), UP));
 A placement computed once stays put. When the target moves (its `center` is a track an animation or a drag writes), derive the placement from the target's prop. The node pulls it in the commit, measures the target there, and the caption moves in the same frame:
 
 ```ts
-import { createScene, derive, dot, label, nextTo, trackPoint, UR } from "@sophistry/core";
+import { createScene, derive, dot, text, nextTo, trackPoint, UR } from "@sophistry/core";
 
 const scene = createScene({ host: document.body, units: 10 });
 const position = trackPoint(0, 0);
 const point = scene.add(dot.create({ center: position }));
-const caption = scene.add(label.create({ text: "P" }));
+const caption = scene.add(text.create({ text: "P" }));
 const size = caption.localBounds();
 caption.set("place", derive(point.readable("center"), () => nextTo(size, point.bounds(), UR)));
 position.set({ x: 2, y: 1 }); // the caption follows
 ```
 
-Measure the placed node's own `localBounds()` outside the `derive`, as above: it does not depend on `place`, and reading a node from inside its own binding is a loop. Often a derived position is simpler still: `label.create({ x: derive(position, (p) => p.x), y: derive(position, (p) => p.y + 0.5) })`. The [dragging example](/gallery/vanilla/#DragAndEvents) does that.
+Measure the placed node's own `localBounds()` outside the `derive`, as above: it does not depend on `place`, and reading a node from inside its own binding is a loop. Often a derived position is simpler still: `text.create({ x: derive(position, (p) => p.x), y: derive(position, (p) => p.y + 0.5) })`. The [dragging example](/gallery/vanilla/#DragAndEvents) does that.
 
 ## Bounds algebra
 

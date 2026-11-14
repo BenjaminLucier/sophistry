@@ -3,7 +3,7 @@ import {
 	Axes,
 	Dot,
 	FunctionGraph,
-	Label,
+	Text,
 	Line,
 	Stage,
 	useTheme,
@@ -46,20 +46,20 @@ export default function ParameterSlider() {
 				label="frequency"
 				{...draggable(frequency, { param })}
 			/>
-			<Label
+			<Text
 				text="frequency"
 				x={-3.6}
 				y={from.y}
 				fontSize={0.4}
 				color={palette().muted}
 			/>
-			<Label
+			<Text
 				text={derive(frequency, (value) => value.toFixed(1))}
 				x={3.2}
 				y={from.y}
 				fontSize={0.4}
 			/>
-			<Label
+			<Text
 				text="drag the knob"
 				y={-2.45}
 				color={palette().muted}

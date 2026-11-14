@@ -3,7 +3,7 @@ import {
 	AreaUnderGraph,
 	Axes,
 	FunctionGraph,
-	Label,
+	Text,
 	RiemannRectangles,
 	Stage,
 	usePlayer,
@@ -39,7 +39,7 @@ export default function AreaUnderCurve() {
 				/>
 				<FunctionGraph function={f} />
 			</Axes>
-			<Label
+			<Text
 				text={derive(count, (value) => `${Math.round(value)} rectangles`)}
 				y={3.5}
 			/>

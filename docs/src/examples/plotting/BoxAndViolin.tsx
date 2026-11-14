@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Text, Stage, usePlayer } from "@sophistry/solidjs";
 import { BoxPlot, ViolinPlot } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -57,8 +57,8 @@ export default function BoxAndViolin() {
 				progress={progress}
 				stagger={0.4}
 			/>
-			<Label text="BoxPlot" x={-4.2} y={-3.2} fontSize={0.4} />
-			<Label text="ViolinPlot" x={4.2} y={-3.2} fontSize={0.4} />
+			<Text text="BoxPlot" x={-4.2} y={-3.2} fontSize={0.4} />
+			<Text text="ViolinPlot" x={4.2} y={-3.2} fontSize={0.4} />
 		</Stage>
 	);
 }

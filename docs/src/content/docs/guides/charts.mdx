@@ -50,7 +50,7 @@ A chart is one node with a small subtree, not a node per datum. Each mark draws 
 - **Per-datum marks** (`Scatter`, `Bars`, `Strip`, `Rug`, `Stem`, `Cells`, treemap tiles, ...) are one [instances](/start/concepts/#instancing-and-path-batches) node: one item per datum, keyed by the datum's `key`.
 - **Marks with distinct outlines** (lines, areas, wedges, ribbons, contours, violins) are one **path batch**: one item per line, slice or band, each with its own fill or stroke.
 - **Rasters** (`Imshow` on linear axes) are one image.
-- Text (value labels, slice names, axis numbers) stays ordinary label nodes.
+- Text (value labels, slice names, axis numbers) stays ordinary `text` nodes.
 
 There is nothing to configure: no `rendering` prop and no threshold. Ten bars and a hundred thousand points take the same path, and a pan or zoom only re-projects. Hover, tooltips and accessible names still resolve per item. See [Performance](/project/performance/#batched-rendering) for the numbers.
 

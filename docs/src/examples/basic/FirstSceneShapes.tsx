@@ -4,7 +4,7 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Label,
+	Text,
 	Line,
 	Stage,
 	useScene,
@@ -32,9 +32,9 @@ function Figure() {
 			<Circle radius={R} stroke={grid} />
 			<Line from={{ x: 0, y: 0 }} to={tip} stroke={first} />
 			<Arc radius={0.8} angle={THETA} stroke={second} />
-			<Label text="θ" x={1.15} y={0.35} color={second} />
+			<Text text="θ" x={1.15} y={0.35} color={second} />
 			<Dot ref={(node) => (dot = node)} center={tip} />
-			<Label
+			<Text
 				text="P"
 				ref={(name) =>
 					name.set("place", nextTo(name.localBounds(), dot.bounds(), UR))

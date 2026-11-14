@@ -14,7 +14,7 @@ The steps use the Solid binding (`@sophistry/solidjs`). The scene graph undernea
 
 1. **Mount a stage**
 
-   A `<Stage>` makes a scene (`createScene` in the core) in a `<div>`, with a canvas inside. Its children are scene components such as `Circle` and `Label`. They render no DOM: each one creates a single **node** in the scene graph, and from then on the core owns it.
+   A `<Stage>` makes a scene (`createScene` in the core) in a `<div>`, with a canvas inside. Its children are scene components such as `Circle` and `Text`. They render no DOM: each one creates a single **node** in the scene graph, and from then on the core owns it.
 
    ```tsx
    import { Circle, Stage } from "@sophistry/solidjs";

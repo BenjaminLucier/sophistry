@@ -8,7 +8,7 @@ import {
 	track,
 	trackPoint,
 } from "@sophistry/core";
-import { Circle, Label, Line, Stage } from "@sophistry/solidjs";
+import { Circle, Text, Line, Stage } from "@sophistry/solidjs";
 import { onCleanup } from "solid-js";
 
 export const meta = {
@@ -65,7 +65,7 @@ export default function ScrollDrivenStage() {
 						<Circle center={{ x: -3, y: 0 }} radius={1} opacity={0.25} />
 						<Circle center={{ x: 3, y: 0 }} radius={1} opacity={0.25} />
 						<Circle center={pos} radius={1} progress={drawn} />
-						<Label text={readout} y={-1.9} fontSize={0.35} />
+						<Text text={readout} y={-1.9} fontSize={0.35} />
 					</Stage>
 				</div>
 			</div>

@@ -45,7 +45,7 @@ When porting, start from the end state. Write the scene that draws the final fra
 | `mob.move_to(p)` | `centerAt(node.localBounds(), p)` (the name `moveTo` is the animation) |
 | `mob.to_edge(UP)` / `to_corner(UR)` | `toEdge(box, scene.frame.peek(), UP)` / `toCorner(box, scene.frame.peek(), UR)` |
 | `mob.get_center()` / `get_width()` | `node.center()` / `node.width()` |
-| `Text` | `<Label>` / `label` |
+| `Text` | `<Text>` / `label` |
 | `MathTex` / `Tex` | `<MathTex>` from `@sophistry/solidjs/text` (`mathTex` in `@sophistry/text`) |
 | `Axes`, `NumberPlane` | `<Axes>`, `<NumberPlane>`; `coordsOf(node)?.coordsToPoint(x, y)` for `c2p` |
 | `axes.plot(f)` | `<FunctionGraph function={f} />` inside `<Axes>` |
@@ -397,8 +397,9 @@ Each is a definition in the core (`circle`) and a component in the bindings (`<C
 | Arrow tips | `<Arrow tipShape="triangle" \| "stealth" \| "circle" \| "square">`, `tipAt="end" \| "start" \| "both"` |
 | `SVGMobject` (single path) | `Path` (`points` or SVG `pathData`) |
 | `ParametricFunction` | `Plot` in scene units; `ParametricGraph` in data space |
-| `Text` | `Label` |
-| `Paragraph`, `BulletedList`, `Title` | same names; `Paragraph` wraps to a `width` |
+| `Text`, `MarkupText` | `Text`, with spans for markup and `width` to wrap |
+| `Paragraph` | `Text` with a `width` |
+| `BulletedList`, `Title` | same names |
 | `DecimalNumber`, `Integer`, `Variable` | same names |
 | `MathTex`, `Tex` | `<MathTex tex="...">` from `@sophistry/solidjs/text`; draws on with `progress` |
 

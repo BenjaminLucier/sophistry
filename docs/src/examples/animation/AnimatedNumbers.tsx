@@ -2,7 +2,7 @@ import { hold, parallel, sequence, track, valueTo } from "@sophistry/core";
 import {
 	DecimalNumber,
 	Integer,
-	Label,
+	Text,
 	Stage,
 	usePlayer,
 	Variable,
@@ -46,7 +46,7 @@ export default function AnimatedNumbers() {
 
 	return (
 		<Stage units={10}>
-			<Label text="Integer" x={-4.5} y={1.6} align="left" fontSize={0.4} />
+			<Text text="Integer" x={-4.5} y={1.6} align="left" fontSize={0.4} />
 			<Integer
 				value={count}
 				x={4.5}
@@ -56,7 +56,7 @@ export default function AnimatedNumbers() {
 				groupDigits
 				minIntegerDigits={6}
 			/>
-			<Label text="DecimalNumber" x={-4.5} y={0} align="left" fontSize={0.4} />
+			<Text text="DecimalNumber" x={-4.5} y={0} align="left" fontSize={0.4} />
 			<DecimalNumber
 				value={speed}
 				x={4.5}
@@ -67,7 +67,7 @@ export default function AnimatedNumbers() {
 				unit=" m/s"
 				minIntegerDigits={2}
 			/>
-			<Label text="Variable" x={-4.5} y={-1.6} align="left" fontSize={0.4} />
+			<Text text="Variable" x={-4.5} y={-1.6} align="left" fontSize={0.4} />
 			<Variable label="price" value={price} x={-0.5} y={-1.6} fontSize={0.8} />
 		</Stage>
 	);

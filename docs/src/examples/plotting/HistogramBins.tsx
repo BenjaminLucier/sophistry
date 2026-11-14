@@ -1,5 +1,5 @@
 import { derive, track, valueTo } from "@sophistry/core";
-import { Axes, Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Axes, Text, Stage, usePlayer } from "@sophistry/solidjs";
 import { Histogram } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 
@@ -36,7 +36,7 @@ export default function HistogramBins() {
 					range={[0, 6]}
 				/>
 			</Axes>
-			<Label
+			<Text
 				text={derive(bins, (value) => `${Math.round(value)} bins`)}
 				y={3.5}
 			/>

@@ -1,6 +1,6 @@
 import type { ColorInput, ThemePalette } from "@sophistry/core";
 import { derive } from "@sophistry/core";
-import { Dot, Label, Line, Stage, useScene } from "@sophistry/solidjs";
+import { Dot, Text, Line, Stage, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {
@@ -46,7 +46,7 @@ function Grid() {
 				color={palette((p) => p.series[0])}
 				radius={0.08}
 			/>
-			<Label
+			<Text
 				text="(1, 1.5)"
 				x={1.15}
 				y={1.5}
@@ -54,7 +54,7 @@ function Grid() {
 				fontSize={0.2}
 				color={palette((p) => p.series[0])}
 			/>
-			<Label
+			<Text
 				text="origin"
 				x={0.12}
 				y={-0.15}
@@ -62,7 +62,7 @@ function Grid() {
 				fontSize={0.2}
 				color={palette((p) => p.muted)}
 			/>
-			<Label
+			<Text
 				text={derive(
 					frame,
 					(f) => `frame: x ${f.minX} to ${f.maxX}, y ${f.minY} to ${f.maxY}`,

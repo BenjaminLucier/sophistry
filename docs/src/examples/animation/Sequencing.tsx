@@ -7,7 +7,7 @@ import {
 	track,
 	valueTo,
 } from "@sophistry/core";
-import { Circle, Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Text, Stage, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
@@ -44,7 +44,7 @@ export default function Sequencing() {
 			{XS.map((x, i) => (
 				<Circle center={derive(ys[i], (y) => ({ x, y }))} radius={0.6} />
 			))}
-			<Label text={caption} y={-2.4} />
+			<Text text={caption} y={-2.4} />
 		</Stage>
 	);
 }

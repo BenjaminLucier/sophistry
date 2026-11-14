@@ -6,7 +6,7 @@ import {
 	derive,
 	dot,
 	forever,
-	label,
+	text,
 	line,
 	track,
 	valueTo,
@@ -37,7 +37,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 	scene.add(arc.create({ radius: 0.8, angle, stroke: "#f9e2af" }));
 	scene.add(dot.create({ center: tip, color: "#f38ba8" }));
 	scene.add(
-		label.create({ text: derive(degrees, (d) => `θ = ${d}°`), x: 4, y: -2.2 }),
+		text.create({ text: derive(degrees, (d) => `θ = ${d}°`), x: 4, y: -2.2 }),
 	);
 
 	// A side effect outside the scene: runs in the commit phase, coalesced.
