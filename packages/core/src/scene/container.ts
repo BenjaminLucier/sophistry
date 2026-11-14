@@ -73,6 +73,14 @@ export abstract class BaseContainer<P extends object = object>
 		return this.childSpace;
 	}
 
+	/**
+	 * A child this container lays out (text given a width) says its content
+	 * changed, so its size may have. Default: nothing to do.
+	 *
+	 * @param _child - The child.
+	 */
+	childContentChanged(_child: BaseNode): void {}
+
 	override get providedValues(): Map<ContextKey<unknown>, unknown> | null {
 		return this.provided;
 	}

@@ -38,6 +38,7 @@ export const WRAP_MODULE = "../wrap.js";
 export const sourcePackages: readonly SourcePackage[] = [
 	{ name: "@sophistry/core", file: "core" },
 	{ name: "@sophistry/text", file: "text" },
+	{ name: "@sophistry/box", file: "box" },
 	{ name: "@sophistry/charts", file: "charts" },
 	{ name: "@sophistry/3d", file: "3d" },
 	// 3D charts: their own entry, so a binding's `./charts` never needs `@sophistry/3d`.

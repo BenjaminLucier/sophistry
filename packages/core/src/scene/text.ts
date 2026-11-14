@@ -428,8 +428,14 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	 */
 	setLayoutWidth(width: number | null | undefined): void {
 		if (width === this.layoutWidth) return;
+		// Being laid out or not changes the anchoring (a style); a new width
+		// only re-wraps.
+		const anchoring =
+			(width === undefined) !== (this.layoutWidth === undefined);
 		this.layoutWidth = width;
-		this.invalidate(Invalidate.GEOMETRY | Invalidate.STYLE);
+		this.invalidate(
+			anchoring ? Invalidate.GEOMETRY | Invalidate.STYLE : Invalidate.GEOMETRY,
+		);
 	}
 
 	/**
@@ -465,9 +471,18 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	/* ------------------------------------------------------------ stages */
 
 	protected run(dirty: InvalidateBits): void {
+		const content = this.content;
+		const style = this.style;
 		if (dirty & Invalidate.GEOMETRY) this.content = null;
 		if (dirty & Invalidate.STYLE) this.style = null;
 		this.publish(this.assemble());
+		// A container laying this text out sizes it from its content and style.
+		if (
+			this.layoutWidth !== undefined &&
+			(this.content !== content || this.style !== style)
+		) {
+			this.parentNode?.childContentChanged(this);
+		}
 	}
 
 	protected override stagesForSpace(change: number): InvalidateBits {

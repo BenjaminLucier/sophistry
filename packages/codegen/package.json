@@ -15,6 +15,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
 		"@sophistry/3d": "workspace:*",
+		"@sophistry/box": "workspace:*",
 		"@sophistry/charts": "workspace:*",
 		"@sophistry/core": "workspace:*",
 		"@sophistry/text": "workspace:*",
