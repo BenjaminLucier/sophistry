@@ -360,6 +360,9 @@ importers:
       '@sophistry/3d':
         specifier: workspace:*
         version: link:../packages/3d
+      '@sophistry/box':
+        specifier: workspace:*
+        version: link:../packages/box
       '@sophistry/charts':
         specifier: workspace:*
         version: link:../packages/charts

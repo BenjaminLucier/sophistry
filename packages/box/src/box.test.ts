@@ -102,6 +102,27 @@ describe("box", () => {
 		expect(style.fontWeight).toBe(700);
 	});
 
+	it("places a scene node in its cell beside other items", () => {
+		const { graph, commit } = manualGraph();
+		const dot = circle.create({ radius: 0.5, center: { x: 3, y: -2 } });
+		const root = graph.root.add(
+			box.create({
+				style: { flexDirection: "row", gap: 50, padding: 10 },
+				children: [box.create({ style: { width: 200, height: 100 } }), dot],
+			}),
+		);
+		commit();
+		const outer = root.bounds();
+		const inner = dot.bounds();
+		// 10 + 200 + 50 in from the left, 10 down from the top.
+		expect(inner?.minX).toBeCloseTo((outer?.minX ?? 0) + 2.6, 2);
+		expect(inner?.maxY).toBeCloseTo((outer?.maxY ?? 0) - 0.1, 2);
+		// Laying out again leaves it where it is.
+		root.set("style", { flexDirection: "row", gap: 50, padding: 10 });
+		commit();
+		expect(dot.bounds()?.minX).toBeCloseTo(inner?.minX ?? 0, 6);
+	});
+
 	it("scales a scene node into its cell, keeping scene units", () => {
 		const { graph, commit } = manualGraph();
 		const dot = circle.create({ radius: 0.5 });
