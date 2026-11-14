@@ -148,7 +148,17 @@ function spaceChange(previous: Space | undefined, next: Space): number {
 /** Whether two boxes are the same, to rounding. */
 function sameBounds(a: Bounds | null, b: Bounds | null): boolean {
 	if (!a || !b) return a === b;
-	const close = (x: number, y: number) => Math.abs(x - y) <= 1e-9;
+	// Measured back through an inverted space, a box wobbles in its last bits.
+	const tolerance =
+		1e-9 *
+		Math.max(
+			1,
+			Math.abs(a.minX),
+			Math.abs(a.maxX),
+			Math.abs(a.minY),
+			Math.abs(a.maxY),
+		);
+	const close = (x: number, y: number) => Math.abs(x - y) <= tolerance;
 	return (
 		close(a.minX, b.minX) &&
 		close(a.minY, b.minY) &&

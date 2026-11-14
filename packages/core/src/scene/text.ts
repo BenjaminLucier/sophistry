@@ -957,14 +957,26 @@ function spaceChange(previous: Space | undefined, next: Space): number {
 	return change;
 }
 
-/** Whether two boxes are the same. */
+/**
+ * Whether two boxes are the same, to rounding: a box measured back through
+ * an inverted space wobbles in its last bits as the space moves.
+ */
 function sameBounds(a: Bounds | null, b: Bounds | null): boolean {
 	if (!a || !b) return a === b;
+	const tolerance =
+		1e-9 *
+		Math.max(
+			1,
+			Math.abs(a.minX),
+			Math.abs(a.maxX),
+			Math.abs(a.minY),
+			Math.abs(a.maxY),
+		);
 	return (
-		a.minX === b.minX &&
-		a.minY === b.minY &&
-		a.maxX === b.maxX &&
-		a.maxY === b.maxY
+		Math.abs(a.minX - b.minX) <= tolerance &&
+		Math.abs(a.minY - b.minY) <= tolerance &&
+		Math.abs(a.maxX - b.maxX) <= tolerance &&
+		Math.abs(a.maxY - b.maxY) <= tolerance
 	);
 }
 

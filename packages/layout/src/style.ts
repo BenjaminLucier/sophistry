@@ -260,9 +260,13 @@ export function parseDimension(
 		}
 		return { kind: "length", value };
 	}
-	const match = /^(-?(?:\d+\.?\d*|\.\d+))%$/.exec(value);
-	if (!match) throw new RangeError(`layout: cannot read "${value}"`);
-	return { kind: "percent", value: Number(match[1]) / 100 };
+	// Parsed without a backtracking pattern: the number before the "%" must
+	// be a plain decimal.
+	const number = value.endsWith("%") ? value.slice(0, -1) : "";
+	if (!/^-?[\d.]+$/.test(number) || !Number.isFinite(Number(number))) {
+		throw new RangeError(`layout: cannot read "${value}"`);
+	}
+	return { kind: "percent", value: Number(number) / 100 };
 }
 
 /**

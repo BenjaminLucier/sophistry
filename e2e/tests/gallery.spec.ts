@@ -277,7 +277,11 @@ for (const [path, id, name] of examples) {
 	}) => {
 		test.setTimeout(120_000);
 		const errors: string[] = [];
-		page.on("pageerror", (e) => errors.push(`pageerror: ${e.message}`));
+		page.on("pageerror", (e) => {
+			errors.push(`pageerror: ${e.message}`);
+			// The stack goes to the log: the message alone rarely says where.
+			console.log(`pageerror in ${id}: ${e.stack ?? e.message}`);
+		});
 		page.on("console", (m) => {
 			if (m.type() === "error") errors.push(`console.error: ${m.text()}`);
 		});
