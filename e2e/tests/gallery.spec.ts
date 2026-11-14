@@ -98,6 +98,8 @@ const LOOPS: Record<string, number> = {
 	"basic/GroupTransforms": 1,
 	"basic/RectDimensions": 1.9,
 	"basic/UnitCircle": 2.5,
+	// Mid-reorder: the tiles sliding past each other.
+	"basic/LayoutTransition": 1.1,
 	"interaction/CameraFlight": 3,
 	"maths/ComplexMultiplication": 4.25,
 	// Halfway through the map, the grid half bent.
