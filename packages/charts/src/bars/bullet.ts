@@ -11,11 +11,11 @@
 
 import type {
 	CompositeContext,
-	LabelProps,
 	RectProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
-import { defineComposite, Invalidate, label, rect } from "@sophistry/core";
+import { defineComposite, Invalidate, rect, text } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import { mixColor } from "@sophistry/core/color";
 import type { Point } from "@sophistry/core/geometry";
@@ -237,10 +237,10 @@ function draw(ctx: CompositeContext<BulletProps<AnyDatum>>): SceneNode[] {
 	const props = ctx.props as Readonly<BulletProps<unknown>>;
 	const theme = ctx.theme;
 	const progress = clamp01(props.progress ?? 1);
-	const labelNodes = (entries: { key: string; props: LabelProps }[]) =>
+	const labelNodes = (entries: { key: string; props: TextNodeProps }[]) =>
 		ctx.list("labels", entries, {
 			key: (entry) => entry.key,
-			create: (entry) => label.create(entry.props),
+			create: (entry) => text.create(entry.props),
 			update: (node, entry) => {
 				node.update(entry.props);
 			},
@@ -374,7 +374,7 @@ function draw(ctx: CompositeContext<BulletProps<AnyDatum>>): SceneNode[] {
 	const bands: BulletRect[] = [];
 	const bars: BulletRect[] = [];
 	const marks: BulletRect[] = [];
-	const texts: { key: string; props: LabelProps }[] = [];
+	const texts: { key: string; props: TextNodeProps }[] = [];
 	for (const row of rows) {
 		const g = row.geometry;
 		/** This row's own reveal, top row first. */
@@ -471,7 +471,7 @@ function draw(ctx: CompositeContext<BulletProps<AnyDatum>>): SceneNode[] {
 			});
 	}
 
-	const text = (row: Row) => {
+	const labelText = (row: Row) => {
 		const value = formatTick(row.value);
 		const head = row.label ? `${row.label}: ${value}` : value;
 		return row.target !== undefined && Number.isFinite(row.target)
@@ -486,7 +486,7 @@ function draw(ctx: CompositeContext<BulletProps<AnyDatum>>): SceneNode[] {
 			if (!bar || !row) return undefined;
 			return tooltipText(
 				props.tooltip,
-				() => text(row),
+				() => labelText(row),
 				props.data[row.index],
 				row.index,
 			);

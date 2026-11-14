@@ -12,15 +12,15 @@
 import type {
 	CircleProps,
 	CompositeContext,
-	LabelProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
 import {
 	circle,
 	defineComposite,
 	Invalidate,
-	label,
 	measuresText,
+	text,
 } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
@@ -212,7 +212,7 @@ interface SizeKeyEnd {
 /** The nodes one value draws. */
 interface ValueNodes {
 	circle: SceneNode<CircleProps>;
-	label: SceneNode<LabelProps>;
+	label: SceneNode<TextNodeProps>;
 }
 
 /** What a size key keeps between updates. */
@@ -230,7 +230,7 @@ interface SizeLegendState {
 		deps: readonly unknown[],
 		make: () => SizeKeyEnd | undefined,
 	) => SizeKeyEnd | undefined;
-	title: SceneNode<LabelProps> | undefined;
+	title: SceneNode<TextNodeProps> | undefined;
 	nodes: Map<number, ValueNodes>;
 }
 
@@ -385,7 +385,7 @@ function renderSizeLegend(
 				? reveal(0)
 				: reveal(0) * clamp01(startShown ? 1 - exit : enter);
 		const place = offset(titleAt);
-		const next: Partial<LabelProps> = {
+		const next: Partial<TextNodeProps> = {
 			text: props.title ?? "",
 			x: place.x,
 			y: place.y,
@@ -397,7 +397,7 @@ function renderSizeLegend(
 			visible: shownAtAll && shown > 0,
 		};
 		if (state.title) write(state.title, next);
-		else state.title = label.create(next as LabelProps);
+		else state.title = text.create(next as TextNodeProps);
 		children.push(state.title);
 	} else {
 		// Left out of the returned children, the old title is disposed.
@@ -425,7 +425,7 @@ function renderSizeLegend(
 			zIndex,
 			visible,
 		};
-		const labelProps: Partial<LabelProps> = {
+		const labelProps: Partial<TextNodeProps> = {
 			text: place?.text ?? "",
 			x: labelAt.x,
 			y: labelAt.y,
@@ -443,7 +443,7 @@ function renderSizeLegend(
 		} else {
 			nodes = {
 				circle: circle.create(circleProps as CircleProps),
-				label: label.create(labelProps as LabelProps),
+				label: text.create(labelProps as TextNodeProps),
 			};
 		}
 		kept.set(value, nodes);

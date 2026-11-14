@@ -511,7 +511,7 @@ const mathTexOptions: CompositeOptions<MathTexProps> = {
  * scripts should `await node.ready()` before animating. The node is the
  * handle: `pending()`, `ready()`, `error()`, `status`, `placed()`, `parts()`,
  * `partBounds(index)`, plus every node handle (`bounds()`, ...). See the
- * module doc for pending and error behaviour. Use `label` for prose.
+ * module doc for pending and error behaviour. Use `text` for prose.
  *
  * @see {@link https://sophistry.dev/guides/math-and-latex/}
  * @see {@link mathTransform}

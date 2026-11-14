@@ -1,7 +1,7 @@
 /**
  * `labels`: text at data positions.
  *
- * One `label` node per datum, kept by key: the core has no batched text
+ * One `text` node per datum, kept by key: the core has no batched text
  * (a text spec is one string with its own measured box), and a label beside
  * its point (`direction`) is placed by that box. Labels annotate a few
  * points, not thousands, so this is the one point mark that stays per datum.
@@ -9,15 +9,15 @@
 
 import type {
 	CompositeContext,
-	LabelProps,
 	SceneNode,
+	TextNodeProps,
 	Vec2,
 } from "@sophistry/core";
 import {
 	defineComposite,
 	Invalidate,
-	label,
 	measuresText,
+	text,
 } from "@sophistry/core";
 import type { BandKey } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
@@ -128,7 +128,7 @@ interface LabelsState {
 		from: ReturnType<typeof keyedMemo<LabelRow[]>>;
 		to: ReturnType<typeof keyedMemo<LabelRow[]>>;
 	};
-	nodes: Map<BandKey, SceneNode<LabelProps>>;
+	nodes: Map<BandKey, SceneNode<TextNodeProps>>;
 }
 
 const states = new WeakMap<object, LabelsState>();
@@ -245,7 +245,7 @@ function draw(ctx: CompositeContext<LabelsProps<AnyDatum>>): SceneNode[] {
 			own.presence;
 		let node = state.nodes.get(key);
 		if (!node) {
-			node = label.create({ text: own.state.text });
+			node = text.create({ text: own.state.text });
 			state.nodes.set(key, node);
 		}
 		if (props.direction) {
@@ -291,7 +291,7 @@ function draw(ctx: CompositeContext<LabelsProps<AnyDatum>>): SceneNode[] {
 /**
  * Text at data positions: names on a scatter, values over a line, annotations at a peak. Each
  * label is placed by its measured box, so `direction: UP` clears the point by the same gap
- * for any text. One `label` node per datum (see the file header).
+ * for any text. One `text` node per datum (see the file header).
  *
  * @example
  * ```ts

@@ -87,7 +87,7 @@ function siFormatter(value: number, decimalPlaces?: number): string {
 
 /**
  * `1500` reads `1.5e3`, `0.0025` reads `2.5e-3` — mantissa and exponent, no
- * unicode superscripts (a `<Label>` renders through KaTeX or a plain font
+ * unicode superscripts (a `<Text>` renders through KaTeX or a plain font
  * depending on context, and this stays legible in both). `decimalPlaces`
  * fixes the mantissa's width, same as every other formatter here; without it
  * the mantissa defaults to two places, since `toExponential()`'s own

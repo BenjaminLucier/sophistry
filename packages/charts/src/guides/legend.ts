@@ -10,21 +10,21 @@
 import type {
 	CircleProps,
 	CompositeContext,
-	LabelProps,
 	LineProps,
 	PolygonProps,
 	RectProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
 import {
 	circle,
 	defineComposite,
 	Invalidate,
-	label,
 	line,
 	measuresText,
 	polygon,
 	rect,
+	text,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Point } from "@sophistry/core/geometry";
@@ -172,7 +172,7 @@ interface EntryNodes {
 	line?: SceneNode<LineProps>;
 	circle?: SceneNode<CircleProps>;
 	polygon?: SceneNode<PolygonProps>;
-	label: SceneNode<LabelProps>;
+	label: SceneNode<TextNodeProps>;
 }
 
 /** What a legend keeps between updates. */
@@ -193,7 +193,7 @@ interface LegendState {
 		deps: readonly unknown[],
 		make: () => Map<LegendEntry, LegendItemLayout> | undefined,
 	) => Map<LegendEntry, LegendItemLayout> | undefined;
-	title: SceneNode<LabelProps> | undefined;
+	title: SceneNode<TextNodeProps> | undefined;
 	nodes: Map<unknown, EntryNodes>;
 }
 
@@ -324,7 +324,7 @@ function render(
 		}
 		const shown = reveal(0) * Math.max(0, Math.min(1, presence));
 		const place = offset(layout.title);
-		const next: Partial<LabelProps> = {
+		const next: Partial<TextNodeProps> = {
 			text: props.title,
 			x: place.x,
 			y: place.y,
@@ -336,7 +336,7 @@ function render(
 			visible: shownAtAll && shown > 0,
 		};
 		if (state.title) write(state.title, next);
-		else state.title = label.create(next as LabelProps);
+		else state.title = text.create(next as TextNodeProps);
 		children.push(state.title);
 	} else {
 		// Left out of the returned children, the old title is disposed.
@@ -374,7 +374,7 @@ function render(
 		const color = cssColor(entry.color);
 		const mark = entry.mark ?? { fill: true };
 		const markerRadius = fontSize * (mark.line ? 0.24 : 0.3);
-		const labelProps: Partial<LabelProps> = {
+		const labelProps: Partial<TextNodeProps> = {
 			text: entry.label,
 			x: labelAt.x,
 			y: labelAt.y,
@@ -387,7 +387,7 @@ function render(
 		};
 		let nodes = state.nodes.get(key);
 		if (nodes) write(nodes.label, labelProps);
-		else nodes = { label: label.create(labelProps as LabelProps) };
+		else nodes = { label: text.create(labelProps as TextNodeProps) };
 		seen.set(key, nodes);
 
 		if (mark.fill) {

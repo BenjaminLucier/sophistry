@@ -13,7 +13,7 @@ import { resolveTheme } from "../themes/index.js";
 import { Invalidate, themeContext } from "./context.js";
 import { SceneGraph } from "./graph.js";
 import { group } from "./group.js";
-import { defineText, label, type TextProps, textProps } from "./text.js";
+import { defineText, type TextProps, text, textProps } from "./text.js";
 
 const theme = resolveTheme({ mode: "dark" });
 
@@ -38,7 +38,7 @@ describe("label", () => {
 			progress: 0.5,
 			halo: true,
 		};
-		const node = graph.root.add(label.create(props));
+		const node = graph.root.add(text.create(props));
 		commit();
 		const style = bakeTextStyle({ ...props, fill: props.color }, theme, 1, 1);
 		expect(node.spec).toEqual(
@@ -57,9 +57,9 @@ describe("label", () => {
 
 	it("an empty string, a hidden label or nothing revealed draws nothing", () => {
 		const { graph, commit } = manualGraph();
-		const empty = graph.root.add(label.create({ text: "" }));
-		const hidden = graph.root.add(label.create({ text: "a", visible: false }));
-		const unrevealed = graph.root.add(label.create({ text: "a", progress: 0 }));
+		const empty = graph.root.add(text.create({ text: "" }));
+		const hidden = graph.root.add(text.create({ text: "a", visible: false }));
+		const unrevealed = graph.root.add(text.create({ text: "a", progress: 0 }));
 		commit();
 		expect([empty.spec, hidden.spec, unrevealed.spec]).toEqual([
 			null,
@@ -71,7 +71,7 @@ describe("label", () => {
 
 	it("a rotated group turns the baseline and scales the font", () => {
 		const { graph, commit } = manualGraph();
-		const node = label.create({ text: "a", x: 1, fontSize: 0.5 });
+		const node = text.create({ text: "a", x: 1, fontSize: 0.5 });
 		graph.root.add(
 			group.create({ rotation: Math.PI / 2, scale: 2, children: [node] }),
 		);
@@ -85,7 +85,7 @@ describe("label", () => {
 
 	it("a move keeps the style; a restyle keeps the anchor", () => {
 		const { graph, commit } = manualGraph();
-		const node = graph.root.add(label.create({ text: "a" }));
+		const node = graph.root.add(text.create({ text: "a" }));
 		commit();
 		const first = node.spec as TextSpec;
 		node.set("x", 2);
@@ -101,7 +101,7 @@ describe("label", () => {
 
 	it("a group's move keeps the style; its scale rebuilds it", () => {
 		const { graph, commit } = manualGraph();
-		const node = label.create({ text: "a" });
+		const node = text.create({ text: "a" });
 		const parent = graph.root.add(group.create({ children: [node] }));
 		commit();
 		const first = node.spec as TextSpec;
@@ -120,7 +120,7 @@ describe("label", () => {
 	it("its handle is the measured box at the anchor, flipped on a y-down scene", () => {
 		const { graph, commit } = manualGraph();
 		const node = graph.root.add(
-			label.create({ text: "abc", x: 1, fontSize: 1, baseline: "top" }),
+			text.create({ text: "abc", x: 1, fontSize: 1, baseline: "top" }),
 		);
 		commit();
 		const style = (node.spec as TextSpec).style;
@@ -143,9 +143,9 @@ describe("label", () => {
 
 	it("its handle box measures in local units through a scaled group", () => {
 		const { graph } = manualGraph();
-		const node = label.create({ text: "ab", fontSize: 1 });
+		const node = text.create({ text: "ab", fontSize: 1 });
 		graph.root.add(group.create({ scale: 2, children: [node] }));
-		const plain = label.create({ text: "ab", fontSize: 1 });
+		const plain = text.create({ text: "ab", fontSize: 1 });
 		graph.root.add(plain);
 		expect(node.width()).toBeCloseTo(plain.width() * 2, 9);
 		expect(node.localBounds()).toEqual(node.bounds());
@@ -184,7 +184,7 @@ describe("defineText", () => {
 describe("rich text", () => {
 	it("keeps one plain line a single run", () => {
 		const { graph, commit } = manualGraph();
-		const node = graph.root.add(label.create({ text: "plain" }));
+		const node = graph.root.add(text.create({ text: "plain" }));
 		commit();
 		expect((node.spec as TextSpec).fragments).toBeUndefined();
 	});
@@ -192,7 +192,7 @@ describe("rich text", () => {
 	it("lays out spans as fragments in their own styles", () => {
 		const { graph, commit } = manualGraph();
 		const node = graph.root.add(
-			label.create({
+			text.create({
 				text: [
 					"a ",
 					{ text: "bold", fontWeight: 700, color: "#f00", underline: true },
@@ -218,7 +218,7 @@ describe("rich text", () => {
 		const { graph, commit } = manualGraph();
 		const scaled = graph.root.add(group.create({ scale: 2 }));
 		const node = scaled.add(
-			label.create({
+			text.create({
 				text: "one two three four",
 				width: 1.2,
 				fontSize: 0.3,
@@ -238,7 +238,7 @@ describe("rich text", () => {
 	it("breaks at newlines and puts the first baseline on the anchor", () => {
 		const { graph, commit } = manualGraph();
 		const node = graph.root.add(
-			label.create({ text: "a\nb", baseline: "alphabetic", fontSize: 1 }),
+			text.create({ text: "a\nb", baseline: "alphabetic", fontSize: 1 }),
 		);
 		commit();
 		const spec = node.spec as TextSpec;

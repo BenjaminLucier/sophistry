@@ -21,7 +21,7 @@ import { defineComposite } from "../scene/composite.js";
 import { Invalidate } from "../scene/context.js";
 import type { ShapeProps } from "../scene/shape.js";
 import { shapeProps } from "../scene/shape.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { PropsDescriptor, SceneNode } from "../scene/types.js";
 import { dot } from "../shapes/dot.js";
 import {
@@ -689,7 +689,7 @@ function lineToGraphChildren(
 		ctx as CompositeContext<object>,
 		"label",
 		props.label,
-		() => label.create({ text: "" }),
+		() => text.create({ text: "" }),
 		(node) => {
 			node.update(
 				anchoredLabelProps(
@@ -897,20 +897,20 @@ function secantChildren(
 
 	const legLabel = (
 		slot: string,
-		text: string | undefined,
+		content: string | undefined,
 		at: Point,
 		direction: Vec2,
 	) =>
 		optional(
 			anyContext,
 			slot,
-			triangle && text,
-			() => label.create({ text: "" }),
+			triangle && content,
+			() => text.create({ text: "" }),
 			(node) => {
 				node.update(
 					anchoredLabelProps(
 						{
-							text: text ?? "",
+							text: content ?? "",
 							at,
 							direction,
 							gap: DEFAULT_LABEL_GAP,

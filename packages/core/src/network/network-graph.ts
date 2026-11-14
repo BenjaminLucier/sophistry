@@ -37,7 +37,7 @@ import { derive } from "../reactive/index.js";
 import type { CompositeContext } from "../scene/composite.js";
 import { defineComposite } from "../scene/composite.js";
 import { Invalidate } from "../scene/context.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { SceneNode } from "../scene/types.js";
 import { SpaceChange } from "../scene/types.js";
 import { circle } from "../shapes/circle.js";
@@ -608,7 +608,7 @@ function buildGraph(
 		props.renderEdge
 			? []
 			: drawnEdges.filter((edge) => edge.config.label !== undefined),
-		{ key: (edge) => edge.key, create: () => label.create({ text: "" }) },
+		{ key: (edge) => edge.key, create: () => text.create({ text: "" }) },
 	);
 	let labelIndex = 0;
 	for (let i = 0; i < drawnEdges.length; i++) {
@@ -689,7 +689,7 @@ function buildGraph(
 		create: () => circle.create({ radius: DEFAULT_VERTEX_RADIUS }),
 	});
 	const vertexLabels = ctx.list("vertexLabels", labelled, {
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	labelIndex = 0;
 	for (let i = 0; i < drawnIds.length; i++) {

@@ -465,7 +465,7 @@ export interface TextHalo {
 }
 
 /**
- * The style-affecting subset of `<Label>`'s props — everything `bakeTextStyle` reads.
+ * The style-affecting subset of `<Text>`'s props — everything `bakeTextStyle` reads.
  *
  * @category Baking
  */
@@ -630,6 +630,8 @@ export function bakeTextBlock(
 		width?: number;
 		lineHeight?: number;
 		align: CanvasTextAlign;
+		/** Where lines sit within the block. Defaults to `align`. */
+		textAlign?: CanvasTextAlign;
 		baseline: CanvasTextBaseline;
 	},
 ): { fragments: TextFragment[]; box: Bounds } {
@@ -638,7 +640,7 @@ export function bakeTextBlock(
 		{
 			width: options.width,
 			lineHeight: options.lineHeight,
-			align: options.align,
+			align: options.textAlign ?? options.align,
 		},
 	);
 	const { width, height } = layout;

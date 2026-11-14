@@ -1,9 +1,10 @@
 /**
- * The text node kind: one line of text, positioned in scene units and styled
- * by the active theme, publishing a `TextSpec`. `defineText` makes a text
- * definition from a function giving the string (`label` passes its `text`
- * prop through; a number display formats a value), and `label` is the plain
- * one.
+ * The text node kind: text positioned in scene units and styled by the
+ * active theme, publishing a `TextSpec`. `defineText` makes a text
+ * definition from a function giving the content (`text` passes its `text`
+ * prop through; a number display formats a value), and `text` is the plain
+ * one. One plain line is drawn as a single run; spans, newlines or a width
+ * lay the content out into a block of fragments.
  *
  * Stages: `GEOMETRY` re-reads the string; `STYLE` rebuilds the text style
  * (font, colour, halo; it folds in the enclosing groups' scale and opacity);
@@ -146,6 +147,12 @@ export interface TextProps extends InteractionProps {
 	 */
 	width?: number;
 	/**
+	 * Where lines sit within a multi-line block. Defaults to `align`, so a
+	 * left-anchored block is left-aligned; a centred block of left-aligned
+	 * lines takes `align: "center", textAlign: "left"`.
+	 */
+	textAlign?: CanvasTextAlign;
+	/**
 	 * Line height, as a multiple of the largest font size on each line.
 	 * @default 1.3
 	 */
@@ -207,6 +214,7 @@ export const textProps: PropsDescriptor<TextProps> = Object.freeze({
 		instanceable: true,
 	},
 	width: { invalidates: Invalidate.GEOMETRY },
+	textAlign: { invalidates: Invalidate.GEOMETRY },
 	lineHeight: { default: 1.3, invalidates: Invalidate.GEOMETRY },
 	opacity: { default: 1, invalidates: Invalidate.STYLE, instanceable: true },
 	halo: { invalidates: Invalidate.STYLE },
@@ -223,7 +231,7 @@ export const textProps: PropsDescriptor<TextProps> = Object.freeze({
  * @category Text & numbers
  */
 export interface TextOptions<P extends TextProps> {
-	/** PascalCase display and codegen name (`"Label"`). */
+	/** PascalCase display and codegen name (`"Text"`). */
 	name: string;
 	/** One entry per prop: `...textProps` plus the definition's own. */
 	props: PropsDescriptor<P>;
@@ -273,7 +281,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	/**
 	 * Scene units: the enclosing groups' scale is folded in, the camera's is
 	 * not (the renderer multiplies by the view's scale at paint time). Lazy: a
-	 * hidden label restyles nothing.
+	 * hidden text node restyles nothing.
 	 */
 	private style: TextStyle | null = null;
 	/** The groups' scale the style was built for. */
@@ -291,11 +299,13 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			style: TextStyle,
 			width: number | undefined,
 			lineHeight: number | undefined,
+			textAlign: CanvasTextAlign | undefined,
 			_fontEpoch: number,
 		): { fragments: TextFragment[]; box: Bounds } =>
 			bakeTextBlock(this.runsOf(content, style), {
 				width,
 				lineHeight,
+				textAlign,
 				align: style.align,
 				baseline: style.baseline,
 			}),
@@ -436,6 +446,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			this.currentStyle(),
 			width === undefined ? undefined : width * scale,
 			this.props.lineHeight,
+			this.props.textAlign,
 			fontLoads.peek(),
 		);
 	}
@@ -582,32 +593,41 @@ export function defineText<P extends TextProps>(
 }
 
 /** @category Text & numbers */
-export interface LabelProps extends TextProps {
+export interface TextNodeProps extends TextProps {
 	/** What to draw: a string, or strings and spans. Empty draws nothing. */
 	text: RichText;
 }
 
 /**
- * A single line of text, positioned in scene units and styled by the active
- * theme.
+ * Text, positioned in scene units and styled by the active theme: one line,
+ * several (`"\n"` breaks), wrapped at a `width`, and styled run by run with
+ * {@link TextSpan}s.
  *
- * Font size, letter spacing and the anchor are all in scene units, so a label
- * scales with any enclosing `group`. Text is centred on its anchor by
- * default. Its handles (`bounds()`, `pointAt(...)`) are the measured box,
- * which lets captions take part in layout (`nextTo`, `toEdge`, ...).
+ * Font size, letter spacing, width and the anchor are all in scene units, so
+ * text scales with any enclosing `group`. It is centred on its anchor by
+ * default (`align` and `baseline` move it, and `textAlign` sets how lines
+ * sit in a block). Its handles (`bounds()`, `pointAt(...)`) are the measured
+ * box, which lets captions take part in layout (`nextTo`, `toEdge`, ...).
  *
  * @example
  * ```ts
- * import { createScene, label } from "@sophistry/core";
+ * import { createScene, text } from "@sophistry/core";
  *
  * const scene = createScene({ host: document.body });
- * scene.root.add(label.create({ text: "x²", x: 1, fontSize: 0.5 }));
+ * scene.root.add(text.create({ text: "x²", x: 1, fontSize: 0.5 }));
+ * scene.root.add(
+ * 	text.create({
+ * 		text: ["The ", { text: "derivative", fontWeight: 700, color: "#58c4dd" }, " measures change."],
+ * 		width: 4,
+ * 		y: -1,
+ * 	}),
+ * );
  * ```
  *
  * @category Text & numbers
  */
-export const label = defineText<LabelProps>({
-	name: "Label",
+export const text = defineText<TextNodeProps>({
+	name: "Text",
 	props: {
 		...textProps,
 		text: { default: "", invalidates: Invalidate.GEOMETRY },

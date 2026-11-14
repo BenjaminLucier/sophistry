@@ -17,7 +17,7 @@ import type { CompositeContext } from "../scene/composite.js";
 import { defineComposite } from "../scene/composite.js";
 import { Invalidate } from "../scene/context.js";
 import { measuresText } from "../scene/fonts.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { SceneNode } from "../scene/types.js";
 import { circle } from "../shapes/circle.js";
 import { line } from "../shapes/line.js";
@@ -454,7 +454,7 @@ function layout(ctx: CompositeContext<PolarPlaneProps>): SceneNode[] {
 	};
 	const labelNodes = ctx.list("azimuths", labelled ? spokes : [], {
 		create: (index) =>
-			label.create({
+			text.create({
 				...anchoredLabelProps(labelOptions(index), fontFamily),
 				progress: state.phase(2),
 			}),

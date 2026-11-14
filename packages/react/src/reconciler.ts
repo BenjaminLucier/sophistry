@@ -27,7 +27,7 @@
  *   `detachDeletedInstance`, which also catches a composite's children that
  *   it never placed. React only reparents by unmounting and remounting, so
  *   no node moves between parents.
- * - **Text** is an error: text belongs in `<Label text=...>`.
+ * - **Text** is an error: text belongs in `<Text text=...>`.
  */
 
 import type { ContainerNode, Definition, SceneNode } from "@sophistry/core";
@@ -203,7 +203,7 @@ function unhide(node: SceneNode, props: Props): void {
 
 const textError = (text: string) =>
 	new Error(
-		`Sophistry: text ("${text.length > 40 ? `${text.slice(0, 40)}…` : text}") is not valid inside a <Stage>. Use <Label text="..."> for text in the scene, or render it outside the <Stage>.`,
+		`Sophistry: text ("${text.length > 40 ? `${text.slice(0, 40)}…` : text}") is not valid inside a <Stage>. Use <Text text="..."> for text in the scene, or render it outside the <Stage>.`,
 	);
 
 /** The host context: there is only one kind of place to be. */

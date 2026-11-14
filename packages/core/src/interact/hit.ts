@@ -181,7 +181,7 @@ export { boundsContain };
 
 /**
  * A text run's box in scene units, before the run's rotation, hanging off its
- * anchor: `labelBox`, oriented for the view (the same box a `<Label>`'s `ref`
+ * anchor: `labelBox`, oriented for the view (the same box a `<Text>`'s `ref`
  * handle reports).
  *
  * @param spec - The text spec (scene units).

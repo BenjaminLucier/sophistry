@@ -13,9 +13,9 @@ import {
 	defineComposite,
 	Invalidate,
 	LEFT,
-	label,
 	numberLine,
 	pathBatch,
+	text,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { Point, Polyline, Range } from "@sophistry/core/geometry";
@@ -168,7 +168,7 @@ function drawParallel(
 	});
 	const labelNodes = ctx.list("axisLabels", axes, {
 		key: (_, j) => j,
-		create: () => label.create({ text: "" }),
+		create: () => text.create({ text: "" }),
 	});
 	const nodes: SceneNode[] = [];
 	axes.forEach((axis, j) => {

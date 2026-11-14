@@ -20,11 +20,11 @@ import {
 	axisPositionValue,
 	crossingValue,
 	LEFT,
-	label,
 	line,
 	measuresText,
 	numberLine,
 	RIGHT,
+	text,
 	UP,
 } from "@sophistry/core";
 import type {
@@ -696,7 +696,7 @@ export function createChartGuides(): (
 		/** One anchored title in `slot`. */
 		const title = (
 			slot: string,
-			text: string,
+			content: string,
 			options: {
 				at: Point;
 				direction: Point;
@@ -708,10 +708,10 @@ export function createChartGuides(): (
 		) =>
 			keep(
 				slot,
-				label,
+				text,
 				anchoredLabelProps(
 					{
-						text,
+						text: content,
 						at: options.at,
 						direction: options.direction,
 						gap: options.gap,

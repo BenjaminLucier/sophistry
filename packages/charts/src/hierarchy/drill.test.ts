@@ -96,7 +96,7 @@ const common = {
 function crumb(root: SceneNode, name: string) {
 	const found = descendants(root).find(
 		(node) =>
-			node.type === "Label" &&
+			node.type === "Text" &&
 			(node as SceneNode<{ label?: string }>).get("label") === name,
 	);
 	if (!found) throw new Error(`no crumb ${name}`);
@@ -122,7 +122,7 @@ function crumbStops(root: SceneNode): string[] {
 	return descendants(root)
 		.filter(
 			(node) =>
-				node.type === "Label" &&
+				node.type === "Text" &&
 				(node as SceneNode<{ focusable?: boolean }>).get("focusable") === true,
 		)
 		.map(
@@ -406,7 +406,7 @@ describe("breadcrumbs", () => {
 		expect(
 			descendants(trail).filter(
 				(n) =>
-					n.type === "Label" &&
+					n.type === "Text" &&
 					(n as SceneNode<{ onTap?: unknown }>).get("onTap"),
 			),
 		).toHaveLength(0);
@@ -948,7 +948,7 @@ describe("Escape and tree names", () => {
 		const t = mountChart(chart);
 		const name = descendants(chart).find(
 			(node) =>
-				node.type === "Label" &&
+				node.type === "Text" &&
 				(node as SceneNode<{ text?: string }>).get("text") === "c",
 		) as SceneNode<{ onTap?: (event: never) => void; pointerEvents?: string }>;
 		// Text is hit by its (rotated) box, so the whole name is a target.
@@ -966,7 +966,7 @@ describe("Escape and tree names", () => {
 		expect(
 			descendants(chart).filter(
 				(n) =>
-					n.type === "Label" &&
+					n.type === "Text" &&
 					(n as SceneNode<{ onTap?: unknown }>).get("onTap"),
 			),
 		).toHaveLength(0);

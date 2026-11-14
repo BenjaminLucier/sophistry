@@ -18,7 +18,7 @@ import {
 	type ShapeProps,
 	shapeProps,
 } from "../scene/shape.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { PropsDescriptor } from "../scene/types.js";
 import { SpaceChange } from "../scene/types.js";
 import { DEFAULT_FONT_WEIGHT } from "../spec/bake.js";
@@ -374,7 +374,7 @@ export const labeledDot = defineComposite<LabeledDotProps>({
 	setup: (ctx) => {
 		const disc = dot.create({ radius: DOT_RADIUS });
 		forwardProps(ctx, disc, labeledDotForwardedKeys);
-		const text = label.create({
+		const caption = text.create({
 			text: "",
 			place: rawProp(ctx, "place"),
 			progress: rawProp(ctx, "progress"),
@@ -382,20 +382,20 @@ export const labeledDot = defineComposite<LabeledDotProps>({
 			zIndex: rawProp(ctx, "zIndex"),
 			visible: rawProp(ctx, "visible"),
 		});
-		refreshLabeledDot(ctx, disc, text);
-		return [disc, text];
+		refreshLabeledDot(ctx, disc, caption);
+		return [disc, caption];
 	},
 	update: (changed, ctx) => {
-		const [disc, text] = ctx.node.children as [DotNode, LabelNode];
+		const [disc, caption] = ctx.node.children as [DotNode, LabelNode];
 		forwardHandlers(changed, ctx, disc);
-		refreshLabeledDot(ctx, disc, text);
+		refreshLabeledDot(ctx, disc, caption);
 		return undefined;
 	},
 });
 
 type DotNode = ReturnType<typeof dot.create>;
 
-type LabelNode = ReturnType<typeof label.create>;
+type LabelNode = ReturnType<typeof text.create>;
 
 /**
  * Writes what the disc and the text take from the composite's own props:

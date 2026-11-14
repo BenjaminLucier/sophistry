@@ -12,8 +12,8 @@ import { themeContext } from "../scene/context.js";
 import { SceneGraph } from "../scene/graph.js";
 import type { GroupProps } from "../scene/group.js";
 import { group } from "../scene/group.js";
-import type { LabelProps } from "../scene/text.js";
-import { label } from "../scene/text.js";
+import type { TextNodeProps } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { DrawSpec } from "../spec/types.js";
 import { resolveTheme } from "../themes/index.js";
 
@@ -22,13 +22,13 @@ import { resolveTheme } from "../themes/index.js";
  * whose y runs up or down; returns the node and the committed graph.
  */
 function mount(
-	props: Partial<LabelProps>,
+	props: Partial<TextNodeProps>,
 	space: GroupProps | null = null,
 	yUp = true,
 ) {
 	const graph = new SceneGraph({ schedule: () => {}, yUp });
 	graph.root.provide(themeContext, resolveTheme());
-	const node = label.create({ text: "r", ...props });
+	const node = text.create({ text: "r", ...props });
 	graph.root.add(space ? group.create({ ...space, children: [node] }) : node);
 	graph.commit();
 	return { graph, node };
@@ -40,7 +40,7 @@ function textSpec(spec: DrawSpec | null | undefined) {
 }
 
 describe("label rotation and size are in scene units", () => {
-	const specUnder = (space: GroupProps | null, props: Partial<LabelProps>) =>
+	const specUnder = (space: GroupProps | null, props: Partial<TextNodeProps>) =>
 		textSpec(mount(props, space).node.spec);
 
 	it("keeps the rotation prop's own sense: the y flip belongs to the view, not the spec", () => {
@@ -75,7 +75,7 @@ describe("label rotation and size are in scene units", () => {
 
 describe("label spec characterisation", () => {
 	const specOf = (
-		props: Partial<LabelProps>,
+		props: Partial<TextNodeProps>,
 		space: GroupProps | null = null,
 	) => mount({ text: "hi", ...props }, space).node.spec;
 

@@ -143,13 +143,13 @@ export interface StageProps {
  *
  * @example
  * ```tsx
- * import { Circle, Label, Stage } from "@sophistry/solidjs";
+ * import { Circle, Stage, Text } from "@sophistry/solidjs";
  *
  * export function Hello() {
  * 	return (
  * 		<Stage units={8}>
  * 			<Circle radius={1.5} />
- * 			<Label text="radius 1.5" y={-2.5} />
+ * 			<Text text="radius 1.5" y={-2.5} />
  * 		</Stage>
  * 	);
  * }

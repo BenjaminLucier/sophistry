@@ -1,6 +1,6 @@
 /**
  * The text-metrics oracle: one lazily created offscreen context used only for
- * `measureText`, so a `<Label>` can report its box for layout. It never draws.
+ * `measureText`, so a `<Text>` can report its box for layout. It never draws.
  * Without a `document` (SSR) measurements fall back to an em-based estimate.
  */
 

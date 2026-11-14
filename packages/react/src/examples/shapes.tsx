@@ -9,7 +9,7 @@
 import type { Clock, Scene } from "@sophistry/core";
 import { draw, moveTo, sequence } from "@sophistry/core";
 import { type Ref, useEffect } from "react";
-import { Circle, Dot, Label } from "../generated/core.gen.js";
+import { Circle, Dot, Text } from "../generated/core.gen.js";
 import { usePlayer, useTrack } from "../hooks.js";
 import { Stage } from "../stage.js";
 
@@ -59,7 +59,7 @@ export function ShapesExample({
 	return (
 		<Stage units={8} clock={clock} ref={ref}>
 			<Script radius={radius} />
-			<Label text={caption} y={-3.2} />
+			<Text text={caption} y={-3.2} />
 		</Stage>
 	);
 }

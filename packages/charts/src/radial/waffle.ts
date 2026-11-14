@@ -20,9 +20,9 @@ import {
 	defineComposite,
 	Invalidate,
 	instances,
-	label,
 	rect,
 	square,
+	text,
 } from "@sophistry/core";
 import type { Point } from "@sophistry/core/geometry";
 import { formatTick } from "@sophistry/core/geometry";
@@ -227,7 +227,7 @@ function draw(ctx: CompositeContext<WaffleProps<AnyDatum>>): SceneNode[] {
 		// Hidden: the batches stay (removed children are disposed), empty.
 		state.track.update({ data: [] } as never);
 		state.cells.update([]);
-		ctx.list("legend", [], { create: () => label.create({ text: "" }) });
+		ctx.list("legend", [], { create: () => text.create({ text: "" }) });
 		ctx.list("swatches", [], {
 			create: () => rect.create({ width: 0, height: 0 }),
 		});
@@ -462,7 +462,7 @@ function draw(ctx: CompositeContext<WaffleProps<AnyDatum>>): SceneNode[] {
 	}
 	const texts = ctx.list("legend", shownLegend, {
 		key: ({ item }) => item.index,
-		create: ({ item, reveal }) => label.create(textProps(item, reveal)),
+		create: ({ item, reveal }) => text.create(textProps(item, reveal)),
 		update: (node, { item, reveal }) => {
 			node.update(textProps(item, reveal));
 		},

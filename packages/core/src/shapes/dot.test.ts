@@ -16,7 +16,7 @@ import {
 } from "../color/index.js";
 import { arcCurvePath, boundsOf, centerOf } from "../geometry/index.js";
 import { Invalidate, themeContext } from "../scene/context.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import {
 	flatColor,
 	isGradientSpec,
@@ -190,7 +190,7 @@ describe("a Color where a CSS string is accepted", () => {
 
 	it("label color bakes to a string fill", () => {
 		const { graph, commit } = manualGraph();
-		const node = graph.root.add(label.create({ text: "x", color: BLUE }));
+		const node = graph.root.add(text.create({ text: "x", color: BLUE }));
 		commit();
 		expect((node.spec as TextSpec).style.fill).toBe(blue);
 	});

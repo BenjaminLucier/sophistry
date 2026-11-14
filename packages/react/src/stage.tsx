@@ -257,13 +257,13 @@ class ErrorForwarder extends Component<
  *
  * @example
  * ```tsx
- * import { Circle, Label, Stage } from "@sophistry/react";
+ * import { Circle, Stage, Text } from "@sophistry/react";
  *
  * export function Hello() {
  * 	return (
  * 		<Stage units={8}>
  * 			<Circle center={{ x: 0, y: 0 }} radius={1.5} />
- * 			<Label text="radius 1.5" y={-2.5} />
+ * 			<Text text="radius 1.5" y={-2.5} />
  * 		</Stage>
  * 	);
  * }

@@ -4,7 +4,7 @@
  * Every tile is one `rect` instance of one instances node, keyed by the
  * node's path of names (so a keyed transition or a data change keeps each
  * tile's item); per-tile picking, tooltips and drilling go through
- * `event.item`. Names are `label` nodes, one per tile whose name fits.
+ * `event.item`. Names are `text` nodes, one per tile whose name fits.
  */
 
 import type { CompositeContext, RectProps, SceneNode } from "@sophistry/core";

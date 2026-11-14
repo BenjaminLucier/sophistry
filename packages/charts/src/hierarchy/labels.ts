@@ -1,23 +1,27 @@
 /**
- * Node names of the hierarchy, flow and mosaic charts: one `label` node per
+ * Node names of the hierarchy, flow and mosaic charts: one `text` node per
  * name drawn, keyed by its node (so a name moving through a transition
  * keeps its node), and a text-width cache so fitting names on every frame
  * of a reveal or zoom measures each string once. Internal to the family.
  */
 
-import type { CompositeContext, LabelProps, SceneNode } from "@sophistry/core";
-import { label } from "@sophistry/core";
+import type {
+	CompositeContext,
+	SceneNode,
+	TextNodeProps,
+} from "@sophistry/core";
+import { text } from "@sophistry/core";
 import type { Theme } from "@sophistry/core/themes";
 import { textWidth } from "../text-width.js";
 
 /** One label of a keyed list: its key and the label's props. */
 export interface KeyedLabel {
 	key: unknown;
-	props: LabelProps;
+	props: TextNodeProps;
 }
 
 /**
- * Keyed `label` nodes for one list (`slot`): a node per key, created once
+ * Keyed `text` nodes for one list (`slot`): a node per key, created once
  * and updated in place, disposed when its key leaves.
  */
 export function labelList<P>(
@@ -27,7 +31,7 @@ export function labelList<P>(
 ): SceneNode[] {
 	return ctx.list(slot, labels, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

@@ -13,6 +13,7 @@
  */
 
 import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import type { TextSpec } from "../spec/types.js";
 
 const fonts = new EventTarget();
 let advance = 10;
@@ -47,7 +48,6 @@ let modules: {
 	circle: typeof import("../shapes/circle.js");
 	themes: typeof import("../themes/index.js");
 	decimal: typeof import("./decimal-number.js");
-	paragraph: typeof import("./paragraph.js");
 };
 
 beforeAll(async () => {
@@ -61,7 +61,6 @@ beforeAll(async () => {
 		circle: await import("../shapes/circle.js"),
 		themes: await import("../themes/index.js"),
 		decimal: await import("./decimal-number.js"),
-		paragraph: await import("./paragraph.js"),
 	};
 });
 
@@ -95,7 +94,7 @@ describe("font-load invalidation", () => {
 		const { graph, commit, scheduled, fontLoadsHeard } = manualGraph();
 		try {
 			const node = graph.root.add(
-				modules.text.label.create({ text: "ab", fontSize: 1 }),
+				modules.text.text.create({ text: "ab", fontSize: 1 }),
 			);
 			commit();
 			const width = node.width();
@@ -117,7 +116,7 @@ describe("font-load invalidation", () => {
 		}
 	});
 
-	it("re-lays out a decimal number's glyphs and re-wraps a paragraph", () => {
+	it("re-lays out a decimal number's glyphs and re-wraps text", () => {
 		advance = 10;
 		const { graph, commit } = manualGraph();
 		try {
@@ -141,20 +140,23 @@ describe("font-load invalidation", () => {
 			const measure =
 				modules.metrics.measureLabel("alpha beta", font).width * 1.1;
 			const block = graph.root.add(
-				modules.paragraph.paragraph.create({
+				modules.text.text.create({
 					text,
 					width: measure,
 					fontSize: 0.4,
 				}),
 			);
+			const lines = () =>
+				new Set((block.spec as TextSpec).fragments?.map((f) => f.offset.y))
+					.size;
 			commit();
 			const numberWidth = number.width();
-			expect(block.children).toHaveLength(2);
+			expect(lines()).toBe(2);
 
 			loadFont(20);
 			commit();
 			expect(number.width()).toBeCloseTo(numberWidth * 2, 9);
-			expect(block.children).toHaveLength(3);
+			expect(lines()).toBe(3);
 		} finally {
 			graph.dispose();
 		}
@@ -171,10 +173,10 @@ describe("font-load invalidation", () => {
 
 			const { graph, commit, fontLoadsHeard } = manualGraph();
 			for (let i = 0; i < 5; i++) {
-				graph.root.add(modules.text.label.create({ text: `n${i}` }));
+				graph.root.add(modules.text.text.create({ text: `n${i}` }));
 			}
 			graph.root.add(modules.decimal.decimalNumber.create({ value: 1 }));
-			graph.root.add(modules.paragraph.paragraph.create({ text: "p" }));
+			graph.root.add(modules.text.text.create({ text: "p\nq" }));
 			commit();
 			expect(subscribe).toHaveBeenCalledTimes(1);
 
@@ -200,7 +202,7 @@ describe("font-load invalidation", () => {
 			for (let i = 0; i < 10; i++) {
 				graph.root.add(modules.circle.circle.create({ radius: i + 1 }));
 			}
-			graph.root.add(modules.text.label.create({ text: "only me" }));
+			graph.root.add(modules.text.text.create({ text: "only me" }));
 			commit();
 			const frame = graph.frame;
 			const refreshes = graph.stats.refreshes;

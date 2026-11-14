@@ -8,19 +8,19 @@
 
 import type {
 	CompositeContext,
-	LabelProps,
 	PathBatchItem,
 	RectProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
 import {
 	defineComposite,
 	Invalidate,
 	LEFT,
-	label,
 	pathBatch,
 	RIGHT,
 	rect,
+	text,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Point } from "@sophistry/core/geometry";
@@ -193,7 +193,7 @@ function drawStages(ctx: CompositeContext<FunnelProps<AnyDatum>>): SceneNode[] {
 	};
 	const percentOf = (value: number) =>
 		formatTick(Math.round((value / first) * 1000) / 10);
-	const text = (index: number) => {
+	const labelText = (index: number) => {
 		const value = values[index] as number;
 		const percent = `${percentOf(value)}%`;
 		switch (props.show ?? "both") {
@@ -212,7 +212,7 @@ function drawStages(ctx: CompositeContext<FunnelProps<AnyDatum>>): SceneNode[] {
 
 	const stages: StageItem[] = [];
 	const necks: PathBatchItem[] = [];
-	const labels: { key: string; props: LabelProps }[] = [];
+	const labels: { key: string; props: TextNodeProps }[] = [];
 	props.data.forEach((datum, index) => {
 		const box = boxFor(index, t(index));
 		const fill = fillOf(datum, index);
@@ -235,7 +235,7 @@ function drawStages(ctx: CompositeContext<FunnelProps<AnyDatum>>): SceneNode[] {
 		}
 		if (box) {
 			stages.push({ key: index, box, fill, index });
-			const content = text(index);
+			const content = labelText(index);
 			if (content) {
 				/**
 				 * Inside the stage when it fits at full width; past its right edge when it
@@ -350,7 +350,7 @@ function drawStages(ctx: CompositeContext<FunnelProps<AnyDatum>>): SceneNode[] {
 	} as never);
 	const labelNodes = ctx.list("labels", labels, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

@@ -20,7 +20,7 @@ import {
 	type ShapeProps,
 	shapeProps,
 } from "../scene/shape.js";
-import { label } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type { PropsDescriptor, SceneNode } from "../scene/types.js";
 import { DEFAULT_FONT_WEIGHT } from "../spec/bake.js";
 import { nextTo, type Vec2 } from "../spec/layout.js";
@@ -300,19 +300,19 @@ function braceChildren(
 	const labels = ctx.list("label", tip ? [tip] : [], {
 		key: () => "label",
 		create: () =>
-			label.create({
+			text.create({
 				text: "",
 				zIndex: rawProp(ctx, "zIndex"),
 				opacity: rawProp(ctx, "opacity"),
 				progress: rawProp(ctx, "progress"),
 			}),
 	});
-	const text = labels[0];
-	if (text && tip) {
+	const caption = labels[0];
+	if (caption && tip) {
 		const fontSize = props.labelFontSize ?? DEFAULT_LABEL_FONT_SIZE;
 		const content = props.label ?? "";
 		const paint = braceFill(props, theme);
-		text.update({
+		caption.update({
 			text: content,
 			fontSize,
 			// The label follows a plain-colour fill; a gradient has no one colour to give it.
@@ -332,7 +332,7 @@ function braceChildren(
 			),
 		});
 	}
-	return text ? [outline, text] : [outline];
+	return caption ? [outline, caption] : [outline];
 }
 
 /**

@@ -1,14 +1,14 @@
 /**
  * `axes3D` (Manim's `ThreeDAxes`, without a data coordinate system): three
  * `vector3D` arrows from a shared origin, with optional `line3D` ticks and
- * core `label`s at projected anchors.
+ * core `text` nodes at projected anchors.
  *
  * The arrows and ticks are ordinary 3D primitives: they re-project
  * themselves on a camera move and take part in the camera's depth sort. A
  * label is 2D text, so each sits in a small internal composite,
  * `AxisLabel3D`, that subscribes to the camera and, on a move, only
  * re-projects its anchor and writes `x`/`y`/`zIndex` (and `visible`, hiding
- * it while the anchor is behind the eye) to its one `label` child. The
+ * it while the anchor is behind the eye) to its one `text` child. The
  * `axes3D` composite itself reruns only when its own props or the theme
  * change.
  */
@@ -17,8 +17,8 @@ import {
 	type CompositeContext,
 	defineComposite,
 	Invalidate,
-	label,
 	type SceneNode,
+	text,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import { formatTick, tickValues } from "@sophistry/core/geometry";
@@ -220,12 +220,12 @@ function placeLabel(
 		connectCamera(ctx, state),
 		ctx.props.at ?? DEFAULT_ORIGIN,
 	);
-	const text = state.text as ReturnType<typeof label.create>;
+	const caption = state.text as ReturnType<typeof text.create>;
 	if (!projected) {
-		text.set("visible", false);
+		caption.set("visible", false);
 		return;
 	}
-	text.update({
+	caption.update({
 		x: projected.x,
 		y: projected.y,
 		zIndex: depthZ(projected.depth),
@@ -234,7 +234,7 @@ function placeLabel(
 }
 
 /**
- * One axis label: a core `label` at its anchor's projection, painted at the
+ * One axis label: a core `text` at its anchor's projection, painted at the
  * anchor's depth, hidden while the anchor is behind the eye. Text, colour,
  * size and opacity are bound to the label; only the anchor (and the camera)
  * rerun `update`.
@@ -250,7 +250,7 @@ const axisLabel3D = defineComposite<AxisLabel3DProps>({
 	},
 	setup: (ctx) => {
 		const state: AxisLabelState = {
-			text: label.create({
+			text: text.create({
 				text: ctx.prop("text"),
 				color: ctx.prop("color"),
 				fontSize: ctx.prop("fontSize"),

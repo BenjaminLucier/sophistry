@@ -49,7 +49,7 @@ export function childNodes(
 		) {
 			warnOnce(
 				`${parent}:non-node`,
-				`<${parent}> ignores children that are not scene nodes (got ${typeof child === "string" ? `"${child}"` : String(child)}). Put text in a <Label>, DOM outside the <Stage>.`,
+				`<${parent}> ignores children that are not scene nodes (got ${typeof child === "string" ? `"${child}"` : String(child)}). Put text in a <Text>, DOM outside the <Stage>.`,
 			);
 		}
 	}

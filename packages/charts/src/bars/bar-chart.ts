@@ -8,16 +8,16 @@ import type {
 	AxisOptions,
 	CompositeContext,
 	CoordinateSystem,
-	LabelProps,
 	SceneNode,
+	TextNodeProps,
 } from "@sophistry/core";
 import {
 	boundsFromCenter,
 	DOWN,
 	defineComposite,
 	Invalidate,
-	label,
 	nextTo,
+	text,
 } from "@sophistry/core";
 import type { ColorInput } from "@sophistry/core/color";
 import type { BandKey, Bounds, Point, Range } from "@sophistry/core/geometry";
@@ -417,12 +417,12 @@ function drawNames(ctx: CompositeContext<BarNamesProps>): SceneNode[] {
 	const props = ctx.props;
 	const plot = ctx.context(chartContext);
 	if (!plot || !props.names)
-		return ctx.list("names", [], { create: () => label.create({ text: "" }) });
+		return ctx.list("names", [], { create: () => text.create({ text: "" }) });
 	const { coords } = plot;
 	const theme = ctx.theme;
 	const fontFamily = theme.defaults.fontFamily;
 	const progress = plot.frameProgress;
-	const entries: { key: unknown; props: LabelProps }[] = [];
+	const entries: { key: unknown; props: TextNodeProps }[] = [];
 	/** Hung from the lower of the baseline and the bar's own bottom edge. */
 	const anchor = (x: number, value: number): Point => {
 		const foot = coords.coordsToPoint(x, coords.crossing().y);
@@ -501,7 +501,7 @@ function drawNames(ctx: CompositeContext<BarNamesProps>): SceneNode[] {
 	}
 	return ctx.list("names", entries, {
 		key: (entry) => entry.key,
-		create: (entry) => label.create(entry.props),
+		create: (entry) => text.create(entry.props),
 		update: (node, entry) => {
 			node.update(entry.props);
 		},

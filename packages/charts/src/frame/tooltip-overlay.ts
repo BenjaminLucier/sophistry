@@ -19,10 +19,10 @@ import {
 	circle,
 	defineComposite,
 	Invalidate,
-	label,
 	line,
 	measuresText,
 	rect,
+	text,
 } from "@sophistry/core";
 import type { Bounds, Point } from "@sophistry/core/geometry";
 import { measureLabel } from "@sophistry/core/internal";
@@ -241,7 +241,7 @@ function panelNodes(
 	const rows = ctx.list(`${slot}Rows`, parts, {
 		key: (part) => part.key,
 		create: (part) =>
-			(part.kind === "swatch" ? rect : label).create(propsOf(part) as never),
+			(part.kind === "swatch" ? rect : text).create(propsOf(part) as never),
 		update: (node, part) => node.update(propsOf(part) as never),
 	});
 	nodes.push(...rows);

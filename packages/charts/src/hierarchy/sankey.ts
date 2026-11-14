@@ -6,7 +6,7 @@
  * picking and tooltips go through `event.item`. The node bars are `rect`
  * instances of one instances node, keyed by node id. The left-to-right draw
  * of a flow cuts its ring (`sankeyRibbon`'s `t`). Node names
- * are `label` nodes placed beside their bars: outside the diagram for the first and last
+ * are `text` nodes placed beside their bars: outside the diagram for the first and last
  * columns, right of the bar (with a halo over the flows) for the others.
  */
 

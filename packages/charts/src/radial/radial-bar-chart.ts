@@ -4,7 +4,7 @@
  * Two path batches: the faint full-length tracks (one shared paint, faded in
  * together) and the value arcs (each its own fill; hover, taps, tooltips
  * and accessible names per ring through `event.item` and `itemLabel`). Ring
- * names stay `label` nodes.
+ * names stay `text` nodes.
  */
 
 import type {

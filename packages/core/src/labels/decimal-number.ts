@@ -22,8 +22,8 @@ import { Invalidate, themeContext } from "../scene/context.js";
 import { BaseNode, memo } from "../scene/node.js";
 import { definePrimitive } from "../scene/primitive.js";
 import { boundsOfPolylines, lastMatrix } from "../scene/shape.js";
-import type { LabelProps, TextNode } from "../scene/text.js";
-import { label } from "../scene/text.js";
+import type { TextNode, TextNodeProps } from "../scene/text.js";
+import { text } from "../scene/text.js";
 import type {
 	Definition,
 	InvalidateBits,
@@ -627,7 +627,7 @@ export class DecimalNumberNode<
 	}
 
 	/**
-	 * Exactly `label`'s derivation: the box is local geometry anchored at the
+	 * Exactly `text`'s derivation: the box is local geometry anchored at the
 	 * origin, placed by this run's own TRS (rotation included, since a rotated
 	 * run's box is not its unrotated one).
 	 */
@@ -835,8 +835,8 @@ export class VariableNode extends TextLayoutNode<VariableProps> {
 	private parts: VariableParts | null = null;
 	private formatted: FormattedNumber | null = null;
 	private textStyle: BoxStyle | null = null;
-	private nameNode: TextNode<LabelProps> | null = null;
-	private relationNode: TextNode<LabelProps> | null = null;
+	private nameNode: TextNode<TextNodeProps> | null = null;
+	private relationNode: TextNode<TextNodeProps> | null = null;
 	private numberNode: DecimalNumberNode | null = null;
 	private shown: readonly SceneNode[] = [];
 
@@ -986,7 +986,7 @@ export class VariableNode extends TextLayoutNode<VariableProps> {
 		const numberAt = anchorFor(parts.number.at);
 		const nameColor = props.labelColor ?? color;
 
-		this.nameNode ??= label.create({ text: "" });
+		this.nameNode ??= text.create({ text: "" });
 		const nameNode = this.nameNode;
 		nameNode.update({
 			text: props.label ?? "",
@@ -1004,7 +1004,7 @@ export class VariableNode extends TextLayoutNode<VariableProps> {
 			zIndex: props.zIndex,
 			progress: share(parts.label.at, parts.label.width),
 		});
-		this.relationNode ??= label.create({ text: "" });
+		this.relationNode ??= text.create({ text: "" });
 		const relationNode = this.relationNode;
 		relationNode.update({
 			text: relation,
@@ -1124,7 +1124,7 @@ export const variableProps: PropsDescriptor<VariableProps> = Object.freeze({
 /**
  * `label = value`: Manim's `Variable`.
  *
- * Composed rather than built: two `label`s and a `decimalNumber`, placed off
+ * Composed rather than built: two `text` nodes and a `decimalNumber`, placed off
  * their own measured widths. The reveal is spent across the three parts by
  * width, so `write()` wipes the line once instead of three times.
  *

@@ -414,7 +414,7 @@ export interface HitOptions {
 }
 
 /**
- * Interaction props every shape and `<Label>` accepts. Any handler makes a node
+ * Interaction props every shape and `<Text>` accepts. Any handler makes a node
  * hit-testable; one that can be activated (`onTap`, a drag or keyboard
  * behaviour) is also a tab stop, where Enter or Space calls `onTap`. Hover has no
  * touch equivalent, so back it with a tap route.

@@ -5,7 +5,7 @@
  * of a `Sector` (the centre disc) or an `AnnularSector` (a ring), its own fill and its own stroke (the background-coloured outline on
  * rings, none on the disc or a full turn); per-node picking, tooltips and
  * drilling go through `event.item`. The clockwise sweep cuts each sector's
- * angle (geometry). Names are `label` nodes, one per sector
+ * angle (geometry). Names are `text` nodes, one per sector
  * whose name fits.
  */
 

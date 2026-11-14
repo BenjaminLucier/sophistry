@@ -8,7 +8,7 @@
 import type { Clock, Scene } from "@sophistry/core";
 import { draw, moveTo, sequence, track, trackPoint } from "@sophistry/core";
 import { onSettled } from "solid-js";
-import { Circle, Dot, Label } from "../generated/core.gen.js";
+import { Circle, Dot, Text } from "../generated/core.gen.js";
 import { usePlayer } from "../hooks.js";
 import { Stage } from "../stage.js";
 
@@ -54,7 +54,7 @@ export function ShapesExample(props: ShapesExampleProps) {
 	return (
 		<Stage units={8} clock={props.clock} ref={props.ref}>
 			<Script radius={props.radius} />
-			<Label text={props.caption} y={-3.2} />
+			<Text text={props.caption} y={-3.2} />
 		</Stage>
 	);
 }
