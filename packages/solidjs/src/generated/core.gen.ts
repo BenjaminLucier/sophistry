@@ -32,6 +32,7 @@ import {
 	functionGraph,
 	group,
 	horizontalLineToGraph,
+	image,
 	implicitFunction,
 	integer,
 	interactionGroup,
@@ -465,6 +466,19 @@ export const HorizontalLineToGraph = wrap(horizontalLineToGraph);
  * @category Components
  */
 export type HorizontalLineToGraphProps = ComponentProps<typeof horizontalLineToGraph>;
+
+/**
+ * `image` from `@sophistry/core` as a component.
+ *
+ * @category Components
+ */
+export const Image = wrap(image);
+/**
+ * Props of {@link Image}.
+ *
+ * @category Components
+ */
+export type ImageProps = ComponentProps<typeof image>;
 
 /**
  * `implicitFunction` from `@sophistry/core` as a component.

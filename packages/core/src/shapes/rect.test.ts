@@ -102,3 +102,23 @@ describe("square", () => {
 		expect(square.name).toBe("Square");
 	});
 });
+
+describe("cornerRadii", () => {
+	it("rounds only the corners given and overrides cornerRadius", () => {
+		const { graph, commit } = manualGraph();
+		const node = graph.root.add(
+			rect.create({
+				width: 4,
+				height: 2,
+				cornerRadius: 0.5,
+				cornerRadii: [0.5, 0, 0, 0],
+			}),
+		);
+		commit();
+		const segments = (node.spec as ShapeSpec).local?.curvePaths?.[0]?.segments;
+		// The bottom and right edges, the shortened top edge and the curved
+		// corner; closePath draws the left edge.
+		expect(segments).toHaveLength(4);
+		expect(segments?.[3]?.to).toEqual({ x: -2, y: 0.5 });
+	});
+});

@@ -45,6 +45,8 @@ export {
 	labeledDot,
 	labeledDotRadius,
 } from "./dot.js";
+export type { ImageFit, ImageNodeProps, ObjectFit } from "./image.js";
+export { fitImage, image, loadImage } from "./image.js";
 export type {
 	ArrowProps,
 	CurvedArrowProps,
