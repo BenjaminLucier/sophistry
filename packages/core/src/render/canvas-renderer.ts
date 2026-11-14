@@ -960,8 +960,19 @@ function drawFragments(
 		for (const { index, progress } of shown) {
 			const fragment = fragments[index] as TextFragment;
 			if (pass === "halo" && !fragment.style.halo) continue;
-			const at = place(fragment);
+			let at = place(fragment);
 			applyTextStyle(ctx, fragment.style, scale, true);
+			// Drawn at another size than it was measured at, a font can run
+			// wider or narrower (optical sizes); fit it to its place in the line.
+			const drawn = ctx.measureText(fragment.text).width;
+			const fit = drawn > 0 ? (fragment.width * scale) / drawn : 1;
+			const fitted = Number.isFinite(fit) && Math.abs(fit - 1) > 1e-3;
+			if (fitted) {
+				ctx.save();
+				ctx.translate(at.x, at.y);
+				ctx.scale(fit, 1);
+				at = { x: 0, y: 0 };
+			}
 			revealText(ctx, fragment.text, at, fragment.style, scale, progress, () =>
 				paintText(
 					ctx,
@@ -973,6 +984,7 @@ function drawFragments(
 					pass === "fill",
 				),
 			);
+			if (fitted) ctx.restore();
 		}
 	}
 	for (const { index, progress } of shown) {

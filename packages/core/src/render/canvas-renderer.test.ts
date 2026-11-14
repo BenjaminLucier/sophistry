@@ -137,6 +137,9 @@ function mockCtx() {
 		rotate(angle: number) {
 			calls.push({ op: "rotate", args: [angle] });
 		},
+		scale(x: number, y: number) {
+			calls.push({ op: "scale", args: [x, y] });
+		},
 		setLineDash(dash: number[]) {
 			calls.push({ op: "setLineDash", args: [...dash] });
 		},
@@ -954,8 +957,15 @@ describe("drawText", () => {
 		};
 	}
 
+	/** One pixel a glyph: each fragment draws exactly as wide as laid out. */
+	function glyphWide(ctx: CanvasRenderingContext2D): void {
+		ctx.measureText = (text: string) =>
+			({ width: Array.from(text).length }) as TextMetrics;
+	}
+
 	it("draws each fragment at its offset from the anchor, y flipped to the canvas", () => {
 		const { ctx, calls } = mockCtx();
+		glyphWide(ctx);
 		paintSpecs(ctx, [fragmentSpec()], new Map(), createPaintCache());
 		expect(calls.find((c) => c.op === "setTransform")?.args).toEqual([
 			1, 0, -0, 1, 5, 5,
@@ -976,8 +986,21 @@ describe("drawText", () => {
 		);
 	});
 
+	it("fits a fragment the font draws wider than laid out to its width", () => {
+		const { ctx, calls } = mockCtx();
+		// Drawn 2.5 px a glyph: "ab" is 5 wide, laid out 2.
+		ctx.measureText = (text: string) =>
+			({ width: 2.5 * Array.from(text).length }) as TextMetrics;
+		paintSpecs(ctx, [fragmentSpec()], new Map(), createPaintCache());
+		const fill = calls.findIndex((c) => c.op === "fillText");
+		expect(calls[fill]?.args).toEqual(["ab", 0, 0]);
+		expect(calls[fill - 1]).toEqual({ op: "scale", args: [0.4, 1] });
+		expect(calls[fill - 2]).toEqual({ op: "translate", args: [-2, -1] });
+	});
+
 	it("reveals fragments in order by width", () => {
 		const { ctx, calls } = mockCtx();
+		glyphWide(ctx);
 		paintSpecs(ctx, [fragmentSpec(0.5)], new Map(), createPaintCache());
 		expect(
 			calls.filter((c) => c.op === "fillText").map((c) => c.args[0]),

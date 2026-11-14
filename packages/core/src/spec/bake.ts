@@ -639,6 +639,8 @@ export function bakeTextBlock(
 	options: {
 		width?: number;
 		lineHeight?: number;
+		/** Pixels per scene unit, the size the text is measured at. */
+		pixelsPerUnit?: number;
 		align: CanvasTextAlign;
 		/** Where lines sit within the block. Defaults to `align`. */
 		textAlign?: CanvasTextAlign;
@@ -651,6 +653,7 @@ export function bakeTextBlock(
 			width: options.width,
 			lineHeight: options.lineHeight,
 			align: options.textAlign ?? options.align,
+			pixelsPerUnit: options.pixelsPerUnit,
 		},
 	);
 	const { width, height } = layout;

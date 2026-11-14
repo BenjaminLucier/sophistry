@@ -17,9 +17,13 @@ import type { TextSpec } from "../spec/types.js";
 
 const fonts = new EventTarget();
 let advance = 10;
+/** Each glyph is `advance` wide at 64 px, and in proportion at other sizes. */
 const canvasContext = {
-	font: "",
-	measureText: (text: string) => ({ width: text.length * advance }),
+	font: "64px sans-serif",
+	measureText(text: string) {
+		const size = Number(/([\d.]+)px/.exec(this.font)?.[1] ?? 64);
+		return { width: (text.length * advance * size) / 64 };
+	},
 };
 vi.stubGlobal("document", {
 	fonts,

@@ -351,6 +351,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			width: number | undefined,
 			lineHeight: number | undefined,
 			textAlign: CanvasTextAlign | undefined,
+			pixelsPerUnit: number,
 			_fontEpoch: number,
 			_decorations: string,
 		): { fragments: TextFragment[]; box: Bounds } =>
@@ -358,6 +359,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 				width,
 				lineHeight,
 				textAlign,
+				pixelsPerUnit,
 				align: style.align,
 				baseline: style.baseline,
 			}),
@@ -455,6 +457,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			{
 				width: width === undefined ? undefined : width * scale,
 				lineHeight: this.lineHeight(),
+				pixelsPerUnit: this.context(pixelsPerUnitContext),
 			},
 		);
 		return {
@@ -507,7 +510,10 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			return Invalidate.STYLE | Invalidate.GEOMETRY;
 		}
 		if (key === pixelsPerUnitContext) {
-			return this.props.lengthUnit === undefined ? 0 : Invalidate.STYLE;
+			// Text is measured at its size in design pixels.
+			return this.props.lengthUnit === undefined
+				? Invalidate.GEOMETRY
+				: Invalidate.STYLE | Invalidate.GEOMETRY;
 		}
 		// A web font loaded: the handle's box re-measures (it is keyed on the
 		// font epoch), and anything measuring through `text` reruns.
@@ -578,6 +584,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			width === undefined ? undefined : width * scale,
 			this.lineHeight(),
 			this.props.textAlign ?? inherited?.textAlign,
+			this.context(pixelsPerUnitContext),
 			fontLoads.peek(),
 			// The runs read these; a change keeps the content's identity.
 			`${this.props.underline ?? inherited?.underline},${this.props.strikethrough ?? inherited?.strikethrough}`,

@@ -57,6 +57,13 @@ export interface TextLayoutOptions {
 	 * @default "left"
 	 */
 	align?: CanvasTextAlign;
+	/**
+	 * Pixels per unit of the runs' sizes, the size text is measured at. A
+	 * font may draw wider or narrower at different sizes (system fonts have
+	 * optical sizes), so measure at the size the text is drawn at. Omitted,
+	 * the largest font is measured at 64 px.
+	 */
+	pixelsPerUnit?: number;
 }
 
 /**
@@ -171,12 +178,16 @@ function breakWithPretext(
 	runs: readonly LayoutRun[],
 	pieces: Piece[],
 	width: number | undefined,
+	pixelsPerUnit: number | undefined,
 ): Line[] {
 	const largest = Math.max(
 		...pieces.map((piece) => runs[piece.run]?.font.fontSize ?? 0),
 	);
 	if (!(largest > 0)) return [];
-	const k = REFERENCE_SIZE / largest;
+	const k =
+		pixelsPerUnit !== undefined && pixelsPerUnit > 0
+			? pixelsPerUnit
+			: REFERENCE_SIZE / largest;
 	const items: RichInlineItem[] = pieces.map((piece) => {
 		const font = (runs[piece.run] as LayoutRun).font;
 		const item: RichInlineItem = {
@@ -356,7 +367,7 @@ export function layoutText(
 	for (const paragraph of paragraphs(runs)) {
 		const broken =
 			paragraph.pieces.length > 0
-				? breakLines(runs, paragraph.pieces, width)
+				? breakLines(runs, paragraph.pieces, width, options.pixelsPerUnit)
 				: [];
 		if (broken.length === 0) {
 			lines.push({ fragments: [], width: 0, emptyRun: paragraph.run });
