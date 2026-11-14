@@ -11,6 +11,7 @@
 			"@sophistry/text",
 			"@sophistry/charts",
 			"@sophistry/3d",
+			"@sophistry/layout",
 			"@sophistry/solidjs",
 			"@sophistry/react"
 		]

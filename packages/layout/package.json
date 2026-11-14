@@ -1,0 +1,58 @@
+{
+	"name": "@sophistry/layout",
+	"version": "0.1.0",
+	"type": "module",
+	"license": "MIT",
+	"description": "A flexbox and grid layout engine in plain TypeScript: style objects in, boxes out. No DOM, no dependencies.",
+	"keywords": [
+		"layout",
+		"flexbox",
+		"css-grid",
+		"canvas"
+	],
+	"author": "Benjamin Lucier <benjaminlucier@gmail.com>",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/BenjaminLucier/sophistry.git",
+		"directory": "packages/layout"
+	},
+	"sideEffects": false,
+	"files": [
+		"dist",
+		"README.md",
+		"LICENSE"
+	],
+	"exports": {
+		".": "./src/index.ts"
+	},
+	"publishConfig": {
+		"access": "public",
+		"exports": {
+			".": {
+				"types": "./dist/index.d.ts",
+				"default": "./dist/index.js"
+			}
+		},
+		"provenance": true
+	},
+	"scripts": {
+		"typecheck": "tsc -b",
+		"lint": "biome check",
+		"format": "biome check --write",
+		"test": "vitest run",
+		"build": "vite build && tsc -p tsconfig.build.json",
+		"fixtures": "node scripts/generate-expected.ts"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "catalog:",
+		"@playwright/test": "1.64.1",
+		"@types/node": "^24.0.0",
+		"typescript": "catalog:",
+		"vite": "catalog:",
+		"vitest": "catalog:"
+	},
+	"homepage": "https://sophistry.dev",
+	"bugs": {
+		"url": "https://github.com/BenjaminLucier/sophistry/issues"
+	}
+}

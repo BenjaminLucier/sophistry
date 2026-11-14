@@ -1,0 +1,195 @@
+{
+	"text leaf fits content": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 10,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"text wraps in fixed row": {
+		"x": 0,
+		"y": 0,
+		"width": 70,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 70,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"text shrinks to min content": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 40,
+				"children": []
+			},
+			{
+				"x": 50,
+				"y": 0,
+				"width": 50,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"text in column wraps to width": {
+		"x": 0,
+		"y": 0,
+		"width": 70,
+		"height": 35,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 70,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 20,
+				"width": 70,
+				"height": 15,
+				"children": []
+			}
+		]
+	},
+	"column root fit-content": {
+		"x": 0,
+		"y": 0,
+		"width": 75,
+		"height": 20,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 75,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"text with padding": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 30,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 100,
+				"height": 30,
+				"children": []
+			}
+		]
+	},
+	"grow beside text": {
+		"x": 0,
+		"y": 0,
+		"width": 200,
+		"height": 50,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 90,
+				"height": 10,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 110,
+				"height": 10,
+				"children": []
+			}
+		]
+	},
+	"overflow hidden shrinks below content": {
+		"x": 0,
+		"y": 0,
+		"width": 50,
+		"height": 50,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 20,
+				"children": []
+			}
+		]
+	},
+	"nested row in column": {
+		"x": 0,
+		"y": 0,
+		"width": 150,
+		"height": 37,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 150,
+				"height": 20,
+				"children": [
+					{
+						"x": 0,
+						"y": 0,
+						"width": 70,
+						"height": 20,
+						"children": []
+					},
+					{
+						"x": 80,
+						"y": 0,
+						"width": 70,
+						"height": 20,
+						"children": []
+					}
+				]
+			},
+			{
+				"x": 0,
+				"y": 25,
+				"width": 150,
+				"height": 12,
+				"children": []
+			}
+		]
+	},
+	"mixed word heights": {
+		"x": 0,
+		"y": 0,
+		"width": 60,
+		"height": 35,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 60,
+				"height": 35,
+				"children": []
+			}
+		]
+	}
+}

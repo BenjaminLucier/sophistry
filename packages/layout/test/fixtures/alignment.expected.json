@@ -1,0 +1,772 @@
+{
+	"justify flex-start": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify flex-end": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 150,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 190,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 240,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify center": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 75,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 115,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 165,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-between": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 115,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 240,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-around": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 25,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 115,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 215,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-evenly": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 37.5,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 115,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 202.5,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify flex-start overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify flex-end overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": -50,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": -10,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify center overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": -25,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 15,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 65,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-between overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-around overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"justify space-evenly overflowing": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 90,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align items flex-start": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 0,
+				"children": []
+			}
+		]
+	},
+	"align items flex-end": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 80,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 100,
+				"width": 50,
+				"height": 0,
+				"children": []
+			}
+		]
+	},
+	"align items center": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 40,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 50,
+				"width": 50,
+				"height": 0,
+				"children": []
+			}
+		]
+	},
+	"align items stretch": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 100,
+				"children": []
+			}
+		]
+	},
+	"align self overrides": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 40,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 80,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 80,
+				"y": 0,
+				"width": 40,
+				"height": 100,
+				"children": []
+			}
+		]
+	},
+	"align content flex-start": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 30,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content flex-end": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 130,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 130,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 160,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content center": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 65,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 65,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 95,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content stretch": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 95,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content space-between": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 160,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content space-around": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 32.5,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 32.5,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 127.5,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"align content space-evenly": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 43.328125,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 43.328125,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 116.65625,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"row reverse": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 260,
+				"y": 0,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 210,
+				"y": 0,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 150,
+				"y": 0,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"column reverse with justify": {
+		"x": 0,
+		"y": 0,
+		"width": 100,
+		"height": 300,
+		"children": [
+			{
+				"x": 0,
+				"y": 175,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 145,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 105,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"wrap reverse": {
+		"x": 0,
+		"y": 0,
+		"width": 120,
+		"height": 200,
+		"children": [
+			{
+				"x": 0,
+				"y": 180,
+				"width": 40,
+				"height": 20,
+				"children": []
+			},
+			{
+				"x": 40,
+				"y": 170,
+				"width": 50,
+				"height": 30,
+				"children": []
+			},
+			{
+				"x": 0,
+				"y": 130,
+				"width": 60,
+				"height": 40,
+				"children": []
+			}
+		]
+	},
+	"stretch respects max cross": {
+		"x": 0,
+		"y": 0,
+		"width": 300,
+		"height": 100,
+		"children": [
+			{
+				"x": 0,
+				"y": 0,
+				"width": 50,
+				"height": 60,
+				"children": []
+			}
+		]
+	}
+}
