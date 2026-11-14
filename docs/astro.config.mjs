@@ -85,6 +85,7 @@ export default defineConfig({
 					items: [
 						"guides/shapes-and-styling",
 						"guides/layout",
+						"guides/boxes",
 						"guides/animation",
 						"guides/animation-presets",
 						"guides/timelines",

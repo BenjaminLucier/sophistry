@@ -1,0 +1,91 @@
+---
+title: "Boxes and flexbox"
+description: "Lay out text, boxes and any scene node with <Box>: flexbox in design pixels, typed inline styles, backgrounds, borders and text styles handed down."
+---
+
+import Example from "../../../components/Example.astro";
+import { Aside } from "@astrojs/starlight/components";
+
+Cards, captions, legends and title slides are easier to describe the way a web page does: a box with padding, a row of things with a gap between them, text that wraps at the width it is given. `<Box>` does that inside the canvas. It lays out with flexbox, paints a background and a border, and holds text, other boxes and any scene node, which keeps working as it does outside.
+
+<Example name="basic/BoxLayout" />
+
+```tsx
+import { Circle, Stage, Text } from "@sophistry/solidjs";
+import { Box } from "@sophistry/solidjs/box";
+
+export const Card = () => (
+  <Stage>
+    <Box
+      style={{
+        flexDirection: "row",
+        gap: 56,
+        padding: 64,
+        background: "#16202e",
+        borderRadius: 40,
+        color: "#e6edf5",
+        fontSize: 36,
+      }}
+    >
+      <Box style={{ flex: 1, flexDirection: "column", gap: 28 }}>
+        <Text text="Fourier series" fontSize={84} fontWeight={700} />
+        <Text text="Any reasonable periodic function is a sum of sines and cosines." />
+      </Box>
+      <Circle radius={1.6} />
+    </Box>
+  </Stage>
+);
+```
+
+`Box` is in `@sophistry/box`, and the bindings export it from their `/box` entry: `@sophistry/solidjs/box` or `@sophistry/react/box`. In the core it is `box.create({ style, children })`.
+
+## Design pixels
+
+Inside a box, numbers are **design pixels**: a scene is 1920 design pixels wide, whatever its size on screen and however many scene units it spans. A `fontSize: 36` reads the same on a 4-unit stage as on a 16-unit one, and `padding: 64` is a thirtieth of the frame's width.
+
+A style length can also be:
+
+- a percentage of the parent's size, `"50%"`;
+- scene units, `"2u"`;
+- design pixels whatever the box's unit, `"100px"`;
+- `"auto"`, where CSS allows it.
+
+With `lengthUnit="scene"`, plain numbers are scene units instead. Text inside a box takes the box's unit, so `fontSize` follows the same rule. The same `lengthUnit` prop works on `<Group>` and `<Text>` outside boxes.
+
+## Where a box goes
+
+The outermost box is centred on its `x`/`y`, in its parent's units like any other node. With no size it shrinks to fit its contents; with no position it sits at the origin. Its `rotation` and `scale` turn and scale it about that centre without changing the layout.
+
+Inside a box y runs down, as on a page, and children are placed in order. Boxes nested **directly** inside a box are laid out with it as one tree: a nested box's own `x`, `y`, `rotation` and `scale` are ignored, since its parent places it.
+
+<Aside>
+A box inside something else (a group, say) that is itself inside a box is an outermost box of its own: it lays out alone and is centred on its own `x`/`y`.
+</Aside>
+
+## Styles
+
+`style` is one typed object per box, shaped like CSS. Nothing cascades except text properties, which are handed down to the text inside (through nested boxes too) unless the text sets its own.
+
+| Group | Properties |
+| --- | --- |
+| Flex container | `flexDirection` (default `"row"`), `flexWrap`, `justifyContent`, `alignItems`, `alignContent`, `gap`, `rowGap`, `columnGap` |
+| Flex item | `flex`, `flexGrow`, `flexShrink`, `flexBasis`, `alignSelf` |
+| Size | `width`, `height`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`, `aspectRatio` (all include padding and border) |
+| Spacing | `padding`, `margin`, and their `Top`/`Right`/`Bottom`/`Left` forms; one value, `[vertical, horizontal]` or `[top, right, bottom, left]` |
+| Position | `position: "absolute"` with `top`, `right`, `bottom`, `left`; `display: "none"` |
+| Paint | `background` (a colour or a gradient), `borderWidth`, `borderColor`, `borderRadius` (one, or four from the top left, clockwise), `opacity`, `overflow: "hidden"` |
+| Text, handed down | `color`, `fontFamily`, `fontSize`, `fontWeight`, `italic`, `letterSpacing`, `lineHeight`, `textAlign`, `underline`, `strikethrough` |
+
+`flex: 1` grows and shrinks from a basis of 0, as in CSS. There is no block layout: every box is a flex container.
+
+## What goes inside
+
+- **Text** wraps at the width its cell gets and grows the box to fit. Rich text works as it does anywhere; see [text](/guides/shapes-and-styling/#text-and-numbers).
+- **Boxes** nest, as above.
+- **Any other node** (a circle, an axes, a LaTeX formula) keeps scene units and its own y direction. The box measures it and gives it a cell of that size, scaled from scene units to the box's pixels, so a node means the same inside a box as outside.
+
+Changing a nested box's style, a text's content or the children lays the tree out again. Animate a box's style by setting a new object, from a tween or a `derive`.
+
+## Not here
+
+Grid, block and inline layout, shadows, blur, blend modes and scrolling are not supported. See [the design notes](/project/design-layout-text/) for how layout, text and units fit together.

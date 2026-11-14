@@ -102,31 +102,30 @@ non-unit scales.
 arbitrary inline styling.
 
 ```tsx
-<Text width={6}>
-  The <Span color="tomato" fontWeight={700}>derivative</Span> measures
-  <Span underline> change</Span>.
-</Text>
+<Text
+  width={6}
+  text={[
+    "The ",
+    { text: "derivative", color: "tomato", fontWeight: 700 },
+    " measures ",
+    { text: "change", underline: true },
+    ".",
+  ]}
+/>
 ```
 
-```ts
-text.create({
-  width: 6,
-  content: [
-    { text: "The " },
-    { text: "derivative", color: "tomato", fontWeight: 700 },
-    { text: " measures change." },
-  ],
-});
-```
+In the core it is the same `text` prop: `text.create({ width: 6, text: [...] })`.
 
 - Without `width`, only newlines break; with it, text wraps.
 - Inline styles: `color`, `fontFamily`, `fontSize`, `fontWeight`, `italic`,
-  `letterSpacing`, `underline`, `strikethrough`, `highlight` (a background
-  fill), and `baseline` shifts for superscript and subscript.
-- **Spans animate.** A span's props accept `Readable`s, and each span has its
-  own `opacity` and `progress`, so one word can change colour or write on by
-  itself.
-- Words split across spans (`b<Span>old</Span>`) never break in the middle.
+  `letterSpacing`, `opacity`, `underline`, `strikethrough` and `highlight` (a
+  background fill).
+- `textAlign` places each line within the wrap width; `lineHeight` is a
+  multiple of the largest font on each line.
+- Spans are plain values; a span changes when the `text` prop is set again.
+  `Readable` span props, a `progress` per span, and baseline shifts for
+  superscript and subscript can follow.
+- Words split across spans (`["b", { text: "old", fontWeight: 700 }]`) never break in the middle.
 - A `markup()` helper that parses a string into spans can follow later.
 
 Changes to the existing text API (renamed outright, no aliases):
@@ -161,15 +160,20 @@ It returns line fragments with their widths, which map directly onto
 A pure function in `spec/` does the work:
 
 ```ts
-layoutText(content, options, measure): TextLayout
+layoutText(runs, { width, lineHeight, align, pixelsPerUnit }): TextLayout
 ```
 
 It is what `Text` calls, and what a box asks when it needs a text's height at a
 given width.
 
-Pretext needs a 2D canvas for `measureText`. The core already keeps an
-offscreen context for metrics (`spec/metrics.ts`); headless scenes and tests
-provide a stub, as the renderer tests already do for `getContext`.
+Pretext needs a 2D canvas for `measureText`. Where there is none (server
+rendering, tests without a canvas) a greedy wrapper breaking at spaces takes
+over, measuring with the metrics estimate, so layout still works.
+
+Text is measured at its size in design pixels. System fonts have optical
+sizes, so the same text is not quite proportionally wide at every size; when a
+fragment is drawn at another size (a zoomed camera, a high-density screen) the
+renderer fits it to its laid-out width.
 
 Known limits: no bidirectional reordering, and no kerning across span
 boundaries.
@@ -188,7 +192,7 @@ ship after text runs.
 
 ```tsx
 <Box x={0} y={0} style={{ width: 1600, height: 900, padding: 48, gap: 32, flexDirection: "column" }}>
-  <Text style={{ fontSize: 72 }}>Fourier series</Text>
+  <Text text="Fourier series" fontSize={72} />
   <Box style={{ flex: 1 }}>
     <Axes xRange={[0, 6]} />
   </Box>
@@ -198,12 +202,13 @@ ship after text runs.
 - **The root is an ordinary node.** Its `x` and `y` are in the parent's units
   and it is centred on them, like every other node. A `Readable` binds, so a
   box can follow a point on a graph.
-- **Inside, numbers are px and y runs downward.** Internally the root is a
-  group scaled by one scene unit per 120 px, and groups already scale strokes
-  and text with them.
-- **One layout per tree.** Only the root computes layout. A nested `Box` finds
-  its root through a context key and contributes its style; the root lays out
-  the whole tree in one pass.
+- **Inside, numbers are px and y runs downward.** Each box gives each child a
+  space of its own (a container's `childSpaceFor`), scaled from pixels to scene
+  units, so a child moves without being wrapped in anything.
+- **One layout per tree.** Only the root computes layout. It builds one layout
+  tree from the boxes nested directly inside it (and inside those) and lays it
+  out in one pass, with the frame as the available size. A box behind another
+  node (a group, say) is a root of its own.
 - **Not a composite.** Layout depends on the enclosing space, the reason
   `TextLayoutNode` is not built with `defineComposite`. `Box` follows that
   precedent.
@@ -214,10 +219,13 @@ Any node can be a box child.
 
 - Maths keeps y-up and scene units: a counter-scaled group cancels the px
   scale, so `Axes` means the same inside a box as outside.
-- The box measures a child with `measureFor(width)` if it has one (`Text`, the
-  list preset), otherwise with `localBounds()`.
-- Each box re-provides `frameContext` as its own content box, so `toEdge`,
-  `toCorner` and nodes that fill the frame treat the box as their screen.
+- The box measures text with `measure(width)`, and any other node by its own
+  outline, without the space the box gives it.
+- A scene node is measured when the tree lays out; a change to its size alone
+  does not lay the tree out again yet.
+- Re-providing `frameContext` as each box's content box, so `toEdge`,
+  `toCorner` and nodes that fill the frame treat the box as their screen, can
+  follow.
 - Boxes report ordinary bounds, so `nextTo(box)` and arrows from a box to a
   graph work.
 
@@ -228,7 +236,7 @@ no cascade. Text properties inherit from the nearest ancestor box that sets
 them; nothing else inherits.
 
 **Lengths**: a number (in the node's `lengthUnit`), `"50%"`, `"2u"`, `"100px"`,
-or `"auto"`. `fr` appears only in grid templates.
+or `"auto"`.
 
 | Group | Properties |
 |---|---|
@@ -236,11 +244,14 @@ or `"auto"`. `fr` appears only in grid templates.
 | Size | `width`, `height`, `minWidth`, `maxWidth`, `minHeight`, `maxHeight`, `aspectRatio`. Sizes always include padding and border. |
 | Spacing | `margin`, `padding` (a length, `[vertical, horizontal]` or `[top, right, bottom, left]`), and per-side forms such as `paddingTop` |
 | Flex | `flexDirection`, `flexWrap`, `flex`, `flexGrow`, `flexShrink`, `flexBasis`, `justifyContent`, `alignItems`, `alignSelf`, `alignContent`, `gap`, `rowGap`, `columnGap` |
-| Grid | `gridTemplateColumns`, `gridTemplateRows` (lengths, `fr`, `auto`, `minContent`, `maxContent`, `minmax`, `repeat`), `gridAutoColumns`, `gridAutoRows`, `gridAutoFlow`, `gridColumn`, `gridRow` (start and span), `justifyItems`, `justifySelf` |
-| Paint | `background` (colour or gradient), `borderWidth`, `borderColor` (per side), `borderRadius` (per corner), `opacity`, `overflow` (`"visible"`, `"hidden"`) |
-| Text (inherited) | `color`, `fontFamily`, `fontSize`, `fontWeight`, `italic`, `letterSpacing`, `lineHeight`, `textAlign`, `underline`, `strikethrough`, `whiteSpace` (`"normal"`, `"preWrap"`) |
+| Paint | `background` (colour or gradient), `borderWidth`, `borderColor`, `borderRadius` (per corner), `opacity`, `overflow` (`"visible"`, `"hidden"`) |
+| Text (inherited) | `color`, `fontFamily`, `fontSize`, `fontWeight`, `italic`, `letterSpacing`, `lineHeight`, `textAlign`, `underline`, `strikethrough` |
 
-Grid templates are typed values, not CSS strings:
+Grid comes with step 6 below: `display: "grid"`, `gridTemplateColumns` and
+`gridTemplateRows` (lengths, `fr`, `auto`, `minContent`, `maxContent`,
+`minmax`, `repeat`), `gridAutoColumns`, `gridAutoRows`, `gridAutoFlow`,
+`gridColumn`, `gridRow`, `justifyItems` and `justifySelf`. Templates are typed
+values, not CSS strings:
 
 ```ts
 gridTemplateColumns: [{ fr: 1 }, 240, { minmax: [120, { fr: 2 }] }]
@@ -256,7 +267,7 @@ CSS change costs in a browser:
 
 | Change | Cost |
 |---|---|
-| A size, spacing, flex, grid or text property | The root lays out its tree again. |
+| A size, spacing, flex or text property | The root lays out its tree again. |
 | `background`, `border*`, `opacity`, `color` | That node's style stage only. |
 | `x`, `y`, `rotation`, `scale` | That node's transform only. |
 
@@ -315,7 +326,7 @@ Gradients, clipping, opacity and dashes already exist.
 
 | Package | Contents |
 |---|---|
-| `@sophistry/core` | `Text`, `Span`, `layoutText` and the Pretext dependency; `lengthUnit` on `Group`; the scene's design width; paint additions. |
+| `@sophistry/core` | `Text`, `layoutText` and the Pretext dependency; `lengthUnit` on `Group`; the scene's design width; paint additions. |
 | `@sophistry/layout` (new) | The layout engine. Depends on nothing. |
 | `@sophistry/box` (new) | `Box`: style parsing, the root and nested boxes, scene children. Depends on the core and the layout engine. |
 | `@sophistry/solidjs`, `@sophistry/react` | A generated `./box` subpath with `@sophistry/box` as an optional peer dependency. |
