@@ -11,9 +11,9 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Text,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useTheme,
 } from "@sophistry/solidjs";

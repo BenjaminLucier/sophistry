@@ -4,8 +4,8 @@ import {
 	createScene,
 	derive,
 	draggable,
-	text,
 	line,
+	text,
 	trackPoint,
 } from "@sophistry/core";
 

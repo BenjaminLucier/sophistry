@@ -1,5 +1,5 @@
 import { draw, moveTo, track, trackPoint } from "@sophistry/core";
-import { Circle, Dot, Label, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Dot, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 /**
@@ -26,7 +26,7 @@ export function ShapesDemo() {
 		<Stage units={8}>
 			<Circle center={{ x: 0, y: 0 }} radius={2} progress={drawn} />
 			<Dot center={dot} />
-			<Label text="unit circle" y={-3.2} />
+			<Text text="unit circle" y={-3.2} />
 		</Stage>
 	);
 }

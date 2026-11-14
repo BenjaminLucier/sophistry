@@ -1,6 +1,6 @@
 import type { PaletteSpec } from "@sophistry/core";
 import { definePalette, derive, resolvePalette } from "@sophistry/core";
-import { Circle, Text, Rect, Stage, useScene } from "@sophistry/solidjs";
+import { Circle, Rect, Stage, Text, useScene } from "@sophistry/solidjs";
 import { createSignal, For } from "solid-js";
 
 export const meta = {

@@ -1,6 +1,6 @@
 import type { Readable, Scene } from "@sophistry/core";
 import { derive, exportFrames, rotateTo, track } from "@sophistry/core";
-import { Circle, Text, Stage, usePlayer, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer, useScene } from "@sophistry/solidjs";
 import { createSignal, For, onCleanup } from "solid-js";
 
 export const meta = {

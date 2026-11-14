@@ -1,5 +1,5 @@
 import { derive, draggable, trackPoint } from "@sophistry/core";
-import { Dot, Text, Polygon, Stage, useTheme } from "@sophistry/solidjs";
+import { Dot, Polygon, Stage, Text, useTheme } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Linked dots",

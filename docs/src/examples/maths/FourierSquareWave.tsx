@@ -2,8 +2,8 @@ import { derive, track, valueTo } from "@sophistry/core";
 import {
 	Axes,
 	FunctionGraph,
-	Text,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

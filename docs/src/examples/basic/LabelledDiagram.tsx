@@ -18,10 +18,10 @@ import {
 } from "@sophistry/core";
 import {
 	Arrow,
-	Text,
 	Rect,
 	Stage,
 	SurroundingRectangle,
+	Text,
 	useScene,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

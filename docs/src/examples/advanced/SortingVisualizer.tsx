@@ -8,9 +8,9 @@ import {
 	track,
 } from "@sophistry/core";
 import {
-	Text,
 	Rect,
 	Stage,
+	Text,
 	usePlayer,
 	useTrackValue,
 } from "@sophistry/solidjs";

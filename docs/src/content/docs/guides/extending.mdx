@@ -208,7 +208,7 @@ interface PinsProps {
 
 /** What one Pins node keeps between `setup` and `update`. */
 interface PinsState {
-  caption: ReturnType<typeof label.create>;
+  caption: ReturnType<typeof text.create>;
   captionAt: (points: readonly Point[]) => Point;
 }
 const states = new WeakMap<SceneNode, PinsState>();

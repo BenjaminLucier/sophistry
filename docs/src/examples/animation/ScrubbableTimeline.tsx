@@ -9,8 +9,8 @@ import {
 } from "@sophistry/core";
 import {
 	Circle,
-	Text,
 	Stage,
+	Text,
 	usePlayer,
 	useTrackValue,
 } from "@sophistry/solidjs";

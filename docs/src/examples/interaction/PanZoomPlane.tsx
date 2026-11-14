@@ -2,10 +2,10 @@ import { track, trackPoint } from "@sophistry/core";
 import {
 	Circle,
 	Dot,
-	Text,
 	NumberPlane,
 	PanZoom,
 	Stage,
+	Text,
 	useTheme,
 } from "@sophistry/solidjs";
 

@@ -1,6 +1,6 @@
 import type { ColorInput, ThemePalette } from "@sophistry/core";
 import { derive } from "@sophistry/core";
-import { Dot, Text, Line, Stage, useScene } from "@sophistry/solidjs";
+import { Dot, Line, Stage, Text, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {

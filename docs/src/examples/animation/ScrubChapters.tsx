@@ -11,8 +11,8 @@ import { circlePolyline } from "@sophistry/core/geometry";
 import {
 	Circle,
 	Dot,
-	Text,
 	Stage,
+	Text,
 	usePlayer,
 	useTrackValue,
 } from "@sophistry/solidjs";

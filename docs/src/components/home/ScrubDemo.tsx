@@ -9,8 +9,8 @@ import {
 import {
 	Circle,
 	Dot,
-	Text,
 	Stage,
+	Text,
 	usePlayer,
 	useTrackValue,
 } from "@sophistry/solidjs";
@@ -35,10 +35,7 @@ export default function ScrubDemo() {
 			<Stage units={8}>
 				<Circle center={{ x: 0, y: 0 }} radius={2} progress={drawn} />
 				<Dot center={dot} />
-				<Text
-					text={derive(tl.time, (t) => `t = ${t.toFixed(2)} s`)}
-					y={-2.6}
-				/>
+				<Text text={derive(tl.time, (t) => `t = ${t.toFixed(2)} s`)} y={-2.6} />
 			</Stage>
 			<input
 				type="range"

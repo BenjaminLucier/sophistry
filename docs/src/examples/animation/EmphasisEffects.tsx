@@ -10,10 +10,10 @@ import {
 import {
 	Circle,
 	Dot,
-	Text,
 	Rect,
 	Square,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

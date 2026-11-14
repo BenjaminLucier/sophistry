@@ -7,7 +7,7 @@ import {
 	track,
 	valueTo,
 } from "@sophistry/core";
-import { Circle, Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

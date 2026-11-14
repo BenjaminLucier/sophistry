@@ -1,9 +1,9 @@
 import { draw, track } from "@sophistry/core";
 import {
-	Text,
 	ParametricGraph,
 	PolarPlane,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

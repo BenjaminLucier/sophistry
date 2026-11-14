@@ -1,6 +1,6 @@
 import type { Scene } from "@sophistry/core";
 import { captureFrame, derive, rotateBy, track } from "@sophistry/core";
-import { Circle, Text, Stage, usePlayer, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, usePlayer, useScene } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

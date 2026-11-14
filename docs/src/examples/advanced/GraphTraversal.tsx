@@ -1,9 +1,9 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
 import { edgeKey } from "@sophistry/core/geometry";
 import {
-	Text,
 	NetworkGraph,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";

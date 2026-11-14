@@ -10,9 +10,9 @@ import {
 } from "@sophistry/core";
 import {
 	Dot,
-	Text,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";

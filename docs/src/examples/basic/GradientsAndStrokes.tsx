@@ -9,10 +9,10 @@ import {
 import {
 	Circle,
 	DashedLine,
-	Text,
 	Path,
 	Rect,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";

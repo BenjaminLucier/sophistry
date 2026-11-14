@@ -1,6 +1,6 @@
 import type { Placement, SceneNode } from "@sophistry/core";
 import { arrange, DOWN, nextTo, RIGHT } from "@sophistry/core";
-import { Circle, Text, Square, Stage, Star } from "@sophistry/solidjs";
+import { Circle, Square, Stage, Star, Text } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

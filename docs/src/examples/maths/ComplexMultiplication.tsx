@@ -1,9 +1,9 @@
 import { derive, hold, track, valueTo } from "@sophistry/core";
 import {
 	ComplexPlane,
-	Text,
 	LabeledDot,
 	Stage,
+	Text,
 	usePlayer,
 	Vector,
 } from "@sophistry/solidjs";

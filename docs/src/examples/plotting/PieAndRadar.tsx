@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { PieChart, RadarChart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 

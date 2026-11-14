@@ -1,10 +1,10 @@
 import { hold, track, unwrite, write } from "@sophistry/core";
 import {
 	Circle,
-	Text,
 	Polygon,
 	Square,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

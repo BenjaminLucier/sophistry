@@ -1,9 +1,9 @@
 import { derive, draw, track } from "@sophistry/core";
 import {
 	DashedLine,
-	Text,
 	NumberPlane,
 	Stage,
+	Text,
 	usePlayer,
 	Vector,
 } from "@sophistry/solidjs";

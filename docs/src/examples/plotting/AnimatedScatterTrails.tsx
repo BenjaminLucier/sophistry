@@ -1,5 +1,5 @@
 import { derive, track, valueTo } from "@sophistry/core";
-import { Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { Chart, Scatter } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 

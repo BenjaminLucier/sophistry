@@ -2,9 +2,9 @@ import { draggable, onCircle, trackPoint } from "@sophistry/core";
 import {
 	Circle,
 	InteractionGroup,
-	Text,
 	LabeledDot,
 	Stage,
+	Text,
 	useTheme,
 } from "@sophistry/solidjs";
 

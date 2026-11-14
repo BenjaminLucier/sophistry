@@ -1,5 +1,5 @@
 import { draw, moveTo, track, trackPoint } from "@sophistry/core";
-import { Circle, Dot, Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Circle, Dot, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

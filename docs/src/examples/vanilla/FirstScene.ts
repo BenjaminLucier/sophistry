@@ -4,10 +4,10 @@ import {
 	createScene,
 	dot,
 	draw,
-	text,
 	line,
 	moveTo,
 	sequence,
+	text,
 	track,
 	trackPoint,
 } from "@sophistry/core";

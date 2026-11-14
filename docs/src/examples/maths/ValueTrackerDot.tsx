@@ -13,9 +13,9 @@ import {
 	Axes,
 	Dot,
 	FunctionGraph,
-	Text,
 	Line,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";

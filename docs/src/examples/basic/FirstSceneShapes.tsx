@@ -4,9 +4,9 @@ import {
 	Arc,
 	Circle,
 	Dot,
-	Text,
 	Line,
 	Stage,
+	Text,
 	useScene,
 } from "@sophistry/solidjs";
 

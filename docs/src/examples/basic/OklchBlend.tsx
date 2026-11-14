@@ -1,5 +1,5 @@
 import { derive, mixColor, toCss } from "@sophistry/core";
-import { Text, Rect, Stage, useScene } from "@sophistry/solidjs";
+import { Rect, Stage, Text, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {
@@ -35,12 +35,7 @@ function Strip(props: {
 					/>
 				)}
 			</For>
-			<Text
-				text={props.name}
-				y={props.y - 0.95}
-				fontSize={0.3}
-				color={muted}
-			/>
+			<Text text={props.name} y={props.y - 0.95} fontSize={0.3} color={muted} />
 		</>
 	);
 }

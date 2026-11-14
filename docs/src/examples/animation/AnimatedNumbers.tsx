@@ -2,8 +2,8 @@ import { hold, parallel, sequence, track, valueTo } from "@sophistry/core";
 import {
 	DecimalNumber,
 	Integer,
-	Text,
 	Stage,
+	Text,
 	usePlayer,
 	Variable,
 } from "@sophistry/solidjs";

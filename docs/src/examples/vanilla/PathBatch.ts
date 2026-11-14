@@ -3,8 +3,8 @@ import {
 	createScene,
 	derive,
 	forever,
-	text,
 	pathBatch,
+	text,
 	track,
 	valueTo,
 } from "@sophistry/core";
@@ -54,9 +54,7 @@ export default function mount(host: HTMLElement, clock?: Clock): () => void {
 		}),
 	);
 	scene.add(pathBatch.create({ items, stroke: "none" }));
-	scene.add(
-		text.create({ text: "600 outlines, one PathBatch node", y: -4.3 }),
-	);
+	scene.add(text.create({ text: "600 outlines, one PathBatch node", y: -4.3 }));
 	void scene.play(
 		forever(
 			valueTo(phase, (from) => from + 2 * Math.PI, {

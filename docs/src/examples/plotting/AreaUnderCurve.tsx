@@ -3,9 +3,9 @@ import {
 	AreaUnderGraph,
 	Axes,
 	FunctionGraph,
-	Text,
 	RiemannRectangles,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

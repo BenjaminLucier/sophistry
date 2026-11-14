@@ -1,5 +1,5 @@
 import { draggable, dropTarget, trackPoint } from "@sophistry/core";
-import { Circle, Text, Rect, Stage, useTheme } from "@sophistry/solidjs";
+import { Circle, Rect, Stage, Text, useTheme } from "@sophistry/solidjs";
 import { createSignal } from "solid-js";
 
 export const meta = {

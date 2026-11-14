@@ -3,9 +3,9 @@ import {
 	Axes,
 	Dot,
 	FunctionGraph,
-	Text,
 	Line,
 	Stage,
+	Text,
 	useTheme,
 } from "@sophistry/solidjs";
 

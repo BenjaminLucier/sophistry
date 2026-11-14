@@ -14,9 +14,9 @@ import { measure, rectPolyline } from "@sophistry/core/geometry";
 import {
 	Circle,
 	Dot,
-	Text,
 	Path,
 	Stage,
+	Text,
 	usePlayer,
 	useScene,
 } from "@sophistry/solidjs";

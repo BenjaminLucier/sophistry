@@ -2,10 +2,10 @@ import { track, trackPoint } from "@sophistry/core";
 import {
 	Circle,
 	Dot,
-	Label,
 	NumberPlane,
 	PanZoom,
 	Stage,
+	Text,
 } from "@sophistry/solidjs";
 
 /**
@@ -29,7 +29,7 @@ export function PanZoomDemo() {
 				fillOpacity={0.5}
 			/>
 			<Dot center={{ x: -3, y: -2 }} color="#00ffb7" />
-			<Label text="scroll to zoom, drag to pan" y={-3.5} />
+			<Text text="scroll to zoom, drag to pan" y={-3.5} />
 		</Stage>
 	);
 }

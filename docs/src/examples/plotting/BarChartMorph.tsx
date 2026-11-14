@@ -1,5 +1,5 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
-import { Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { BarChart } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 

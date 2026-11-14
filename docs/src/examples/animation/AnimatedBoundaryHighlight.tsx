@@ -1,5 +1,5 @@
 import { rectPolyline } from "@sophistry/core/geometry";
-import { AnimatedBoundary, Text, Stage } from "@sophistry/solidjs";
+import { AnimatedBoundary, Stage, Text } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Animated boundary",

@@ -1,5 +1,5 @@
 import { derive, draggable, toBounds, trackPoint } from "@sophistry/core";
-import { Dot, Text, Rect, Stage, useTheme } from "@sophistry/solidjs";
+import { Dot, Rect, Stage, Text, useTheme } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Keyboard-accessible dragging",

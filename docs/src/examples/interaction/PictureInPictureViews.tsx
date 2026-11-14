@@ -1,10 +1,10 @@
 import { draggable, toBounds, trackPoint } from "@sophistry/core";
 import {
 	Dot,
-	Text,
 	MultiStage,
 	NumberPlane,
 	PictureInPicture,
+	Text,
 	useTheme,
 } from "@sophistry/solidjs";
 

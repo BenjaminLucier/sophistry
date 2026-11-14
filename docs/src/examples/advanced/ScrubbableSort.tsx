@@ -14,7 +14,7 @@ import {
 	timeline,
 	track,
 } from "@sophistry/core";
-import { Text, Rect, Stage, useTrackValue } from "@sophistry/solidjs";
+import { Rect, Stage, Text, useTrackValue } from "@sophistry/solidjs";
 import { For, onSettled } from "solid-js";
 
 export const meta = {

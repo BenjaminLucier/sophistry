@@ -1,5 +1,5 @@
 import { hold, track, valueTo } from "@sophistry/core";
-import { Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { MathTransform } from "@sophistry/solidjs/text";
 import type { MathTransformNode } from "@sophistry/text";
 import { onSettled } from "solid-js";

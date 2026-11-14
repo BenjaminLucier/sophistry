@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Text, NetworkGraph, Stage, usePlayer } from "@sophistry/solidjs";
+import { NetworkGraph, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

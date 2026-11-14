@@ -2,9 +2,9 @@ import { draggable, onCircle, snapToGrid, trackPoint } from "@sophistry/core";
 import {
 	Circle,
 	InteractionGroup,
-	Label,
 	LabeledDot,
 	Stage,
+	Text,
 } from "@sophistry/solidjs";
 
 /**
@@ -40,7 +40,7 @@ export function DragDemo() {
 			<InteractionGroup drag={grid.drag} keyboard={grid.keyboard} cursor="grab">
 				<LabeledDot center={gridPos} text="grid" color="#ff6b6b" />
 			</InteractionGroup>
-			<Label text="drag a dot, or nudge it with the arrow keys" y={-2.9} />
+			<Text text="drag a dot, or nudge it with the arrow keys" y={-2.9} />
 		</Stage>
 	);
 }

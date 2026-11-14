@@ -1,5 +1,5 @@
 import { draw, track } from "@sophistry/core";
-import { Text, Stage, usePlayer } from "@sophistry/solidjs";
+import { Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { Beeswarm, Chart, Strip } from "@sophistry/solidjs/charts";
 import { onSettled } from "solid-js";
 

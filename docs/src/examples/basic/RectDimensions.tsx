@@ -1,5 +1,5 @@
 import { derive, hold, sequence, track, valueTo } from "@sophistry/core";
-import { DoubleArrow, Text, Rect, Stage, usePlayer } from "@sophistry/solidjs";
+import { DoubleArrow, Rect, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

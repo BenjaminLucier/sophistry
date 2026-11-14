@@ -11,10 +11,10 @@ import {
 import { starPolygon } from "@sophistry/core/geometry";
 import {
 	Circle,
-	Text,
 	Polygon,
 	Square,
 	Stage,
+	Text,
 	usePlayer,
 } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";

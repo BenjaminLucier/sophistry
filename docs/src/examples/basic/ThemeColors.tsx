@@ -1,5 +1,5 @@
 import { derive } from "@sophistry/core";
-import { Circle, Text, Stage, useScene } from "@sophistry/solidjs";
+import { Circle, Stage, Text, useScene } from "@sophistry/solidjs";
 import { For } from "solid-js";
 
 export const meta = {

@@ -8,7 +8,7 @@ import {
 	track,
 	trackPoint,
 } from "@sophistry/core";
-import { Circle, Text, Line, Stage } from "@sophistry/solidjs";
+import { Circle, Line, Stage, Text } from "@sophistry/solidjs";
 import { onCleanup } from "solid-js";
 
 export const meta = {
