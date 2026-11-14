@@ -221,8 +221,9 @@ Any node can be a box child.
   scale, so `Axes` means the same inside a box as outside.
 - The box measures text with `measure(width)`, and any other node by its own
   outline, without the space the box gives it.
-- A scene node is measured when the tree lays out; a change to its size alone
-  does not lay the tree out again yet.
+- A box watches the scene nodes inside it (through groups too): when one's
+  geometry or transform runs again and its box changed, the tree lays out
+  again.
 - Re-providing `frameContext` as each box's content box, so `toEdge`,
   `toCorner` and nodes that fill the frame treat the box as their screen, can
   follow.

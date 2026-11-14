@@ -187,6 +187,18 @@ function ownBounds(node: BaseNode): Bounds | null {
 	]);
 }
 
+/** Whether two boxes are the same, to rounding. */
+function sameBounds(a: Bounds | null, b: Bounds | null): boolean {
+	if (!a || !b) return a === b;
+	const close = (x: number, y: number) => Math.abs(x - y) <= 1e-9;
+	return (
+		close(a.minX, b.minX) &&
+		close(a.minY, b.minY) &&
+		close(a.maxX, b.maxX) &&
+		close(a.maxY, b.maxY)
+	);
+}
+
 function sameMatrix(a: Matrix, b: Matrix): boolean {
 	return (
 		a.a === b.a &&
@@ -271,6 +283,33 @@ export class BoxNode extends BaseContainer<BoxProps> {
 	/** A text child's content or style changed: its size may have. */
 	override childContentChanged(_child: BaseNode): void {
 		if (!this.root().laying) this.relayout();
+	}
+
+	/** Scene nodes inside are sized by their bounds, so a box hears them change. */
+	override get watchesChildGeometry(): boolean {
+		return true;
+	}
+
+	/**
+	 * A scene node inside ran its geometry or transform again (or something
+	 * inside it did): lay out again if its box is not the one laid out (its
+	 * size sizes its cell, and its corner places it there).
+	 * Boxes and text say so through the layout itself.
+	 */
+	override childGeometryChanged(child: BaseNode): void {
+		if (
+			child instanceof BoxNode ||
+			child instanceof TextNode ||
+			this.isPaint(child) ||
+			child.parentNode !== this ||
+			this.root().laying ||
+			!this.leafBounds.has(child)
+		) {
+			return;
+		}
+		const before = this.leafBounds.get(child) ?? null;
+		const after = ownBounds(child);
+		if (!sameBounds(before, after)) this.relayout();
 	}
 
 	/* ------------------------------------------------------------- stages */

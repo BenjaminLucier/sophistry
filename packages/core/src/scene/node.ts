@@ -498,6 +498,10 @@ export abstract class BaseNode<P extends object = object>
 		this.dirty = 0;
 		if (dirty & Invalidate.INTERACTION) this.graph?.syncInteraction(this);
 		this.run(dirty);
+		if (dirty & (Invalidate.GEOMETRY | Invalidate.TRANSFORM)) {
+			const parent = this.parentNode;
+			if (parent?.watchesChildGeometry) parent.childGeometryChanged(this);
+		}
 	}
 
 	/**

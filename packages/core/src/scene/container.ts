@@ -81,6 +81,27 @@ export abstract class BaseContainer<P extends object = object>
 	 */
 	childContentChanged(_child: BaseNode): void {}
 
+	/**
+	 * Whether this container wants to hear when a descendant's geometry or
+	 * transform changes, through {@link childGeometryChanged}. Default: when
+	 * its parent does, so a node inside a group inside a layout is heard.
+	 */
+	get watchesChildGeometry(): boolean {
+		return this.parentNode?.watchesChildGeometry ?? false;
+	}
+
+	/**
+	 * A child's geometry or transform ran again, or a child of one of its
+	 * descendants' did, so its size may have changed. Called only while
+	 * {@link watchesChildGeometry}. Default: tell the parent this container
+	 * changed.
+	 *
+	 * @param _child - The child, or the child that holds the changed node.
+	 */
+	childGeometryChanged(_child: BaseNode): void {
+		this.parentNode?.childGeometryChanged(this);
+	}
+
 	override get providedValues(): Map<ContextKey<unknown>, unknown> | null {
 		return this.provided;
 	}
@@ -176,6 +197,10 @@ export abstract class BaseContainer<P extends object = object>
 			this.childNodes.splice(at, 1);
 		}
 		node.parentNode = null;
+		// Losing a child can change this container's size.
+		if (this.parentNode?.watchesChildGeometry) {
+			this.parentNode.childGeometryChanged(this);
+		}
 		this.graph?.structureChanged();
 	}
 

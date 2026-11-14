@@ -7,6 +7,7 @@
 
 import {
 	circle,
+	group,
 	pixelsPerUnitContext,
 	resolveTheme,
 	text,
@@ -121,6 +122,39 @@ describe("box", () => {
 		root.set("style", { flexDirection: "row", gap: 50, padding: 10 });
 		commit();
 		expect(dot.bounds()?.minX).toBeCloseTo(inner?.minX ?? 0, 6);
+	});
+
+	it("lays out again when a scene node inside changes size", () => {
+		const { graph, commit } = manualGraph();
+		const dot = circle.create({ radius: 0.5 });
+		const root = graph.root.add(
+			box.create({ style: { padding: 20 }, children: [dot] }),
+		);
+		commit();
+		dot.set("radius", 1);
+		commit();
+		const outer = root.bounds();
+		// 20 + 200 + 20 px.
+		expect((outer?.maxX ?? 0) - (outer?.minX ?? 0)).toBeCloseTo(2.4);
+		const inner = dot.bounds();
+		expect(inner?.minX).toBeCloseTo((outer?.minX ?? 0) + 0.2, 2);
+		// Moving it keeps it in its cell.
+		dot.set("center", { x: 5, y: 5 });
+		commit();
+		expect(dot.bounds()?.minX).toBeCloseTo(inner?.minX ?? 0, 6);
+	});
+
+	it("hears a scene node inside a group change size", () => {
+		const { graph, commit } = manualGraph();
+		const dot = circle.create({ radius: 0.5 });
+		const root = graph.root.add(
+			box.create({ children: [group.create({ children: [dot] })] }),
+		);
+		commit();
+		dot.set("radius", 1);
+		commit();
+		const outer = root.bounds();
+		expect((outer?.maxX ?? 0) - (outer?.minX ?? 0)).toBeCloseTo(2);
 	});
 
 	it("scales a scene node into its cell, keeping scene units", () => {
