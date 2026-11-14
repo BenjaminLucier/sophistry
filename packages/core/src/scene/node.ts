@@ -293,7 +293,7 @@ export abstract class BaseNode<P extends object = object>
 	 * space without a parent. Current only after `refresh()`.
 	 */
 	get space(): Space {
-		return this.parentNode ? this.parentNode.childSpace : ROOT_SPACE;
+		return this.parentNode ? this.parentNode.childSpaceFor(this) : ROOT_SPACE;
 	}
 
 	/* ------------------------------------------------------------ props */

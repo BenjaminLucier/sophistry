@@ -61,6 +61,18 @@ export abstract class BaseContainer<P extends object = object>
 		return this.space;
 	}
 
+	/**
+	 * The space handed to one child. Default: {@link childSpace}, the same
+	 * for every child. A container that places each child on its own (a
+	 * layout) overrides it, and tells a child whose space it changed through
+	 * `child.spaceChanged(...)`.
+	 *
+	 * @param _child - One of this container's children.
+	 */
+	childSpaceFor(_child: BaseNode): Space {
+		return this.childSpace;
+	}
+
 	override get providedValues(): Map<ContextKey<unknown>, unknown> | null {
 		return this.provided;
 	}

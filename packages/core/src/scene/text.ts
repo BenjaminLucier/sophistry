@@ -28,6 +28,7 @@ import { bakeTextBlock, bakeTextSpec, bakeTextStyle } from "../spec/bake.js";
 import type { Placement } from "../spec/layout.js";
 import { readDelta } from "../spec/layout.js";
 import { fontLoads, labelBox } from "../spec/metrics.js";
+import { layoutText } from "../spec/text-layout.js";
 import type {
 	ClipRegion,
 	TextFragment,
@@ -36,6 +37,7 @@ import type {
 } from "../spec/types.js";
 import type { LengthUnit } from "./context.js";
 import {
+	createContextKey,
 	Invalidate,
 	lengthScaleOf,
 	pixelsPerUnitContext,
@@ -89,6 +91,35 @@ export interface TextSpan {
  * @category Text & numbers
  */
 export type RichText = string | readonly (string | TextSpan)[];
+
+/**
+ * Text style a container hands down to the text inside it (a box's text
+ * properties). A text node's own props win; what it leaves unset comes from
+ * here, then from the theme.
+ *
+ * @category Text & numbers
+ */
+export interface InheritedTextStyle {
+	color?: ColorInput;
+	fontSize?: number;
+	fontFamily?: string;
+	fontWeight?: string | number;
+	italic?: boolean;
+	letterSpacing?: number;
+	lineHeight?: number;
+	textAlign?: CanvasTextAlign;
+	underline?: boolean;
+	strikethrough?: boolean;
+}
+
+/**
+ * The {@link InheritedTextStyle} for a subtree, or null where nothing hands
+ * one down.
+ *
+ * @category Text & numbers
+ */
+export const textStyleContext: ContextKey<InheritedTextStyle | null> =
+	createContextKey<InheritedTextStyle | null>("textStyle", null);
 
 /**
  * Props every text node accepts, besides what gives it its string.
@@ -170,6 +201,10 @@ export interface TextProps extends InteractionProps {
 	 * @default 1.3
 	 */
 	lineHeight?: number;
+	/** A line under the text, in its colour. */
+	underline?: boolean;
+	/** A line through the text, in its colour. */
+	strikethrough?: boolean;
 	/**
 	 * Opacity 0..1, multiplied with enclosing groups.
 	 * @default 1
@@ -232,6 +267,8 @@ export const textProps: PropsDescriptor<TextProps> = Object.freeze({
 	lineHeight: { default: 1.3, invalidates: Invalidate.GEOMETRY },
 	opacity: { default: 1, invalidates: Invalidate.STYLE, instanceable: true },
 	halo: { invalidates: Invalidate.STYLE },
+	underline: { invalidates: Invalidate.GEOMETRY },
+	strikethrough: { invalidates: Invalidate.GEOMETRY },
 	progress: { default: 1, invalidates: Invalidate.SPEC, instanceable: true },
 	zIndex: { default: 0, invalidates: Invalidate.SPEC },
 	visible: { default: true, invalidates: Invalidate.SPEC },
@@ -315,6 +352,7 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			lineHeight: number | undefined,
 			textAlign: CanvasTextAlign | undefined,
 			_fontEpoch: number,
+			_decorations: string,
 		): { fragments: TextFragment[]; box: Bounds } =>
 			bakeTextBlock(this.runsOf(content, style), {
 				width,
@@ -370,9 +408,58 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	);
 	private readonly handleMatrixOf = lastMatrix();
 
+	/**
+	 * The width a container laying this text out gave it: undefined when no
+	 * container does, null for no wrapping. Set, the text is a block hung
+	 * from its anchor at the top left, lines aligned by `textAlign`.
+	 */
+	private layoutWidth: number | null | undefined = undefined;
+
 	constructor(definition: Definition<P>, options: TextOptions<P>) {
 		super(definition);
 		this.options = options;
+	}
+
+	/**
+	 * @internal For a container laying this text out (a box): wrap at
+	 * `width` (local units; null for no wrapping) and hang the block from the
+	 * anchor at its top-left corner. `undefined` hands the text back to its
+	 * own props.
+	 */
+	setLayoutWidth(width: number | null | undefined): void {
+		if (width === this.layoutWidth) return;
+		this.layoutWidth = width;
+		this.invalidate(Invalidate.GEOMETRY | Invalidate.STYLE);
+	}
+
+	/**
+	 * @internal The block's size when wrapped at `width` (local units;
+	 * omitted, only newlines break): the longest line's width and every
+	 * line's height together, in local units.
+	 */
+	measure(width?: number): { width: number; height: number } {
+		const { scale } = this.units();
+		if (!(scale > 0)) return { width: 0, height: 0 };
+		const style = this.currentStyle();
+		const layout = layoutText(
+			this.runsOf(this.currentContent(), style).map((run) => ({
+				text: run.text,
+				font: run.style,
+			})),
+			{
+				width: width === undefined ? undefined : width * scale,
+				lineHeight: this.lineHeight(),
+			},
+		);
+		return {
+			width: layout.contentWidth / scale,
+			height: layout.height / scale,
+		};
+	}
+
+	/** The line height: the node's, else an inherited one. */
+	private lineHeight(): number | undefined {
+		return this.props.lineHeight ?? this.context(textStyleContext)?.lineHeight;
 	}
 
 	/* ------------------------------------------------------------ stages */
@@ -400,7 +487,10 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	protected override stagesForContext(
 		key: ContextKey<unknown>,
 	): InvalidateBits {
-		if (key === themeContext || key === ANY_CONTEXT) return Invalidate.STYLE;
+		if (key === themeContext) return Invalidate.STYLE;
+		if (key === ANY_CONTEXT || key === textStyleContext) {
+			return Invalidate.STYLE | Invalidate.GEOMETRY;
+		}
 		if (key === pixelsPerUnitContext) {
 			return this.props.lengthUnit === undefined ? 0 : Invalidate.STYLE;
 		}
@@ -451,8 +541,15 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 		| { fragments: TextFragment[]; box: Bounds }
 		| undefined {
 		const content = this.currentContent();
-		const width = this.props.width;
+		const laidOut = this.layoutWidth !== undefined;
+		const width = laidOut ? (this.layoutWidth ?? undefined) : this.props.width;
+		const inherited = this.context(textStyleContext);
+		const decorated =
+			(this.props.underline ?? inherited?.underline) ||
+			(this.props.strikethrough ?? inherited?.strikethrough);
 		if (
+			!laidOut &&
+			!decorated &&
 			typeof content === "string" &&
 			width === undefined &&
 			!content.includes("\n")
@@ -464,21 +561,32 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 			content,
 			this.currentStyle(),
 			width === undefined ? undefined : width * scale,
-			this.props.lineHeight,
-			this.props.textAlign,
+			this.lineHeight(),
+			this.props.textAlign ?? inherited?.textAlign,
 			fontLoads.peek(),
+			// The runs read these; a change keeps the content's identity.
+			`${this.props.underline ?? inherited?.underline},${this.props.strikethrough ?? inherited?.strikethrough}`,
 		);
 	}
 
 	/** The runs of `content`, each span's style baked over the node's. */
 	private runsOf(content: RichText, base: TextStyle): TextBlockRun[] {
-		if (typeof content === "string") return [{ text: content, style: base }];
+		const inherited = this.context(textStyleContext);
+		const underline = this.props.underline ?? inherited?.underline;
+		const strikethrough = this.props.strikethrough ?? inherited?.strikethrough;
+		const plain = (text: string): TextBlockRun => {
+			const run: TextBlockRun = { text, style: base };
+			if (underline) run.underline = true;
+			if (strikethrough) run.strikethrough = true;
+			return run;
+		};
+		if (typeof content === "string") return [plain(content)];
 		const input = this.styleInput();
 		const theme = this.context(themeContext);
 		const space = this.space;
 		const { scale, lengthScale } = this.units();
 		return content.map((part): TextBlockRun => {
-			if (typeof part === "string") return { text: part, style: base };
+			if (typeof part === "string") return plain(part);
 			const style = bakeTextStyle(
 				{
 					...input,
@@ -496,8 +604,8 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 				lengthScale,
 			);
 			const run: TextBlockRun = { text: part.text, style };
-			if (part.underline) run.underline = true;
-			if (part.strikethrough) run.strikethrough = true;
+			if (part.underline ?? underline) run.underline = true;
+			if (part.strikethrough ?? strikethrough) run.strikethrough = true;
 			if (part.highlight !== undefined)
 				run.highlight = cssColor(part.highlight);
 			return run;
@@ -507,16 +615,19 @@ export class TextNode<P extends TextProps = TextProps> extends BaseNode<P> {
 	/** The node's own style props, as the baker takes them. */
 	private styleInput(): TextStyleInput {
 		const props = this.props;
+		const inherited = this.context(textStyleContext);
+		// Laid out by a container, the block hangs from its top-left corner.
+		const laidOut = this.layoutWidth !== undefined;
 		return {
-			fill: props.color,
-			fontSize: props.fontSize,
-			fontFamily: props.fontFamily,
-			fontWeight: props.fontWeight,
-			italic: props.italic,
-			align: props.align,
-			baseline: props.baseline,
+			fill: props.color ?? inherited?.color,
+			fontSize: props.fontSize ?? inherited?.fontSize,
+			fontFamily: props.fontFamily ?? inherited?.fontFamily,
+			fontWeight: props.fontWeight ?? inherited?.fontWeight,
+			italic: props.italic ?? inherited?.italic,
+			align: laidOut ? "left" : props.align,
+			baseline: laidOut ? "top" : props.baseline,
 			opacity: props.opacity,
-			letterSpacing: props.letterSpacing,
+			letterSpacing: props.letterSpacing ?? inherited?.letterSpacing,
 			halo: props.halo,
 		};
 	}
