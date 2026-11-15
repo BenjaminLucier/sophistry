@@ -16,47 +16,47 @@
  * is scaled back, so an `axes` means the same inside a box as outside.
  */
 
-import type {
-	ContextKey,
-	InheritedTextStyle,
-	InvalidateBits,
-	LengthUnit,
-	SceneNode,
-	ShapeNode,
-	Space,
-} from "@sophistry/core";
-import {
-	definePrimitive,
-	fontEpochContext,
-	frameContext,
-	Invalidate,
-	pixelsPerUnitContext,
-	rect,
-	SpaceChange,
-	TextNode,
-	textStyleContext,
-	themeContext,
-} from "@sophistry/core";
-import type { Bounds, CornerRadius, Matrix } from "@sophistry/core/geometry";
+import type { LayoutBox, LayoutNode, MeasureFunction } from "@sophistry/layout";
+import { computeLayout } from "@sophistry/layout";
+import { boundsOf } from "../geometry/bounds.js";
+import type { Bounds } from "../geometry/path/types.js";
+import type { CornerRadius } from "../geometry/rounded-rect.js";
 import {
 	applyToPoint,
-	boundsOf,
 	compose,
 	fromTranslationRotationScale,
+	type Matrix,
 	scaleFactorOf,
 	scale as scaleMatrix,
 	translate,
-} from "@sophistry/core/geometry";
-import type { SceneGraph } from "@sophistry/core/internal";
+} from "../geometry/transform.js";
+import { BaseContainer } from "../scene/container.js";
 import {
-	ANY_CONTEXT,
-	BaseContainer,
-	type BaseNode,
-	nestClip,
-	watchFontLoads,
-} from "@sophistry/core/internal";
-import type { LayoutBox, LayoutNode, MeasureFunction } from "@sophistry/layout";
-import { computeLayout } from "@sophistry/layout";
+	frameContext,
+	Invalidate,
+	type LengthUnit,
+	pixelsPerUnitContext,
+	themeContext,
+} from "../scene/context.js";
+import { fontEpochContext, watchFontLoads } from "../scene/fonts.js";
+import type { SceneGraph } from "../scene/graph.js";
+import { ANY_CONTEXT, type BaseNode } from "../scene/node.js";
+import { definePrimitive } from "../scene/primitive.js";
+import type { ShapeNode } from "../scene/shape.js";
+import {
+	type InheritedTextStyle,
+	TextNode,
+	textStyleContext,
+} from "../scene/text.js";
+import {
+	type ContextKey,
+	type InvalidateBits,
+	type SceneNode,
+	type Space,
+	SpaceChange,
+} from "../scene/types.js";
+import { rect } from "../shapes/rect.js";
+import { nestClip } from "../spec/clip.js";
 import type { BorderProps } from "./paint.js";
 import { boxBorder, cornerList, frameRadii } from "./paint.js";
 import type { BoxStyle } from "./style.js";
@@ -850,8 +850,7 @@ export class BoxNode extends BaseContainer<BoxProps> {
  *
  * @example
  * ```ts
- * import { box } from "@sophistry/box";
- * import { createScene, text } from "@sophistry/core";
+ * import { box, createScene, text } from "@sophistry/core";
  *
  * const scene = createScene({ host: document.body });
  * scene.add(

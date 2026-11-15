@@ -3,13 +3,10 @@
  * by identity, and get their old styles and children back when rewound.
  */
 
-import {
-	pixelsPerUnitContext,
-	resolveTheme,
-	themeContext,
-} from "@sophistry/core";
-import { SceneGraph } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
+import { pixelsPerUnitContext, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { resolveTheme } from "../themes/theme.js";
 import { box } from "./box.js";
 import { layoutTo } from "./transition.js";
 

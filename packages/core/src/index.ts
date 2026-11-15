@@ -7,6 +7,7 @@
  */
 
 export * from "./anim/index.js";
+export * from "./box/index.js";
 export * from "./coords/index.js";
 export * from "./entries/color.js";
 export type {

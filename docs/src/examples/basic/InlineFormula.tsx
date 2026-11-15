@@ -1,6 +1,5 @@
 import { BLUE, circle, YELLOW } from "@sophistry/core";
-import { Stage, Text } from "@sophistry/solidjs";
-import { Box } from "@sophistry/solidjs/box";
+import { Box, Stage, Text } from "@sophistry/solidjs";
 import { mathTex } from "@sophistry/text";
 
 export const meta = {

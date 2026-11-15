@@ -10,9 +10,13 @@
  * Rewound to its start, the boxes get their old styles and children back.
  */
 
-import type { Animation, LeafTiming, SceneNode } from "@sophistry/core";
-import { easedLeaf } from "@sophistry/core";
-import type { BaseNode } from "@sophistry/core/internal";
+import {
+	type Animation,
+	easedLeaf,
+	type LeafTiming,
+} from "../anim/animation.js";
+import type { BaseNode } from "../scene/node.js";
+import type { SceneNode } from "../scene/types.js";
 import type { LayoutRect } from "./box.js";
 import { BoxNode } from "./box.js";
 import type { BoxStyle } from "./style.js";
@@ -48,8 +52,7 @@ interface Captured {
  *
  * @example
  * ```ts
- * import { box, layoutTo } from "@sophistry/box";
- * import { text, timeline } from "@sophistry/core";
+ * import { box, layoutTo, text, timeline } from "@sophistry/core";
  *
  * const a = text.create({ text: "first" });
  * const b = text.create({ text: "second" });

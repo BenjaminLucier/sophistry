@@ -27,7 +27,7 @@ import { fileURLToPath } from "node:url";
 import { chromium } from "@playwright/test";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const PACKAGES = ["core", "text", "charts", "3d", "solidjs", "react"];
+const PACKAGES = ["layout", "core", "text", "charts", "3d", "solidjs", "react"];
 const work = mkdtempSync(join(tmpdir(), "sophistry-smoke-"));
 const run = (cmd, args, cwd, opts = {}) =>
 	execFileSync(cmd, args, {
@@ -58,6 +58,7 @@ for (const n of need)
 
 /** Every public entry point, plus `/internal`, which the feature packages use. */
 const ENTRIES = [
+	"@sophistry/layout",
 	"@sophistry/core",
 	"@sophistry/core/geometry",
 	"@sophistry/core/color",
@@ -86,6 +87,7 @@ export const entries = [${ENTRIES.map((_, i) => `e${i}`).join(", ")}];
 const app = `
 import "katex/dist/katex.css";
 import { render } from "@solidjs/web";
+import * as layout from "@sophistry/layout";
 import * as core from "@sophistry/core";
 import * as geometry from "@sophistry/core/geometry";
 import * as color from "@sophistry/core/color";
@@ -102,7 +104,7 @@ import * as solid3d from "@sophistry/solidjs/3d";
 import * as react from "@sophistry/react";
 
 const { Circle, Stage } = solid;
-const entries = { core, geometry, color, themes, internal, text, charts, chartsMath, d3, solid, solidText, solidCharts, solid3d, react };
+const entries = { layout, core,geometry, color, themes, internal, text, charts, chartsMath, d3, solid, solidText, solidCharts, solid3d, react };
 const counts = Object.fromEntries(Object.entries(entries).map(([k, v]) => [k, Object.keys(v).length]));
 window.__smoke = { counts, ready: false };
 
@@ -162,6 +164,10 @@ try {
 				"@types/react": "^19.3.0",
 				"@solidjs/vite-plugin": catalog["@solidjs/vite-plugin"],
 			},
+			// The packages depend on each other by version range: the tarballs answer those too.
+			overrides: Object.fromEntries(
+				Object.keys(tarballs).map((name) => [name, `$${name}`]),
+			),
 		}),
 	);
 	writeFileSync(

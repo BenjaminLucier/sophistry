@@ -9,14 +9,15 @@
  * rounded rectangle names its corners for y running up.
  */
 
-import type { ShapeProps } from "@sophistry/core";
-import { defineShape, Invalidate, shapeProps } from "@sophistry/core";
-import type { CornerRadii, CornerRadius } from "@sophistry/core/geometry";
+import type { Edges } from "@sophistry/layout";
 import {
+	type CornerRadii,
+	type CornerRadius,
 	resolveCornerRadii,
 	roundedRectCurvePath,
-} from "@sophistry/core/geometry";
-import type { Edges } from "@sophistry/layout";
+} from "../geometry/rounded-rect.js";
+import { Invalidate } from "../scene/context.js";
+import { defineShape, type ShapeProps, shapeProps } from "../scene/shape.js";
 
 /**
  * Corner radii as on screen in a frame whose y runs down, in the order a

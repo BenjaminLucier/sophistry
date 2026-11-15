@@ -65,6 +65,8 @@ const DEPENDS_ON: Record<string, readonly string[]> = {
 	labels: ["scene", "shapes"],
 	coords: ["scene", "shapes", "labels"],
 	network: ["scene", "shapes", "labels"],
+	// Boxes: nodes laid out by `@sophistry/layout`, painted with shapes.
+	box: ["scene", "shapes"],
 	export: ["anim", "tween", "render"],
 };
 

@@ -5,17 +5,14 @@
  * nested style or a text's content changes.
  */
 
-import {
-	circle,
-	group,
-	pixelsPerUnitContext,
-	resolveTheme,
-	text,
-	themeContext,
-} from "@sophistry/core";
-import type { ShapeSpec, TextSpec } from "@sophistry/core/internal";
-import { SceneGraph } from "@sophistry/core/internal";
 import { describe, expect, it } from "vitest";
+import { pixelsPerUnitContext, themeContext } from "../scene/context.js";
+import { SceneGraph } from "../scene/graph.js";
+import { group } from "../scene/group.js";
+import { text } from "../scene/text.js";
+import { circle } from "../shapes/circle.js";
+import type { ShapeSpec, TextSpec } from "../spec/types.js";
+import { resolveTheme } from "../themes/theme.js";
 import { box } from "./box.js";
 
 /** 100 design pixels per scene unit, and a 16 × 9 frame: 1600 × 900 px. */

@@ -1,6 +1,5 @@
 import { BLUE, lagged, track, valueTo, YELLOW } from "@sophistry/core";
-import { Circle, Stage, Text, usePlayer } from "@sophistry/solidjs";
-import { Box } from "@sophistry/solidjs/box";
+import { Box, Circle, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {

@@ -11,8 +11,7 @@ Cards, captions, legends and title slides are easier to describe the way a web p
 <Example name="basic/BoxLayout" />
 
 ```tsx
-import { Circle, Stage, Text } from "@sophistry/solidjs";
-import { Box } from "@sophistry/solidjs/box";
+import { Box, Circle, Stage, Text } from "@sophistry/solidjs";
 
 export const Card = () => (
   <Stage>
@@ -37,7 +36,7 @@ export const Card = () => (
 );
 ```
 
-`Box` is in `@sophistry/box`, and the bindings export it from their `/box` entry: `@sophistry/solidjs/box` or `@sophistry/react/box`. In the core it is `box.create({ style, children })`.
+`Box` comes from `@sophistry/solidjs` or `@sophistry/react` like every other component. In the core it is `box.create({ style, children })` from `@sophistry/core`.
 
 ## Design pixels
 
@@ -86,7 +85,7 @@ A grid's tracks are typed values rather than CSS strings: a length (in the box's
 <Example name="basic/GridLayout" />
 
 ```ts
-import type { BoxStyle } from "@sophistry/box";
+import type { BoxStyle } from "@sophistry/core";
 
 const dashboard: BoxStyle = {
   display: "grid",
@@ -110,13 +109,12 @@ Changing a nested box's style, a text's content, the children, or the size of a 
 
 ## Layout transitions
 
-`layoutTo` from `@sophistry/box` is an animation that changes boxes' styles or children and moves everything to its new place. Each box's size and each node's position blend from where it was to where the new layout puts it, so reordered children slide past each other and a row can fold into a column.
+`layoutTo` from `@sophistry/core` is an animation that changes boxes' styles or children and moves everything to its new place. Each box's size and each node's position blend from where it was to where the new layout puts it, so reordered children slide past each other and a row can fold into a column.
 
 <Example name="basic/LayoutTransition" />
 
 ```ts
-import { box, layoutTo } from "@sophistry/box";
-import { sequence, text } from "@sophistry/core";
+import { box, layoutTo, sequence, text } from "@sophistry/core";
 
 const [a, b, c] = ["sin", "cos", "tan"].map((label) => text.create({ text: label }));
 const row = box.create({ style: { gap: 24 }, children: [a, b, c] });

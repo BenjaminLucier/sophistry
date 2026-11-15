@@ -1,7 +1,6 @@
 /**
- * `@sophistry/box`: boxes laid out with flexbox, painted with backgrounds
- * and rounded borders, holding text and any scene node, drawn on the canvas
- * with the rest of a Sophistry scene.
+ * Boxes: laid out with flexbox or grid by `@sophistry/layout`, painted with
+ * backgrounds and rounded borders, holding text and any scene node.
  */
 
 export type { BoxProps, LayoutRect } from "./box.js";

@@ -1,7 +1,5 @@
-import { type BoxNode, layoutTo } from "@sophistry/box";
-import { hold, sequence } from "@sophistry/core";
-import { Stage, Text, usePlayer } from "@sophistry/solidjs";
-import { Box } from "@sophistry/solidjs/box";
+import { type BoxNode, hold, layoutTo, sequence } from "@sophistry/core";
+import { Box, Stage, Text, usePlayer } from "@sophistry/solidjs";
 import { onSettled } from "solid-js";
 
 export const meta = {
