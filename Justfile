@@ -1,6 +1,6 @@
 # sophistry — monorepo orchestration
 #
-# `packages/*` are the published libraries (core, bindings, charts, text, 3d), `apps/`
+# `packages/*` are the published libraries (layout, core, bindings, charts, text, 3d), `apps/`
 # holds demo/site apps, `docs/` holds the documentation site. All are members
 # of the one pnpm workspace defined in pnpm-workspace.yaml.
 
@@ -72,7 +72,7 @@ coverage:
 
 # list exactly what would be published to npm (no upload)
 pack: build-lib
-    for p in core text charts 3d solidjs react; do (cd packages/$p && pnpm pack --dry-run); done
+    for p in layout core text charts 3d solidjs react; do (cd packages/$p && pnpm pack --dry-run); done
 
 # --- docs ---
 
