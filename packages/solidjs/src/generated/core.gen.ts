@@ -14,6 +14,7 @@ import {
 	axes,
 	backgroundRectangle,
 	basisVectors,
+	box,
 	brace,
 	bulletedList,
 	circle,
@@ -231,6 +232,19 @@ export const BasisVectors = wrap(basisVectors);
  * @category Components
  */
 export type BasisVectorsProps = ComponentProps<typeof basisVectors>;
+
+/**
+ * `box` from `@sophistry/core` as a component.
+ *
+ * @category Components
+ */
+export const Box = wrap(box);
+/**
+ * Props of {@link Box}.
+ *
+ * @category Components
+ */
+export type BoxProps = ComponentProps<typeof box>;
 
 /**
  * `brace` from `@sophistry/core` as a component.

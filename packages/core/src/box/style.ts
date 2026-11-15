@@ -8,8 +8,6 @@
  * or `"100px"` for design pixels whatever the unit, or `"auto"`.
  */
 
-import type { ColorInput, PaintSpec } from "@sophistry/core";
-import type { CornerRadius } from "@sophistry/core/geometry";
 import type {
 	AlignContent,
 	AlignItems,
@@ -29,6 +27,9 @@ import type {
 	TrackList,
 	TrackSize,
 } from "@sophistry/layout";
+import type { ColorInput } from "../color/types.js";
+import type { CornerRadius } from "../geometry/rounded-rect.js";
+import type { PaintSpec } from "../spec/gradient.js";
 
 /**
  * A length: a number in the box's unit, a percentage of the parent's size,

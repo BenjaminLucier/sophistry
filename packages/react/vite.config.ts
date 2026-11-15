@@ -11,7 +11,6 @@ export default defineConfig({
 			entry: {
 				index: "src/index.ts",
 				"entries/text": "src/entries/text.ts",
-				"entries/box": "src/entries/box.ts",
 				"entries/charts": "src/entries/charts.ts",
 				"entries/charts3d": "src/entries/charts3d.ts",
 				"entries/3d": "src/entries/3d.ts",

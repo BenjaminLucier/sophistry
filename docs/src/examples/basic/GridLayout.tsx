@@ -1,6 +1,5 @@
 import { BLUE, GREEN, RED, YELLOW } from "@sophistry/core";
-import { Circle, Square, Stage, Star, Text } from "@sophistry/solidjs";
-import { Box } from "@sophistry/solidjs/box";
+import { Box, Circle, Square, Stage, Star, Text } from "@sophistry/solidjs";
 
 export const meta = {
 	title: "Grid layout",

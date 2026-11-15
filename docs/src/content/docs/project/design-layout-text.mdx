@@ -302,7 +302,7 @@ could become its own project without refactoring:
   callback go in; boxes come out. Numbers are unitless and y runs downward. No
   tracks, points or scene types.
 - **Consumed only through its public entry.** No `/internal` subpath;
-  `@sophistry/box` uses the same API anyone else would.
+  the core's `box` uses the same API anyone else would.
 - **Its tests live with it**, along with their generator and the README that
   documents it on its own.
 
@@ -311,7 +311,7 @@ computeLayout(root: LayoutNode, available: Size, measure: MeasureFunction): Layo
 ```
 
 The measure callback answers "how big is this leaf at this width?". Text height
-depends on width, so the box package forwards it to `layoutText`.
+depends on width, so `box` forwards it to `layoutText`.
 
 ### Matching the browser
 
@@ -342,13 +342,14 @@ Gradients, clipping, opacity and dashes already exist.
 
 | Package | Contents |
 |---|---|
-| `@sophistry/core` | `Text`, `layoutText` and the Pretext dependency; `lengthUnit` on `Group`; the scene's design width; paint additions. |
+| `@sophistry/core` | `Text`, `layoutText` and the Pretext dependency; `lengthUnit` on `Group`; the scene's design width; paint additions; `Box` (style parsing, the root and nested boxes, scene children) and `layoutTo`. Depends on the layout engine. |
 | `@sophistry/layout` (new) | The layout engine. Depends on nothing. |
-| `@sophistry/box` (new) | `Box`: style parsing, the root and nested boxes, scene children. Depends on the core and the layout engine. |
-| `@sophistry/solidjs`, `@sophistry/react` | A generated `./box` subpath with `@sophistry/box` as an optional peer dependency. |
+| `@sophistry/solidjs`, `@sophistry/react` | `Box` is generated with the core's other components. |
 
-Both new packages join the `fixed` changeset group and the root `build`
-script (layout before box). `@sophistry/box` adds one target to codegen.
+A box is a node like any other, so it lives in the core; the engine is a
+package of its own because it is useful, and testable, without a scene.
+`@sophistry/layout` joins the `fixed` changeset group and the root `build`
+script, before the core.
 
 ## Order of work
 
@@ -356,7 +357,7 @@ script (layout before box). `@sophistry/box` adds one target to codegen.
 2. Paint additions.
 3. Rich text: `Text`, spans, fragments, Pretext, presets.
 4. Units: the design width, `lengthUnit`, theme defaults.
-5. `@sophistry/box` and the bindings.
+5. `Box` in the core, and the bindings.
 6. Grid.
 7. Layout transitions; inline nodes.
 
