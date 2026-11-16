@@ -41,5 +41,5 @@
 	"bugs": {
 		"url": "https://github.com/BenjaminLucier/sophistry/issues"
 	},
-	"license": "MIT"
+	"license": "MIT OR Apache-2.0"
 }

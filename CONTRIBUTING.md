@@ -91,7 +91,6 @@ with `"@sophistry/core": "workspace:*"`.
 - Run `pnpm format`, then `just check` (or at least `pnpm typecheck`,
   `pnpm lint` and `pnpm test`) before pushing.
 - Changes that affect the published package need a changeset (below).
-- By contributing you agree your work is licensed under the MIT license.
 
 ## Coding style
 
@@ -225,6 +224,22 @@ different pixels fails).
 - **Bumping Playwright**: pin the version exactly in `package.json`, update the
   image tag in `.github/workflows/ci.yml`, then regenerate the baselines.
   `pnpm check:playwright` fails when they disagree.
+
+## Who decides
+
+This project is maintained by one person, who reviews every change and makes
+the final call on direction. That's a matter of scale, not a closed door: if
+you contribute regularly and want a bigger role, such as reviewing, owning a
+part of the code or helping steer it, say so in an issue. This section will
+change as the project gains maintainers.
+
+## License
+
+Unless you explicitly state otherwise, any contribution intentionally
+submitted for inclusion in this project by you shall be licensed under the
+project's license (`MIT OR Apache-2.0`), as defined in the Apache-2.0
+license, without any additional terms or conditions.
+There is no CLA and no sign-off requirement.
 
 ## Conduct and security
 

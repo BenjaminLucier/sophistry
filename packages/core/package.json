@@ -2,7 +2,7 @@
 	"name": "@sophistry/core",
 	"version": "0.1.0",
 	"type": "module",
-	"license": "MIT",
+	"license": "MIT OR Apache-2.0",
 	"description": "Framework-free animation and visualization engine: scenes, tweens, geometry, themes and a Canvas2D renderer. Pair it with a binding such as @sophistry/solidjs or @sophistry/react.",
 	"keywords": [
 		"animation",
@@ -24,7 +24,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE-MIT",
+		"LICENSE-APACHE"
 	],
 	"exports": {
 		".": "./src/index.ts",

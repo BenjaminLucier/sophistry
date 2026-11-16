@@ -1,12 +1,26 @@
-# Keeps the workflows' actions, pinned to commit SHAs, up to date.
-# (Vulnerable npm dependencies get security PRs from Dependabot security
-# updates, enabled in the repository settings.)
 version: 2
 updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "chore(deps)"
+    groups:
+      # Majors arrive as their own PRs; they need reading.
+      npm:
+        update-types: [minor, patch]
+
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 7
+    commit-message:
+      prefix: "ci(deps)"
     groups:
       actions:
         patterns: ["*"]

@@ -2,7 +2,7 @@
 	"name": "@sophistry/3d",
 	"version": "0.1.0",
 	"type": "module",
-	"license": "MIT",
+	"license": "MIT OR Apache-2.0",
 	"description": "3D scenes for Sophistry: cameras, meshes, polyhedra and orbit controls, painted on Canvas2D.",
 	"keywords": [
 		"3d",
@@ -20,7 +20,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE-MIT",
+		"LICENSE-APACHE"
 	],
 	"exports": {
 		".": "./src/index.ts",

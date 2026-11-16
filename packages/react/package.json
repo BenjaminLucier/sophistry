@@ -2,7 +2,7 @@
 	"name": "@sophistry/react",
 	"version": "0.1.0",
 	"type": "module",
-	"license": "MIT",
+	"license": "MIT OR Apache-2.0",
 	"description": "React bindings for Sophistry: Stage, scene components and hooks.",
 	"keywords": [
 		"react",
@@ -20,7 +20,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE-MIT",
+		"LICENSE-APACHE"
 	],
 	"exports": {
 		".": "./src/index.ts",
