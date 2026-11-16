@@ -2,7 +2,7 @@
 	"name": "@sophistry/charts",
 	"version": "0.1.0",
 	"type": "module",
-	"license": "MIT",
+	"license": "MIT OR Apache-2.0",
 	"description": "Charts for Sophistry scenes: bars, lines, scatter, pies, hierarchies and more, with keyed transitions and reveals.",
 	"keywords": [
 		"charts",
@@ -21,7 +21,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE-MIT",
+		"LICENSE-APACHE"
 	],
 	"exports": {
 		".": "./src/index.ts",

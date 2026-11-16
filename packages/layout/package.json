@@ -2,7 +2,7 @@
 	"name": "@sophistry/layout",
 	"version": "0.1.0",
 	"type": "module",
-	"license": "MIT",
+	"license": "MIT OR Apache-2.0",
 	"description": "A flexbox and grid layout engine in plain TypeScript: style objects in, boxes out. No DOM, no dependencies.",
 	"keywords": [
 		"layout",
@@ -20,7 +20,8 @@
 	"files": [
 		"dist",
 		"README.md",
-		"LICENSE"
+		"LICENSE-MIT",
+		"LICENSE-APACHE"
 	],
 	"exports": {
 		".": "./src/index.ts"

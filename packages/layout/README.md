@@ -68,4 +68,4 @@ Every behaviour is checked against Chrome. Each fixture in `test/fixtures` is a 
 
 ## License
 
-MIT
+MIT OR Apache-2.0
