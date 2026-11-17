@@ -10,7 +10,7 @@ This page describes how sophistry versions its API, which entry points you can r
 sophistry follows [semantic versioning](https://semver.org/), with the usual pre-1.0 reading:
 
 - **0.x minor releases may break the API.** While the version starts with `0.`, a minor bump (`0.1` to `0.2`) may contain breaking changes, and patch releases are fixes only.
-- **Breaking changes come with a migration.** Every release is described by a [changeset](https://github.com/changesets/changesets), and a breaking one shows a before/after snippet. Removed names are not left behind as deprecated aliases: the 0.x line prefers a small, consistent surface to a long tail of old spellings.
+- **Breaking changes come with a migration.** Release notes are generated from the commit history ([Conventional Commits](https://www.conventionalcommits.org/)), and a breaking change's notes show a before/after snippet. Removed names are not left behind as deprecated aliases: the 0.x line prefers a small, consistent surface to a long tail of old spellings.
 - **The packages version together.** Core, the feature packages and the bindings are released as one set; a binding generated from one core version is tested against that version.
 
 Release notes are on the [changelog](/project/changelog/) page.

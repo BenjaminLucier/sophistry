@@ -37,8 +37,8 @@ Each published package is built with Vite (library mode) plus `tsc` for
 declarations, into its own `dist`. Inside the workspace the packages' `exports`
 point at `src/`, so the playground and docs get instant HMR with no build; on
 publish, `publishConfig.exports` swaps them for `dist/`. `just pack` shows
-exactly what would be published. The six published packages are versioned
-together (a `fixed` group in `.changeset/config.json`). Shared dependency
+exactly what would be published. The seven published packages are versioned
+together (a `linked-versions` group in `release-please-config.json`). Shared dependency
 versions live in the `catalog:` block of `pnpm-workspace.yaml`. The bindings'
 components are generated: run `pnpm codegen` after changing a definition
 (`pnpm codegen:check` verifies it).
@@ -68,7 +68,6 @@ gaps are in the [roadmap](ROADMAP.md).
 | `just build-docs` / `docs-preview` | production docs build / build and serve it       |
 | `just e2e`            | build the docs, run the Playwright suite                      |
 | `just e2e-visual` / `e2e-update` | gallery visual regression / regenerate baselines (Docker) |
-| `just change` / `status` / `version` | add a changeset / show pending bumps / apply them locally |
 | `just outdated`       | check for dependency upgrades                                 |
 | `just ci-install`     | reinstall from the lockfile exactly as CI does                |
 | `just clean-build` / `clean` | remove build output and caches / also node_modules     |
@@ -90,7 +89,8 @@ with `"@sophistry/core": "workspace:*"`.
 - Branch from `main` and open a pull request.
 - Run `pnpm format`, then `just check` (or at least `pnpm typecheck`,
   `pnpm lint` and `pnpm test`) before pushing.
-- Changes that affect the published package need a changeset (below).
+- Give the pull request a [Conventional Commit](https://www.conventionalcommits.org/)
+  title; it becomes the release notes (below).
 
 ## Coding style
 
@@ -165,15 +165,24 @@ you push. Each suite uses at most half your cores locally.
 
 - **No wall-clock time.** Drive animations with `createClock()` and `advance`.
 
-## Changesets
+## Releases
 
-If your change affects users of a published package, run `pnpm changeset` (or
-`just change`), pick the bump and describe the change in user-facing terms,
-with a migration snippet for a breaking change. While we are `0.x`, a breaking
-change is a **minor** and a fix or compatible addition a **patch**. Docs-only
-and internal changes need no changeset. On merge to `main` the release
-workflow opens a "Version Packages" PR; merging it publishes to npm with
-provenance.
+Pull requests are squash-merged: the title becomes the commit subject and the
+description its body. [release-please](https://github.com/googleapis/release-please)
+reads those commits on `main`, so the title decides the release:
+
+- `feat: …` adds to the next release, and `fix: …` too. While we are `0.x`, a
+  breaking change bumps the **minor** version and anything else the **patch**.
+- `feat!: …` (or any type with `!`) marks a breaking change. Describe it in the
+  pull request description under a `BREAKING CHANGE:` line, with a before/after
+  migration snippet; that paragraph goes into the changelog.
+- `docs:`, `test:`, `refactor:`, `ci:` and `chore:` don't appear in the
+  changelog or trigger a release.
+
+Write the title for users of the packages: it is the changelog line. The
+release workflow keeps a release PR open with the next versions and
+`CHANGELOG.md` entries; merging it tags the release, creates the GitHub
+releases and publishes every package to npm with provenance.
 
 ## Docs and examples
 
