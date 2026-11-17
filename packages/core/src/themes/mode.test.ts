@@ -219,6 +219,17 @@ describe("themeInitScript", () => {
 		run(m.themeInitScript({ storageKey: "my-key" }), env);
 		expect(env.dataset.mode).toBe("light");
 	});
+
+	it("escapes values so none can close the script element", async () => {
+		const key = "</script><script>alert(1)</script>\u2028";
+		const env = installFakeBrowser();
+		env.store.set(key, "light");
+		const m = await load();
+		const script = m.themeInitScript({ storageKey: key });
+		expect(script).not.toMatch(/<\/script|\u2028/i);
+		run(script, env);
+		expect(env.dataset.mode).toBe("light");
+	});
 });
 
 describe("mode hardening", () => {

@@ -23,6 +23,12 @@ describe("parseColor", () => {
 		expect(parseColor("#ff0000")).toEqual({ r: 255, g: 0, b: 0, a: 1 });
 	});
 
+	it("rejects a long malformed number quickly", () => {
+		const start = performance.now();
+		expect(tryParseColor(`rgb(9${"9".repeat(50_000)}x, 0, 0)`)).toBeNull();
+		expect(performance.now() - start).toBeLessThan(100);
+	});
+
 	it("parses 3-digit hex", () => {
 		expect(parseColor("#f00")).toEqual({ r: 255, g: 0, b: 0, a: 1 });
 	});
