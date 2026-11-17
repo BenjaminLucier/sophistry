@@ -824,9 +824,43 @@ export function createScene(options: SceneOptions = {}): Scene {
 	if (canvas && element) {
 		const observed = element;
 		const target = canvas;
-		const view = observed.ownerDocument.defaultView;
+		/**
+		 * The window the box is shown in, looked up on every measure: a host
+		 * the bindings create detached (Solid clones it from template content,
+		 * whose document has no window) only gets one once it is inserted.
+		 * Until then, the global window is the best guess.
+		 */
+		const windowOf = (): Window | null =>
+			observed.ownerDocument.defaultView ??
+			(typeof window === "undefined" ? null : window);
+
+		// A change of devicePixelRatio (dragging to another monitor, browser
+		// zoom) does not resize the box, so the observer alone would miss it. A
+		// `resolution` query matches one ratio only, so it is re-armed for the
+		// new ratio each time it fires, and for the new window when the box
+		// moves to another one.
+		let watched: Window | null = null;
+		let unwatchDpr: (() => void) | null = null;
+		const watchDpr = (view: Window | null) => {
+			unwatchDpr?.();
+			unwatchDpr = null;
+			watched = view;
+			if (!view || typeof view.matchMedia !== "function") return;
+			const query = view.matchMedia(
+				`(resolution: ${view.devicePixelRatio || 1}dppx)`,
+			);
+			const onChange = () => {
+				measure();
+				watchDpr(windowOf());
+			};
+			query.addEventListener?.("change", onChange);
+			unwatchDpr = () => query.removeEventListener?.("change", onChange);
+		};
+		cleanups.push(() => unwatchDpr?.());
 
 		const measure = () => {
+			const view = windowOf();
+			if (view !== watched) watchDpr(view);
 			const rect = observed.getBoundingClientRect();
 			const ratio = view?.devicePixelRatio || 1;
 			dpr.set(ratio);
@@ -869,28 +903,6 @@ export function createScene(options: SceneOptions = {}): Scene {
 			observer.observe(observed);
 			cleanups.push(() => observer.disconnect());
 		}
-
-		// A change of devicePixelRatio (dragging to another monitor, browser
-		// zoom) does not resize the box, so the observer alone would miss it. A
-		// `resolution` query matches one ratio only, so it is re-armed for the
-		// new ratio each time it fires.
-		let unwatchDpr: (() => void) | null = null;
-		const watchDpr = () => {
-			unwatchDpr?.();
-			unwatchDpr = null;
-			if (!view || typeof view.matchMedia !== "function") return;
-			const query = view.matchMedia(
-				`(resolution: ${view.devicePixelRatio || 1}dppx)`,
-			);
-			const onChange = () => {
-				measure();
-				watchDpr();
-			};
-			query.addEventListener?.("change", onChange);
-			unwatchDpr = () => query.removeEventListener?.("change", onChange);
-		};
-		watchDpr();
-		cleanups.push(() => unwatchDpr?.());
 
 		// Off-screen scenes neither paint nor tick their own clock.
 		if (typeof IntersectionObserver === "function") {
