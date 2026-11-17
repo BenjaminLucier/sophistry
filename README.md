@@ -16,7 +16,7 @@ painted on Canvas2D, with bindings for SolidJS and React.
 </div>
 
 > **Pre-1.0.** The packages are `0.x`: minor releases may break. The SolidJS
-> binding targets `solid-js` and `@solidjs/web` `2.0.0-rc.14`. See the
+> binding targets `solid-js` and `@solidjs/web` `2.0.0-rc.21`. See the
 > [stability policy](https://sophistry.dev/project/stability/).
 
 sophistry brings the ideas of [Manim](https://www.manim.community/) to the
@@ -54,7 +54,7 @@ Install the core and one binding:
 
 ```sh
 # SolidJS (pin the release-candidate versions: a plain range resolves to Solid 1)
-pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.14 @solidjs/web@2.0.0-rc.14
+pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.21 @solidjs/web@2.0.0-rc.21
 
 # React
 pnpm add @sophistry/core @sophistry/react react

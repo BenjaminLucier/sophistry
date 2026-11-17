@@ -24,14 +24,24 @@ The core never imports a UI framework, so the bindings are small: every componen
 
 <Tabs syncKey="framework">
   <TabItem label="Solid">
-    Solid 2 is a release candidate; pin the exact versions this release is tested against (`2.0.0-rc.14`, and `@solidjs/vite-plugin` at `3.0.0-next.49`).
+    Solid 2 is a release candidate; pin the exact versions this release is tested against (`2.0.0-rc.21`, and `@solidjs/vite-plugin` at `3.0.0-next.57`).
 
     ```sh
-    pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.14 @solidjs/web@2.0.0-rc.14
-    pnpm add -D vite @solidjs/vite-plugin@3.0.0-next.49 typescript
+    pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.21 @solidjs/web@2.0.0-rc.21
+    pnpm add -D vite @solidjs/vite-plugin@3.0.0-next.57 typescript
     ```
 
     Pass the exact versions. A plain `^2.0.0` range does not match release candidates, so without a pin your package manager may resolve Solid 1 (the `latest` tag) and the build fails in confusing ways.
+
+    Solid's release candidates also have to match each other: the compiler that `@solidjs/vite-plugin` brings in and `@solidjs/signals` accept newer candidates than `solid-js` itself, and a newer compiler emits calls an older runtime lacks (`heldRead is not a function`). Pin them to the same candidate, with pnpm in `pnpm-workspace.yaml`:
+
+    ```yaml
+    overrides:
+      "@solidjs/signals": 2.0.0-rc.21
+      "@solidjs/compiler": 2.0.0-rc.21
+    ```
+
+    With npm or Yarn, use `overrides` or `resolutions` in `package.json`.
   </TabItem>
   <TabItem label="React">
     ```sh
