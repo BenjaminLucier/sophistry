@@ -7,9 +7,14 @@ name: Release
 # publishing (OIDC, no token; provenance is automatic). Each @sophistry
 # package's trusted publisher on npmjs.com names this repository and this file,
 # `release.yml`.
+#
+# "Run workflow" (workflow_dispatch) packs and publishes main as it stands,
+# without a new release: the way to finish a publish that failed after the
+# GitHub releases were created. Versions already on npm are skipped.
 on:
   push:
     branches: [main]
+  workflow_dispatch:
 
 permissions: {}
 
@@ -37,7 +42,9 @@ jobs:
   # ranges and applies `publishConfig`; the publish job only uploads tarballs.
   pack:
     needs: release-please
-    if: needs.release-please.outputs.releases_created == 'true'
+    if: >-
+      needs.release-please.outputs.releases_created == 'true' ||
+      github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -83,7 +90,9 @@ jobs:
       # run can simply be re-run.
       - run: |
           for p in layout core text 3d charts solidjs react; do
-            tarball="$(ls tarballs/sophistry-$p-*.tgz)"
+            # `./` keeps npm from reading `tarballs/<file>` as a GitHub
+            # `user/repo` shorthand.
+            tarball="$(ls ./tarballs/sophistry-$p-*.tgz)"
             version="${tarball##*-}"; version="${version%.tgz}"
             if npm view "@sophistry/$p@$version" version >/dev/null 2>&1; then
               echo "@sophistry/$p@$version is already on npm"
