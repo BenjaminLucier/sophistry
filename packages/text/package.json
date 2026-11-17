@@ -1,6 +1,6 @@
 {
 	"name": "@sophistry/text",
-	"version": "0.3.0",
+	"version": "0.3.1",
 	"type": "module",
 	"license": "MIT OR Apache-2.0",
 	"description": "LaTeX and font outlines as Sophistry geometry: KaTeX layout, opentype glyphs, morphs between formulas.",

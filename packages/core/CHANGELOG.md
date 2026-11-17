@@ -1,5 +1,13 @@
 # @sophistry/core
 
+## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/core-v0.3.0...core-v0.3.1) (2026-11-17)
+
+
+### Bug Fixes
+
+* **core:** harden colour parsing, the theme init script and storeTarget ([#27](https://github.com/BenjaminLucier/sophistry/issues/27)) ([a42cc7c](https://github.com/BenjaminLucier/sophistry/commit/a42cc7c0484bb5ce5366c660c93fce5ddb2a544b))
+* **core:** read the pixel ratio from the window the scene is shown in ([#28](https://github.com/BenjaminLucier/sophistry/issues/28)) ([d9f9485](https://github.com/BenjaminLucier/sophistry/commit/d9f948522ed8a525bffe8177054c0f46a147f5e3))
+
 ## [0.3.0](https://github.com/BenjaminLucier/sophistry/compare/core-v0.2.0...core-v0.3.0) (2026-11-17)
 
 
