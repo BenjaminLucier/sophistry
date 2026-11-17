@@ -102,6 +102,25 @@ describe("the DOM a scene builds", () => {
 		expect(scene.canvas?.width).toBe(16384);
 	});
 
+	it("takes the devicePixelRatio of a host created detached, as Solid does", () => {
+		window.devicePixelRatio = 2;
+		// Solid clones elements from template content, whose document has no
+		// window in a browser. happy-dom gives it one, so the test pins it to null.
+		const detached = document.implementation.createHTMLDocument();
+		Object.defineProperty(detached, "defaultView", { get: () => null });
+		const host = detached.createElement("div");
+		expect(host.ownerDocument.defaultView).toBeNull();
+		const scene = createScene({ host });
+		scenes.push(scene);
+		expect(scene.dpr.peek()).toBe(2);
+		expect(scene.size.peek()).toEqual({ width: 2000, height: 1000 });
+		mountPoint().append(host);
+		window.devicePixelRatio = 3;
+		dom.resizes[0]?.callback([]);
+		expect(scene.dpr.peek()).toBe(3);
+		expect(scene.size.peek()).toEqual({ width: 3000, height: 1500 });
+	});
+
 	it("uses a given canvas and observes its parent", () => {
 		const parent = mountPoint();
 		const canvas = document.createElement("canvas");
