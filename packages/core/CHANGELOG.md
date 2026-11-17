@@ -1,5 +1,12 @@
 # @sophistry/core
 
+## [0.3.0](https://github.com/BenjaminLucier/sophistry/compare/core-v0.2.0...core-v0.3.0) (2026-11-17)
+
+
+### Miscellaneous Chores
+
+* **core:** Synchronize sophistry versions
+
 ## 0.2.0
 
 ### Minor Changes
