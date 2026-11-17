@@ -1,5 +1,12 @@
 # @sophistry/solidjs
 
+## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/solidjs-v0.3.0...solidjs-v0.3.1) (2026-11-17)
+
+
+### Miscellaneous Chores
+
+* **solidjs:** Synchronize sophistry versions
+
 ## [0.3.0](https://github.com/BenjaminLucier/sophistry/compare/solidjs-v0.2.0...solidjs-v0.3.0) (2026-11-17)
 
 
