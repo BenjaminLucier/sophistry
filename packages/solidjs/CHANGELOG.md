@@ -1,5 +1,16 @@
 # @sophistry/solidjs
 
+## [0.3.0](https://github.com/BenjaminLucier/sophistry/compare/solidjs-v0.2.0...solidjs-v0.3.0) (2026-11-17)
+
+
+### ⚠ BREAKING CHANGES
+
+* **solidjs:** `@sophistry/solidjs` now needs `solid-js` and `@solidjs/web` at `2.0.0-rc.21` (it needed `2.0.0-rc.14`). Update both, and pin the compiler and signals to the same candidate:
+
+### Features
+
+* **solidjs:** target Solid 2.0.0-rc.21 ([#22](https://github.com/BenjaminLucier/sophistry/issues/22)) ([49a2653](https://github.com/BenjaminLucier/sophistry/commit/49a26536236b34f83e554594f92843c9bc5fc300))
+
 ## 0.2.0
 
 ### Minor Changes
