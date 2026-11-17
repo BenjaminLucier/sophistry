@@ -25,7 +25,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
-		"@playwright/test": "1.64.1",
+		"@playwright/test": "1.65.0",
 		"typescript": "catalog:"
 	},
 	"repository": {
