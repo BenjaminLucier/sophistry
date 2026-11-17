@@ -9,6 +9,8 @@ packages:
 catalog:
   "@astrojs/starlight": ^0.42.6
   "@astrojs/solid-js": ^7.0.2
+  # Matches the Expressive Code version Starlight bundles, so there is one core.
+  "@expressive-code/plugin-collapsible-sections": 0.44.2
   "@biomejs/biome": ^2.5.15
   "@solidjs/meta": 1.0.0-next.2
   "@solidjs/router": 2.0.0-next.44
