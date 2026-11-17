@@ -205,8 +205,8 @@ catalogs:
       specifier: 2.0.0-next.34
       version: 2.0.0-next.34
     '@solidjs/vite-plugin':
-      specifier: 3.0.0-next.49
-      version: 3.0.0-next.49
+      specifier: 3.0.0-next.57
+      version: 3.0.0-next.57
     '@solidjs/web':
       specifier: 2.0.0-rc.14
       version: 2.0.0-rc.14
@@ -320,7 +320,7 @@ importers:
         version: 2.5.15
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.49(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(supports-color@7.2.0)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 3.0.0-next.57(@babel/core@7.29.7(supports-color@7.2.0))(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       '@tailwindcss/vite':
         specifier: 'catalog:'
         version: 4.3.3(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
@@ -347,7 +347,7 @@ importers:
         version: 0.42.6(astro@7.3.8(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))(supports-color@7.2.0)(typescript@5.9.3)
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.49(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(supports-color@7.2.0)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 3.0.0-next.57(@babel/core@7.29.7(supports-color@7.2.0))(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.0-rc.14(solid-js@2.0.0-rc.14)
@@ -412,7 +412,7 @@ importers:
         version: 1.64.1
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.49(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(supports-color@7.2.0)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 3.0.0-next.57(@babel/core@7.29.7(supports-color@7.2.0))(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       typescript:
         specifier: 'catalog:'
         version: 7.0.2
@@ -646,7 +646,7 @@ importers:
         version: 2.5.15
       '@solidjs/vite-plugin':
         specifier: 'catalog:'
-        version: 3.0.0-next.49(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(supports-color@7.2.0)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
+        version: 3.0.0-next.57(@babel/core@7.29.7(supports-color@7.2.0))(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
       '@solidjs/web':
         specifier: 'catalog:'
         version: 2.0.0-rc.14(solid-js@2.0.0-rc.14)
@@ -1583,48 +1583,39 @@ packages:
   '@shikijs/vscode-textmate@10.0.2':
     resolution: {integrity: sha512-83yeghZ2xxin3Nj8z1NMd/NCuca+gsYXswywDy5bHvwlWL8tpTQmzGeUuHd9FC3E/SBEMvzJRwWEOz5gGes9Qg==}
 
-  '@solidjs/babel-plugin@2.0.0-rc.14':
-    resolution: {integrity: sha512-zMbK1GMHnChgfnalS5Q6rwPeQ9UoC7snavzes90R7+6J+8Fa7Yq4AfgqrfaAKYAjlpMgT0E8AmVwYCdIvSsG/A==}
-    peerDependencies:
-      '@babel/core': ^7.20.12
-      '@tsrx/core': 0.1.63
-    peerDependenciesMeta:
-      '@tsrx/core':
-        optional: true
-
-  '@solidjs/compiler-darwin-arm64@2.0.0-rc.14':
-    resolution: {integrity: sha512-WiOnnVov6XfT7QG9OrgqWfoJMrUYYbjO88qMzJ09tijV6Phu+BoeK2J3I0B3IpPPrOTMQ2mXpcwdvnSLuAtWdw==}
+  '@solidjs/compiler-darwin-arm64@2.0.0-rc.21':
+    resolution: {integrity: sha512-lXLk6GrmidICtHiIyCxDQC+6XqcrI7YMoGffo1wLigdojwNcCsifQfwRvzx0D78ieTU91VwzifmBu8hw1TQ28Q==}
     cpu: [arm64]
     os: [darwin]
 
-  '@solidjs/compiler-darwin-x64@2.0.0-rc.14':
-    resolution: {integrity: sha512-pW1kmlbkRLjLBnsDL+lF8LKrdjK141uCYt2RFNcodud/JOqIWTMK3v+zULeJelqbQX78CjhQ5xz0V2ApKb6UsA==}
+  '@solidjs/compiler-darwin-x64@2.0.0-rc.21':
+    resolution: {integrity: sha512-RKEXt5sXX7qHuYc+EjOdIhvOl+8HohI97GPlLzFN+64k4ywc0dr4Ge3W7RvgdJTwfyZVEolEelq2hw6vbEWQwg==}
     cpu: [x64]
     os: [darwin]
 
-  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.14':
-    resolution: {integrity: sha512-2d8F8x4sBae7DQHi9wholdzHir8UsHVHpPRPj4NRr4seD5rWkpIbQ3Pwk/9FMZoM4KZmCZ+6+SInQm7iGALgTw==}
+  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.21':
+    resolution: {integrity: sha512-rJpzsmhydP13WSqWpBegbRd8NSZrWZkeCGJOfMeisOUzIY3XntA50RDe0+sLNXaekU8PXGeyQCxOxkDlrBbEXQ==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.14':
-    resolution: {integrity: sha512-dXt4PJeEKSD07X/k5PcsFczxJLof72hEw3aVu8S0WBWh+KTYjYx9tg3Hnnl0KntR61PyphUjwIOICsWWsgKQTA==}
+  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.21':
+    resolution: {integrity: sha512-lZa593mWtgtOZuWLa54rolQOTp+II9DUznRoJKcGxNzCyhjzqMAGiWOP1fHGmEAdYlbyUqA+CnhwhjcC34WBKQ==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.14':
-    resolution: {integrity: sha512-cTaAmM7Ca6JisgvnqsLT9Fce4sDmonCaTvBb5eF2iEfdt8htFZ2Z9RlUEK2yG6LxCN89/K/vZLbI7giLA4HUjw==}
+  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.21':
+    resolution: {integrity: sha512-gQeaqDoie2wgh8ph2Ti89mFiBthVmq0EWYL5HesI45K5NvvrlvaftZs0Zt3VlVQrvz79A7OLKhHX+2aD6PvnzA==}
     engines: {node: '>=14.0.0'}
 
-  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.14':
-    resolution: {integrity: sha512-JosTalJd6Pgb8mjNgPCEauQSOi647Vlm2mS0qvO3hYLvzcrODmrYsHIY1/DqbI1FxQdc9vUOKJ5zCHvhjlScuA==}
+  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.21':
+    resolution: {integrity: sha512-cGNQL/7MF/CudNo1j2C9TEG/wTKZtFuSAQRPhU/UKzlq61oO5tKWLRugGWY4qGZ+K+4iw6CpSAuj4/s0z0POww==}
     cpu: [x64]
     os: [win32]
 
-  '@solidjs/compiler@2.0.0-rc.14':
-    resolution: {integrity: sha512-eCTVcxXl1UHOisRMYg+hABwiiTkfTmSkaOFtAb8bjzeqpLlju3lo6pT2qWPfUbrvnslbNGnLZd+HZSIVgZu9VQ==}
+  '@solidjs/compiler@2.0.0-rc.21':
+    resolution: {integrity: sha512-nhI5oCRx+ArUxcJtnesRb7pArO5zhTd/hef2I+dBD10MYwrQNM7ftpDdNVv7fQh/dH5xvqAnpWN4tUhZavo4ng==}
 
   '@solidjs/meta@1.0.0-next.2':
     resolution: {integrity: sha512-4aqPczFqDdep4JTAUXfh4nyfq7InbTgimd7NuN6ZWWE29UPv0uR5dyr53yFcf2YgVXjFdX+JGhXtsE0njGL+fA==}
@@ -1646,16 +1637,22 @@ packages:
     resolution: {integrity: sha512-s3v1wpPcX3wfNO0WUERrPrXS+qqJ4ylzH9QTIRKqrgcMVeLEOXgFa3hZrhEoVTp+lVAgido2NH6GCI79twe2fg==}
     engines: {node: '>=22.12.0'}
 
-  '@solidjs/vite-plugin@3.0.0-next.49':
-    resolution: {integrity: sha512-s50Tz24Nh061/lTSvG6VyVIAraQ4gYnnwjUCe2XfDAHY2jD85vYIckJiH1XV4ZnF4I79PaOsSoa7HhzZGO99+w==}
+  '@solidjs/vite-plugin@3.0.0-next.57':
+    resolution: {integrity: sha512-z05CuXxtHUSYfKBw8PirIpXkjSmqevUiygbqIMxCmc+ZCW4x2d+1zHw7nd98NdQsNAUIXJir3GmM7n3f/j0jZg==}
     engines: {node: '>=22.12.0'}
     peerDependencies:
+      '@babel/core': ^7.23.3 || ^8.0.0
+      '@solidjs/babel-plugin': ^2.0.0-rc.19
       '@solidjs/start-devtools': ^1.0.0-next.2
-      '@solidjs/web': ^2.0.0-rc.14
+      '@solidjs/web': ^2.0.0-rc.19
       '@testing-library/jest-dom': ^5.16.6 || ^5.17.0 || ^6.0.0 || ^7.0.0
-      solid-js: ^2.0.0-rc.14
+      solid-js: ^2.0.0-rc.19
       vite: ^8.0.0 || ^9.0.0
     peerDependenciesMeta:
+      '@babel/core':
+        optional: true
+      '@solidjs/babel-plugin':
+        optional: true
       '@solidjs/start-devtools':
         optional: true
       '@testing-library/jest-dom':
@@ -4304,45 +4301,36 @@ snapshots:
 
   '@shikijs/vscode-textmate@10.0.2': {}
 
-  '@solidjs/babel-plugin@2.0.0-rc.14(@babel/core@7.29.7(supports-color@7.2.0))':
-    dependencies:
-      '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@babel/helper-module-imports': 7.18.6
-      '@babel/plugin-syntax-jsx': 7.29.7(@babel/core@7.29.7(supports-color@7.2.0))
-      '@babel/types': 7.29.8
-      html-entities: 2.3.3
-      parse5: 7.3.0
-
-  '@solidjs/compiler-darwin-arm64@2.0.0-rc.14':
+  '@solidjs/compiler-darwin-arm64@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-darwin-x64@2.0.0-rc.14':
+  '@solidjs/compiler-darwin-x64@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.14':
+  '@solidjs/compiler-linux-arm64-gnu@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.14':
+  '@solidjs/compiler-linux-x64-gnu@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.14':
+  '@solidjs/compiler-wasm32-wasi@2.0.0-rc.21':
     dependencies:
       '@emnapi/core': 1.11.3
       '@emnapi/runtime': 1.11.3
       '@napi-rs/wasm-runtime': 1.2.5(@emnapi/core@1.11.3)(@emnapi/runtime@1.11.3)
     optional: true
 
-  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.14':
+  '@solidjs/compiler-win32-x64-msvc@2.0.0-rc.21':
     optional: true
 
-  '@solidjs/compiler@2.0.0-rc.14':
+  '@solidjs/compiler@2.0.0-rc.21':
     optionalDependencies:
-      '@solidjs/compiler-darwin-arm64': 2.0.0-rc.14
-      '@solidjs/compiler-darwin-x64': 2.0.0-rc.14
-      '@solidjs/compiler-linux-arm64-gnu': 2.0.0-rc.14
-      '@solidjs/compiler-linux-x64-gnu': 2.0.0-rc.14
-      '@solidjs/compiler-wasm32-wasi': 2.0.0-rc.14
-      '@solidjs/compiler-win32-x64-msvc': 2.0.0-rc.14
+      '@solidjs/compiler-darwin-arm64': 2.0.0-rc.21
+      '@solidjs/compiler-darwin-x64': 2.0.0-rc.21
+      '@solidjs/compiler-linux-arm64-gnu': 2.0.0-rc.21
+      '@solidjs/compiler-linux-x64-gnu': 2.0.0-rc.21
+      '@solidjs/compiler-wasm32-wasi': 2.0.0-rc.21
+      '@solidjs/compiler-win32-x64-msvc': 2.0.0-rc.21
 
   '@solidjs/meta@1.0.0-next.2(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)':
     dependencies:
@@ -4358,21 +4346,18 @@ snapshots:
 
   '@solidjs/signals@2.0.0-rc.14': {}
 
-  '@solidjs/vite-plugin@3.0.0-next.49(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(supports-color@7.2.0)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
+  '@solidjs/vite-plugin@3.0.0-next.57(@babel/core@7.29.7(supports-color@7.2.0))(@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14))(solid-js@2.0.0-rc.14)(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))':
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@babel/core': 7.29.7(supports-color@7.2.0)
-      '@solidjs/babel-plugin': 2.0.0-rc.14(@babel/core@7.29.7(supports-color@7.2.0))
-      '@solidjs/compiler': 2.0.0-rc.14
+      '@solidjs/compiler': 2.0.0-rc.21
       '@solidjs/web': 2.0.0-rc.14(solid-js@2.0.0-rc.14)
-      '@types/babel__core': 7.20.5
+      magic-string: 0.30.21
       merge-anything: 5.1.7
       solid-js: 2.0.0-rc.14
       vite: 8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1)
       vitefu: 1.1.3(vite@8.3.4(@types/node@24.19.2)(jiti@2.7.0)(yaml@2.9.1))
-    transitivePeerDependencies:
-      - '@tsrx/core'
-      - supports-color
+    optionalDependencies:
+      '@babel/core': 7.29.7(supports-color@7.2.0)
 
   '@solidjs/web@2.0.0-rc.14(solid-js@2.0.0-rc.14)':
     dependencies:
