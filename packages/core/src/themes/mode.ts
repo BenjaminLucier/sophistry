@@ -344,5 +344,17 @@ export function themeInitScript(options: ThemeInitScriptOptions = {}): string {
 	const colors = themeColors(options.palette);
 	const key = options.storageKey ?? MODE_STORAGE_KEY;
 	const fallback = options.fallback ?? FALLBACK_PREFERENCE;
-	return `(function(){try{var d=document.documentElement,meta=document.querySelector('meta[name="theme-color"]'),colors=${JSON.stringify(colors)},pref,mq=matchMedia("(prefers-color-scheme: dark)");function read(){var s=localStorage.getItem(${JSON.stringify(key)});return s==="light"||s==="dark"||s==="system"?s:${JSON.stringify(fallback)}}pref=read();function apply(){var mode=pref==="system"?(mq.matches?"dark":"light"):pref;d.dataset.mode=mode;d.dataset.pref=pref;if(meta)meta.content=colors[mode]}apply();mq.addEventListener("change",function(){pref=read();apply()})}catch(e){}})();`;
+	return `(function(){try{var d=document.documentElement,meta=document.querySelector('meta[name="theme-color"]'),colors=${scriptLiteral(colors)},pref,mq=matchMedia("(prefers-color-scheme: dark)");function read(){var s=localStorage.getItem(${scriptLiteral(key)});return s==="light"||s==="dark"||s==="system"?s:${scriptLiteral(fallback)}}pref=read();function apply(){var mode=pref==="system"?(mq.matches?"dark":"light"):pref;d.dataset.mode=mode;d.dataset.pref=pref;if(meta)meta.content=colors[mode]}apply();mq.addEventListener("change",function(){pref=read();apply()})}catch(e){}})();`;
+}
+
+/**
+ * A value as a JavaScript literal that is safe inside an inline `<script>`:
+ * JSON, with `<`, `>`, `&` and the line and paragraph separators escaped, so
+ * no string can close the script element or break the statement.
+ */
+function scriptLiteral(value: unknown): string {
+	return JSON.stringify(value).replace(
+		/[<>&\u2028\u2029]/g,
+		(char) => `\\u${char.charCodeAt(0).toString(16).padStart(4, "0")}`,
+	);
 }

@@ -315,6 +315,9 @@ const scenes: Record<string, () => unknown> = {
 };
 
 const root = document.getElementById("root");
-const make = scenes[params.get("s") ?? ""];
-if (!root || !make) throw new Error(`unknown scene ${params.get("s")}`);
+const name = params.get("s") ?? "";
+const make = Object.hasOwn(scenes, name) ? scenes[name] : undefined;
+if (!root || typeof make !== "function") {
+	throw new Error(`unknown scene ${name}`);
+}
 render(() => <>{make()}</>, root);

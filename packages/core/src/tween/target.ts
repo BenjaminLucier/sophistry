@@ -82,6 +82,8 @@ export type PathKey = string | number;
  *   The leaf type is not inferred from the path (it is `any` unless you name it:
  *   `storeTarget<number>(...)`), so name it when you want it checked.
  * @returns A target.
+ * @throws TypeError if the path is empty or holds `__proto__`, `constructor`
+ *   or `prototype`.
  * @category Tracks & clocks
  */
 // biome-ignore lint/suspicious/noExplicitAny: the path is a runtime value, so the leaf type cannot be inferred; callers may name it
@@ -94,6 +96,16 @@ export function storeTarget<T = any>(
 	}
 	const parentPath = path.slice(0, -1);
 	const leaf = path[path.length - 1] as PathKey;
+	// A path through `__proto__`, `constructor` or `prototype` would write to
+	// a shared prototype rather than the tree.
+	if (leaf === "__proto__" || leaf === "constructor" || leaf === "prototype") {
+		throw new TypeError(`storeTarget(): "${leaf}" is not a usable key`);
+	}
+	for (const key of parentPath) {
+		if (key === "__proto__" || key === "constructor" || key === "prototype") {
+			throw new TypeError(`storeTarget(): "${key}" is not a usable key`);
+		}
+	}
 	const parent = (): Record<PathKey, unknown> => {
 		let node = root as Record<PathKey, unknown>;
 		for (const key of parentPath) node = node[key] as Record<PathKey, unknown>;

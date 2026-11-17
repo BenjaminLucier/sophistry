@@ -73,7 +73,7 @@ function token(
 	if (raw.toLowerCase() === "none")
 		return { value: 0, percent: false, unit: "" };
 	const m =
-		/^([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)(%|deg|grad|rad|turn)?$/i.exec(
+		/^([+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?)(%|deg|grad|rad|turn)?$/i.exec(
 			raw,
 		);
 	if (!m) return null;

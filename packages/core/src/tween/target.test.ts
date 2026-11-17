@@ -94,6 +94,17 @@ describe("Animatable targets with real presets", () => {
 		expect(() => storeTarget({ a: 1 }, [])).toThrow(TypeError);
 	});
 
+	it("storeTarget rejects paths through a prototype", () => {
+		for (const path of [
+			["__proto__", "polluted"],
+			["constructor", "prototype", "polluted"],
+			["a", "__proto__"],
+		]) {
+			expect(() => storeTarget({ a: {} }, path)).toThrow(TypeError);
+		}
+		expect(({} as Record<string, unknown>).polluted).toBeUndefined();
+	});
+
 	it("propTarget animates a plain object property (not reactive)", () => {
 		const body = { x: 0, label: "a" };
 		const tl = timeline(
