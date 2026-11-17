@@ -18,6 +18,7 @@
 	"dependencies": {
 		"@astrojs/solid-js": "catalog:",
 		"@astrojs/starlight": "catalog:",
+		"@expressive-code/plugin-collapsible-sections": "catalog:",
 		"@solidjs/vite-plugin": "catalog:",
 		"@solidjs/web": "catalog:",
 		"@sophistry/3d": "workspace:*",
@@ -25,8 +26,8 @@
 		"@sophistry/core": "workspace:*",
 		"@sophistry/solidjs": "workspace:*",
 		"@sophistry/text": "workspace:*",
-		"katex": "catalog:",
 		"astro": "catalog:",
+		"katex": "catalog:",
 		"solid-js": "catalog:"
 	},
 	"devDependencies": {

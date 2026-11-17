@@ -7,7 +7,7 @@ Part of [sophistry](https://sophistry.dev), controllable Manim for the web. Pre-
 ## Install
 
 ```sh
-pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.14 @solidjs/web@2.0.0-rc.14
+pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.21 @solidjs/web@2.0.0-rc.21
 ```
 
 ## Example
