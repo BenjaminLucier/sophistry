@@ -14,7 +14,9 @@ import { type DomHarness, installDom } from "../test-dom.js";
 import { BarsExample } from "./bars.js";
 import { createRecorder } from "./normalize.js";
 import { ShapesExample } from "./shapes.js";
+// biome-ignore lint/correctness/useImportExtensions: a JSON import; forceJsExtensions would wrongly rewrite `.json` to `.js`
 import barsRecording from "./specs/bars.json" with { type: "json" };
+// biome-ignore lint/correctness/useImportExtensions: a JSON import; forceJsExtensions would wrongly rewrite `.json` to `.js`
 import shapesRecording from "./specs/shapes.json" with { type: "json" };
 
 /** The times the shapes example is recorded at, in seconds (as on the Solid side). */

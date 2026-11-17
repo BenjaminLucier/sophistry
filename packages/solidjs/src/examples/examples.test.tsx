@@ -15,9 +15,11 @@ import { render } from "@solidjs/web";
 import type { Scene } from "@sophistry/core";
 import { createClock, track } from "@sophistry/core";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+// biome-ignore lint/correctness/useImportExtensions: a JSON import; forceJsExtensions would wrongly rewrite `.json` to `.js`
 import barsRecording from "../../../react/src/examples/specs/bars.json" with {
 	type: "json",
 };
+// biome-ignore lint/correctness/useImportExtensions: a JSON import; forceJsExtensions would wrongly rewrite `.json` to `.js`
 import shapesRecording from "../../../react/src/examples/specs/shapes.json" with {
 	type: "json",
 };
