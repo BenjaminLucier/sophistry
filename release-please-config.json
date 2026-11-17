@@ -1,0 +1,31 @@
+{
+	"$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+	"release-type": "node",
+	"bootstrap-sha": "bc387f186d36a1c1d851aeb6e33f730579768e88",
+	"bump-minor-pre-major": true,
+	"bump-patch-for-minor-pre-major": false,
+	"packages": {
+		"packages/layout": { "component": "layout" },
+		"packages/core": { "component": "core" },
+		"packages/text": { "component": "text" },
+		"packages/charts": { "component": "charts" },
+		"packages/3d": { "component": "3d" },
+		"packages/solidjs": { "component": "solidjs" },
+		"packages/react": { "component": "react" }
+	},
+	"plugins": [
+		{
+			"type": "linked-versions",
+			"groupName": "sophistry",
+			"components": [
+				"layout",
+				"core",
+				"text",
+				"charts",
+				"3d",
+				"solidjs",
+				"react"
+			]
+		}
+	]
+}

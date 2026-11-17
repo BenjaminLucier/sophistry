@@ -92,20 +92,6 @@ build-docs:
 docs-preview: build-docs
     pnpm --filter @sophistry/docs preview
 
-# --- releases (changesets) ---
-
-# describe a change to a published package (creates .changeset/*.md)
-change:
-    pnpm changeset
-
-# show pending version bumps
-status:
-    pnpm changeset status
-
-# apply pending changesets: bump versions and write CHANGELOGs (local only)
-version:
-    pnpm run version
-
 # --- housekeeping ---
 
 # upgrade-check dependencies (read-only)
