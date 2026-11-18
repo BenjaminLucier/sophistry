@@ -5,8 +5,8 @@ name: Release
 # tags each package (`core-v0.3.0`, ...) and creates the GitHub releases; the
 # jobs after it then pack every package and publish it to npm through trusted
 # publishing (OIDC, no token; provenance is automatic). Each @sophistry
-# package's trusted publisher on npmjs.com names this repository and this file,
-# `release.yml`.
+# package's trusted publisher on npmjs.com names this repository, this file
+# (`release.yml`) and the `release` environment.
 #
 # "Run workflow" (workflow_dispatch) packs and publishes main as it stands,
 # without a new release: the way to finish a publish that failed after the
@@ -36,7 +36,7 @@ jobs:
       - id: release
         uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5.0.0
         with:
-          token: ${{ secrets.RELEASE_PLEASE_TOKEN }}
+          token: ${{ secrets.RELEASE_TOKEN }}
 
   # Packing goes through pnpm, which rewrites `workspace:` and `catalog:`
   # ranges and applies `publishConfig`; the publish job only uploads tarballs.
@@ -73,9 +73,12 @@ jobs:
           if-no-files-found: error
           retention-days: 7
 
+  # The `release` environment only deploys from main, and npm's trusted
+  # publishers are bound to it, so no other branch or workflow can publish.
   publish:
     needs: pack
     runs-on: ubuntu-latest
+    environment: release
     permissions:
       id-token: write
     steps:
