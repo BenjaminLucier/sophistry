@@ -1,5 +1,12 @@
 # @sophistry/3d
 
+## [0.3.2](https://github.com/BenjaminLucier/sophistry/compare/3d-v0.3.1...3d-v0.3.2) (2026-11-19)
+
+
+### Miscellaneous Chores
+
+* **3d:** Synchronize sophistry versions
+
 ## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/3d-v0.3.0...3d-v0.3.1) (2026-11-17)
 
 

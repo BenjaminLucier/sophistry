@@ -1,9 +1,9 @@
 {
-	"packages/layout": "0.3.1",
-	"packages/core": "0.3.1",
-	"packages/text": "0.3.1",
-	"packages/charts": "0.3.1",
-	"packages/3d": "0.3.1",
-	"packages/solidjs": "0.3.1",
-	"packages/react": "0.3.1"
+	"packages/layout": "0.3.2",
+	"packages/core": "0.3.2",
+	"packages/text": "0.3.2",
+	"packages/charts": "0.3.2",
+	"packages/3d": "0.3.2",
+	"packages/solidjs": "0.3.2",
+	"packages/react": "0.3.2"
 }

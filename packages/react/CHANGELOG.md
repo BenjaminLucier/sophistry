@@ -1,5 +1,12 @@
 # @sophistry/react
 
+## [0.3.2](https://github.com/BenjaminLucier/sophistry/compare/react-v0.3.1...react-v0.3.2) (2026-11-19)
+
+
+### Miscellaneous Chores
+
+* **react:** Synchronize sophistry versions
+
 ## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/react-v0.3.0...react-v0.3.1) (2026-11-17)
 
 

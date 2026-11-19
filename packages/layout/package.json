@@ -1,6 +1,6 @@
 {
 	"name": "@sophistry/layout",
-	"version": "0.3.1",
+	"version": "0.3.2",
 	"type": "module",
 	"license": "MIT OR Apache-2.0",
 	"description": "A flexbox and grid layout engine in plain TypeScript: style objects in, boxes out. No DOM, no dependencies.",

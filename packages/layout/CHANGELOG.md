@@ -1,5 +1,12 @@
 # @sophistry/layout
 
+## [0.3.2](https://github.com/BenjaminLucier/sophistry/compare/layout-v0.3.1...layout-v0.3.2) (2026-11-19)
+
+
+### Miscellaneous Chores
+
+* **layout:** Synchronize sophistry versions
+
 ## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/layout-v0.3.0...layout-v0.3.1) (2026-11-17)
 
 
