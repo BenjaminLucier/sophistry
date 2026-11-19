@@ -48,6 +48,6 @@ unstable: you should not need it.
   `colormap: "viridis"` are closed unions (`EasingName`, `GraphLayoutName`,
   `ColormapName`); any of them also accepts a function.
 
-The core depends on no UI framework. The Solid binding is built on Solid 2.0
-(release candidate) and the React binding on React 19. See
+The core depends on no UI framework. The Solid binding is built on Solid 2
+and the React binding on React 19. See
 [Stability](/project/stability/) for what is covered by the versioning policy.

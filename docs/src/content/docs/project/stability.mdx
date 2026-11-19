@@ -1,9 +1,9 @@
 ---
 title: "Stability and versioning"
-description: "Versioning policy, what each package entry makes public, the unstable internal entry, and the Solid 2 release-candidate dependency of the Solid binding."
+description: "Versioning policy, what each package entry makes public, the unstable internal entry, and the Solid binding's Solid 2 dependency."
 ---
 
-This page describes how sophistry versions its API, which entry points you can rely on, and how the Solid binding tracks Solid 2 while Solid 2 is a release candidate.
+This page describes how sophistry versions its API, which entry points you can rely on, and how the Solid binding tracks Solid 2.
 
 ## Versioning
 
@@ -32,12 +32,12 @@ Everything a scene author needs, including the [custom-definition API](/guides/e
 
 Anything not exported from an entry point (a file path inside `src/`) is private, whatever its name suggests.
 
-## Solid 2 release-candidate policy
+## Solid 2 policy
 
-The core, text, charts and 3D packages depend on no UI framework. The **Solid binding** is built on **Solid 2.0, which is currently a release candidate**; `solid-js` and `@solidjs/web` are its peer dependencies, and the repository pins the exact versions it is developed and tested against (see [Installation](/start/installation/)).
+The core, text, charts and 3D packages depend on no UI framework. The **Solid binding** is built on **Solid 2**; `solid-js` and `@solidjs/web` are its peer dependencies, with the range `^2.0.0` (see [Installation](/start/installation/)).
 
-- **Pin Solid exactly.** A plain `^2.0.0` range does not match release candidates, so your package manager may otherwise resolve Solid 1.
-- **Upgrades are deliberate.** When Solid publishes a new candidate, the binding moves to it in one change, runs its tests and the docs' end-to-end tests against it, and says so in the release notes.
+- **Any Solid 2 release works.** The peer range follows Solid's semver; the repository develops and tests against the latest 2.x.
+- **Solid upgrades are deliberate.** When Solid publishes a new minor, the binding is tested against it (unit tests and the docs' end-to-end tests) before the repository moves to it, and the release notes say so.
 - **Solid's changes stay in the binding.** Because the scene graph lives in the core, a change in how Solid schedules effects can only affect `@sophistry/solidjs`, never a scene built with `createScene` or the React binding.
 
 The React binding targets React 19 through `react-reconciler`.

@@ -16,7 +16,7 @@ painted on Canvas2D, with bindings for SolidJS and React.
 </div>
 
 > **Pre-1.0.** The packages are `0.x`: minor releases may break. The SolidJS
-> binding targets `solid-js` and `@solidjs/web` `2.0.0-rc.21`. See the
+> binding targets Solid 2 (`solid-js` and `@solidjs/web` `^2.0.0`). See the
 > [stability policy](https://sophistry.dev/project/stability/).
 
 sophistry brings the ideas of [Manim](https://www.manim.community/) to the
@@ -53,8 +53,8 @@ play, pause, scrub, or drive from a slider, a scroll position, or your own code.
 Install the core and one binding:
 
 ```sh
-# SolidJS (pin the release-candidate versions: a plain range resolves to Solid 1)
-pnpm add @sophistry/core @sophistry/solidjs solid-js@2.0.0-rc.21 @solidjs/web@2.0.0-rc.21
+# SolidJS (Solid 2)
+pnpm add @sophistry/core @sophistry/solidjs solid-js @solidjs/web
 
 # React
 pnpm add @sophistry/core @sophistry/react react
@@ -109,8 +109,8 @@ islands; see [embedding](https://sophistry.dev/recipes/embedding/).
 
 ## Status
 
-Pre-1.0. The core depends on no UI framework; the Solid binding is on the
-Solid 2.0 release candidate. In `0.x`, a minor version may
+Pre-1.0. The core depends on no UI framework; the Solid binding is on
+Solid 2. In `0.x`, a minor version may
 contain breaking changes and a patch version is fixes only; `/internal` has no
 stability guarantee. Details: [stability](https://sophistry.dev/project/stability/),
 [roadmap](ROADMAP.md), [changelog](https://sophistry.dev/project/changelog/).

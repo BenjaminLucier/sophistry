@@ -65,11 +65,11 @@
 		"build": "vite build && tsc -p tsconfig.build.json"
 	},
 	"peerDependencies": {
-		"@solidjs/web": "catalog:",
+		"@solidjs/web": "^2.0.0",
 		"@sophistry/charts": "workspace:^",
 		"@sophistry/core": "workspace:^",
 		"@sophistry/text": "workspace:^",
-		"solid-js": "catalog:",
+		"solid-js": "^2.0.0",
 		"@sophistry/3d": "workspace:^"
 	},
 	"devDependencies": {
