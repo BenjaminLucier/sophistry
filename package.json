@@ -4,9 +4,9 @@
 	"version": "0.0.0",
 	"type": "module",
 	"description": "Sophistry — a controllable Manim-for-the-web animation and visualization toolkit: a framework-free core with SolidJS and React bindings.",
-	"packageManager": "pnpm@12.10.1",
 	"engines": {
-		"node": ">=24"
+		"node": ">=24",
+		"pnpm": ">=12.21.0"
 	},
 	"scripts": {
 		"typecheck": "pnpm -r typecheck",

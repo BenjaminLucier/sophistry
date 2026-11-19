@@ -21,9 +21,12 @@ jobs:
         with:
           persist-credentials: false
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          # The latest pnpm 12; package.json engines.pnpm sets the minimum.
+          version: 12
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version-file: .nvmrc
+          node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       - run: pnpm lint
@@ -64,12 +67,15 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # pnpm from package.json's packageManager, then the .nvmrc Node in front
+      # The latest pnpm 12, then the .node-version Node in front
       # of the image's own; the pnpm store is cached by setup-node.
       - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          # The latest pnpm 12; package.json engines.pnpm sets the minimum.
+          version: 12
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version-file: .nvmrc
+          node-version-file: .node-version
           cache: pnpm
       - run: pnpm install --frozen-lockfile
       # Capture mode (docs/src/components/capture.ts) is compiled in only with
@@ -89,6 +95,31 @@ jobs:
             e2e/test-results
           retention-days: 7
 
+  # Development pins the current LTS in .node-version; the published packages
+  # support every LTS from engines.node up (>=24), so the oldest one runs the
+  # unit tests and the fresh-install consumer check too. Keep this major equal
+  # to engines.node's lower bound.
+  node-24:
+    name: Node 24 (oldest supported)
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
+        with:
+          # The latest pnpm 12; package.json engines.pnpm sets the minimum.
+          version: 12
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm test
+      - run: pnpm exec playwright install --with-deps chromium
+      - run: pnpm smoke:consumer
+
   zizmor:
     runs-on: ubuntu-latest
     permissions:
@@ -106,7 +137,7 @@ jobs:
   ci:
     name: CI
     if: always()
-    needs: [check, e2e, zizmor]
+    needs: [check, e2e, node-24, zizmor]
     runs-on: ubuntu-latest
     permissions: {}
     steps:
