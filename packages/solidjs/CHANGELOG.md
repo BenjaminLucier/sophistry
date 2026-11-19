@@ -1,5 +1,12 @@
 # @sophistry/solidjs
 
+## [0.3.2](https://github.com/BenjaminLucier/sophistry/compare/solidjs-v0.3.1...solidjs-v0.3.2) (2026-11-19)
+
+
+### Bug Fixes
+
+* **solidjs:** move to stable Solid 2 and accept any Solid 2 release as a peer ([#32](https://github.com/BenjaminLucier/sophistry/issues/32)) ([783e16d](https://github.com/BenjaminLucier/sophistry/commit/783e16d4cfefb0b470db9ff3b85b1eb3d4c057f0))
+
 ## [0.3.1](https://github.com/BenjaminLucier/sophistry/compare/solidjs-v0.3.0...solidjs-v0.3.1) (2026-11-17)
 
 
