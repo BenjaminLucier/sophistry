@@ -46,7 +46,7 @@
 	},
 	"devDependencies": {
 		"@biomejs/biome": "catalog:",
-		"@playwright/test": "1.65.0",
+		"@playwright/test": "1.65.1",
 		"@types/node": "^26.6.6",
 		"typescript": "catalog:",
 		"vite": "catalog:",

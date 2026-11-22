@@ -7,10 +7,10 @@ packages:
 # Shared dependency versions. Packages reference these as `catalog:` so a
 # bump happens in exactly one place.
 catalog:
-  "@astrojs/starlight": ^0.42.10
+  "@astrojs/starlight": ^0.43.1
   "@astrojs/solid-js": ^7.1.2
   # Matches the Expressive Code version Starlight bundles, so there is one core.
-  "@expressive-code/plugin-collapsible-sections": 0.44.2
+  "@expressive-code/plugin-collapsible-sections": 0.44.3
   "@biomejs/biome": ^2.6.6
   "@solidjs/meta": ^2.0.0
   "@solidjs/router": ^2.0.0
