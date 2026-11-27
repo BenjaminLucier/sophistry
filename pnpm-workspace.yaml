@@ -40,3 +40,9 @@ minimumReleaseAgeExclude:
   - "@solidjs/web@2.0.1"
   - solid-js@2.0.1
   - "@solidjs/signals@2.0.1"
+
+# One Expressive Code core: the collapsible-sections plugin's ^range would
+# otherwise pull a newer core than the one Starlight bundles, and its prop
+# types then augment the wrong copy. Keep in step with Starlight's version.
+overrides:
+  "@expressive-code/core": 0.44.2
