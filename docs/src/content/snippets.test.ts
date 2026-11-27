@@ -18,7 +18,9 @@ import {
 } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import ts from "typescript";
+// TypeScript 7 has no JS compiler API yet, so this test drives the 5.9 one
+// (aliased as typescript-api). The docs themselves typecheck with 7.
+import ts from "typescript-api";
 import { afterAll, expect, test } from "vitest";
 
 const docsRoot = join(dirname(fileURLToPath(import.meta.url)), "../..");
