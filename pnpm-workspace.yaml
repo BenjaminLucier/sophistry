@@ -7,17 +7,17 @@ packages:
 # Shared dependency versions. Packages reference these as `catalog:` so a
 # bump happens in exactly one place.
 catalog:
-  "@astrojs/starlight": ^0.42.10
+  "@astrojs/starlight": ^0.43.1
   "@astrojs/solid-js": ^7.1.2
   # Matches the Expressive Code version Starlight bundles, so there is one core.
   "@expressive-code/plugin-collapsible-sections": 0.44.2
-  "@biomejs/biome": ^2.6.6
+  "@biomejs/biome": ^2.6.8
   "@solidjs/meta": ^2.0.0
-  "@solidjs/router": ^2.0.0
+  "@solidjs/router": ^2.0.1
   "@solidjs/vite-plugin": ^3.0.1
-  "@solidjs/web": ^2.0.1
+  "@solidjs/web": ^2.0.3
   "@tailwindcss/vite": ^4.3.5
-  astro: ^7.4.8
+  astro: ^7.4.13
   "@types/d3-array": ^3.2.2
   "@types/d3-color": ^3.1.3
   "@types/d3-ease": ^3.0.2
@@ -30,13 +30,19 @@ catalog:
   katex: ^0.19.1
   filesystem-routing: ^0.5.0
   happy-dom: ^21.0.4
-  solid-js: ^2.0.1
+  solid-js: ^2.0.3
   tailwindcss: ^4.3.5
   typescript: ~7.0.2
   vite: ^8.3.7
-  vitest: ^5.1.0
+  vitest: ^5.1.1
 
 minimumReleaseAgeExclude:
   - "@solidjs/web@2.0.1"
   - solid-js@2.0.1
   - "@solidjs/signals@2.0.1"
+
+# One Expressive Code core: the collapsible-sections plugin's ^range would
+# otherwise pull a newer core than the one Starlight bundles, and its prop
+# types then augment the wrong copy. Keep in step with Starlight's version.
+overrides:
+  "@expressive-code/core": 0.44.2
