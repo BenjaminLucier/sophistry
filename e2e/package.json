@@ -19,7 +19,7 @@
 	"devDependencies": {
 		"@solidjs/vite-plugin": "catalog:",
 		"vite": "catalog:",
-		"@playwright/test": "1.65.0",
+		"@playwright/test": "1.65.1",
 		"typescript": "catalog:"
 	}
 }
